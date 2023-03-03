@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="01 | 开发环境：如何使用 Ruby 工具链统一开发环境？">
+<meta property="og:url" content="https://fengyanxin.github.io/2023/02/28/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/index.html">
+<meta property="og:site_name" content="凤炎忻的个人博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fengyanxin.github.io/2023/02/28/01%20%7C%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.25.34.png">
+<meta property="og:image" content="https://fengyanxin.github.io/2023/02/28/01%20%7C%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.02.14.png">
+<meta property="og:image" content="https://fengyanxin.github.io/2023/02/28/01%20%7C%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.12.38.png">
+<meta property="og:image" content="https://fengyanxin.github.io/2023/02/28/01%20%7C%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.14.30.png">
+<meta property="og:image" content="https://fengyanxin.github.io/2023/02/28/01%20%7C%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.24.47.png">
+<meta property="og:image" content="https://fengyanxin.github.io/2023/02/28/01%20%7C%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.25.34.png">
+<meta property="article:published_time" content="2023-02-28T09:48:45.094Z">
+<meta property="article:modified_time" content="2023-03-03T06:39:00.538Z">
+<meta property="article:author" content="凤炎忻">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fengyanxin.github.io/2023/02/28/01%20%7C%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.25.34.png">
+
+<link rel="canonical" href="https://fengyanxin.github.io/2023/02/28/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>01 | 开发环境：如何使用 Ruby 工具链统一开发环境？ | 凤炎忻的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="凤炎忻的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">凤炎忻的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/2023/02/28/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          01 | 开发环境：如何使用 Ruby 工具链统一开发环境？
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-02-28 17:48:45" itemprop="dateCreated datePublished" datetime="2023-02-28T17:48:45+08:00">2023-02-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-03 14:39:00" itemprop="dateModified" datetime="2023-03-03T14:39:00+08:00">2023-03-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <html><head></head><body><h1 id="01-开发环境：如何使用-Ruby-工具链统一开发环境？"><a href="#01-开发环境：如何使用-Ruby-工具链统一开发环境？" class="headerlink" title="01 | 开发环境：如何使用 Ruby 工具链统一开发环境？"></a>01 | 开发环境：如何使用 Ruby 工具链统一开发环境？</h1><p><img src="/2023/02/28/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.25.34.png" alt="2021-03-17_10.25.34"></p>
+<p>在 iOS 开发过程中，你是不是会经常遇到这些情况：</p>
+<p>每次打开一个新项目，都需要手动搭建开发环境；有时候在安装第三方工具时使用到 <code>sudo 权限</code>，导致以后安装工具都需要手工输入密码而无法实施自动化。还有，每当启动一台新 <code>CI</code> 时，就需要手工登录并配置一遍，更可怕的是，原先搭建好的 CI 会随着 Xcode 版本更新需要重新配置。</p>
+<p>为什么会这么麻烦呢？就是因为你在项目开始之初没有做好统一配置。</p>
+<p>所谓统一配置，就是所有的配置信息都以文本的格式存放在 Git 里面，我们可以随时查看修改记录，以此来帮助我们比较不同配置之间的差异性，然后在这个基础上不断更新迭代。</p>
+<p>可以说，有了统一配置，任何工程师都可以搭建出一模一样的开发环境，构建出功能一致的 App；有了统一配置，还可以让我们按需延展 CI 服务，而不用任何手工操作。更重要的是，它还可以应用到各个类似的 iOS 项目中，极大地减轻了项目前期的搭建成本。</p>
+<p>既然统一的配置那么重要，那么我们怎样搭建统一配置的开发环境呢？</p>
+<h2 id="Ruby-工具链"><a href="#Ruby-工具链" class="headerlink" title="Ruby 工具链"></a>Ruby 工具链</h2><p>我们可以通过 Ruby 工具链为整个项目搭建一致的开发和构建环境。为什么选择 <code>Ruby</code> 而不是其他语言环境呢？因为在 iOS 开发方面，目前流行的第三方工具 <code>CocoaPods</code> 和 <code>fastlane</code> 都是使用 Ruby 来开发的。特别是 Ruby 有非常成熟的依赖库管理工具 <code>RubyGems</code> 和 <code>Bundler</code>，其中 Bundler 可以帮我们有效地管理 CocoaPods 和 fastlane 的版本。</p>
+<p>下面一起来看看怎样搭建一个统一的开发环境吧。</p>
+<p><img src="/2023/02/28/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.02.14.png" alt="2021-03-17_10.02.14"></p>
+<p>通常，统一的开发环境应该从操作系统开始。对于 iOS 开发来说，<strong>MacOS</strong> 是目前 iOS 开发唯一支持的操作系统。在公司，MacOS 的版本一般由 IT 部门统一管理和更新。要注意，当公司统一更新了我们开发环境的 MacOS 版本以后，需要同时更新 CI 上 MacOS 的版本，以保持一致。</p>
+<h2 id="Xcode"><a href="#Xcode" class="headerlink" title="Xcode"></a>Xcode</h2><p>位于 MacOS 上层的是 Xcode 和 rbenv。其中，<strong>Xcode</strong> 是 iOS 开发和构建工具，在同一个项目里，最好使用同一个版本的 Xcode 进行开发和构建，我们可以在项目的 README.md 文件标注 Xcode 的版本。</p>
+<p>像我们将要开发的这款类似朋友圈的 Moments App 项目，我就在对应的 README.md 文件里标明了需要使用 <code>Xcode Version 12.2 (12B45b)</code>。具体内容你也可以在代码仓库找到。</p>
+<p><img src="/2023/02/28/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.12.38.png" alt="2021-03-17_10.12.38"></p>
+<p>那我们怎样才能保证每个人都安装同一个版本号的 Xcode 呢？技巧就是我们不要到有自动更新功能的 Mac App Store 中下载 Xcode，而是到苹果的开发者网站搜索并下载。</p>
+<p><img src="/2023/02/28/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.14.30.png" alt="2021-03-17_10.14.30"></p>
+<p>有时候我们会同时开发多个项目，这样有可能要安装多个不同版本的 Xcode。如果你的机器有多于一个版本的 Xcode，此时需要特别注意，为了保证所使用的编译器版本一致，在每次执行自动化命令之前（如执行<code>bundle exec fastlane test</code>），要先使用<code>xcode-select -s</code>来选择该项目所对应版本的 Xcode。</p>
+<p>比如说我的电脑上有多个 Xcode 版本，在开发 Moments App 时，每次执行自动化命令之前都会执行这样一条命令<code>xcode-select -s /Applications/Xcode12.2.app/Contents/Developer</code>来选择 Moments App 项目所使用的 Xcode。这里的<code>Xcode12.2.app</code>就是我安装的 Xcode 12.2 版所在的位置。</p>
+<h2 id="rbenv"><a href="#rbenv" class="headerlink" title="rbenv"></a>rbenv</h2><p>有了版本一致的 Xcode 以后，因为后期我们会用到 CocoaPods 等第三方 Ruby 工具，为了自动化安装和管理这些工具，整个项目团队所使用的 Ruby 版本也必须保持一致。为此，我们就需要用到 Ruby 环境管理工具。</p>
+<p>目前流行的 Ruby 环境管理工具有 RVM 和 rbenv。我推荐使用的是 rbenv，因为它使用 shims 文件夹来分离各个 Ruby 版本，相对于 RVM 更加轻装而方便使用。千万注意，团队内部不要同时使用不同的 Ruby 环境管理工具，否则项目编译会出错。</p>
+<p><strong>rbenv</strong> 是 Ruby 环境管理工具，能够安装、管理、隔离以及在多个 Ruby 版本之间切换。要使用 rbenv，我们可以通过 Homebrew 来安装它，下面是安装 Homebrew 和 rbenv 的脚本。</p>
+<figure class="highlight jsx"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ /bin/bash -c <span class="string">"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"</span></span><br><span class="line">brew install rbenv ruby-build rbenv-vars</span><br></pre></td></tr></tbody></table></figure>
+
+<p>一旦安装 rbenv 完毕，我们需要把以下的设置信息放到你的 Shell 配置文件里面，例如 <code>~/.bash_profile</code> 或者 <code>~/.zshrc</code> 等文件，这样能保证每次打开终端的时候都会初始化 rbenv。</p>
+<figure class="highlight jsx"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="variable constant_">PATH</span>=<span class="string">"$HOME/.rbenv/bin:$PATH"</span> </span><br><span class="line"><span class="built_in">eval</span> <span class="string">"$(rbenv init -)"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>接着我们就可以安装和设置项目的 Ruby 环境了。</p>
+<figure class="highlight jsx"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cd $(<span class="variable constant_">PROJECT_DIR</span>)</span><br><span class="line">$ rbenv install <span class="number">2.7</span><span class="number">.1</span></span><br><span class="line">$ rbenv local <span class="number">2.7</span><span class="number">.1</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>此处是把项目的 Ruby 环境配置为 2.7.1 版本。rbenv 会帮我们建立 一个叫作<code>.ruby-version</code> 的文件，该文件里面只保存一个版本号（例如<code>2.7.1</code>）的字符串。这个包含了版本号的文件可以用 Git 进行管理。如果要更新版本，可以通过<code>rbenv local</code>命令进行，每次更新也由 Git 统一管理，这样就能让其他开发者使用同一版本的 Ruby 开发环境了。</p>
+<h2 id="RubyGems-和-Bundler"><a href="#RubyGems-和-Bundler" class="headerlink" title="RubyGems 和 Bundler"></a>RubyGems 和 Bundler</h2><p>RubyGems 和 Bundler 主要是用来安装和管理 CocoaPods 和 fastlane 等第三方工具。</p>
+<p>具体来说，RubyGems&nbsp;是 Ruby 依赖包管理工具。在 Ruby 的世界，包叫作 Gem，我们可以通过<code>gem install</code>命令来安装。但是 RubyGems 在管理 Gem 版本的时候有些缺陷，就有人开发了 Bundler，用它来检查和安装 Gem 的特定版本，以此为 Ruby 项目提供一致性的环境。</p>
+<p>要安装 Bundler，我们可执行<code>gem install bundler</code>命令进行，之后，再执行<code>bundle init</code>就可以生成一个 Gemfile 文件，像 CocoaPods 和 fastlane 等依赖包，我们就可以添加到这个文件里面。</p>
+<p>具体代码如下：</p>
+<figure class="highlight jsx"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">source <span class="string">"https://rubygems.org"</span></span><br><span class="line">gem <span class="string">"cocoapods"</span>, <span class="string">"1.10.0"</span></span><br><span class="line">gem <span class="string">"fastlane"</span>, <span class="string">"2.166.0"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>注意我们在<code>gem</code>命令里面都指定了依赖包的特定版本号。例如，在我们的 Moment App 就使用了<code>1.10.0</code>版的 CocoaPods，然后执行<code>bundle install</code>来安装各个 Gem。 Bundler 会自动生成一个 <code>Gemfile.lock</code> 文件来锁定所安装的 Gem 的版本，例如：</p>
+<figure class="highlight jsx"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable constant_">DEPENDENCIES</span></span><br><span class="line">  cocoapods (= <span class="number">1.10</span><span class="number">.0</span>)</span><br><span class="line">  fastlane (= <span class="number">2.166</span><span class="number">.0</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>为了保证团队其他成员都可以使用版本号一致的 Gem，我们需要把 <code>Gemfile</code> 和 <code>Gemfile.lock</code> 一同保存到 Git 里面统一管理起来。</p>
+<p>到此为止，我们已经知道怎样使用 Ruby 工具链配置一个统一的开发环境。但在真实的开发环境中，搭建环境只需要一个人来完成即可，其他成员执行以下脚本就能完成整套开发环境的搭建。</p>
+<figure class="highlight jsx"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./scripts/setup.<span class="property">sh</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>我们一起看看这个脚本做了些什么？</p>
+<figure class="highlight jsx"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># <span class="title class_">Install</span> ruby using rbenv</span><br><span class="line">ruby_version=<span class="string">`cat .ruby-version`</span></span><br><span class="line"><span class="keyword">if</span> [[ ! -d <span class="string">"$HOME/.rbenv/versions/$ruby_version"</span> ]]; then</span><br><span class="line">  rbenv install $ruby_version;</span><br><span class="line">fi</span><br><span class="line"># <span class="title class_">Install</span> bunlder</span><br><span class="line">gem install bundler</span><br><span class="line"># <span class="title class_">Install</span> all gems</span><br><span class="line">bundle install</span><br><span class="line"># <span class="title class_">Install</span> all pods</span><br><span class="line">bundle exec pod install</span><br></pre></td></tr></tbody></table></figure>
+
+<p>该脚本主要做了四件事情，第一步是在 rbenv 下安装特定版本的 Ruby 开发环境，然后通过 RubyGems 安装 Bunlder，接着使用 Bundler 安装 CocoaPods 和 fastlane 等依赖包，最后安装各个 Pod。这样，一个统一的项目环境就搭建完成了，接下来开发者就可以打开&nbsp;<strong>Moments.xcworkspace</strong>进行开发了。</p>
+<p>说完 Ruby 环境搭建以后，最后我们一起聊聊保证项目文件一致性的 .gitignore 文件。</p>
+<h2 id="gitignore-文件"><a href="#gitignore-文件" class="headerlink" title=".gitignore 文件"></a>.gitignore 文件</h2><p>.gitignore 文件是一个配置文件，用来指定让 Git 需要忽略的文件或者目录。如果没有 .gitignore 文件，项目成员可能会不小心把一些自动生成等无关重要的文件或者具有个人信息(例如 <code>xcuserdata</code>)的文件保存到 Git 里面。这就大大增加了查看 Git 修改历史的难度。因此，在项目初期就配置一个合适的 .gitignore 文件，能减轻后续的管理工作。</p>
+<p>如何创建 .gitignore 文件呢？</p>
+<p>我一般会在 <code>gitignore.io</code> 里面输入关键字，例如 Xcode，Swift 等，然后该网站会帮我们生成一个默认的 .gitignore 文件。咱们项目 Moments App 的.gitignore 文件你可以到<a target="_blank" rel="noopener" href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/.gitignore">拉勾教育的仓库中</a>查看。</p>
+<p><img src="/2023/02/28/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.24.47.png" alt="2021-03-17_10.24.47"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h2><p>以上，我们通过 Xcode、rbenv、RubyGems 和 Bundler 搭建一个统一的 iOS 开发和构建环境。</p>
+<p><img src="/2023/02/28/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.25.34.png" alt="2021-03-17_10.25.34"></p>
+<p>再次强调下，为了让各个开发和构建环境能保持一致，我们要把 .ruby-version、 Gemfile 和 Gemfile.lock 文件通过 Git 统一管理起来，并共享给整个项目团队使用。</p>
+<p>而且，由于我们的开发环境已经通过 Bundler 管理起来，今后，当使用各个 Gem 工具的时候，也需要使用 Bundler。例如在使用 CocoaPods 时要执行<code>bundle exec pod</code>，以保证我们使用的是项目级别而不是操作系统级别的 Gem 工具。</p>
+<p><strong>源码地址：</strong></p>
+<blockquote>
+<p>README.md<br><a target="_blank" rel="noopener" href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/README.md">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/README.md</a><br>Moments App 的.gitignore 文件<br><a target="_blank" rel="noopener" href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/.gitignore">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/.gitignore</a></p>
+</blockquote>
+</body></html>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/15/Markdown/" rel="prev" title="Markdown">
+      <i class="fa fa-chevron-left"></i> Markdown
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#01-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Ruby-%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">01 | 开发环境：如何使用 Ruby 工具链统一开发环境？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ruby-%E5%B7%A5%E5%85%B7%E9%93%BE"><span class="nav-number">1.1.</span> <span class="nav-text">Ruby 工具链</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xcode"><span class="nav-number">1.2.</span> <span class="nav-text">Xcode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rbenv"><span class="nav-number">1.3.</span> <span class="nav-text">rbenv</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RubyGems-%E5%92%8C-Bundler"><span class="nav-number">1.4.</span> <span class="nav-text">RubyGems 和 Bundler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gitignore-%E6%96%87%E4%BB%B6"><span class="nav-number">1.5.</span> <span class="nav-text">.gitignore 文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">凤炎忻</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">凤炎忻</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

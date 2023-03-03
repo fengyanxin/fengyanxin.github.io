@@ -1,3 +1,3 @@
-http://example.com/2023/03/03/my-first-blog/
-http://example.com/2023/03/03/hello-world/
-http://example.com/
+https://fengyanxin.github.io/2022/08/15/Markdown/
+https://fengyanxin.github.io/2023/02/28/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/
+https://fengyanxin.github.io/
