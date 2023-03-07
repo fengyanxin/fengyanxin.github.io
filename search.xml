@@ -1,0 +1,3280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Markdown语法</title>
+    <url>/Tips/Markdown/</url>
+    <content><![CDATA[<h1 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h1><h2 id="一、Markdown纯文本基本语法"><a href="#一、Markdown纯文本基本语法" class="headerlink" title="一、Markdown纯文本基本语法"></a>一、Markdown纯文本基本语法</h2><h3 id="1-标题"><a href="#1-标题" class="headerlink" title="1. 标题"></a>1. 标题</h3><p>Markdown 支持两种标题的语法，类 Setext 和类 atx 形式。 类 Setext 形式是用底线的形式，利用 = （最高阶标题）和 - （第二阶标题），例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">This is an H1</span><br><span class="line">=======</span><br><span class="line"></span><br><span class="line">This is an H2</span><br><span class="line">----------</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<p>效果如下：</p>
+<h1 id="This-is-an-H1"><a href="#This-is-an-H1" class="headerlink" title="This is an H1"></a>This is an H1</h1><h2 id="This-is-an-H2"><a href="#This-is-an-H2" class="headerlink" title="This is an H2"></a>This is an H2</h2><p>任何数量的 = 和 - 都可以有效果。</p>
+<p>这里需要注意一点，由于分割线也是 “—-”， 因此在使用分割线时，一定要空一行，不然会把上方的文字识别为第二阶标题。原因会在后面的段落和换行中说到。<br>类 Atx 形式则是在行首插入 1 到 6 个 # ，对应到标题 1 到 6 阶，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># this is H1</span><br><span class="line">## this is H2</span><br><span class="line">###### this is H6</span><br></pre></td></tr></table></figure>
+
+<p>效果不再展示，但要注意的是，标准语法一般在 # 后跟个空格再写文字，不然可能会无法识别。</p>
+<h3 id="2-字体"><a href="#2-字体" class="headerlink" title="2. 字体"></a>2. 字体</h3><p>Markdown 使用星号（*）和底线（_）作为标记强调字词的符号，你可以随便用你喜欢的样式，唯一的限制是，你用什么符号开启标签，就要用什么符号结束。但个人感觉写中文时还是（*）比较好用，因为它不区分全角半角，不用切换输入法。 示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">**这是加粗**</span><br><span class="line">__这也是加粗__</span><br><span class="line">*这是倾斜*</span><br><span class="line">_这也是倾斜_</span><br><span class="line">***这是加粗倾斜***</span><br><span class="line">~~这是加删除线~~</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：<br><strong>这是加粗</strong><br><strong>这也是加粗</strong><br><em>这是倾斜</em><br><em>这也是倾斜</em><br><em><strong>这是加粗倾斜</strong></em><br><del>这是加删除线</del></p>
+<p>注意：强调也可以直接插在文字中间，但是如果你的 * 和 _ 两边都有空白的话，它们就只会被当成普通的符号。 如果要在文字前后直接插入普通的星号或底线，你可以用反斜线 \ 。</p>
+<h3 id="3-分割线"><a href="#3-分割线" class="headerlink" title="3. 分割线"></a>3. 分割线</h3><p>你可以在一行中用三个以上的星号、减号、底线来建立一个分隔线，行内不能有其他东西。你也可以在星号或是减号中间插入空格。下面每种写法都可以建立分隔线：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* * *</span><br><span class="line">***</span><br><span class="line">**********</span><br><span class="line">- - -</span><br><span class="line">_________________</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<hr>
+<hr>
+<hr>
+<h3 id="4-引用"><a href="#4-引用" class="headerlink" title="4. 引用"></a>4. 引用</h3><p>在引用的文字前加 &gt; 即可。 在 Markdown 文件中建立一个区块引用，那会看起来像是你自己先断好行，然后在每行的最前面加上 &gt; ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">&gt; consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">&gt; Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">&gt; </span><br><span class="line">&gt; Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse</span><br><span class="line">&gt; id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,<br>consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.<br>Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
+</blockquote>
+<p>Markdown 也允许你偷懒只在整个段落的第一行最前面加上 &gt; ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
+</blockquote>
+<p>区块引用可以嵌套（例如：引用内的引用），只要根据层次加上不同数量的 &gt; ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is the first level of quoting.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; This is nested blockquote.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; &gt; &gt; Back to the first level.</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>This is the first level of quoting.</p>
+<blockquote>
+<p>This is nested blockquote.</p>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Back to the first level.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>引用的区块内也可以使用其他的 Markdown 语法，包括标题、列表、代码区块等。</p>
+<h3 id="5-列表"><a href="#5-列表" class="headerlink" title="5. 列表"></a>5. 列表</h3><p>Markdown 支持有序列表和无序列表。 无序列表使用星号、加号或是减号作为列表标记。 示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 列表内容</span><br><span class="line">+ 列表内容</span><br><span class="line">* 列表内容</span><br><span class="line">注意：- + * 跟内容之间都要有一个空格</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<ul>
+<li>列表内容</li>
+</ul>
+<ul>
+<li>列表内容</li>
+</ul>
+<ul>
+<li>列表内容</li>
+</ul>
+<p>有序列表则使用数字接着一个英文句点作为标记。 示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. 列表内容</span><br><span class="line">2. 列表内容</span><br><span class="line">3. 列表内容</span><br><span class="line">注意：序号跟内容之间要有空格 </span><br></pre></td></tr></table></figure>
+<p>效果如下： </p>
+<ol>
+<li>列表内容</li>
+<li>列表内容</li>
+<li>列表内容</li>
+</ol>
+<p>列表可以嵌套，上一级和下一级之间敲三个空格即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* 一级无序列表内容</span><br><span class="line"></span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<ul>
+<li><p>一级无序列表内容</p>
+<ul>
+<li>二级无序列表内容</li>
+<li>二级无序列表内容</li>
+<li>二级无序列表内容</li>
+</ul>
+</li>
+</ul>
+<p>要让列表看起来更漂亮，你可以把内容用固定的缩进整理好：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span><br><span class="line">    Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,</span><br><span class="line">    viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.</span><br><span class="line">    Suspendisse id sem consectetuer libero luctus adipiscing</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<ul>
+<li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.<br>  Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,<br>  viverra nec, fringilla in, laoreet vitae, risus.</li>
+<li>Donec sit amet nisl. Aliquam semper ipsum sit amet velit.<br>  Suspendisse id sem consectetuer libero luctus adipiscing</li>
+</ul>
+<p>列表项目可以包含多个段落，每个项目下的段落都必须缩进 4 个空格或是 1 个制表符：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1.  This is a list item with two paragraphs. Lorem ipsum dolor</span><br><span class="line">    sit amet, consectetuer adipiscing elit. Aliquam hendrerit</span><br><span class="line">    mi posuere lectus.</span><br><span class="line"></span><br><span class="line">    Vestibulum enim wisi, viverra nec, fringilla in, laoreet</span><br><span class="line">    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum</span><br><span class="line">    sit amet velit.</span><br><span class="line"></span><br><span class="line">2.  Suspendisse id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
+<p>效果如下： </p>
+<ol>
+<li><p>This is a list item with two paragraphs. Lorem ipsum dolor<br> sit amet, consectetuer adipiscing elit. Aliquam hendrerit<br> mi posuere lectus.</p>
+<p> Vestibulum enim wisi, viverra nec, fringilla in, laoreet<br> vitae, risus. Donec sit amet nisl. Aliquam semper ipsum<br> sit amet velit.</p>
+</li>
+<li><p> Suspendisse id sem consectetuer libero luctus adipiscing.</p>
+</li>
+</ol>
+<p>如果你每行都有缩进，看起来会看好很多，当然，再次地，如果你很懒惰，Markdown 也允许：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*   This is a list item with two paragraphs.</span><br><span class="line"></span><br><span class="line">    This is the second paragraph in the list item. You&#x27;re</span><br><span class="line">only required to indent the first line. Lorem ipsum dolor</span><br><span class="line">sit amet, consectetuer adipiscing elit.</span><br><span class="line"></span><br><span class="line">*   Another item in the same list.</span><br></pre></td></tr></table></figure>
+
+<p>效果不再展示。 此外： 如果要在列表项目内放进引用，那 &gt; 就需要缩进， 如果要放代码区块的话，该区块就需要缩进两次，也就是 8 个空格或是 2 个制表符。</p>
+<h3 id="6-表格"><a href="#6-表格" class="headerlink" title="6. 表格"></a>6. 表格</h3><p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">表头|表头|表头</span><br><span class="line">---|:--:|---:</span><br><span class="line">内容|内容|内容</span><br><span class="line">内容|内容|内容</span><br><span class="line"></span><br><span class="line">第二行分割表头和内容。</span><br><span class="line">- 有一个就行，为了对齐，多加了几个</span><br><span class="line">文字默认居左</span><br><span class="line">-两边加：表示文字居中</span><br><span class="line">-右边加：表示文字居右</span><br><span class="line">注：原生的语法两边都要用 | 包起来。此处省略</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<table>
+<thead>
+<tr>
+<th>表头</th>
+<th align="center">表头</th>
+<th align="right">表头</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>内容</td>
+<td align="center">内容</td>
+<td align="right">内容</td>
+</tr>
+<tr>
+<td>内容</td>
+<td align="center">内容</td>
+<td align="right">内容</td>
+</tr>
+</tbody></table>
+<h3 id="7-代码"><a href="#7-代码" class="headerlink" title="7. 代码"></a>7. 代码</h3><p>在Markdown中加入代码块有两种方式： 第一种，只要简单地缩进 4 个空格或是 1 个制表符就可以:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这是一个普通段落：</span><br><span class="line"></span><br><span class="line">    这是一个代码区块。</span><br><span class="line"></span><br><span class="line">(当然，前面要有一个空行和前面的文字分隔开)</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p>这是一个普通段落：</p>
+<pre><code>这是一个代码区块。
+</code></pre>
+<p>第二种方法似乎是更为常用， 单行代码：代码之间分别用一个反引号包起来即可；</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这里有一句代码`代码内容`。</span><br></pre></td></tr></table></figure>
+<p>效果如下：<br>这里有一句代码<code>代码内容</code>。</p>
+<p>代码块：代码之间分别用三个反引号包起来，且两边的反引号单独占一行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\```</span><br><span class="line">  代码...</span><br><span class="line">  代码...</span><br><span class="line">  代码...</span><br><span class="line">\```</span><br><span class="line">\ 是为了防止转译，实际是没有的。</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">代码...</span><br><span class="line">代码...</span><br><span class="line">代码...</span><br></pre></td></tr></table></figure>
+<p>还可以在上面的 ``` 后面注明你的代码类型，可以产生相应的代码高亮。</p>
+<h3 id="8-段落和换行"><a href="#8-段落和换行" class="headerlink" title="8. 段落和换行"></a>8. 段落和换行</h3><p>一个 Markdown 段落是由一个或多个连续的文本行组成，它的前后要有一个以上的空行（空行的定义是显示上看起来像是空的，便会被视为空行。比方说，若某一行只包含空格和制表符，则该行也会被视为空行）。普通段落不该用空格或制表符来缩进。 我们在两个不同的文字块之间，一定要空行以示区分，不然就会被归入同一文字块中。 Markdown 允许段落内的强迫换行（插入换行符）。 如果想要空一行，在插入处先按入两个以上的空格然后回车，即可。</p>
+<p>但有时也可以使用标记来强制空行和空格，比如需要首行缩进的时候： 一个空格大小的表示：\  或 \  两个空格的大小表示：\ 或 \ 不换行空格：\ 或 \ 强制空行： \</p>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Tips】国际公认国家地区代码表</title>
+    <url>/Tips/%E3%80%90Tips%E3%80%91%E5%9B%BD%E9%99%85%E5%85%AC%E8%AE%A4%E5%9B%BD%E5%AE%B6%E5%9C%B0%E5%8C%BA%E4%BB%A3%E7%A0%81%E8%A1%A8/</url>
+    <content><![CDATA[<h1 id="国际公认国家地区代码表"><a href="#国际公认国家地区代码表" class="headerlink" title="国际公认国家地区代码表"></a>国际公认国家地区代码表</h1><span id="more"></span>
+<table>
+<thead>
+<tr>
+<th align="center">洲</th>
+<th align="center">二位字母</th>
+<th align="center">国家或地区（ISO 英文用名）</th>
+<th align="center">中国 惯用名</th>
+<th align="center">台湾 惯用名</th>
+<th align="center">香港 惯用名</th>
+<th align="center">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">欧洲</td>
+<td align="center">AD</td>
+<td align="center">Andorra</td>
+<td align="center">安道尔</td>
+<td align="center">安道尔</td>
+<td align="center">安道尔</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">AL</td>
+<td align="center">Albania</td>
+<td align="center">阿尔巴尼亚</td>
+<td align="center">阿尔巴尼亚</td>
+<td align="center">阿尔巴尼亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">AT</td>
+<td align="center">Austria</td>
+<td align="center">奥地利</td>
+<td align="center">奥地利</td>
+<td align="center">奥地利</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">AX</td>
+<td align="center">Aland Island</td>
+<td align="center">奥兰群岛</td>
+<td align="center">奥兰群岛</td>
+<td align="center">亚兰群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BA</td>
+<td align="center">Bosnia &amp; Herzegovina</td>
+<td align="center">波黑</td>
+<td align="center">波黑</td>
+<td align="center">波黑</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BE</td>
+<td align="center">Belgium</td>
+<td align="center">比利时</td>
+<td align="center">比利时</td>
+<td align="center">比利时</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BG</td>
+<td align="center">Bulgaria</td>
+<td align="center">保加利亚</td>
+<td align="center">保加利亚</td>
+<td align="center">保加利亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BL</td>
+<td align="center">Saint Barthélemy</td>
+<td align="center">圣巴泰勒米岛</td>
+<td align="center">圣巴瑟米</td>
+<td align="center">圣巴托洛缪岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BM</td>
+<td align="center">Bermuda</td>
+<td align="center">百慕大</td>
+<td align="center">百慕大</td>
+<td align="center">百慕大</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BQ</td>
+<td align="center">Caribbean Netherlands</td>
+<td align="center">荷兰加勒比区</td>
+<td align="center">荷兰加勒比区</td>
+<td align="center">荷兰加勒比区</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BV</td>
+<td align="center">Bouvet Island</td>
+<td align="center">布韦岛</td>
+<td align="center">布威岛</td>
+<td align="center">鲍威特岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BY</td>
+<td align="center">Belarus</td>
+<td align="center">白俄罗斯</td>
+<td align="center">白俄罗斯</td>
+<td align="center">白俄罗斯</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CH</td>
+<td align="center">Switzerland</td>
+<td align="center">瑞士</td>
+<td align="center">瑞士</td>
+<td align="center">瑞士</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CZ</td>
+<td align="center">Czech Republic</td>
+<td align="center">捷克</td>
+<td align="center">捷克</td>
+<td align="center">捷克</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">DE</td>
+<td align="center">Germany</td>
+<td align="center">德国</td>
+<td align="center">德国</td>
+<td align="center">德国</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">DK</td>
+<td align="center">Denmark</td>
+<td align="center">丹麦</td>
+<td align="center">丹麦</td>
+<td align="center">丹麦</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">EE</td>
+<td align="center">Estonia</td>
+<td align="center">爱沙尼亚</td>
+<td align="center">爱沙尼亚</td>
+<td align="center">爱沙尼亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">ES</td>
+<td align="center">Spain</td>
+<td align="center">西班牙</td>
+<td align="center">西班牙</td>
+<td align="center">西班牙</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">FI</td>
+<td align="center">Finland</td>
+<td align="center">芬兰</td>
+<td align="center">芬兰</td>
+<td align="center">芬兰</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">FO</td>
+<td align="center">Faroe Islands</td>
+<td align="center">法罗群岛</td>
+<td align="center">法罗群岛</td>
+<td align="center">法罗群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">FR</td>
+<td align="center">France</td>
+<td align="center">法国</td>
+<td align="center">法国</td>
+<td align="center">法国</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GI</td>
+<td align="center">Gibraltar</td>
+<td align="center">直布罗陀</td>
+<td align="center">直布罗陀</td>
+<td align="center">直布罗陀</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GR</td>
+<td align="center">Greece</td>
+<td align="center">希腊</td>
+<td align="center">希腊</td>
+<td align="center">希腊</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GS</td>
+<td align="center">South Georgia and the South Sandwich Islands</td>
+<td align="center">南乔治亚岛和南桑威奇群岛</td>
+<td align="center">南乔治亚与南三明治群岛</td>
+<td align="center">南乔治亚岛与南桑威奇群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">HR</td>
+<td align="center">Croatia</td>
+<td align="center">克罗地亚</td>
+<td align="center">克罗地亚</td>
+<td align="center">克罗地亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">HU</td>
+<td align="center">Hungary</td>
+<td align="center">匈牙利</td>
+<td align="center">匈牙利</td>
+<td align="center">匈牙利</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">IE</td>
+<td align="center">Ireland</td>
+<td align="center">爱尔兰</td>
+<td align="center">爱尔兰</td>
+<td align="center">爱尔兰</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">IM</td>
+<td align="center">Isle of Man</td>
+<td align="center">马恩岛</td>
+<td align="center">马恩岛</td>
+<td align="center">马恩岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">IS</td>
+<td align="center">Iceland</td>
+<td align="center">冰岛</td>
+<td align="center">冰岛</td>
+<td align="center">冰岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">IT</td>
+<td align="center">Italy</td>
+<td align="center">意大利</td>
+<td align="center">意大利</td>
+<td align="center">意大利</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">JE</td>
+<td align="center">Jersey</td>
+<td align="center">泽西岛</td>
+<td align="center">泽西岛</td>
+<td align="center">泽西</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">LI</td>
+<td align="center">Liechtenstein</td>
+<td align="center">列支敦士登</td>
+<td align="center">列支敦士登</td>
+<td align="center">列支敦士登</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">LT</td>
+<td align="center">Lithuania</td>
+<td align="center">立陶宛</td>
+<td align="center">立陶宛</td>
+<td align="center">立陶宛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">LU</td>
+<td align="center">Luxembourg</td>
+<td align="center">卢森堡</td>
+<td align="center">卢森堡</td>
+<td align="center">卢森堡</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">LV</td>
+<td align="center">Latvia</td>
+<td align="center">拉脱维亚</td>
+<td align="center">拉脱维亚</td>
+<td align="center">拉脱维亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MC</td>
+<td align="center">Monaco</td>
+<td align="center">摩纳哥</td>
+<td align="center">摩纳哥</td>
+<td align="center">摩纳哥</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MD</td>
+<td align="center">Moldova</td>
+<td align="center">摩尔多瓦</td>
+<td align="center">摩尔多瓦</td>
+<td align="center">摩尔多瓦</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">ME</td>
+<td align="center">Montenegro</td>
+<td align="center">黑山</td>
+<td align="center">黑山</td>
+<td align="center">黑山</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MK</td>
+<td align="center">Republic of Macedonia （FYROM）</td>
+<td align="center">马其顿</td>
+<td align="center">马其顿</td>
+<td align="center">马其顿</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MQ</td>
+<td align="center">Martinique</td>
+<td align="center">马提尼克</td>
+<td align="center">法属马丁尼克</td>
+<td align="center">马提尼克</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MS</td>
+<td align="center">Montserrat</td>
+<td align="center">蒙塞拉特岛</td>
+<td align="center">蒙塞拉特岛</td>
+<td align="center">蒙塞拉特岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MT</td>
+<td align="center">Malta</td>
+<td align="center">马耳他</td>
+<td align="center">马耳他</td>
+<td align="center">马耳他</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">NL</td>
+<td align="center">Netherlands</td>
+<td align="center">荷兰</td>
+<td align="center">荷兰</td>
+<td align="center">荷兰</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">NO</td>
+<td align="center">Norway</td>
+<td align="center">挪威</td>
+<td align="center">挪威</td>
+<td align="center">挪威</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">PL</td>
+<td align="center">Poland</td>
+<td align="center">波兰</td>
+<td align="center">波兰</td>
+<td align="center">波兰</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">RE</td>
+<td align="center">Réunion</td>
+<td align="center">留尼汪</td>
+<td align="center">留尼汪</td>
+<td align="center">留尼汪</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">RO</td>
+<td align="center">Romania</td>
+<td align="center">罗马尼亚</td>
+<td align="center">罗马尼亚</td>
+<td align="center">罗马尼亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">RS</td>
+<td align="center">Serbia</td>
+<td align="center">塞尔维亚</td>
+<td align="center">塞尔维亚</td>
+<td align="center">塞尔维亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">RU</td>
+<td align="center">Russian Federation</td>
+<td align="center">俄罗斯</td>
+<td align="center">俄罗斯</td>
+<td align="center">俄罗斯</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SE</td>
+<td align="center">Sweden</td>
+<td align="center">瑞典</td>
+<td align="center">瑞典</td>
+<td align="center">瑞典</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SI</td>
+<td align="center">Slovenia</td>
+<td align="center">斯洛文尼亚</td>
+<td align="center">斯洛文尼亚</td>
+<td align="center">斯洛文尼亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SJ</td>
+<td align="center">Template:Country data SJM Svalbard</td>
+<td align="center">斯瓦尔巴群岛和 扬马延岛</td>
+<td align="center">斯瓦巴及 尖棉岛</td>
+<td align="center">斯瓦尔巴特群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SK</td>
+<td align="center">Slovakia</td>
+<td align="center">斯洛伐克</td>
+<td align="center">斯洛伐克</td>
+<td align="center">斯洛伐克</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SM</td>
+<td align="center">San Marino</td>
+<td align="center">圣马力诺</td>
+<td align="center">圣马力诺</td>
+<td align="center">圣马力诺</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">UA</td>
+<td align="center">Ukraine</td>
+<td align="center">乌克兰</td>
+<td align="center">乌克兰</td>
+<td align="center">乌克兰</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">VA</td>
+<td align="center">Vatican City （The Holy See）</td>
+<td align="center">梵蒂冈</td>
+<td align="center">梵蒂冈</td>
+<td align="center">梵蒂冈</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">YT</td>
+<td align="center">Mayotte</td>
+<td align="center">马约特</td>
+<td align="center">美亚特</td>
+<td align="center">马约特</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GG</td>
+<td align="center">Guernsey</td>
+<td align="center">根西岛</td>
+<td align="center">根息岛</td>
+<td align="center">根西岛</td>
+<td align="center">中国大陆曾将之普遍译作“ 格恩西岛”</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">NC</td>
+<td align="center">New Caledonia</td>
+<td align="center">新喀里多尼亚</td>
+<td align="center">新喀里多尼亚岛</td>
+<td align="center">新喀里多尼亚</td>
+<td align="center">亦有部份人士使用“ 新喀尔多尼亚”一词于 港澳地区</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TF</td>
+<td align="center">French Southern Territories</td>
+<td align="center">法属南部领地</td>
+<td align="center">法属南部属地</td>
+<td align="center">法属南部地区</td>
+<td align="center">台湾亦普遍采用“ 法属南方及南极陆地”一词于其它场合（如 MSN台湾）</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GB</td>
+<td align="center">Great Britain （United Kingdom; England）</td>
+<td align="center">英国</td>
+<td align="center">英国</td>
+<td align="center">英国</td>
+<td align="center">台湾和 香港亦普遍采用“ 联合王国”一词于其它场合</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">PT</td>
+<td align="center">Portugal</td>
+<td align="center">葡萄牙</td>
+<td align="center">葡萄牙</td>
+<td align="center">葡萄牙</td>
+<td align="center">澳门民间亦普遍称之为葡国</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SH</td>
+<td align="center">St. Helena &amp; Dependencies</td>
+<td align="center">圣赫勒拿</td>
+<td align="center">圣赫勒拿岛</td>
+<td align="center">圣赫勒拿</td>
+<td align="center">香港亦普遍采用“圣赫勒拿岛”一词于其它场合（如香港邮政的邮政指南附录表）。亦有部份人士使用“圣海伦娜岛”一词于港澳地区</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">亚洲</td>
+<td align="center">AE</td>
+<td align="center">United Arab Emirates</td>
+<td align="center">阿联酋</td>
+<td align="center">阿联</td>
+<td align="center">阿联酋</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">AF</td>
+<td align="center">Afghanistan</td>
+<td align="center">阿富汗</td>
+<td align="center">阿富汗</td>
+<td align="center">阿富汗</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">AM</td>
+<td align="center">Armenia</td>
+<td align="center">亚美尼亚</td>
+<td align="center">亚美尼亚</td>
+<td align="center">亚美尼亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">AZ</td>
+<td align="center">Azerbaijan</td>
+<td align="center">阿塞拜疆</td>
+<td align="center">阿塞拜疆</td>
+<td align="center">阿塞拜疆</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BD</td>
+<td align="center">Bangladesh</td>
+<td align="center">孟加拉</td>
+<td align="center">孟加拉</td>
+<td align="center">孟加拉</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BH</td>
+<td align="center">Bahrain</td>
+<td align="center">巴林</td>
+<td align="center">巴林</td>
+<td align="center">巴林</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BN</td>
+<td align="center">Brunei</td>
+<td align="center">文莱</td>
+<td align="center">文莱</td>
+<td align="center">文莱</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BT</td>
+<td align="center">Bhutan</td>
+<td align="center">不丹</td>
+<td align="center">不丹</td>
+<td align="center">不丹</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CY</td>
+<td align="center">Cyprus</td>
+<td align="center">塞浦路斯</td>
+<td align="center">塞浦路斯</td>
+<td align="center">塞浦路斯</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GE</td>
+<td align="center">Georgia</td>
+<td align="center">格鲁吉亚</td>
+<td align="center">乔治亚</td>
+<td align="center">格鲁吉亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">HK</td>
+<td align="center">Hong Kong</td>
+<td align="center">香港</td>
+<td align="center">香港</td>
+<td align="center">香港</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">ID</td>
+<td align="center">Indonesia</td>
+<td align="center">印尼</td>
+<td align="center">印尼</td>
+<td align="center">印尼</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">IL</td>
+<td align="center">Israel</td>
+<td align="center">以色列</td>
+<td align="center">以色列</td>
+<td align="center">以色列</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">IN</td>
+<td align="center">India</td>
+<td align="center">印度</td>
+<td align="center">印度</td>
+<td align="center">印度</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">IO</td>
+<td align="center">British Indian Ocean Territory</td>
+<td align="center">英属印度洋领地</td>
+<td align="center">英属印度洋地区</td>
+<td align="center">英属印度洋地区</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">IQ</td>
+<td align="center">Iraq</td>
+<td align="center">伊拉克</td>
+<td align="center">伊拉克</td>
+<td align="center">伊拉克</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">IR</td>
+<td align="center">Iran</td>
+<td align="center">伊朗</td>
+<td align="center">伊朗</td>
+<td align="center">伊朗</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">JO</td>
+<td align="center">Jordan</td>
+<td align="center">约旦</td>
+<td align="center">约旦</td>
+<td align="center">约旦</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">JP</td>
+<td align="center">Japan</td>
+<td align="center">日本</td>
+<td align="center">日本</td>
+<td align="center">日本</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">KH</td>
+<td align="center">Cambodia</td>
+<td align="center">柬埔寨</td>
+<td align="center">柬埔寨</td>
+<td align="center">柬埔寨</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">KW</td>
+<td align="center">Kuwait</td>
+<td align="center">科威特</td>
+<td align="center">科威特</td>
+<td align="center">科威特</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">LB</td>
+<td align="center">Lebanon</td>
+<td align="center">黎巴嫩</td>
+<td align="center">黎巴嫩</td>
+<td align="center">黎巴嫩</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">LK</td>
+<td align="center">Sri Lanka</td>
+<td align="center">斯里兰卡</td>
+<td align="center">斯里兰卡</td>
+<td align="center">斯里兰卡</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MM</td>
+<td align="center">Myanmar （Burma）</td>
+<td align="center">缅甸</td>
+<td align="center">缅甸</td>
+<td align="center">缅甸</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MO</td>
+<td align="center">Macao</td>
+<td align="center">澳门</td>
+<td align="center">澳门</td>
+<td align="center">澳门</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MV</td>
+<td align="center">Maldives</td>
+<td align="center">马尔代夫</td>
+<td align="center">马尔代夫</td>
+<td align="center">马尔代夫</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MY</td>
+<td align="center">Malaysia</td>
+<td align="center">马来西亚</td>
+<td align="center">马来西亚</td>
+<td align="center">马来西亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">NP</td>
+<td align="center">Nepal</td>
+<td align="center">尼泊尔</td>
+<td align="center">尼泊尔</td>
+<td align="center">尼泊尔</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">OM</td>
+<td align="center">Oman</td>
+<td align="center">阿曼</td>
+<td align="center">阿曼</td>
+<td align="center">阿曼</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">PH</td>
+<td align="center">The Philippines</td>
+<td align="center">菲律宾</td>
+<td align="center">菲律宾</td>
+<td align="center">菲律宾</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">PK</td>
+<td align="center">Pakistan</td>
+<td align="center">巴基斯坦</td>
+<td align="center">巴基斯坦</td>
+<td align="center">巴基斯坦</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">PS</td>
+<td align="center">Palestinian territories</td>
+<td align="center">巴勒斯坦</td>
+<td align="center">巴勒斯坦</td>
+<td align="center">巴勒斯坦</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">QA</td>
+<td align="center">Qatar</td>
+<td align="center">卡塔尔</td>
+<td align="center">卡达</td>
+<td align="center">卡塔尔</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SG</td>
+<td align="center">Singapore</td>
+<td align="center">新加坡</td>
+<td align="center">新加坡 星加坡</td>
+<td align="center">新加坡 星加坡</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SY</td>
+<td align="center">Syria</td>
+<td align="center">叙利亚</td>
+<td align="center">叙利亚</td>
+<td align="center">叙利亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TH</td>
+<td align="center">Thailand</td>
+<td align="center">泰国</td>
+<td align="center">泰国</td>
+<td align="center">泰国</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TL</td>
+<td align="center">Timor-Leste （East Timor）</td>
+<td align="center">东帝汶</td>
+<td align="center">东帝汶</td>
+<td align="center">东帝汶</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TR</td>
+<td align="center">Turkey</td>
+<td align="center">土耳其</td>
+<td align="center">土耳其</td>
+<td align="center">土耳其</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">VN</td>
+<td align="center">Vietnam</td>
+<td align="center">越南</td>
+<td align="center">越南</td>
+<td align="center">越南</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">YE</td>
+<td align="center">Yemen</td>
+<td align="center">也门</td>
+<td align="center">也门</td>
+<td align="center">也门</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CN</td>
+<td align="center">China</td>
+<td align="center">中国 内地</td>
+<td align="center">大陆 中国</td>
+<td align="center">大陆 内地</td>
+<td align="center">“ GB/T 2659-2000”的“CN”适用于整个 中华人民共和国辖区（包括 中国大陆、 香港、 澳门）。而“ISO 3166-1”和“ CNS 12842”的“CN”则仅适用于中国大陆，不含 港澳地区。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TW</td>
+<td align="center">Taiwan</td>
+<td align="center">台湾地区/台湾省</td>
+<td align="center">台湾</td>
+<td align="center">台湾</td>
+<td align="center">台湾地区的国际政治地位可参见 未被国际普遍承认的国家列表、台海现状以及旧金山条约。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SA</td>
+<td align="center">Saudi Arabia</td>
+<td align="center">沙特阿拉伯</td>
+<td align="center">沙特阿拉伯</td>
+<td align="center">沙特阿拉伯</td>
+<td align="center">新加坡与 马来西亚均将之译作“ 沙特阿拉伯”。 香港亦普遍采用“沙特阿拉伯”一词于其它场合</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">LA</td>
+<td align="center">Laos</td>
+<td align="center">老挝</td>
+<td align="center">老挝</td>
+<td align="center">老挝</td>
+<td align="center">新加坡与 马来西亚均将之译作“老挝”</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">KP</td>
+<td align="center">North Korea</td>
+<td align="center">朝鲜 北朝鲜</td>
+<td align="center">北朝鲜</td>
+<td align="center">朝鲜 北朝鲜</td>
+<td align="center">澳门习惯称之为“ 北朝鲜”</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">KR</td>
+<td align="center">South Korea</td>
+<td align="center">韩国 南朝鲜</td>
+<td align="center">韩国</td>
+<td align="center">韩国</td>
+<td align="center">澳门习惯称之为“ 韩国”</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">KG</td>
+<td align="center">Kyrgyzstan</td>
+<td align="center">吉尔吉斯斯坦</td>
+<td align="center">吉尔吉斯</td>
+<td align="center">吉尔吉斯</td>
+<td align="center">香港习惯略去“斯坦”后缀，有必要会用全称</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">KZ</td>
+<td align="center">Kazakhstan</td>
+<td align="center">哈萨克斯坦</td>
+<td align="center">哈萨克</td>
+<td align="center">哈萨克</td>
+<td align="center">香港习惯略去“斯坦”后缀，有必要会用全称</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TJ</td>
+<td align="center">Tajikistan</td>
+<td align="center">塔吉克斯坦</td>
+<td align="center">塔吉克</td>
+<td align="center">塔吉克</td>
+<td align="center">香港习惯略去“斯坦”后缀，有必要会用全称</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TM</td>
+<td align="center">Turkmenistan</td>
+<td align="center">土库曼斯坦</td>
+<td align="center">土库曼</td>
+<td align="center">土库曼</td>
+<td align="center">香港习惯略去“斯坦”后缀，有必要会用全称</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">UZ</td>
+<td align="center">Uzbekistan</td>
+<td align="center">乌兹别克斯坦</td>
+<td align="center">乌兹别克</td>
+<td align="center">乌兹别克</td>
+<td align="center">香港习惯略去“斯坦”后缀，有必要会用全称</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MN</td>
+<td align="center">Mongolia</td>
+<td align="center">蒙古国 蒙古</td>
+<td align="center">蒙古</td>
+<td align="center">蒙古国</td>
+<td align="center">香港亦普遍采用“ 蒙古”一词于其它场合</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">北美洲</td>
+<td align="center">AG</td>
+<td align="center">Antigua &amp; Barbuda</td>
+<td align="center">安提瓜和巴布达</td>
+<td align="center">安提瓜和巴布达</td>
+<td align="center">安提瓜和巴布达</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">AI</td>
+<td align="center">Anguilla</td>
+<td align="center">安圭拉</td>
+<td align="center">英属安圭拉</td>
+<td align="center">安圭拉岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">AW</td>
+<td align="center">Aruba</td>
+<td align="center">阿鲁巴</td>
+<td align="center">阿鲁巴</td>
+<td align="center">阿鲁巴</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BB</td>
+<td align="center">Barbados</td>
+<td align="center">巴巴多斯</td>
+<td align="center">巴巴多斯</td>
+<td align="center">巴巴多斯</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BS</td>
+<td align="center">The Bahamas</td>
+<td align="center">巴哈马</td>
+<td align="center">巴哈马</td>
+<td align="center">巴哈马</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BZ</td>
+<td align="center">Belize</td>
+<td align="center">伯利兹</td>
+<td align="center">伯利兹</td>
+<td align="center">伯利兹</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CA</td>
+<td align="center">Canada</td>
+<td align="center">加拿大</td>
+<td align="center">加拿大</td>
+<td align="center">加拿大</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CR</td>
+<td align="center">Costa Rica</td>
+<td align="center">哥斯达黎加</td>
+<td align="center">哥斯达黎加</td>
+<td align="center">哥斯达黎加</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CU</td>
+<td align="center">Cuba</td>
+<td align="center">古巴</td>
+<td align="center">古巴</td>
+<td align="center">古巴</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">DM</td>
+<td align="center">Dominica</td>
+<td align="center">多米尼克</td>
+<td align="center">多米尼克</td>
+<td align="center">多米尼克</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">DO</td>
+<td align="center">Dominican Republic</td>
+<td align="center">多米尼加</td>
+<td align="center">多米尼加</td>
+<td align="center">多米尼加</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GD</td>
+<td align="center">Grenada</td>
+<td align="center">格林纳达</td>
+<td align="center">格林纳达</td>
+<td align="center">格林纳达</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GL</td>
+<td align="center">Greenland</td>
+<td align="center">格陵兰</td>
+<td align="center">格陵兰</td>
+<td align="center">格陵兰</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GP</td>
+<td align="center">Guadeloupe</td>
+<td align="center">瓜德罗普</td>
+<td align="center">瓜德鲁普岛</td>
+<td align="center">瓜德鲁普岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GT</td>
+<td align="center">Guatemala</td>
+<td align="center">危地马拉</td>
+<td align="center">危地马拉</td>
+<td align="center">危地马拉</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">HN</td>
+<td align="center">Honduras</td>
+<td align="center">洪都拉斯</td>
+<td align="center">洪都拉斯</td>
+<td align="center">洪都拉斯</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">HT</td>
+<td align="center">Haiti</td>
+<td align="center">海地</td>
+<td align="center">海地</td>
+<td align="center">海地</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">JM</td>
+<td align="center">Jamaica</td>
+<td align="center">牙买加</td>
+<td align="center">牙买加</td>
+<td align="center">牙买加</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">KY</td>
+<td align="center">Cayman Islands</td>
+<td align="center">开曼群岛</td>
+<td align="center">开曼群岛</td>
+<td align="center">开曼群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MF</td>
+<td align="center">Saint Martin （France）</td>
+<td align="center">法属圣马丁</td>
+<td align="center">法属圣马丁</td>
+<td align="center">法属圣马丁</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MX</td>
+<td align="center">Mexico</td>
+<td align="center">墨西哥</td>
+<td align="center">墨西哥</td>
+<td align="center">墨西哥</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">NI</td>
+<td align="center">Nicaragua</td>
+<td align="center">尼加拉瓜</td>
+<td align="center">尼加拉瓜</td>
+<td align="center">尼加拉瓜</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">PA</td>
+<td align="center">Panama</td>
+<td align="center">巴拿马</td>
+<td align="center">巴拿马</td>
+<td align="center">巴拿马</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">PR</td>
+<td align="center">Puerto Rico</td>
+<td align="center">波多黎各</td>
+<td align="center">波多黎各</td>
+<td align="center">波多黎各</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SV</td>
+<td align="center">El Salvador</td>
+<td align="center">萨尔瓦多</td>
+<td align="center">萨尔瓦多</td>
+<td align="center">萨尔瓦多</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TC</td>
+<td align="center">Turks &amp; Caicos Islands</td>
+<td align="center">特克斯和凯科斯群岛</td>
+<td align="center">土克斯及开科斯群岛</td>
+<td align="center">特克斯和凯科斯群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">US</td>
+<td align="center">United States of America （USA）</td>
+<td align="center">美国</td>
+<td align="center">美国</td>
+<td align="center">美国</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">VG</td>
+<td align="center">British Virgin Islands</td>
+<td align="center">英属维尔京群岛</td>
+<td align="center">英属维尔京群岛</td>
+<td align="center">英属处女群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">VI</td>
+<td align="center">United States Virgin Islands</td>
+<td align="center">美属维尔京群岛</td>
+<td align="center">美属维尔京群岛</td>
+<td align="center">美属处女群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MP</td>
+<td align="center">Northern Mariana Islands</td>
+<td align="center">北马里亚纳群岛</td>
+<td align="center">北马里亚纳群岛</td>
+<td align="center">北马里亚纳群岛</td>
+<td align="center">亦有部份人士使用“ 北玛利安娜群岛”一词于 港澳地区</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">UM</td>
+<td align="center">United States Minor Outlying Islands</td>
+<td align="center">美国本土外小岛屿</td>
+<td align="center">美国边疆小岛</td>
+<td align="center">美国海外小岛</td>
+<td align="center">台湾亦普遍采用“ 美国外岛”一词于其它场合（如 MSN台湾）</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TT</td>
+<td align="center">Trinidad &amp; Tobago</td>
+<td align="center">特立尼达和多巴哥</td>
+<td align="center"></td>
+<td align="center">特立尼达和多巴哥</td>
+<td align="center">特立尼达和多巴哥</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">VC</td>
+<td align="center">St. Vincent &amp; the Grenadines</td>
+<td align="center">圣文森特和格林纳丁斯</td>
+<td align="center">圣文森特和格林纳丁斯</td>
+<td align="center">圣文森特和格林纳丁斯</td>
+<td align="center">台湾将之简称为“ 圣文森”</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">KN</td>
+<td align="center">St. Kitts &amp; Nevis</td>
+<td align="center">圣基茨和尼维斯</td>
+<td align="center">圣基茨和尼维斯</td>
+<td align="center">圣基茨和尼维斯</td>
+<td align="center">香港亦普遍采用“ 圣克里斯托佛岛及尼维斯岛”一词于其它场合（如 香港邮政的邮政指南附录表）。亦有部份人士使用“ 圣基茨和尼维斯”一词于 港澳地区</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">PM</td>
+<td align="center">Saint-Pierre and Miquelon</td>
+<td align="center">圣皮埃尔和密克隆</td>
+<td align="center">圣皮耶与密克隆群岛</td>
+<td align="center">圣皮埃尔岛和密克隆岛</td>
+<td align="center">香港亦普遍采用“ 圣皮埃兰和密克隆群岛”一词于其它场合（如 香港邮政的邮政指南附录表）</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">LC</td>
+<td align="center">St. Lucia</td>
+<td align="center">圣卢西亚</td>
+<td align="center">圣卢西亚</td>
+<td align="center">圣卢西亚</td>
+<td align="center">香港亦普遍采用“ 圣路西亚”一词于其它场合</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">非洲</td>
+<td align="center">AO</td>
+<td align="center">Angola</td>
+<td align="center">安哥拉</td>
+<td align="center">安哥拉</td>
+<td align="center">安哥拉</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BF</td>
+<td align="center">Burkina</td>
+<td align="center">布基纳法索</td>
+<td align="center">布基纳法索</td>
+<td align="center">布基纳法索</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BI</td>
+<td align="center">Burundi</td>
+<td align="center">布隆迪</td>
+<td align="center">布隆迪</td>
+<td align="center">布隆迪</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BJ</td>
+<td align="center">Benin</td>
+<td align="center">贝宁</td>
+<td align="center">贝宁</td>
+<td align="center">贝宁</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BW</td>
+<td align="center">Botswana</td>
+<td align="center">博茨瓦纳</td>
+<td align="center">博茨瓦纳</td>
+<td align="center">博茨瓦纳</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CF</td>
+<td align="center">Central African Republic</td>
+<td align="center">中非</td>
+<td align="center">中非</td>
+<td align="center">中非</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CM</td>
+<td align="center">Cameroon</td>
+<td align="center">喀麦隆</td>
+<td align="center">喀麦隆</td>
+<td align="center">喀麦隆</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CV</td>
+<td align="center">Cape Verde</td>
+<td align="center">佛得角</td>
+<td align="center">佛得角</td>
+<td align="center">佛得角</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">DJ</td>
+<td align="center">Djibouti</td>
+<td align="center">吉布提</td>
+<td align="center">吉布提</td>
+<td align="center">吉布提</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">DZ</td>
+<td align="center">Algeria</td>
+<td align="center">阿尔及利亚</td>
+<td align="center">阿尔及利亚</td>
+<td align="center">阿尔及利亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">EG</td>
+<td align="center">Egypt</td>
+<td align="center">埃及</td>
+<td align="center">埃及</td>
+<td align="center">埃及</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">EH</td>
+<td align="center">Western Sahara</td>
+<td align="center">西撒哈拉</td>
+<td align="center">西撒哈拉</td>
+<td align="center">西撒哈拉</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">ER</td>
+<td align="center">Eritrea</td>
+<td align="center">厄立特里亚</td>
+<td align="center">厄立垂亚</td>
+<td align="center">厄立特里亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GA</td>
+<td align="center">Gabon</td>
+<td align="center">加蓬</td>
+<td align="center">加蓬</td>
+<td align="center">加蓬</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GH</td>
+<td align="center">Ghana</td>
+<td align="center">加纳</td>
+<td align="center">加纳</td>
+<td align="center">加纳</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GN</td>
+<td align="center">Guinea</td>
+<td align="center">几内亚</td>
+<td align="center">几内亚</td>
+<td align="center">几内亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GQ</td>
+<td align="center">Equatorial Guinea</td>
+<td align="center">赤道几内亚</td>
+<td align="center">赤道几内亚</td>
+<td align="center">赤道几内亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GW</td>
+<td align="center">Guinea-Bissau</td>
+<td align="center">几内亚比绍</td>
+<td align="center">几内亚比绍</td>
+<td align="center">几内亚比绍</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">KM</td>
+<td align="center">The Comoros</td>
+<td align="center">科摩罗</td>
+<td align="center">科摩罗</td>
+<td align="center">科摩罗</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">LR</td>
+<td align="center">Liberia</td>
+<td align="center">利比里亚</td>
+<td align="center">利比里亚</td>
+<td align="center">利比里亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">LS</td>
+<td align="center">Lesotho</td>
+<td align="center">莱索托</td>
+<td align="center">莱索托</td>
+<td align="center">莱索托</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">LY</td>
+<td align="center">Libya</td>
+<td align="center">利比亚</td>
+<td align="center">利比亚</td>
+<td align="center">利比亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MA</td>
+<td align="center">Morocco</td>
+<td align="center">摩洛哥</td>
+<td align="center">摩洛哥</td>
+<td align="center">摩洛哥</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MG</td>
+<td align="center">Madagascar</td>
+<td align="center">马达加斯加</td>
+<td align="center">马达加斯加</td>
+<td align="center">马达加斯加</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">ML</td>
+<td align="center">Mali</td>
+<td align="center">马里</td>
+<td align="center">马利</td>
+<td align="center">马里</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MR</td>
+<td align="center">Mauritania</td>
+<td align="center">毛里塔尼亚</td>
+<td align="center">毛里塔尼亚</td>
+<td align="center">毛里塔尼亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MW</td>
+<td align="center">Malawi</td>
+<td align="center">马拉维</td>
+<td align="center">马拉维</td>
+<td align="center">马拉维</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">NA</td>
+<td align="center">Namibia</td>
+<td align="center">纳米比亚</td>
+<td align="center">纳米比亚</td>
+<td align="center">纳米比亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">NE</td>
+<td align="center">Niger</td>
+<td align="center">尼日尔</td>
+<td align="center">尼日</td>
+<td align="center">尼日尔</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">NG</td>
+<td align="center">Nigeria</td>
+<td align="center">尼日利亚</td>
+<td align="center">尼日利亚</td>
+<td align="center">尼日利亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">RW</td>
+<td align="center">Rwanda</td>
+<td align="center">卢旺达</td>
+<td align="center">卢旺达</td>
+<td align="center">卢旺达</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SC</td>
+<td align="center">Seychelles</td>
+<td align="center">塞舌尔</td>
+<td align="center">塞舌尔</td>
+<td align="center">塞舌尔</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SD</td>
+<td align="center">Sudan</td>
+<td align="center">苏丹</td>
+<td align="center">苏丹</td>
+<td align="center">苏丹</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SL</td>
+<td align="center">Sierra Leone</td>
+<td align="center">塞拉利昂</td>
+<td align="center">狮子山</td>
+<td align="center">塞拉利昂</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SN</td>
+<td align="center">Senegal</td>
+<td align="center">塞内加尔</td>
+<td align="center">塞内加尔</td>
+<td align="center">塞内加尔</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SO</td>
+<td align="center">Somalia</td>
+<td align="center">索马里</td>
+<td align="center">索马里</td>
+<td align="center">索马里</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SS</td>
+<td align="center">South Sudan</td>
+<td align="center">南苏丹</td>
+<td align="center">南苏丹</td>
+<td align="center">南苏丹</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">ST</td>
+<td align="center">Sao Tome &amp; Principe</td>
+<td align="center">圣多美和普林西比</td>
+<td align="center">圣多美普林西比</td>
+<td align="center">圣多美及普林西比</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SZ</td>
+<td align="center">Swaziland</td>
+<td align="center">斯威士兰</td>
+<td align="center">斯威士兰</td>
+<td align="center">斯威士兰</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TD</td>
+<td align="center">Chad</td>
+<td align="center">乍得</td>
+<td align="center">查德</td>
+<td align="center">乍得</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TG</td>
+<td align="center">Togo</td>
+<td align="center">多哥</td>
+<td align="center">多哥</td>
+<td align="center">多哥</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TN</td>
+<td align="center">Tunisia</td>
+<td align="center">突尼斯</td>
+<td align="center">突尼斯</td>
+<td align="center">突尼斯</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TZ</td>
+<td align="center">Tanzania</td>
+<td align="center">坦桑尼亚</td>
+<td align="center">坦桑尼亚</td>
+<td align="center">坦桑尼亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">UG</td>
+<td align="center">Uganda</td>
+<td align="center">乌干达</td>
+<td align="center">乌干达</td>
+<td align="center">乌干达</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">ZA</td>
+<td align="center">South Africa</td>
+<td align="center">南非</td>
+<td align="center">南非</td>
+<td align="center">南非</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">ZM</td>
+<td align="center">Zambia</td>
+<td align="center">赞比亚</td>
+<td align="center">赞比亚</td>
+<td align="center">赞比亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">ZW</td>
+<td align="center">Zimbabwe</td>
+<td align="center">津巴布韦</td>
+<td align="center">津巴布韦</td>
+<td align="center">津巴布韦</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CG</td>
+<td align="center">Republic of the Congo</td>
+<td align="center">刚果（布）</td>
+<td align="center">刚果</td>
+<td align="center">刚果</td>
+<td align="center">中国大陆主要使用“刚果（布）”一词，意指“首都为 布拉柴维尔的 刚果（共和国）”，而“刚果”一词亦普遍为民间所用。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CD</td>
+<td align="center">Democratic Republic of the Congo</td>
+<td align="center">刚果（金）</td>
+<td align="center">民主刚果</td>
+<td align="center">民主刚果</td>
+<td align="center">中国大陆主要使用“刚果（金）”一词，意指“首都为 金沙萨的 刚果（共和国）”，而“民主刚果”一词亦普遍为民间所用。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MZ</td>
+<td align="center">Mozambique</td>
+<td align="center">莫桑比克</td>
+<td align="center">莫桑比克</td>
+<td align="center">莫桑比克</td>
+<td align="center">中国大陆和 台湾均曾将之普遍译作“ 莫三比给”</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GM</td>
+<td align="center">Gambia</td>
+<td align="center">冈比亚</td>
+<td align="center">冈比亚</td>
+<td align="center">冈比亚</td>
+<td align="center">亦有部份人士使用“ 刚比亚”一词于 港澳地区</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">ET</td>
+<td align="center">Ethiopia</td>
+<td align="center">埃塞俄比亚</td>
+<td align="center">埃塞俄比亚</td>
+<td align="center">埃塞俄比亚</td>
+<td align="center">亦有部份人士使用“ 埃塞俄比亚”一词于 台湾</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MU</td>
+<td align="center">Mauritius</td>
+<td align="center">毛里求斯</td>
+<td align="center">毛里求斯</td>
+<td align="center">毛里求斯</td>
+<td align="center">香港亦普遍采用“ 毛里求斯”一词于其它场合</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CI</td>
+<td align="center">Cote d’Ivoire</td>
+<td align="center">科特迪瓦</td>
+<td align="center">科特迪瓦</td>
+<td align="center">科特迪瓦</td>
+<td align="center">香港亦普遍采用“科特迪瓦”一词于其它场合（如 香港邮政的邮政指南附录表）</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">KE</td>
+<td align="center">Kenya</td>
+<td align="center">肯尼亚</td>
+<td align="center">肯尼亚</td>
+<td align="center">肯尼亚</td>
+<td align="center">香港亦普遍采用“ 肯尼亚”一词于其它场合</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">南美洲</td>
+<td align="center">AR</td>
+<td align="center">Argentina</td>
+<td align="center">阿根廷</td>
+<td align="center">阿根廷</td>
+<td align="center">阿根廷</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BO</td>
+<td align="center">Bolivia</td>
+<td align="center">玻利维亚</td>
+<td align="center">玻利维亚</td>
+<td align="center">玻利维亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">BR</td>
+<td align="center">Brazil</td>
+<td align="center">巴西</td>
+<td align="center">巴西</td>
+<td align="center">巴西</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CL</td>
+<td align="center">Chile</td>
+<td align="center">智利</td>
+<td align="center">智利</td>
+<td align="center">智利</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CO</td>
+<td align="center">Colombia</td>
+<td align="center">哥伦比亚</td>
+<td align="center">哥伦比亚</td>
+<td align="center">哥伦比亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">EC</td>
+<td align="center">Ecuador</td>
+<td align="center">厄瓜多尔</td>
+<td align="center">厄瓜多尔</td>
+<td align="center">厄瓜多尔</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">FK</td>
+<td align="center">Falkland Islands</td>
+<td align="center">马尔维纳斯群岛（ 福克兰）</td>
+<td align="center">福克兰群岛</td>
+<td align="center">福克兰群岛（ 马尔维纳斯）</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GF</td>
+<td align="center">French Guiana</td>
+<td align="center">法属圭亚那</td>
+<td align="center">法属圭亚那</td>
+<td align="center">法属圭亚那</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GY</td>
+<td align="center">Guyana</td>
+<td align="center">圭亚那</td>
+<td align="center">圭亚那</td>
+<td align="center">圭亚那</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">PE</td>
+<td align="center">Peru</td>
+<td align="center">秘鲁</td>
+<td align="center">秘鲁</td>
+<td align="center">秘鲁</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">PY</td>
+<td align="center">Paraguay</td>
+<td align="center">巴拉圭</td>
+<td align="center">巴拉圭</td>
+<td align="center">巴拉圭</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SR</td>
+<td align="center">Suriname</td>
+<td align="center">苏里南</td>
+<td align="center">苏里南</td>
+<td align="center">苏里南</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">UY</td>
+<td align="center">Uruguay</td>
+<td align="center">乌拉圭</td>
+<td align="center">乌拉圭</td>
+<td align="center">乌拉圭</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">VE</td>
+<td align="center">Venezuela</td>
+<td align="center">委内瑞拉</td>
+<td align="center">委内瑞拉</td>
+<td align="center">委内瑞拉</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">大洋洲</td>
+<td align="center">AS</td>
+<td align="center">American Samoa</td>
+<td align="center">美属萨摩亚</td>
+<td align="center">美属萨摩亚</td>
+<td align="center">美属萨摩亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">AU</td>
+<td align="center">Australia</td>
+<td align="center">澳大利亚</td>
+<td align="center">澳洲</td>
+<td align="center">澳洲</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CC</td>
+<td align="center">Cocos （Keeling） Islands</td>
+<td align="center">科科斯群岛</td>
+<td align="center">可可斯群岛</td>
+<td align="center">科科斯群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CX</td>
+<td align="center">Christmas Island</td>
+<td align="center">圣诞岛</td>
+<td align="center">圣诞岛</td>
+<td align="center">圣诞岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">FJ</td>
+<td align="center">Fiji</td>
+<td align="center">斐济群岛</td>
+<td align="center">斐济</td>
+<td align="center">斐济</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">FM</td>
+<td align="center">Federated States of Micronesia</td>
+<td align="center">密克罗尼西亚联邦</td>
+<td align="center">密克罗尼西亚联邦</td>
+<td align="center">密克罗尼西亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">GU</td>
+<td align="center">Guam</td>
+<td align="center">关岛</td>
+<td align="center">关岛</td>
+<td align="center">关岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">HM</td>
+<td align="center">Heard Island and McDonald Islands</td>
+<td align="center">赫德岛和麦克唐纳群岛</td>
+<td align="center">赫德及麦当劳群岛</td>
+<td align="center">赫德岛和麦克唐纳群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">KI</td>
+<td align="center">Kiribati</td>
+<td align="center">基里巴斯</td>
+<td align="center">基里巴斯</td>
+<td align="center">基里巴斯</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">MH</td>
+<td align="center">Marshall islands</td>
+<td align="center">马绍尔群岛</td>
+<td align="center">马绍尔群岛</td>
+<td align="center">马绍尔群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">NF</td>
+<td align="center">Norfolk Island</td>
+<td align="center">诺福克岛</td>
+<td align="center">诺福克岛</td>
+<td align="center">诺福克岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">NR</td>
+<td align="center">Nauru</td>
+<td align="center">瑙鲁</td>
+<td align="center">瑙鲁</td>
+<td align="center">瑙鲁</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">PF</td>
+<td align="center">French polynesia</td>
+<td align="center">法属波利尼西亚</td>
+<td align="center">法属波利尼西亚</td>
+<td align="center">法属波利尼西亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">PG</td>
+<td align="center">Papua New Guinea</td>
+<td align="center">巴布亚新几内亚</td>
+<td align="center">巴布亚新几内亚</td>
+<td align="center">巴布亚新几内亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">PN</td>
+<td align="center">Pitcairn Islands</td>
+<td align="center">皮特凯恩群岛</td>
+<td align="center">皮特康岛</td>
+<td align="center">皮特凯恩群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">PW</td>
+<td align="center">Palau</td>
+<td align="center">帕劳</td>
+<td align="center">帕劳</td>
+<td align="center">帕劳</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">SB</td>
+<td align="center">Solomon Islands</td>
+<td align="center">所罗门群岛</td>
+<td align="center">所罗门群岛</td>
+<td align="center">所罗门群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TK</td>
+<td align="center">Tokelau</td>
+<td align="center">托克劳</td>
+<td align="center">托克劳群岛</td>
+<td align="center">托克劳群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TO</td>
+<td align="center">Tonga</td>
+<td align="center">汤加</td>
+<td align="center">东加</td>
+<td align="center">汤加</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">TV</td>
+<td align="center">Tuvalu</td>
+<td align="center">图瓦卢</td>
+<td align="center">吐瓦鲁</td>
+<td align="center">图瓦卢</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">WF</td>
+<td align="center">Wallis and Futuna</td>
+<td align="center">瓦利斯和富图纳</td>
+<td align="center">沃里斯与伏塔那岛</td>
+<td align="center">瓦利斯群岛和富图纳群岛</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">WS</td>
+<td align="center">Samoa</td>
+<td align="center">萨摩亚</td>
+<td align="center">萨摩亚</td>
+<td align="center">萨摩亚</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">VU</td>
+<td align="center">Vanuatu</td>
+<td align="center">瓦努阿图</td>
+<td align="center">瓦努阿图</td>
+<td align="center">瓦努阿图</td>
+<td align="center">亦有部份人士使用“ 瓦努阿图”一词于 港澳地区</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">NU</td>
+<td align="center">Niue</td>
+<td align="center">纽埃</td>
+<td align="center">纽埃</td>
+<td align="center">纽埃</td>
+<td align="center">台湾亦普遍采用“ 纽威岛”（ CNS 12842译名）一词于其它场合（如 MSN台湾）</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">CK</td>
+<td align="center">Cook Islands</td>
+<td align="center">库克群岛</td>
+<td align="center">库克群岛</td>
+<td align="center">库克群岛</td>
+<td align="center">台湾和 香港亦普遍采用“ 科克群岛”（ CNS 12842译名）一词于其它场合</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">NZ</td>
+<td align="center">New Zealand</td>
+<td align="center">新西兰</td>
+<td align="center">纽西兰</td>
+<td align="center">新西兰</td>
+<td align="center">新加坡与 马来西亚均将之译作“ 新西兰”。 香港亦普遍采用“新西兰”一词于其它场合</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">南极洲</td>
+<td align="center">AQ</td>
+<td align="center">Antarctica</td>
+<td align="center">南极洲</td>
+<td align="center">南极洲</td>
+<td align="center">南极洲</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>注：如表中没有统计，可以在此网站在线查询（<a href="https://countrycode.org/%EF%BC%89">https://countrycode.org/）</a><br>一级state：<em>亚洲（AS）</em>、<em>欧洲（EU）</em>、<em>非洲（AF）</em>、<em>北美（NA）</em>、<em>南美（SA）</em>、<em>大洋洲（OA）</em><br>二级country：中国（CN）等全部现存国家和地区
+                    </p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Tips】ASCII码对应表</title>
+    <url>/Tips/%E3%80%90Tips%E3%80%91ASCII%E7%A0%81%E5%AF%B9%E5%BA%94%E8%A1%A8/</url>
+    <content><![CDATA[<h2 id="ASCII码对应表"><a href="#ASCII码对应表" class="headerlink" title="ASCII码对应表"></a>ASCII码对应表</h2><span id="more"></span>
+<table>
+<thead>
+<tr>
+<th align="center">ASCII值</th>
+<th align="center">16进制</th>
+<th align="center">控制字符</th>
+<th align="center"></th>
+<th align="center">ASCII值</th>
+<th align="center">16进制</th>
+<th align="center">控制字符</th>
+<th align="center"></th>
+<th align="center">ASCII值</th>
+<th align="center">16进制</th>
+<th align="center">控制字符</th>
+<th align="center"></th>
+<th align="center">ASCII值</th>
+<th align="center">16进制</th>
+<th align="center">控制字符</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="center">00</td>
+<td align="center">NUT</td>
+<td align="center"></td>
+<td align="center">32</td>
+<td align="center">20</td>
+<td align="center">(space)</td>
+<td align="center"></td>
+<td align="center">64</td>
+<td align="center">40</td>
+<td align="center">@</td>
+<td align="center"></td>
+<td align="center">96</td>
+<td align="center">60</td>
+<td align="center">、</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">01</td>
+<td align="center">SOH</td>
+<td align="center"></td>
+<td align="center">33</td>
+<td align="center">21</td>
+<td align="center">!</td>
+<td align="center"></td>
+<td align="center">65</td>
+<td align="center">41</td>
+<td align="center">A</td>
+<td align="center"></td>
+<td align="center">97</td>
+<td align="center">61</td>
+<td align="center">a</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">02</td>
+<td align="center">STX</td>
+<td align="center"></td>
+<td align="center">34</td>
+<td align="center">22</td>
+<td align="center">“</td>
+<td align="center"></td>
+<td align="center">66</td>
+<td align="center">42</td>
+<td align="center">B</td>
+<td align="center"></td>
+<td align="center">98</td>
+<td align="center">62</td>
+<td align="center">b</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">03</td>
+<td align="center">ETX</td>
+<td align="center"></td>
+<td align="center">35</td>
+<td align="center">23</td>
+<td align="center">#</td>
+<td align="center"></td>
+<td align="center">67</td>
+<td align="center">43</td>
+<td align="center">C</td>
+<td align="center"></td>
+<td align="center">99</td>
+<td align="center">63</td>
+<td align="center">c</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">04</td>
+<td align="center">EOT</td>
+<td align="center"></td>
+<td align="center">36</td>
+<td align="center">24</td>
+<td align="center">$</td>
+<td align="center"></td>
+<td align="center">68</td>
+<td align="center">44</td>
+<td align="center">D</td>
+<td align="center"></td>
+<td align="center">100</td>
+<td align="center">64</td>
+<td align="center">d</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">05</td>
+<td align="center">ENO</td>
+<td align="center"></td>
+<td align="center">37</td>
+<td align="center">25</td>
+<td align="center">%</td>
+<td align="center"></td>
+<td align="center">69</td>
+<td align="center">45</td>
+<td align="center">E</td>
+<td align="center"></td>
+<td align="center">101</td>
+<td align="center">65</td>
+<td align="center">e</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">06</td>
+<td align="center">ACK</td>
+<td align="center"></td>
+<td align="center">38</td>
+<td align="center">26</td>
+<td align="center">&amp;</td>
+<td align="center"></td>
+<td align="center">70</td>
+<td align="center">46</td>
+<td align="center">F</td>
+<td align="center"></td>
+<td align="center">102</td>
+<td align="center">66</td>
+<td align="center">f</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">07</td>
+<td align="center">BEL</td>
+<td align="center"></td>
+<td align="center">39</td>
+<td align="center">27</td>
+<td align="center">‘</td>
+<td align="center"></td>
+<td align="center">71</td>
+<td align="center">47</td>
+<td align="center">G</td>
+<td align="center"></td>
+<td align="center">103</td>
+<td align="center">67</td>
+<td align="center">g</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">08</td>
+<td align="center">BS</td>
+<td align="center"></td>
+<td align="center">40</td>
+<td align="center">28</td>
+<td align="center">(</td>
+<td align="center"></td>
+<td align="center">72</td>
+<td align="center">48</td>
+<td align="center">H</td>
+<td align="center"></td>
+<td align="center">104</td>
+<td align="center">68</td>
+<td align="center">h</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">09</td>
+<td align="center">HT</td>
+<td align="center"></td>
+<td align="center">41</td>
+<td align="center">29</td>
+<td align="center">)</td>
+<td align="center"></td>
+<td align="center">73</td>
+<td align="center">49</td>
+<td align="center">I</td>
+<td align="center"></td>
+<td align="center">105</td>
+<td align="center">69</td>
+<td align="center">i</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">0A</td>
+<td align="center">LF</td>
+<td align="center"></td>
+<td align="center">42</td>
+<td align="center">2A</td>
+<td align="center">*</td>
+<td align="center"></td>
+<td align="center">74</td>
+<td align="center">4A</td>
+<td align="center">J</td>
+<td align="center"></td>
+<td align="center">106</td>
+<td align="center">6A</td>
+<td align="center">j</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="center">0B</td>
+<td align="center">VT</td>
+<td align="center"></td>
+<td align="center">43</td>
+<td align="center">2B</td>
+<td align="center">+</td>
+<td align="center"></td>
+<td align="center">75</td>
+<td align="center">4B</td>
+<td align="center">K</td>
+<td align="center"></td>
+<td align="center">107</td>
+<td align="center">6B</td>
+<td align="center">k</td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="center">0C</td>
+<td align="center">FF</td>
+<td align="center"></td>
+<td align="center">44</td>
+<td align="center">2C</td>
+<td align="center">,</td>
+<td align="center"></td>
+<td align="center">76</td>
+<td align="center">4C</td>
+<td align="center">L</td>
+<td align="center"></td>
+<td align="center">108</td>
+<td align="center">6C</td>
+<td align="center">l</td>
+</tr>
+<tr>
+<td align="center">13</td>
+<td align="center">0D</td>
+<td align="center">CR</td>
+<td align="center"></td>
+<td align="center">45</td>
+<td align="center">2D</td>
+<td align="center">-</td>
+<td align="center"></td>
+<td align="center">77</td>
+<td align="center">4D</td>
+<td align="center">M</td>
+<td align="center"></td>
+<td align="center">109</td>
+<td align="center">6D</td>
+<td align="center">m</td>
+</tr>
+<tr>
+<td align="center">14</td>
+<td align="center">0E</td>
+<td align="center">SO</td>
+<td align="center"></td>
+<td align="center">46</td>
+<td align="center">2E</td>
+<td align="center">.</td>
+<td align="center"></td>
+<td align="center">78</td>
+<td align="center">4E</td>
+<td align="center">N</td>
+<td align="center"></td>
+<td align="center">110</td>
+<td align="center">6E</td>
+<td align="center">n</td>
+</tr>
+<tr>
+<td align="center">15</td>
+<td align="center">0F</td>
+<td align="center">SI</td>
+<td align="center"></td>
+<td align="center">47</td>
+<td align="center">2F</td>
+<td align="center">/</td>
+<td align="center"></td>
+<td align="center">79</td>
+<td align="center">4F</td>
+<td align="center">O</td>
+<td align="center"></td>
+<td align="center">111</td>
+<td align="center">6F</td>
+<td align="center">o</td>
+</tr>
+<tr>
+<td align="center">16</td>
+<td align="center">10</td>
+<td align="center">DLE</td>
+<td align="center"></td>
+<td align="center">48</td>
+<td align="center">30</td>
+<td align="center">0</td>
+<td align="center"></td>
+<td align="center">80</td>
+<td align="center">50</td>
+<td align="center">P</td>
+<td align="center"></td>
+<td align="center">112</td>
+<td align="center">70</td>
+<td align="center">p</td>
+</tr>
+<tr>
+<td align="center">17</td>
+<td align="center">11</td>
+<td align="center">DC1</td>
+<td align="center"></td>
+<td align="center">49</td>
+<td align="center">31</td>
+<td align="center">1</td>
+<td align="center"></td>
+<td align="center">81</td>
+<td align="center">51</td>
+<td align="center">Q</td>
+<td align="center"></td>
+<td align="center">113</td>
+<td align="center">71</td>
+<td align="center">q</td>
+</tr>
+<tr>
+<td align="center">18</td>
+<td align="center">12</td>
+<td align="center">DC2</td>
+<td align="center"></td>
+<td align="center">50</td>
+<td align="center">32</td>
+<td align="center">2</td>
+<td align="center"></td>
+<td align="center">82</td>
+<td align="center">52</td>
+<td align="center">R</td>
+<td align="center"></td>
+<td align="center">114</td>
+<td align="center">72</td>
+<td align="center">r</td>
+</tr>
+<tr>
+<td align="center">19</td>
+<td align="center">13</td>
+<td align="center">DC3</td>
+<td align="center"></td>
+<td align="center">51</td>
+<td align="center">33</td>
+<td align="center">3</td>
+<td align="center"></td>
+<td align="center">83</td>
+<td align="center">53</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center">115</td>
+<td align="center">73</td>
+<td align="center">s</td>
+</tr>
+<tr>
+<td align="center">20</td>
+<td align="center">14</td>
+<td align="center">DC4</td>
+<td align="center"></td>
+<td align="center">52</td>
+<td align="center">34</td>
+<td align="center">4</td>
+<td align="center"></td>
+<td align="center">84</td>
+<td align="center">54</td>
+<td align="center">T</td>
+<td align="center"></td>
+<td align="center">116</td>
+<td align="center">74</td>
+<td align="center">t</td>
+</tr>
+<tr>
+<td align="center">21</td>
+<td align="center">15</td>
+<td align="center">NAK</td>
+<td align="center"></td>
+<td align="center">53</td>
+<td align="center">35</td>
+<td align="center">5</td>
+<td align="center"></td>
+<td align="center">85</td>
+<td align="center">55</td>
+<td align="center">U</td>
+<td align="center"></td>
+<td align="center">117</td>
+<td align="center">75</td>
+<td align="center">u</td>
+</tr>
+<tr>
+<td align="center">22</td>
+<td align="center">16</td>
+<td align="center">SYN</td>
+<td align="center"></td>
+<td align="center">54</td>
+<td align="center">36</td>
+<td align="center">6</td>
+<td align="center"></td>
+<td align="center">86</td>
+<td align="center">56</td>
+<td align="center">V</td>
+<td align="center"></td>
+<td align="center">118</td>
+<td align="center">76</td>
+<td align="center">v</td>
+</tr>
+<tr>
+<td align="center">23</td>
+<td align="center">17</td>
+<td align="center">TB</td>
+<td align="center"></td>
+<td align="center">55</td>
+<td align="center">37</td>
+<td align="center">7</td>
+<td align="center"></td>
+<td align="center">87</td>
+<td align="center">57</td>
+<td align="center">W</td>
+<td align="center"></td>
+<td align="center">119</td>
+<td align="center">77</td>
+<td align="center">w</td>
+</tr>
+<tr>
+<td align="center">24</td>
+<td align="center">18</td>
+<td align="center">CAN</td>
+<td align="center"></td>
+<td align="center">56</td>
+<td align="center">38</td>
+<td align="center">8</td>
+<td align="center"></td>
+<td align="center">88</td>
+<td align="center">58</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center">120</td>
+<td align="center">78</td>
+<td align="center">x</td>
+</tr>
+<tr>
+<td align="center">25</td>
+<td align="center">19</td>
+<td align="center">EM</td>
+<td align="center"></td>
+<td align="center">57</td>
+<td align="center">39</td>
+<td align="center">9</td>
+<td align="center"></td>
+<td align="center">89</td>
+<td align="center">59</td>
+<td align="center">Y</td>
+<td align="center"></td>
+<td align="center">121</td>
+<td align="center">79</td>
+<td align="center">y</td>
+</tr>
+<tr>
+<td align="center">26</td>
+<td align="center">1A</td>
+<td align="center">SUB</td>
+<td align="center"></td>
+<td align="center">58</td>
+<td align="center">3A</td>
+<td align="center">:</td>
+<td align="center"></td>
+<td align="center">90</td>
+<td align="center">5A</td>
+<td align="center">Z</td>
+<td align="center"></td>
+<td align="center">122</td>
+<td align="center">7A</td>
+<td align="center">z</td>
+</tr>
+<tr>
+<td align="center">27</td>
+<td align="center">1B</td>
+<td align="center">ESC</td>
+<td align="center"></td>
+<td align="center">59</td>
+<td align="center">3B</td>
+<td align="center">;</td>
+<td align="center"></td>
+<td align="center">91</td>
+<td align="center">5B</td>
+<td align="center">[</td>
+<td align="center"></td>
+<td align="center">123</td>
+<td align="center">7B</td>
+<td align="center">{</td>
+</tr>
+<tr>
+<td align="center">28</td>
+<td align="center">1C</td>
+<td align="center">FS</td>
+<td align="center"></td>
+<td align="center">60</td>
+<td align="center">3C</td>
+<td align="center">&lt;</td>
+<td align="center"></td>
+<td align="center">92</td>
+<td align="center">5C</td>
+<td align="center">\</td>
+<td align="center"></td>
+<td align="center">124</td>
+<td align="center">7C</td>
+<td align="center">|</td>
+</tr>
+<tr>
+<td align="center">29</td>
+<td align="center">1D</td>
+<td align="center">GS</td>
+<td align="center"></td>
+<td align="center">61</td>
+<td align="center">3D</td>
+<td align="center">=</td>
+<td align="center"></td>
+<td align="center">93</td>
+<td align="center">5D</td>
+<td align="center">]</td>
+<td align="center"></td>
+<td align="center">125</td>
+<td align="center">7D</td>
+<td align="center">}</td>
+</tr>
+<tr>
+<td align="center">30</td>
+<td align="center">1E</td>
+<td align="center">RS</td>
+<td align="center"></td>
+<td align="center">62</td>
+<td align="center">3E</td>
+<td align="center">&gt;</td>
+<td align="center"></td>
+<td align="center">94</td>
+<td align="center">5E</td>
+<td align="center">^</td>
+<td align="center"></td>
+<td align="center">126</td>
+<td align="center">7E</td>
+<td align="center">~</td>
+</tr>
+<tr>
+<td align="center">31</td>
+<td align="center">1F</td>
+<td align="center">US</td>
+<td align="center"></td>
+<td align="center">63</td>
+<td align="center">3F</td>
+<td align="center">?</td>
+<td align="center"></td>
+<td align="center">95</td>
+<td align="center">5F</td>
+<td align="center">——</td>
+<td align="center"></td>
+<td align="center">127</td>
+<td align="center">7F</td>
+<td align="center">DEL</td>
+</tr>
+</tbody></table>
+<h3 id="控制符对应表"><a href="#控制符对应表" class="headerlink" title="控制符对应表"></a>控制符对应表</h3><table>
+<thead>
+<tr>
+<th align="center">控制符</th>
+<th align="center">控制符</th>
+<th align="center">控制符</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">NUL 空</td>
+<td align="center">VT 垂直制表</td>
+<td align="center">SYN 空转同步</td>
+</tr>
+<tr>
+<td align="center">SOH 标题开始</td>
+<td align="center">FF 走纸控制</td>
+<td align="center">ETB 信息组传送结束</td>
+</tr>
+<tr>
+<td align="center">STX 正文开始</td>
+<td align="center">CR 回车</td>
+<td align="center">CAN 作废</td>
+</tr>
+<tr>
+<td align="center">ETX 正文结束</td>
+<td align="center">SO 移位输出</td>
+<td align="center">EM 纸尽</td>
+</tr>
+<tr>
+<td align="center">EOY 传输结束</td>
+<td align="center">SI 移位输入</td>
+<td align="center">SUB 换置</td>
+</tr>
+<tr>
+<td align="center">ENQ 询问字符</td>
+<td align="center">DLE 空格</td>
+<td align="center">ESC 换码</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Hexo】Mac 上使用Hexo + Github搭建个人博客</title>
+    <url>/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="【Hexo】Mac-上使用Hexo-Github搭建个人博客"><a href="#【Hexo】Mac-上使用Hexo-Github搭建个人博客" class="headerlink" title="【Hexo】Mac 上使用Hexo + Github搭建个人博客"></a>【Hexo】Mac 上使用Hexo + Github搭建个人博客</h1><h2 id="为什么要用Hexo-Github？"><a href="#为什么要用Hexo-Github？" class="headerlink" title="为什么要用Hexo + Github？"></a>为什么要用Hexo + Github？</h2><h3 id="Hexo介绍"><a href="#Hexo介绍" class="headerlink" title="Hexo介绍"></a>Hexo介绍</h3><p>Hexo是一款基于Nodejs的，快速、简洁且高效的博客框架。它具有丰富的插件和主题，具有超快的速度，支持Makedown语法，可以方便快捷的编写博客文档。同时还支持node命令，可以一键部署到GitHub Pages, Heroku 或其他平台。更详细的信息可以看一下 <a href="https://hexo.io/zh-cn">Hexo官网</a> 。</p>
+<p>值得一提的是，它在github上的<em>star</em>现在已经达到了<a href="https://github.com/hexojs/hexo">36.3k</a>，优不优秀可见一斑。</p>
+<span id="more"></span>
+
+<p>Hexo主要有以下特点：</p>
+<ol>
+<li><p>超快速度：<em>Node.js</em>所带来的超快生成速度，可以让上百个页面在几秒内完成渲染。</p>
+</li>
+<li><p>支持 <em>Markdown</em>：Hexo 支持 GitHub Flavored Markdown 的所有功能，甚至可以整合 Octopress 的大多数插件。</p>
+</li>
+<li><p>一键部署：只需一条指令即可部署到 <em>GitHub Pages, Heroku</em> 或其他平台。</p>
+</li>
+<li><p>插件或可扩展性：强大的 API 带来无限的可能，与数种模板引擎（<em>EJS，Pug，Nunjucks</em>）和工具（<em>Babel，PostCSS，Less/Sass</em>）轻易集成。</p>
+</li>
+</ol>
+<h3 id="Guthub"><a href="#Guthub" class="headerlink" title="Guthub"></a>Guthub</h3><p>GitHub 那就更不用说了，做程序员的都知道，它是多nice的一个东西。</p>
+<p>今天我们要说的主要是它提供的一个功能：<em>GitHub Pages</em> ，GitHub Pages 允许每个账户创建一个名为 {username}.<a href="http://github.io/">http://github.io</a> 的仓库，另外它还会自动为这个仓库分配一个 <a href="http://github.io/">http://github.io</a> 的二级域名，这就为我们搭建个人博客提供了很大的方便，既为我们解决了域名、服务器的问题，又为我们提供了一个稳定且免费的静态站点。</p>
+<h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><ol>
+<li>官网下载<br>下载地址：<a href="https://nodejs.org/en/">https://nodejs.org/en/</a></li>
+</ol>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778370777438.jpg" alt="16778370777438"></p>
+<ol start="2">
+<li>使用homebrew安装</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">## 搜索现有node版本</span><br><span class="line">brew search node</span><br><span class="line">## 安装指定版本</span><br><span class="line">brew install node@x</span><br></pre></td></tr></table></figure>
+<p>安装完成之后，可以用 <em>npm -v</em> 查询验证，如果不指定版本安装为最新版本</p>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778374510393.jpg" alt="16778374510393"></p>
+<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><ol>
+<li>使用外网下载（相对比较慢）</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用命令去安装Hexo</span></span><br><span class="line">npm install -g hexo-cli </span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>更换国内镜像后下载</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用命令安装淘宝镜像：</span></span><br><span class="line">npm install -g cnpm --registry=<span class="attr">https</span>:<span class="comment">//registry.npm.taobao.org</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用淘宝源安装Hexo</span></span><br><span class="line">cnpm install -g hexo-cli </span><br></pre></td></tr></table></figure>
+<p>安装成功后，可以使用 <em>hexo -v</em> 命令查看一下hexo版本：</p>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778379318597.jpg" alt="16778379318597"></p>
+<h2 id="初始化Hexo-Blog"><a href="#初始化Hexo-Blog" class="headerlink" title="初始化Hexo Blog"></a>初始化Hexo Blog</h2><h3 id="新建一个文件夹"><a href="#新建一个文件夹" class="headerlink" title="新建一个文件夹"></a>新建一个文件夹</h3><p>我这里创建一个名为Blogs的文件夹，并进入该文件夹内：</p>
+<h3 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 初始化hexo</span></span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+<p>初始化成功如下：</p>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778382111564.jpg" alt="16778382111564"></p>
+<p>这时候Blogs下的目录结构如下：</p>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778382603905.jpg" alt="16778382603905"></p>
+<h3 id="本地启动Hexo"><a href="#本地启动Hexo" class="headerlink" title="本地启动Hexo"></a>本地启动Hexo</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 启动Hexo</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778384529301.jpg" alt="16778384529301"></p>
+<h3 id="浏览器打开博客网站"><a href="#浏览器打开博客网站" class="headerlink" title="浏览器打开博客网站"></a>浏览器打开博客网站</h3><p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778384888543.jpg" alt="16778384888543"></p>
+<h2 id="创建博客文章"><a href="#创建博客文章" class="headerlink" title="创建博客文章"></a>创建博客文章</h2><h3 id="创建博客"><a href="#创建博客" class="headerlink" title="创建博客"></a>创建博客</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建一篇博客</span></span><br><span class="line">hexo n <span class="string">&quot;first blog&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>文章在Blogs目录下的结构如下：</p>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778386968316.jpg" alt="16778386968316"></p>
+<h3 id="清理项目缓存"><a href="#清理项目缓存" class="headerlink" title="清理项目缓存"></a>清理项目缓存</h3><p>新增博客文章或者修改博客文章内容，需要执行此命令:</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 清理之前生成的网站</span></span><br><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
+
+<h3 id="重新生成博客"><a href="#重新生成博客" class="headerlink" title="重新生成博客"></a>重新生成博客</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 重新生成博客</span></span><br><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<h3 id="再次启动项目"><a href="#再次启动项目" class="headerlink" title="再次启动项目"></a>再次启动项目</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 再次启动博客网站</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>浏览器页面展示如下：</p>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778388704782.jpg" alt="16778388704782"></p>
+<h2 id="修改网站主题"><a href="#修改网站主题" class="headerlink" title="修改网站主题"></a>修改网站主题</h2><p>Hexo框架默认的是landscape主题，Hexo上有三百多种主题，大家可以上Hexo官网选择自己喜欢的<a href="https://hexo.io/themes/">主题</a>，我这里以next为例：</p>
+<h3 id="下载next主题"><a href="#下载next主题" class="headerlink" title="下载next主题"></a>下载next主题</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下载next</span></span><br><span class="line">git clone <span class="attr">https</span>:<span class="comment">//github.com/theme-next/hexo-theme-next themes/next</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778391682864.jpg" alt="16778391682864"></p>
+<p>我们下载的主题都存放在Blogs/themes文件夹下：</p>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778392610610.jpg" alt="16778392610610"></p>
+<h3 id="修改项目配置文件"><a href="#修改项目配置文件" class="headerlink" title="修改项目配置文件"></a>修改项目配置文件</h3><p>主题下载下来之后，我们需要在项目配置文件_config.yml里面修改我们的主题：</p>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778393394648.jpg" alt="16778393394648"></p>
+<p>把默认的landscape修改为我们下载好的主题 next</p>
+<h3 id="重新生成项目"><a href="#重新生成项目" class="headerlink" title="重新生成项目"></a>重新生成项目</h3><p>这时候再执行我们Hexo三连：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 清理项目缓存</span></span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重新生成项目</span></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment">// 本地启动项目</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>Tips：重新生成项目和本地启动项目可以合并： <em>hexo g &amp; hexo s</em><br>再次打开项目，效果图如下：</p>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778394696679.jpg" alt="16778394696679"></p>
+<p>到这里，我们的主题修改就完成了，后期我们可以根据自己的需要去修改next的配置文件，让我们的博客网站更加个性化。</p>
+<p>下一篇文章我将说说如何修改主题让我们的博客网站更具个性化。</p>
+<p>关于Hexo搭建博客到这里就讲得差不多了，下面我们就想怎么把博客部署到Github上。</p>
+<h2 id="部署博客到Github"><a href="#部署博客到Github" class="headerlink" title="部署博客到Github"></a>部署博客到Github</h2><p>首先，你得要有一个自己的Github账号吧，我相信99.99%的开发者都是有Github账号的，如果你是那0.01%，请前往<a href="https://github.com/">Github</a>自行注册。</p>
+<h3 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h3><p>在Github里创建一个存放博客项目的仓库，操作如下：</p>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778397130902.jpg" alt="16778397130902"></p>
+<p>这里有几个注意点：</p>
+<ol>
+<li>仓库的名称必须与你Github账号名相同</li>
+<li>仓库必须以gitHub.io结尾（这里我已经创建过了，所以报错）</li>
+<li>使用GitHub Pages最好选 <em>Public</em> repo（Private需要付费）</li>
+</ol>
+<p>比如你Github账号名叫：zhangsan，那你新建的这个仓库名就叫：zhangsan.github.io</p>
+<p>创建之后，我们就有了一个存放博客项目仓库：</p>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778399347942.jpg" alt="16778399347942"></p>
+<h3 id="安装Hexo部署插件"><a href="#安装Hexo部署插件" class="headerlink" title="安装Hexo部署插件"></a>安装Hexo部署插件</h3><p>进入到Blogs目录下，安装部署插件：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">#使用淘宝镜像安装</span><br><span class="line">cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改项目配置文件-1"><a href="#修改项目配置文件-1" class="headerlink" title="修改项目配置文件"></a>修改项目配置文件</h3><p>好了，万事俱备，只欠修改 <em>_config.yml</em> 文件了，打开_config.yml文件，拖拽到最后，修改文件：</p>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778401117276.jpg" alt="16778401117276"></p>
+<p>修改为：</p>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778401892146.jpg" alt="16778401892146"></p>
+<p>注意：<em>repo</em> 为你刚创建的Github项目的地址，如果你是使用的 <em>vim</em> 打开的 <em>_config.yml</em>，记得修改了要 <em>:wq</em> 保存退出</p>
+<h3 id="重新生成项目-1"><a href="#重新生成项目-1" class="headerlink" title="重新生成项目"></a>重新生成项目</h3><p>清理项目缓存：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
+
+<p>重新生成博客：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<p>部署到云端（Github）:</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>注意：这里每次使用 <em>hexo d</em> 部署到Github为了安全都要求输入账号密码，如果你不希望每次都输入账号密码，可以跟博主一样设置Github的 <em>SSH Keys</em>，以后每次发布到Github就不需要输入账号密码了。</p>
+<p>访问云端博客主页</p>
+<p>访问地址：https://博客仓库名.github.io<br>比如我的博客地址：<a href="https://fengyanxin.github.io/">https://fengyanxin.github.io</a></p>
+<p>可以在以下路径查看：</p>
+<p><img src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778403847380.jpg" alt="16778403847380"></p>
+<p>最后</p>
+<p>基本上到这里，属于我们自己的博客就搭建完成啦，整个搭建流程如果不出错半个小时之内其实是可以搞定的，但是这路哪里那么好走呢，每个人去搭建的过程中或多或少都会遇到一些问题，我自己在搭建的过程中也碰到了一些问题，我会抽空把遇到的问题详细整理出来，希望能够帮助大家如果要搭建博客的时候少踩点坑。</p>
+<p>大兄弟，都看到这里了，就不要吝啬你的小星星了，为博主点个赞再走吧～</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>01 | 开发环境：如何使用 Ruby 工具链统一开发环境？</title>
+    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%20%7C%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/</url>
+    <content><![CDATA[<h1 id="01-开发环境：如何使用-Ruby-工具链统一开发环境？"><a href="#01-开发环境：如何使用-Ruby-工具链统一开发环境？" class="headerlink" title="01 | 开发环境：如何使用 Ruby 工具链统一开发环境？"></a>01 | 开发环境：如何使用 Ruby 工具链统一开发环境？</h1><p><img src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.25.34.png" alt="2021-03-17_10.25.34"></p>
+<span id="more"></span>
+
+<p>在 iOS 开发过程中，你是不是会经常遇到这些情况：</p>
+<p>每次打开一个新项目，都需要手动搭建开发环境；有时候在安装第三方工具时使用到 <code>sudo 权限</code>，导致以后安装工具都需要手工输入密码而无法实施自动化。还有，每当启动一台新 <code>CI</code> 时，就需要手工登录并配置一遍，更可怕的是，原先搭建好的 CI 会随着 Xcode 版本更新需要重新配置。</p>
+<p>为什么会这么麻烦呢？就是因为你在项目开始之初没有做好统一配置。</p>
+<p>所谓统一配置，就是所有的配置信息都以文本的格式存放在 Git 里面，我们可以随时查看修改记录，以此来帮助我们比较不同配置之间的差异性，然后在这个基础上不断更新迭代。</p>
+<p>可以说，有了统一配置，任何工程师都可以搭建出一模一样的开发环境，构建出功能一致的 App；有了统一配置，还可以让我们按需延展 CI 服务，而不用任何手工操作。更重要的是，它还可以应用到各个类似的 iOS 项目中，极大地减轻了项目前期的搭建成本。</p>
+<p>既然统一的配置那么重要，那么我们怎样搭建统一配置的开发环境呢？</p>
+<h2 id="Ruby-工具链"><a href="#Ruby-工具链" class="headerlink" title="Ruby 工具链"></a>Ruby 工具链</h2><p>我们可以通过 Ruby 工具链为整个项目搭建一致的开发和构建环境。为什么选择 <code>Ruby</code> 而不是其他语言环境呢？因为在 iOS 开发方面，目前流行的第三方工具 <code>CocoaPods</code> 和 <code>fastlane</code> 都是使用 Ruby 来开发的。特别是 Ruby 有非常成熟的依赖库管理工具 <code>RubyGems</code> 和 <code>Bundler</code>，其中 Bundler 可以帮我们有效地管理 CocoaPods 和 fastlane 的版本。</p>
+<p>下面一起来看看怎样搭建一个统一的开发环境吧。</p>
+<p><img src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.02.14.png" alt="2021-03-17_10.02.14"></p>
+<p>通常，统一的开发环境应该从操作系统开始。对于 iOS 开发来说，<strong>MacOS</strong> 是目前 iOS 开发唯一支持的操作系统。在公司，MacOS 的版本一般由 IT 部门统一管理和更新。要注意，当公司统一更新了我们开发环境的 MacOS 版本以后，需要同时更新 CI 上 MacOS 的版本，以保持一致。</p>
+<h2 id="Xcode"><a href="#Xcode" class="headerlink" title="Xcode"></a>Xcode</h2><p>位于 MacOS 上层的是 Xcode 和 rbenv。其中，<strong>Xcode</strong> 是 iOS 开发和构建工具，在同一个项目里，最好使用同一个版本的 Xcode 进行开发和构建，我们可以在项目的 README.md 文件标注 Xcode 的版本。</p>
+<p>像我们将要开发的这款类似朋友圈的 Moments App 项目，我就在对应的 README.md 文件里标明了需要使用 <code>Xcode Version 12.2 (12B45b)</code>。具体内容你也可以在代码仓库找到。</p>
+<p><img src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.12.38.png" alt="2021-03-17_10.12.38"></p>
+<p>那我们怎样才能保证每个人都安装同一个版本号的 Xcode 呢？技巧就是我们不要到有自动更新功能的 Mac App Store 中下载 Xcode，而是到苹果的开发者网站搜索并下载。</p>
+<p><img src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.14.30.png" alt="2021-03-17_10.14.30"></p>
+<p>有时候我们会同时开发多个项目，这样有可能要安装多个不同版本的 Xcode。如果你的机器有多于一个版本的 Xcode，此时需要特别注意，为了保证所使用的编译器版本一致，在每次执行自动化命令之前（如执行<code>bundle exec fastlane test</code>），要先使用<code>xcode-select -s</code>来选择该项目所对应版本的 Xcode。</p>
+<p>比如说我的电脑上有多个 Xcode 版本，在开发 Moments App 时，每次执行自动化命令之前都会执行这样一条命令<code>xcode-select -s /Applications/Xcode12.2.app/Contents/Developer</code>来选择 Moments App 项目所使用的 Xcode。这里的<code>Xcode12.2.app</code>就是我安装的 Xcode 12.2 版所在的位置。</p>
+<h2 id="rbenv"><a href="#rbenv" class="headerlink" title="rbenv"></a>rbenv</h2><p>有了版本一致的 Xcode 以后，因为后期我们会用到 CocoaPods 等第三方 Ruby 工具，为了自动化安装和管理这些工具，整个项目团队所使用的 Ruby 版本也必须保持一致。为此，我们就需要用到 Ruby 环境管理工具。</p>
+<p>目前流行的 Ruby 环境管理工具有 RVM 和 rbenv。我推荐使用的是 rbenv，因为它使用 shims 文件夹来分离各个 Ruby 版本，相对于 RVM 更加轻装而方便使用。千万注意，团队内部不要同时使用不同的 Ruby 环境管理工具，否则项目编译会出错。</p>
+<p><strong>rbenv</strong> 是 Ruby 环境管理工具，能够安装、管理、隔离以及在多个 Ruby 版本之间切换。要使用 rbenv，我们可以通过 Homebrew 来安装它，下面是安装 Homebrew 和 rbenv 的脚本。</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">$ /bin/bash -c <span class="string">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)&quot;</span></span><br><span class="line">brew install rbenv ruby-build rbenv-vars</span><br></pre></td></tr></table></figure>
+
+<p>一旦安装 rbenv 完毕，我们需要把以下的设置信息放到你的 Shell 配置文件里面，例如 <code>~/.bash_profile</code> 或者 <code>~/.zshrc</code> 等文件，这样能保证每次打开终端的时候都会初始化 rbenv。</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="variable constant_">PATH</span>=<span class="string">&quot;$HOME/.rbenv/bin:$PATH&quot;</span> </span><br><span class="line"><span class="built_in">eval</span> <span class="string">&quot;$(rbenv init -)&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>接着我们就可以安装和设置项目的 Ruby 环境了。</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">$ cd $(<span class="variable constant_">PROJECT_DIR</span>)</span><br><span class="line">$ rbenv install <span class="number">2.7</span><span class="number">.1</span></span><br><span class="line">$ rbenv local <span class="number">2.7</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+
+<p>此处是把项目的 Ruby 环境配置为 2.7.1 版本。rbenv 会帮我们建立 一个叫作<code>.ruby-version</code> 的文件，该文件里面只保存一个版本号（例如<code>2.7.1</code>）的字符串。这个包含了版本号的文件可以用 Git 进行管理。如果要更新版本，可以通过<code>rbenv local</code>命令进行，每次更新也由 Git 统一管理，这样就能让其他开发者使用同一版本的 Ruby 开发环境了。</p>
+<h2 id="RubyGems-和-Bundler"><a href="#RubyGems-和-Bundler" class="headerlink" title="RubyGems 和 Bundler"></a>RubyGems 和 Bundler</h2><p>RubyGems 和 Bundler 主要是用来安装和管理 CocoaPods 和 fastlane 等第三方工具。</p>
+<p>具体来说，RubyGems 是 Ruby 依赖包管理工具。在 Ruby 的世界，包叫作 Gem，我们可以通过<code>gem install</code>命令来安装。但是 RubyGems 在管理 Gem 版本的时候有些缺陷，就有人开发了 Bundler，用它来检查和安装 Gem 的特定版本，以此为 Ruby 项目提供一致性的环境。</p>
+<p>要安装 Bundler，我们可执行<code>gem install bundler</code>命令进行，之后，再执行<code>bundle init</code>就可以生成一个 Gemfile 文件，像 CocoaPods 和 fastlane 等依赖包，我们就可以添加到这个文件里面。</p>
+<p>具体代码如下：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">source <span class="string">&quot;https://rubygems.org&quot;</span></span><br><span class="line">gem <span class="string">&quot;cocoapods&quot;</span>, <span class="string">&quot;1.10.0&quot;</span></span><br><span class="line">gem <span class="string">&quot;fastlane&quot;</span>, <span class="string">&quot;2.166.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意我们在<code>gem</code>命令里面都指定了依赖包的特定版本号。例如，在我们的 Moment App 就使用了<code>1.10.0</code>版的 CocoaPods，然后执行<code>bundle install</code>来安装各个 Gem。 Bundler 会自动生成一个 <code>Gemfile.lock</code> 文件来锁定所安装的 Gem 的版本，例如：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">DEPENDENCIES</span></span><br><span class="line">  cocoapods (= <span class="number">1.10</span><span class="number">.0</span>)</span><br><span class="line">  fastlane (= <span class="number">2.166</span><span class="number">.0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>为了保证团队其他成员都可以使用版本号一致的 Gem，我们需要把 <code>Gemfile</code> 和 <code>Gemfile.lock</code> 一同保存到 Git 里面统一管理起来。</p>
+<p>到此为止，我们已经知道怎样使用 Ruby 工具链配置一个统一的开发环境。但在真实的开发环境中，搭建环境只需要一个人来完成即可，其他成员执行以下脚本就能完成整套开发环境的搭建。</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">$ ./scripts/setup.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>我们一起看看这个脚本做了些什么？</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"># <span class="title class_">Install</span> ruby using rbenv</span><br><span class="line">ruby_version=<span class="string">`cat .ruby-version`</span></span><br><span class="line"><span class="keyword">if</span> [[ ! -d <span class="string">&quot;$HOME/.rbenv/versions/$ruby_version&quot;</span> ]]; then</span><br><span class="line">  rbenv install $ruby_version;</span><br><span class="line">fi</span><br><span class="line"># <span class="title class_">Install</span> bunlder</span><br><span class="line">gem install bundler</span><br><span class="line"># <span class="title class_">Install</span> all gems</span><br><span class="line">bundle install</span><br><span class="line"># <span class="title class_">Install</span> all pods</span><br><span class="line">bundle exec pod install</span><br></pre></td></tr></table></figure>
+
+<p>该脚本主要做了四件事情，第一步是在 rbenv 下安装特定版本的 Ruby 开发环境，然后通过 RubyGems 安装 Bunlder，接着使用 Bundler 安装 CocoaPods 和 fastlane 等依赖包，最后安装各个 Pod。这样，一个统一的项目环境就搭建完成了，接下来开发者就可以打开 <strong>Moments.xcworkspace</strong>进行开发了。</p>
+<p>说完 Ruby 环境搭建以后，最后我们一起聊聊保证项目文件一致性的 .gitignore 文件。</p>
+<h2 id="gitignore-文件"><a href="#gitignore-文件" class="headerlink" title=".gitignore 文件"></a>.gitignore 文件</h2><p>.gitignore 文件是一个配置文件，用来指定让 Git 需要忽略的文件或者目录。如果没有 .gitignore 文件，项目成员可能会不小心把一些自动生成等无关重要的文件或者具有个人信息(例如 <code>xcuserdata</code>)的文件保存到 Git 里面。这就大大增加了查看 Git 修改历史的难度。因此，在项目初期就配置一个合适的 .gitignore 文件，能减轻后续的管理工作。</p>
+<p>如何创建 .gitignore 文件呢？</p>
+<p>我一般会在 <code>gitignore.io</code> 里面输入关键字，例如 Xcode，Swift 等，然后该网站会帮我们生成一个默认的 .gitignore 文件。咱们项目 Moments App 的.gitignore 文件你可以到<a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/.gitignore">拉勾教育的仓库中</a>查看。</p>
+<p><img src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.24.47.png" alt="2021-03-17_10.24.47"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h2><p>以上，我们通过 Xcode、rbenv、RubyGems 和 Bundler 搭建一个统一的 iOS 开发和构建环境。</p>
+<p><img src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.25.34.png" alt="2021-03-17_10.25.34"></p>
+<p>再次强调下，为了让各个开发和构建环境能保持一致，我们要把 .ruby-version、 Gemfile 和 Gemfile.lock 文件通过 Git 统一管理起来，并共享给整个项目团队使用。</p>
+<p>而且，由于我们的开发环境已经通过 Bundler 管理起来，今后，当使用各个 Gem 工具的时候，也需要使用 Bundler。例如在使用 CocoaPods 时要执行<code>bundle exec pod</code>，以保证我们使用的是项目级别而不是操作系统级别的 Gem 工具。</p>
+<p><strong>源码地址：</strong></p>
+<blockquote>
+<p>README.md<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/README.md">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/README.md</a><br>Moments App 的.gitignore 文件<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/.gitignore">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/.gitignore</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
+</search>
