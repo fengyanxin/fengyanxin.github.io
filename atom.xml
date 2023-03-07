@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2023-03-06T10:01:14.722Z</updated>
+  <updated>2023-03-07T09:18:52.905Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【Flutter】导出iOS包时，如何自动与手动更改版本号？</title>
+    <link href="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/"/>
+    <id>https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/</id>
+    <published>2023-03-07T08:58:55.000Z</published>
+    <updated>2023-03-07T09:18:52.905Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;【Flutter】导出iOS包时，如何自动与手动更改版本号？&quot;&gt;&lt;a href=&quot;#【Flutter】导出iOS包时，如何自动与手动更改版本号？&quot; class=&quot;headerlink&quot; title=&quot;【Flutter】导出iOS包时，如何自动与手动更改版本号？&quot;&gt;&lt;/a&gt;【Flutter】导出iOS包时，如何自动与手动更改版本号？&lt;/h1&gt;&lt;h2 id=&quot;1、通过flutter工程更改版本号&quot;&gt;&lt;a href=&quot;#1、通过flutter工程更改版本号&quot; class=&quot;headerlink&quot; title=&quot;1、通过flutter工程更改版本号&quot;&gt;&lt;/a&gt;1、通过flutter工程更改版本号&lt;/h2&gt;&lt;p&gt;1）首先，打开项目下的iOS工程，找到&lt;code&gt;info.plist&lt;/code&gt;文件，右键以&lt;code&gt;Source Code&lt;/code&gt;方式打开，找到版本号配置参数 &lt;code&gt;CFBundleShortVersionString&lt;/code&gt;和&lt;code&gt;CFBundleVersion&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;一般未做改动之前的效果如下，&lt;code&gt;$(FLUTTER_BUILD_NAME)&lt;/code&gt;表示跟随flutter工程创建。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Flutter" scheme="https://fengyanxin.github.io/categories/Flutter/"/>
+    
+    
+    <category term="Flutter" scheme="https://fengyanxin.github.io/tags/Flutter/"/>
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+  </entry>
   
   <entry>
     <title>【Tips】ASCII码对应表</title>
@@ -85,9 +107,9 @@
     <category term="学习笔记" scheme="https://fengyanxin.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
     <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
