@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="集成阿里云消息推送基本的业务流程：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【iOS】集成阿里云消息推送">
+<meta property="og:url" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/index.html">
+<meta property="og:site_name" content="凤炎忻的个人笔记">
+<meta property="og:description" content="集成阿里云消息推送基本的业务流程：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782576576028.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782584388892.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782585058067.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782586952344.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782592582016.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782593206219.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782593919466.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782595884680.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782596990503.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782603043050.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782604788362.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782606658935.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782609693712.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782610616057.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782614735761.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782616606924.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782617708004.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782621859000.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782626642638.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782636066930.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782638087381.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782654264853.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782655214693.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782671772445.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782674597379.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782674134664.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782676305569.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782676848331.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782680346445.jpg">
+<meta property="article:published_time" content="2023-03-08T06:13:36.000Z">
+<meta property="article:modified_time" content="2023-03-08T09:57:49.674Z">
+<meta property="article:author" content="凤炎忻">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782576576028.jpg">
+
+<link rel="canonical" href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>【iOS】集成阿里云消息推送 | 凤炎忻的个人笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="凤炎忻的个人笔记" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">凤炎忻的个人笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我有一壶酒，足以慰风尘！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/apple-touch-icon-next.png">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【iOS】集成阿里云消息推送
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-03-08 14:13:36 / 修改时间：17:57:49" itemprop="dateCreated datePublished" datetime="2023-03-08T14:13:36+08:00">2023-03-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="集成阿里云消息推送"><a href="#集成阿里云消息推送" class="headerlink" title="集成阿里云消息推送"></a>集成阿里云消息推送</h1><h2 id="基本的业务流程："><a href="#基本的业务流程：" class="headerlink" title="基本的业务流程："></a>基本的业务流程：</h2><p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782576576028.jpg"></p>
+<span id="more"></span>
+
+<p>集成阿里云消息推送的流程基本如上图所示，还是比较简单的，我们只需要重点关注一下红框中的部分。</p>
+<p>下面我们就来分步骤讲解一下：</p>
+<h3 id="一：创建应用"><a href="#一：创建应用" class="headerlink" title="一：创建应用"></a>一：创建应用</h3><p>创建应用获取初始化推送所需的AppKey和Secret</p>
+<h4 id="1-登录阿里云控制台，添加产品"><a href="#1-登录阿里云控制台，添加产品" class="headerlink" title="1. 登录阿里云控制台，添加产品"></a>1. 登录阿里云控制台，添加产品</h4><p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782584388892.jpg"></p>
+<h4 id="2-点击添加应用，创建ios和android对应的平台"><a href="#2-点击添加应用，创建ios和android对应的平台" class="headerlink" title="2. 点击添加应用，创建ios和android对应的平台"></a>2. 点击添加应用，创建ios和android对应的平台</h4><p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782585058067.jpg"></p>
+<h3 id="二：上传证书"><a href="#二：上传证书" class="headerlink" title="二：上传证书"></a>二：上传证书</h3><p>集成阿里云推送，我们需要在阿里云控制台上传两个证书，分别是<strong>开发环境的推送证书</strong>和<strong>生成环境的推送证书</strong>，如下图所示：</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782586952344.jpg"></p>
+<p>那么我们要如何获取这两个证书呢？</p>
+<h4 id="1-获取CSR文件"><a href="#1-获取CSR文件" class="headerlink" title="1.获取CSR文件"></a>1.获取CSR文件</h4><p>1.1 在Mac的应用程序中打开钥匙串访问，在顶部菜单栏中选择钥匙串访问&gt;证书助理&gt;从证书颁发机构请求证书</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782592582016.jpg"></p>
+<p>1.2 在弹出的证书信息中，输入邮箱地址，设置选择储存到磁盘，单击继续将CSR文件存储到本地</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782593206219.jpg"></p>
+<p>1.3 生成之后，在目录下找到此文件</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782593919466.jpg"></p>
+<h4 id="2-生成AppID"><a href="#2-生成AppID" class="headerlink" title="2.生成AppID"></a>2.生成AppID</h4><p>2.1 登录 <a target="_blank" rel="noopener" href="https://developer.apple.com/account">Apple Developer</a>，选择Certificates，Identifiers &amp; Profiles选项</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782595884680.jpg"></p>
+<p>2.2 选择Identifiers，项目如果是自动证书管理的话我们可以看到一些以 <code>XC</code>开头的 Bundle ID ，如下图所示：</p>
+<p>如果是手动证书管理，需要点击<code>+</code>号创建 App ID，此处我们自动证书管理为例。</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782596990503.jpg"></p>
+<p>2.3 在上图的 Identifiers 列表中选择需要配置推送的<br>Bundle ID。（如果列表中没有，可以在Xcode工程中配置）</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782603043050.jpg"></p>
+<p>在上图配置文件中填写Bundle ID，然后勾选<code>Automatically manage signing</code>，在下图弹框中选择<code>Enable Automatic</code>，然后回到<a target="_blank" rel="noopener" href="https://developer.apple.com/account">Apple Developer</a>，就可以<code>Identifiers</code>列表中看到我们刚才设置的<code>Bundle ID</code>了。</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782604788362.jpg"></p>
+<p>2.4 点击Identifiers 列表进入详情，向下划动找到<code>Push Notification</code>选项，勾选开启远程推送服务</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782606658935.jpg"></p>
+<h4 id="3-创建生产和开发推送证书"><a href="#3-创建生产和开发推送证书" class="headerlink" title="3.创建生产和开发推送证书"></a>3.创建生产和开发推送证书</h4><p>3.1 点击上图中的<code>Edit</code>按钮，进入配置页面</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782609693712.jpg"></p>
+<p>3.2 单击<code>Choose File</code>上传已获取到的CSR文件</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782610616057.jpg"></p>
+<p>3.3 生成后，<code>download</code>到本地</p>
+<p>3.4 双击打开并安装证书，系统会自动将其导入到钥匙串中</p>
+<p>3.5 在Mac中打开钥匙串应用，选择登录&gt;证书，分别右键导出开发环境（<code>Apple Sandbox Push Services</code>）和生产环境(<code>Apple Push Services</code>)的<code>.P12</code>证书文件</p>
+<p><font color="#ff0000">此处导出.p12文件时需要设置密码，阿里云配置证书时必填</font></p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782614735761.jpg"></p>
+<p>导出结果如下：</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782616606924.jpg"></p>
+<p>3.6 在阿里云控制台配置相应的开发和生产证书，如下图所示：</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782617708004.jpg"></p>
+<h3 id="三：下载配置文件并集成"><a href="#三：下载配置文件并集成" class="headerlink" title="三：下载配置文件并集成"></a>三：下载配置文件并集成</h3><p>1.在阿里云控制台应用设置找到相应应用，点击<code>iOS配置下载</code>，将我们刚才生成好的配置文件下载下来，如下图所示：</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782621859000.jpg"></p>
+<p>下载完成之后，文件如下图：</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782626642638.jpg"></p>
+<p>将此文件导入到工程中，可以通过<code>CloudPushSDK.autoInit</code>方法自动生成推送配置，下文<strong>功能实现</strong>模块我们将做详细介绍。</p>
+<h3 id="四：下载推送SDK与集成"><a href="#四：下载推送SDK与集成" class="headerlink" title="四：下载推送SDK与集成"></a>四：下载推送SDK与集成</h3><h4 id="1-集成SDK"><a href="#1-集成SDK" class="headerlink" title="1.集成SDK"></a>1.集成SDK</h4><p>一共有两种方法，手动集成和Pod集成，这里我们主要介绍pod集成的方法。</p>
+<p>1.1 在Podfile中添加阿里云仓库source源</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source &#x27;https://github.com/aliyun/aliyun-specs.git&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>1.2 pod 阿里云推送</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod &#x27;AlicloudPush&#x27;, &#x27;~&gt; 1.9.9.5&#x27;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-引入头文件"><a href="#2-引入头文件" class="headerlink" title="2.引入头文件"></a>2.引入头文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import CloudPushSDK</span><br></pre></td></tr></table></figure>
+
+<p>或者OC桥接文件中引入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;CloudPushSDK/CloudPushSDK.h&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-Objc配置"><a href="#3-Objc配置" class="headerlink" title="3.Objc配置"></a>3.Objc配置</h4><p>iOS端集成SDK时需要做<code>-ObjC</code>配置 ，即应用的 <em>TARGETS -&gt; Build Settings -&gt; Linking -&gt; Other Linker Flags</em> ，需添加上<code>-ObjC</code>这个属性，否则推送服务无法正常使用 。</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782636066930.jpg"></p>
+<h4 id="4-打开系统通知"><a href="#4-打开系统通知" class="headerlink" title="4.打开系统通知"></a>4.打开系统通知</h4><p><font color="#ff0000">注意：此处千万不要忘记打开，否则收不到推送，这是一个小点，很难定位</font></p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782638087381.jpg"></p>
+<h3 id="五：功能实现"><a href="#五：功能实现" class="headerlink" title="五：功能实现"></a>五：功能实现</h3><p>推送功能主要在<code>AppDelegate</code>文件中实现</p>
+<h4 id="1-初始化SDK"><a href="#1-初始化SDK" class="headerlink" title="1.初始化SDK"></a>1.初始化SDK</h4><p>使用配置文件<code>AliyunEmasServices-Info.plist</code>直接调用<code>autoInit</code>，这个在前文有提到过。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">setup</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>, <span class="params">launchOptions</span>: [<span class="params">UIApplicationLaunchOptionsKey</span>: <span class="keyword">Any</span>]<span class="operator">?</span>) &#123;</span><br><span class="line">    <span class="type">CloudPushSDK</span>.autoInit &#123; result <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> result <span class="operator">=</span> result <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Push SDK init failed, error: result is nil!&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> result.success &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Push SDK init success, deviceId: <span class="subst">\(String(describing: CloudPushSDK.getDeviceId()))</span>&quot;</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Push SDK init failed, error: <span class="subst">\(String(describing: result.error))</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="comment">// 点击通知将App从关闭状态启动时，将通知打开回执上报</span></span><br><span class="line">    <span class="type">CloudPushSDK</span>.sendNotificationAck(launchOptions)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-请求通知权限并注册远程通知"><a href="#2-请求通知权限并注册远程通知" class="headerlink" title="2.请求通知权限并注册远程通知"></a>2.请求通知权限并注册远程通知</h4><p>第一次安装会弹出请求通知的<code>alert</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">registerAPNS</span>(<span class="params">application</span>: <span class="type">UIApplication</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> center <span class="operator">=</span> <span class="type">UNUserNotificationCenter</span>.current()</span><br><span class="line">    center.delegate <span class="operator">=</span> <span class="keyword">self</span></span><br><span class="line">    <span class="keyword">var</span> options: <span class="type">UNAuthorizationOptions</span> <span class="operator">=</span> [.alert, .sound, .badge]</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">#available</span>(<span class="keyword">iOS</span> <span class="number">12.0</span>, <span class="operator">*</span>) &#123;</span><br><span class="line">        options <span class="operator">=</span> [.alert, .sound, .badge, .providesAppNotificationSettings]</span><br><span class="line">    &#125;</span><br><span class="line">    center.requestAuthorization(options: options) &#123; (granted, error) <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">if</span> granted &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;User authored notification.&quot;</span>)</span><br><span class="line">            <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">                application.registerForRemoteNotifications()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;User denied notification.&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> error <span class="operator">=</span> error &#123;</span><br><span class="line">            log.error(error)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-注册设备并上报deviceToken"><a href="#3-注册设备并上报deviceToken" class="headerlink" title="3.注册设备并上报deviceToken"></a>3.注册设备并上报deviceToken</h4><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">registerDevice</span>(<span class="keyword">_</span> <span class="params">deviceToken</span>: <span class="type">Data</span>) &#123;</span><br><span class="line">    <span class="type">CloudPushSDK</span>.registerDevice(deviceToken) &#123; result <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> result <span class="operator">=</span> result <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Register deviceToken failed, error:: result is nil!&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> result.success &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Register deviceToken success, deviceToken: <span class="subst">\(String(describing: CloudPushSDK.getApnsDeviceToken()))</span>&quot;</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Register deviceToken failed, error: <span class="subst">\(String(describing: result.error))</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">application</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>,</span><br><span class="line">                        <span class="params">didRegisterForRemoteNotificationsWithDeviceToken</span> <span class="params">deviceToken</span>: <span class="type">Data</span>) &#123;</span><br><span class="line">    registerDevice(deviceToken)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注册失败</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">application</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>,</span><br><span class="line">                        <span class="params">didFailToRegisterForRemoteNotificationsWithError</span> <span class="params">error</span>: <span class="type">Error</span>) &#123;</span><br><span class="line">    log.error(<span class="string">&quot;did Fail To Register For Remote Notifications With Error : <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-注册通知类别"><a href="#4-注册通知类别" class="headerlink" title="4.注册通知类别"></a>4.注册通知类别</h4><p>通知类别（category）用于给通知分类，可添加按钮或自定义UI</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">createCustomNotificationCategory</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> action <span class="operator">=</span> <span class="type">UNNotificationAction</span>(identifier: <span class="string">&quot;actionID&quot;</span>, title: <span class="string">&quot;buttonTitle&quot;</span>, options: [])</span><br><span class="line">    <span class="keyword">let</span> category <span class="operator">=</span> <span class="type">UNNotificationCategory</span>(identifier: <span class="string">&quot;CategoryID&quot;</span>, actions: [action],</span><br><span class="line">                                          intentIdentifiers: [],</span><br><span class="line">                                          options: .customDismissAction)</span><br><span class="line">    <span class="type">UNUserNotificationCenter</span>.current().setNotificationCategories([category])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-UNUserNotificationCenterDelegate"><a href="#5-UNUserNotificationCenterDelegate" class="headerlink" title="5.UNUserNotificationCenterDelegate"></a>5.UNUserNotificationCenterDelegate</h4><p><code>UNUserNotificationCenterDelegate</code>代替了<code>UIAppDelegate</code>的旧通知接收方法<code>didReceiveRemoteNotification</code>将接收通知的情况分为app开启时（foreground）和app不在前台时（background）</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app打开时调用</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>,</span><br><span class="line">                                   <span class="params">willPresent</span> <span class="params">notification</span>: <span class="type">UNNotification</span>,</span><br><span class="line">                                   <span class="params">withCompletionHandler</span> <span class="params">completionHandler</span>: <span class="keyword">@escaping</span> (<span class="type">UNNotificationPresentationOptions</span>) -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="comment">// 业务逻辑</span></span><br><span class="line">    handleNotification(notification)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 在app内弹通知</span></span><br><span class="line">    completionHandler([.badge, .alert, .sound])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// app未打开时调用</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>, <span class="params">didReceive</span> <span class="params">response</span>: <span class="type">UNNotificationResponse</span>, <span class="params">withCompletionHandler</span> <span class="params">completionHandler</span>: <span class="keyword">@escaping</span> () -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> userAction <span class="operator">=</span> response.actionIdentifier</span><br><span class="line">    <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="type">UNNotificationDefaultActionIdentifier</span> &#123; </span><br><span class="line">        <span class="comment">// 点击通知栏本身</span></span><br><span class="line">        log.debug(<span class="string">&quot;User opened the notification.&quot;</span>)</span><br><span class="line"></span><br><span class="line">        handleNotification(response.notification)</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="type">UNNotificationDismissActionIdentifier</span> &#123;</span><br><span class="line">        <span class="comment">// 通知dismiss，category创建时传入UNNotificationCategoryOptionCustomDismissAction才可以触发</span></span><br><span class="line">        log.debug(<span class="string">&quot;User dismissed the notification.&quot;</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="string">&quot;actionID&quot;</span> &#123;</span><br><span class="line">        <span class="comment">// 自定义按钮逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    completionHandler()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// iOS12新功能，在app系统通知设置里点击按钮跳到app内通知设置的回调</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>, <span class="params">openSettingsFor</span> <span class="params">notification</span>: <span class="type">UNNotification</span>?) &#123;</span><br><span class="line">    log.debug(<span class="string">&quot;Open notification in-app setting.&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="扩展功能：Notification-Service-Extension（富媒体推送）"><a href="#扩展功能：Notification-Service-Extension（富媒体推送）" class="headerlink" title="扩展功能：Notification Service Extension（富媒体推送）"></a>扩展功能：Notification Service Extension（富媒体推送）</h2><p>众所周知，苹果的apns推送有一个痛点（当然Apple觉得这是亮点），就是<strong>在我们不点击通知时，app是不会执行任何代码的</strong>，这就是静默推送，虽然app能收到推送，但是它不执行任何代码，这极大的保护了手机性能，却也让开发者没办法对推送内容进行修改了。</p>
+<p>那么问题来了，Apple真的不让开发者动态修改推送内容了吗？</p>
+<p>不然，Apple还是很有良心的，在静默推送修改之后，它也推出了另一功能<code>Notification Service Extension</code>，它为我们完美解决了对推送内容进行动态修改的需求，接下来我们就来看一下这一功能：</p>
+<h3 id="了解Notification-Service-Extension"><a href="#了解Notification-Service-Extension" class="headerlink" title="了解Notification Service Extension"></a>了解Notification Service Extension</h3><ul>
+<li><p>iOS 10添加了通知相关的扩展Notification Service Extension，使得通知弹出前可以对通知内容进行修改。</p>
+</li>
+<li><p>iOS远程推送过程如下图所示，APNs推送的通知直接在设备上弹出；</p>
+</li>
+</ul>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782654264853.jpg"></p>
+<ul>
+<li>添加Notification Service Extension后，如下图所示，APNs推送的通知在弹出前，可先到达Extension进行处理。</li>
+</ul>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782655214693.jpg"></p>
+<p><font color="#ff0000">【注意】OpenAPI 需要调用 setiOSMutableContent(true) 接口，这样Extension才可生效。这里的OpenAPI就是阿里云API了，让后台配置一下setiOSMutableContent(true)就好。</font></p>
+<h3 id="使用Notification-Service-Extension"><a href="#使用Notification-Service-Extension" class="headerlink" title="使用Notification Service Extension"></a>使用Notification Service Extension</h3><h4 id="1、点击-file-gt-new-gt-target"><a href="#1、点击-file-gt-new-gt-target" class="headerlink" title="1、点击 file-&gt;new-&gt;target"></a>1、点击 file-&gt;new-&gt;target</h4><p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782671772445.jpg"></p>
+<h4 id="2、选择-iOS-gt-Notification-Service-Extension"><a href="#2、选择-iOS-gt-Notification-Service-Extension" class="headerlink" title="2、选择 iOS-&gt;Notification Service Extension"></a>2、选择 iOS-&gt;Notification Service Extension</h4><p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782674597379.jpg"></p>
+<h4 id="3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成"><a href="#3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成" class="headerlink" title="3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成"></a>3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成</h4><p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782674134664.jpg"></p>
+<h3 id="配置Extension"><a href="#配置Extension" class="headerlink" title="配置Extension"></a>配置Extension</h3><p>创建完成后，主要有两个文件<code>NotificationService.swift</code> 和 <code>info.plist</code></p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782676305569.jpg"></p>
+<p>1、首先，需要在扩展对应的target-&gt;Signing&amp;Capabilities，点击+Capability，添加push notification</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782676848331.jpg"></p>
+<p>2、<code>NotificationService.swift</code>中主要有两个方法</p>
+<p>1）</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">didReceive</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">UNNotificationRequest</span>, <span class="params">withContentHandler</span> <span class="params">contentHandler</span>: <span class="keyword">@escaping</span> (<span class="type">UNNotificationContent</span>) -&gt; <span class="type">Void</span>)</span><br></pre></td></tr></table></figure>
+
+<p>该方法主要是用于在接受到推送时，针对推送内容进行修改，修改完成后展示给用户</p>
+<p>2）</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">serviceExtensionTimeWillExpire</span>()</span><br></pre></td></tr></table></figure>
+
+<p>该方法是用于在方法1）中如果没有向用户展示推送，可以在这里（即apns即将到30s时）向用户推送</p>
+<p>3、推送的消息中必须具备alert和<code>&quot;mutable-content&quot;:&quot;1&quot;</code>（表示推送可修改），这个上文有提到过，OpenAPI 需要调用 <code>setiOSMutableContent(true)</code> 接口，发送出来的消息结构中就会有<code>&quot;mutable-content&quot;:&quot;1&quot;</code>。</p>
+<p>接下来，我们就可以对接收到的推送消息做自定义动态修改了。如下图所示：</p>
+<p><img src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782680346445.jpg"></p>
+<p>然后我们就可以看到手机接收到的推送变了。</p>
+<p>🎉🎉🎉 完结撒花 🎉🎉🎉！</p>
+<p>❤️ Best wish for you ❤️！</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>凤炎忻
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/" title="【iOS】集成阿里云消息推送">https://fengyanxin.github.io/iOS/【iOS】集成阿里云消息推送/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/fengyanxin">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.zhihu.com/people/peng-he-34-93">
+            <span class="icon">
+              <i class="fab fa-zhihu"></i>
+            </span>
+
+            <span class="label">知乎</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/" rel="prev" title="【Tips】Git常用命令汇总">
+      <i class="fa fa-chevron-left"></i> 【Tips】Git常用命令汇总
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81"><span class="nav-number">1.</span> <span class="nav-text">集成阿里云消息推送</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%9A%84%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">基本的业务流程：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%EF%BC%9A%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8"><span class="nav-number">1.1.1.</span> <span class="nav-text">一：创建应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E7%99%BB%E5%BD%95%E9%98%BF%E9%87%8C%E4%BA%91%E6%8E%A7%E5%88%B6%E5%8F%B0%EF%BC%8C%E6%B7%BB%E5%8A%A0%E4%BA%A7%E5%93%81"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">1. 登录阿里云控制台，添加产品</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%82%B9%E5%87%BB%E6%B7%BB%E5%8A%A0%E5%BA%94%E7%94%A8%EF%BC%8C%E5%88%9B%E5%BB%BAios%E5%92%8Candroid%E5%AF%B9%E5%BA%94%E7%9A%84%E5%B9%B3%E5%8F%B0"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">2. 点击添加应用，创建ios和android对应的平台</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%EF%BC%9A%E4%B8%8A%E4%BC%A0%E8%AF%81%E4%B9%A6"><span class="nav-number">1.1.2.</span> <span class="nav-text">二：上传证书</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%8E%B7%E5%8F%96CSR%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">1.获取CSR文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%94%9F%E6%88%90AppID"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">2.生成AppID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%88%9B%E5%BB%BA%E7%94%9F%E4%BA%A7%E5%92%8C%E5%BC%80%E5%8F%91%E6%8E%A8%E9%80%81%E8%AF%81%E4%B9%A6"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">3.创建生产和开发推送证书</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%EF%BC%9A%E4%B8%8B%E8%BD%BD%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%B9%B6%E9%9B%86%E6%88%90"><span class="nav-number">1.1.3.</span> <span class="nav-text">三：下载配置文件并集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%EF%BC%9A%E4%B8%8B%E8%BD%BD%E6%8E%A8%E9%80%81SDK%E4%B8%8E%E9%9B%86%E6%88%90"><span class="nav-number">1.1.4.</span> <span class="nav-text">四：下载推送SDK与集成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%9B%86%E6%88%90SDK"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">1.集成SDK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%BC%95%E5%85%A5%E5%A4%B4%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">2.引入头文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Objc%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">3.Objc配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E6%89%93%E5%BC%80%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%9F%A5"><span class="nav-number">1.1.4.4.</span> <span class="nav-text">4.打开系统通知</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%EF%BC%9A%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.5.</span> <span class="nav-text">五：功能实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%88%9D%E5%A7%8B%E5%8C%96SDK"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">1.初始化SDK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%AF%B7%E6%B1%82%E9%80%9A%E7%9F%A5%E6%9D%83%E9%99%90%E5%B9%B6%E6%B3%A8%E5%86%8C%E8%BF%9C%E7%A8%8B%E9%80%9A%E7%9F%A5"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">2.请求通知权限并注册远程通知</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%B3%A8%E5%86%8C%E8%AE%BE%E5%A4%87%E5%B9%B6%E4%B8%8A%E6%8A%A5deviceToken"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">3.注册设备并上报deviceToken</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E6%B3%A8%E5%86%8C%E9%80%9A%E7%9F%A5%E7%B1%BB%E5%88%AB"><span class="nav-number">1.1.5.4.</span> <span class="nav-text">4.注册通知类别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-UNUserNotificationCenterDelegate"><span class="nav-number">1.1.5.5.</span> <span class="nav-text">5.UNUserNotificationCenterDelegate</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E5%8A%9F%E8%83%BD%EF%BC%9ANotification-Service-Extension%EF%BC%88%E5%AF%8C%E5%AA%92%E4%BD%93%E6%8E%A8%E9%80%81%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">扩展功能：Notification Service Extension（富媒体推送）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3Notification-Service-Extension"><span class="nav-number">1.2.1.</span> <span class="nav-text">了解Notification Service Extension</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Notification-Service-Extension"><span class="nav-number">1.2.2.</span> <span class="nav-text">使用Notification Service Extension</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E7%82%B9%E5%87%BB-file-gt-new-gt-target"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">1、点击 file-&gt;new-&gt;target</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E9%80%89%E6%8B%A9-iOS-gt-Notification-Service-Extension"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2、选择 iOS-&gt;Notification Service Extension</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E9%80%89%E6%8B%A9%E5%88%9B%E5%BB%BAextension%E7%9A%84%E9%A1%B9%E7%9B%AEtarget%EF%BC%8C%E8%BE%93%E5%85%A5%E6%89%A9%E5%B1%95%E5%90%8D%E7%A7%B0%EF%BC%8C%E7%82%B9%E5%87%BBfinish%EF%BC%8C%E5%8D%B3%E5%88%9B%E5%BB%BA%E6%89%A9%E5%B1%95%E5%AE%8C%E6%88%90"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEExtension"><span class="nav-number">1.2.3.</span> <span class="nav-text">配置Extension</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="凤炎忻"
+      src="/images/apple-touch-icon-next.png">
+  <p class="site-author-name" itemprop="name">凤炎忻</p>
+  <div class="site-description" itemprop="description">性浮脱，难酬一道，广涉寡精，杂而不博</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengyanxin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengyanxin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ph18317192001@163.com" title="E-Mail → mailto:ph18317192001@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">凤炎忻</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">16k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">58 分钟</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
