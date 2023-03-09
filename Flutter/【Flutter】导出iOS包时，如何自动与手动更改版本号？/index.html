@@ -19,7 +19,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="【Flutter】导出iOS包时，如何自动与手动更改版本号？1、通过flutter工程更改版本号1）首先，打开项目下的iOS工程，找到info.plist文件，右键以Source Code方式打开，找到版本号配置参数 CFBundleShortVersionString和CFBundleVersion。 一般未做改动之前的效果如下，$(FLUTTER_BUILD_NAME)表示跟随flutter工">
@@ -29,16 +29,16 @@
 <meta property="og:site_name" content="凤炎忻的个人笔记">
 <meta property="og:description" content="【Flutter】导出iOS包时，如何自动与手动更改版本号？1、通过flutter工程更改版本号1）首先，打开项目下的iOS工程，找到info.plist文件，右键以Source Code方式打开，找到版本号配置参数 CFBundleShortVersionString和CFBundleVersion。 一般未做改动之前的效果如下，$(FLUTTER_BUILD_NAME)表示跟随flutter工">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781763866764.jpg">
-<meta property="og:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781777724396.jpg">
-<meta property="og:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781786409936.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/assets/16781763866764.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/assets/16781777724396.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/assets/16781786409936.jpg">
 <meta property="article:published_time" content="2023-03-07T08:58:55.000Z">
 <meta property="article:modified_time" content="2023-03-07T09:18:52.905Z">
 <meta property="article:author" content="凤炎忻">
 <meta property="article:tag" content="iOS">
 <meta property="article:tag" content="Flutter">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781763866764.jpg">
+<meta name="twitter:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/assets/16781763866764.jpg">
 
 <link rel="canonical" href="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/">
 
@@ -52,7 +52,20 @@
     lang   : 'zh-CN'
   };
 </script>
-
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
   <title>【Flutter】导出iOS包时，如何自动与手动更改版本号？ | 凤炎忻的个人笔记</title>
   
 
@@ -234,7 +247,28 @@
                 </span>
             </span>
 
-          <br>
+          
+            <span id="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/" class="post-meta-item leancloud_visitors" data-flag-title="【Flutter】导出iOS包时，如何自动与手动更改版本号？" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
@@ -268,7 +302,7 @@
 <p>2）其次，了解了<code>$(FLUTTER_BUILD_NAME)</code>的含义之后，我们再来打开<code>flutter</code>工程目录下的<code>pubspec.yaml</code>文件。</p>
 <p>如下图所示，我们可以看到关于版本信息的代码<code>version: 0.6.0+1</code>。</p>
 <p>这里的<code>0.6.0</code>就是构建iOS包的版本号，而<code>1</code>就是build号。分别对应前面的<code>CFBundleVersion</code>和<code>CFBundleShortVersionString</code>。</p>
-<p><img src="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781763866764.jpg" alt="16781763866764"></p>
+<p><img data-src="assets/16781763866764.jpg" alt="16781763866764"></p>
 <p>3）最后，了解了上面的信息之后，我们想要修改构建出来的iOS包的版本号就好办了。</p>
 <p>一般有两种办法：</p>
 <p>方法一：更改上图中的版本信息代码</p>
@@ -277,7 +311,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter clean</span><br><span class="line">flutter build ios --release</span><br></pre></td></tr></table></figure>
 
 <p>然后再使用Xcode打开iOS工程，此时我们就可以很清晰的看到自动生成的版本信息文件<code>(Generated)</code>发生变化了。内容如下：</p>
-<p><img src="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781777724396.jpg" alt="16781777724396"></p>
+<p><img data-src="assets/16781777724396.jpg" alt="16781777724396"></p>
 <p>确认完以上信息，我们就可以手动打包了。</p>
 <p>方法二：清理工程，直接用<code>flutter</code>脚本语言打包</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter clean</span><br><span class="line">flutter build ios --build-name=0.6.0 --build-number=1</span><br></pre></td></tr></table></figure>
@@ -289,14 +323,33 @@
 
 <p>这里，<code>$(CURRENT_PROJECT_VERSION)</code>: 表示当前项目版本号；<br><code>$(MARKETING_VERSION)</code>：表示当前项目build号。</p>
 <p>更改以上配置之后，我们就可以在iOS工程配置中手动修改iOS包的版本信息了。效果如下图：</p>
-<p><img src="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781786409936.jpg" alt="16781786409936"></p>
+<p><img data-src="assets/16781786409936.jpg" alt="16781786409936"></p>
 <p>修改完进行打包。</p>
 
     </div>
 
     
     
-    
+    <div class="post-widgets">
+    <div class="likely">
+        <div class="twitter">Tweet</div>
+        <div class="facebook">Share</div>
+        <div class="linkedin">Link</div>
+        <div class="gplus">Plus</div>
+        <div class="vkontakte">Share</div>
+        <div class="odnoklassniki">Class</div>
+        <div class="telegram">Send</div>
+        <div class="whatsapp">Send</div>
+        <div class="pinterest">Pin</div>
+    </div>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.js"></script><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
         
 
 <div>
@@ -386,6 +439,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -514,6 +568,9 @@
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     <span title="站点阅读时长">58 分钟</span>
 </div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script>
+  </div>
 
         
 
@@ -529,7 +586,9 @@
   </div>
 
   
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
@@ -570,6 +629,44 @@
   
 
   
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '7EJkVswo79CmfmbwincRPjrA-gzGzoHsz',
+      appKey     : 'v7t6DWozwkcL2qIDeSC5kupC',
+      placeholder: "说点什么吧！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>
