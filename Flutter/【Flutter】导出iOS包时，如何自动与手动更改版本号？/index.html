@@ -29,16 +29,16 @@
 <meta property="og:site_name" content="凤炎忻的个人笔记">
 <meta property="og:description" content="【Flutter】导出iOS包时，如何自动与手动更改版本号？1、通过flutter工程更改版本号1）首先，打开项目下的iOS工程，找到info.plist文件，右键以Source Code方式打开，找到版本号配置参数 CFBundleShortVersionString和CFBundleVersion。 一般未做改动之前的效果如下，$(FLUTTER_BUILD_NAME)表示跟随flutter工">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/assets/16781763866764.jpg">
-<meta property="og:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/assets/16781777724396.jpg">
-<meta property="og:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/assets/16781786409936.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781763866764.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781777724396.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781786409936.jpg">
 <meta property="article:published_time" content="2023-03-07T08:58:55.000Z">
-<meta property="article:modified_time" content="2023-03-07T09:18:52.905Z">
+<meta property="article:modified_time" content="2023-03-10T01:23:26.949Z">
 <meta property="article:author" content="凤炎忻">
 <meta property="article:tag" content="iOS">
 <meta property="article:tag" content="Flutter">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/assets/16781763866764.jpg">
+<meta name="twitter:image" content="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781763866764.jpg">
 
 <link rel="canonical" href="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/">
 
@@ -233,10 +233,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-03-07 16:58:55 / 修改时间：17:18:52" itemprop="dateCreated datePublished" datetime="2023-03-07T16:58:55+08:00">2023-03-07</time>
+              <time title="创建时间：2023-03-07 16:58:55" itemprop="dateCreated datePublished" datetime="2023-03-07T16:58:55+08:00">2023-03-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-10 09:23:26" itemprop="dateModified" datetime="2023-03-10T09:23:26+08:00">2023-03-10</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -302,7 +308,7 @@
 <p>2）其次，了解了<code>$(FLUTTER_BUILD_NAME)</code>的含义之后，我们再来打开<code>flutter</code>工程目录下的<code>pubspec.yaml</code>文件。</p>
 <p>如下图所示，我们可以看到关于版本信息的代码<code>version: 0.6.0+1</code>。</p>
 <p>这里的<code>0.6.0</code>就是构建iOS包的版本号，而<code>1</code>就是build号。分别对应前面的<code>CFBundleVersion</code>和<code>CFBundleShortVersionString</code>。</p>
-<p><img data-src="assets/16781763866764.jpg" alt="16781763866764"></p>
+<p><img data-src="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781763866764.jpg" alt="16781763866764"></p>
 <p>3）最后，了解了上面的信息之后，我们想要修改构建出来的iOS包的版本号就好办了。</p>
 <p>一般有两种办法：</p>
 <p>方法一：更改上图中的版本信息代码</p>
@@ -311,7 +317,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter clean</span><br><span class="line">flutter build ios --release</span><br></pre></td></tr></table></figure>
 
 <p>然后再使用Xcode打开iOS工程，此时我们就可以很清晰的看到自动生成的版本信息文件<code>(Generated)</code>发生变化了。内容如下：</p>
-<p><img data-src="assets/16781777724396.jpg" alt="16781777724396"></p>
+<p><img data-src="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781777724396.jpg" alt="16781777724396"></p>
 <p>确认完以上信息，我们就可以手动打包了。</p>
 <p>方法二：清理工程，直接用<code>flutter</code>脚本语言打包</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter clean</span><br><span class="line">flutter build ios --build-name=0.6.0 --build-number=1</span><br></pre></td></tr></table></figure>
@@ -323,7 +329,7 @@
 
 <p>这里，<code>$(CURRENT_PROJECT_VERSION)</code>: 表示当前项目版本号；<br><code>$(MARKETING_VERSION)</code>：表示当前项目build号。</p>
 <p>更改以上配置之后，我们就可以在iOS工程配置中手动修改iOS包的版本信息了。效果如下图：</p>
-<p><img data-src="assets/16781786409936.jpg" alt="16781786409936"></p>
+<p><img data-src="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781786409936.jpg" alt="16781786409936"></p>
 <p>修改完进行打包。</p>
 
     </div>
