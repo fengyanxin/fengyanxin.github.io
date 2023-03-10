@@ -1217,10 +1217,13 @@ pre .javascript .function {
   margin-bottom: 10px;
   margin-right: 10px;
   vertical-align: middle;
+  transition-delay: 0s;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff08aa;
+  background: #aa78fa;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2791,4 +2794,75 @@ body {
     background-image: url("https://ziyuan.lruihao.cn/images/bg_cell.png");
     background-size: cover;
   }
+}
+/* 侧边栏图标格式设置 */
+.fa-jinritoutiao {
+  background-image: url("/images/jinritoutiao-fill-round.svg");
+  background-size: 1em 1.5em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.05rem;
+  background-repeat: no-repeat;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 0rem;
+/*鼠标停留在图标上时，图标呈现发光效果*/
+}
+.fa-jinritoutiao:hover {
+  opacity: 1;
+}
+.fa-toutiao {
+  background-image: url("/images/jinritoutiao.svg");
+  background-size: 1em 1em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.5rem;
+  background-repeat: no-repeat;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0rem;
+/*鼠标停留在图标上时，图标呈现发光效果*/
+}
+.fa-toutiao:hover {
+  opacity: 1;
+}
+.fa-baidu {
+  background-image: url("/images/baidu.svg");
+  background-size: 1em 1.5em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.05rem;
+  background-repeat: no-repeat;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 0rem;
+/*鼠标停留在图标上时，图标呈现发光效果*/
+}
+.fa-baidu:hover {
+  opacity: 1;
+}
+.fa-baidu1 {
+  background-image: url("/images/baidu.svg");
+  background-size: 1em 1em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.35rem;
+  background-repeat: no-repeat;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0rem;
+/*鼠标停留在图标上时，图标呈现发光效果*/
+}
+.fa-baidu1:hover {
+  opacity: 1;
+}
+.fa-mail {
+  background-image: url("/images/email.svg");
+  background-size: 1em 1em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.25rem;
+  background-repeat: no-repeat;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 0rem;
+/*鼠标停留在图标上时，图标呈现发光效果*/
+}
+.fa-mail:hover {
+  opacity: 1;
 }
