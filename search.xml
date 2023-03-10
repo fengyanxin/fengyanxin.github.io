@@ -75,6 +75,190 @@
       </tags>
   </entry>
   <entry>
+    <title>Markdown语法</title>
+    <url>/Tips/Markdown/</url>
+    <content><![CDATA[<h1 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h1><h2 id="一、Markdown纯文本基本语法"><a href="#一、Markdown纯文本基本语法" class="headerlink" title="一、Markdown纯文本基本语法"></a>一、Markdown纯文本基本语法</h2><h3 id="1-标题"><a href="#1-标题" class="headerlink" title="1. 标题"></a>1. 标题</h3><p>Markdown 支持两种标题的语法，类 Setext 和类 atx 形式。 类 Setext 形式是用底线的形式，利用 = （最高阶标题）和 - （第二阶标题），例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">This is an H1</span><br><span class="line">=======</span><br><span class="line"></span><br><span class="line">This is an H2</span><br><span class="line">----------</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<p>效果如下：</p>
+<h1 id="This-is-an-H1"><a href="#This-is-an-H1" class="headerlink" title="This is an H1"></a>This is an H1</h1><h2 id="This-is-an-H2"><a href="#This-is-an-H2" class="headerlink" title="This is an H2"></a>This is an H2</h2><p>任何数量的 = 和 - 都可以有效果。</p>
+<p>这里需要注意一点，由于分割线也是 “—-”， 因此在使用分割线时，一定要空一行，不然会把上方的文字识别为第二阶标题。原因会在后面的段落和换行中说到。<br>类 Atx 形式则是在行首插入 1 到 6 个 # ，对应到标题 1 到 6 阶，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># this is H1</span><br><span class="line">## this is H2</span><br><span class="line">###### this is H6</span><br></pre></td></tr></table></figure>
+
+<p>效果不再展示，但要注意的是，标准语法一般在 # 后跟个空格再写文字，不然可能会无法识别。</p>
+<h3 id="2-字体"><a href="#2-字体" class="headerlink" title="2. 字体"></a>2. 字体</h3><h4 id="粗-斜-删除线-下划线"><a href="#粗-斜-删除线-下划线" class="headerlink" title="粗/斜/删除线/下划线"></a>粗/斜/删除线/下划线</h4><p>Markdown 使用星号（*）和底线（_）作为标记强调字词的符号，你可以随便用你喜欢的样式，唯一的限制是，你用什么符号开启标签，就要用什么符号结束。但个人感觉写中文时还是（*）比较好用，因为它不区分全角半角，不用切换输入法。 示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">**这是加粗**</span><br><span class="line">__这也是加粗__</span><br><span class="line">*这是倾斜*</span><br><span class="line">_这也是倾斜_</span><br><span class="line">***这是加粗倾斜***</span><br><span class="line">~~这是加删除线~~</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：<br><strong>这是加粗</strong><br><strong>这也是加粗</strong><br><em>这是倾斜</em><br><em>这也是倾斜</em><br><em><strong>这是加粗倾斜</strong></em><br><del>这是加删除线</del></p>
+<p>注意：强调也可以直接插在文字中间，但是如果你的 * 和 _ 两边都有空白的话，它们就只会被当成普通的符号。 如果要在文字前后直接插入普通的星号或底线，你可以用反斜线 \ 。</p>
+<h4 id="字体、字号、颜色"><a href="#字体、字号、颜色" class="headerlink" title="字体、字号、颜色"></a>字体、字号、颜色</h4><p>如果想要指定字体大小、颜色和类型可以通过<code>&lt;font&gt;&lt;/font&gt;</code>语法来完成。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">指定字体类型： &lt;font face=<span class="string">&quot;黑体&quot;</span>&gt;我是黑体字&lt;/font&gt;</span><br><span class="line">指定字体大小： &lt;font size=<span class="number">12</span>&gt;我是<span class="number">12</span>号字&lt;/font&gt;</span><br><span class="line">指定字体颜色：&lt;font color=#0099ff&gt;我是蓝色字&lt;/font&gt; #0099ff 为颜色的<span class="number">16</span>进制代码</span><br><span class="line">指定字体颜色、字号、字体类型&lt;font color=#0099ff size=<span class="number">12</span> face=<span class="string">&quot;黑体&quot;</span>&gt;黑体&lt;/font&gt;</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p>指定字体类型： <font face="黑体">我是黑体字</font><br>指定字体大小： <font size="12">我是12号字</font><br>指定字体颜色：<font color="#0099ff">我是蓝色字</font> #0099ff 为颜色的16进制代码<br>指定字体颜色、字号、字体类型<font color="#0099ff" size="12" face="黑体">黑体</font></p>
+<h3 id="3-分割线"><a href="#3-分割线" class="headerlink" title="3. 分割线"></a>3. 分割线</h3><p>你可以在一行中用三个以上的星号、减号、底线来建立一个分隔线，行内不能有其他东西。你也可以在星号或是减号中间插入空格。下面每种写法都可以建立分隔线：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* * *</span><br><span class="line">***</span><br><span class="line">**********</span><br><span class="line">- - -</span><br><span class="line">_________________</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<hr>
+<hr>
+<hr>
+<h3 id="4-引用"><a href="#4-引用" class="headerlink" title="4. 引用"></a>4. 引用</h3><p>在引用的文字前加 &gt; 即可。 在 Markdown 文件中建立一个区块引用，那会看起来像是你自己先断好行，然后在每行的最前面加上 &gt; ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">&gt; consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">&gt; Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">&gt; </span><br><span class="line">&gt; Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse</span><br><span class="line">&gt; id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,<br>consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.<br>Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
+</blockquote>
+<p>Markdown 也允许你偷懒只在整个段落的第一行最前面加上 &gt; ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
+</blockquote>
+<p>区块引用可以嵌套（例如：引用内的引用），只要根据层次加上不同数量的 &gt; ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is the first level of quoting.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; This is nested blockquote.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; &gt; &gt; Back to the first level.</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>This is the first level of quoting.</p>
+<blockquote>
+<p>This is nested blockquote.</p>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Back to the first level.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>引用的区块内也可以使用其他的 Markdown 语法，包括标题、列表、代码区块等。</p>
+<h3 id="5-列表"><a href="#5-列表" class="headerlink" title="5. 列表"></a>5. 列表</h3><p>Markdown 支持有序列表和无序列表。 无序列表使用星号、加号或是减号作为列表标记。 示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 列表内容</span><br><span class="line">+ 列表内容</span><br><span class="line">* 列表内容</span><br><span class="line">注意：- + * 跟内容之间都要有一个空格</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<ul>
+<li>列表内容</li>
+</ul>
+<ul>
+<li>列表内容</li>
+</ul>
+<ul>
+<li>列表内容</li>
+</ul>
+<p>有序列表则使用数字接着一个英文句点作为标记。 示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. 列表内容</span><br><span class="line">2. 列表内容</span><br><span class="line">3. 列表内容</span><br><span class="line">注意：序号跟内容之间要有空格 </span><br></pre></td></tr></table></figure>
+<p>效果如下： </p>
+<ol>
+<li>列表内容</li>
+<li>列表内容</li>
+<li>列表内容</li>
+</ol>
+<p>列表可以嵌套，上一级和下一级之间敲三个空格即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* 一级无序列表内容</span><br><span class="line"></span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<ul>
+<li><p>一级无序列表内容</p>
+<ul>
+<li>二级无序列表内容</li>
+<li>二级无序列表内容</li>
+<li>二级无序列表内容</li>
+</ul>
+</li>
+</ul>
+<p>要让列表看起来更漂亮，你可以把内容用固定的缩进整理好：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span><br><span class="line">    Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,</span><br><span class="line">    viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.</span><br><span class="line">    Suspendisse id sem consectetuer libero luctus adipiscing</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<ul>
+<li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.<br>  Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,<br>  viverra nec, fringilla in, laoreet vitae, risus.</li>
+<li>Donec sit amet nisl. Aliquam semper ipsum sit amet velit.<br>  Suspendisse id sem consectetuer libero luctus adipiscing</li>
+</ul>
+<p>列表项目可以包含多个段落，每个项目下的段落都必须缩进 4 个空格或是 1 个制表符：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1.  This is a list item with two paragraphs. Lorem ipsum dolor</span><br><span class="line">    sit amet, consectetuer adipiscing elit. Aliquam hendrerit</span><br><span class="line">    mi posuere lectus.</span><br><span class="line"></span><br><span class="line">    Vestibulum enim wisi, viverra nec, fringilla in, laoreet</span><br><span class="line">    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum</span><br><span class="line">    sit amet velit.</span><br><span class="line"></span><br><span class="line">2.  Suspendisse id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
+<p>效果如下： </p>
+<ol>
+<li><p>This is a list item with two paragraphs. Lorem ipsum dolor<br> sit amet, consectetuer adipiscing elit. Aliquam hendrerit<br> mi posuere lectus.</p>
+<p> Vestibulum enim wisi, viverra nec, fringilla in, laoreet<br> vitae, risus. Donec sit amet nisl. Aliquam semper ipsum<br> sit amet velit.</p>
+</li>
+<li><p> Suspendisse id sem consectetuer libero luctus adipiscing.</p>
+</li>
+</ol>
+<p>如果你每行都有缩进，看起来会看好很多，当然，再次地，如果你很懒惰，Markdown 也允许：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*   This is a list item with two paragraphs.</span><br><span class="line"></span><br><span class="line">    This is the second paragraph in the list item. You&#x27;re</span><br><span class="line">only required to indent the first line. Lorem ipsum dolor</span><br><span class="line">sit amet, consectetuer adipiscing elit.</span><br><span class="line"></span><br><span class="line">*   Another item in the same list.</span><br></pre></td></tr></table></figure>
+
+<p>效果不再展示。 此外： 如果要在列表项目内放进引用，那 &gt; 就需要缩进， 如果要放代码区块的话，该区块就需要缩进两次，也就是 8 个空格或是 2 个制表符。</p>
+<h3 id="6-表格"><a href="#6-表格" class="headerlink" title="6. 表格"></a>6. 表格</h3><p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">表头|表头|表头</span><br><span class="line">---|:--:|---:</span><br><span class="line">内容|内容|内容</span><br><span class="line">内容|内容|内容</span><br><span class="line"></span><br><span class="line">第二行分割表头和内容。</span><br><span class="line">- 有一个就行，为了对齐，多加了几个</span><br><span class="line">文字默认居左</span><br><span class="line">-两边加：表示文字居中</span><br><span class="line">-右边加：表示文字居右</span><br><span class="line">注：原生的语法两边都要用 | 包起来。此处省略</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<table>
+<thead>
+<tr>
+<th>表头</th>
+<th align="center">表头</th>
+<th align="right">表头</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>内容</td>
+<td align="center">内容</td>
+<td align="right">内容</td>
+</tr>
+<tr>
+<td>内容</td>
+<td align="center">内容</td>
+<td align="right">内容</td>
+</tr>
+</tbody></table>
+<h3 id="7-代码"><a href="#7-代码" class="headerlink" title="7. 代码"></a>7. 代码</h3><p>在Markdown中加入代码块有两种方式： 第一种，只要简单地缩进 4 个空格或是 1 个制表符就可以:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这是一个普通段落：</span><br><span class="line"></span><br><span class="line">    这是一个代码区块。</span><br><span class="line"></span><br><span class="line">(当然，前面要有一个空行和前面的文字分隔开)</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p>这是一个普通段落：</p>
+<pre><code>这是一个代码区块。
+</code></pre>
+<p>第二种方法似乎是更为常用， 单行代码：代码之间分别用一个反引号包起来即可；</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这里有一句代码`代码内容`。</span><br></pre></td></tr></table></figure>
+<p>效果如下：<br>这里有一句代码<code>代码内容</code>。</p>
+<p>代码块：代码之间分别用三个反引号包起来，且两边的反引号单独占一行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\```</span><br><span class="line">  代码...</span><br><span class="line">  代码...</span><br><span class="line">  代码...</span><br><span class="line">\```</span><br><span class="line">\ 是为了防止转译，实际是没有的。</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">代码...</span><br><span class="line">代码...</span><br><span class="line">代码...</span><br></pre></td></tr></table></figure>
+<p>还可以在上面的 ``` 后面注明你的代码类型，可以产生相应的代码高亮。</p>
+<h3 id="8-段落和换行"><a href="#8-段落和换行" class="headerlink" title="8. 段落和换行"></a>8. 段落和换行</h3><p>一个 Markdown 段落是由一个或多个连续的文本行组成，它的前后要有一个以上的空行（空行的定义是显示上看起来像是空的，便会被视为空行。比方说，若某一行只包含空格和制表符，则该行也会被视为空行）。普通段落不该用空格或制表符来缩进。 我们在两个不同的文字块之间，一定要空行以示区分，不然就会被归入同一文字块中。 </p>
+<h4 id="换行"><a href="#换行" class="headerlink" title="换行"></a>换行</h4><p>Markdown 允许段落内的强迫换行（插入换行符）。 如果想要空一行，在插入处先按入两个以上的空格然后回车，即可。</p>
+<ul>
+<li>方法1：连敲2个以上空格+enter键；</li>
+<li>方法2：利用html语法，<code>&lt;br&gt;</code>。</li>
+</ul>
+<h4 id="缩进-空格"><a href="#缩进-空格" class="headerlink" title="缩进/空格"></a>缩进/空格</h4><p>但有时也可以使用标记来强制空行和空格，比如需要首行缩进的时候： 一个空格大小的表示：\  或 \  两个空格的大小表示：\ 或 \ 不换行空格：\ 或 \ 强制空行： \</p>
+<blockquote>
+<p>由于平时中文的排版习惯，首行通常缩进两字符什么的，所以顺便也了解以下操作,在markdown里这个还稍微有点麻烦，不是敲两下空格键就搞定的。这里需要借用html方面的空格实体。<br>首先明确1个汉字=2个空格大小<br>1、一个空格大小的表示&ensp; &#8194;两种用法显示效果一致。<br>2、两个空格大小的表示&emsp; &#8195;两种用法显示效果一致。<br>3、不换行空格的表示&nbsp; &#160;也是占一个空格的宽度大小。</p>
+</blockquote>
+<h3 id="9-插入超链接"><a href="#9-插入超链接" class="headerlink" title="9. 插入超链接"></a>9. 插入超链接</h3><p>链接分两种。一种是链接到其他网上地址的，还有一种是链接到本文中的某个位置的。<br>两种的基本格式一样<code>[]()</code>。需要添加链接的文字内容用<code>[方括号]</code>来括起来，后面紧跟着带有网址的<code>(圆括号)</code>，如果要加上连接的title文字，在网址后面，把 title文字放到双引号里面。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[超链接名](超链接地址 &quot;超链接title&quot;)</span><br><span class="line">title可加可不加</span><br><span class="line">文字链接 [链接名称](http://链接网址)</span><br><span class="line">网址链接 &lt;http://链接网址&gt;</span><br><span class="line">实例：</span><br><span class="line">[Github](https://github.com/fengyanxin) &amp;emsp;&lt;https://github.com/fengyanxin&gt;</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p><a href="https://github.com/fengyanxin">Github</a>：<a href="https://github.com/fengyanxin">https://github.com/fengyanxin</a></p>
+<h3 id="10-插入图片"><a href="#10-插入图片" class="headerlink" title="10. 插入图片"></a>10. 插入图片</h3><p>添加图片形式和链接相似，只需要在链接的基础上前方加一个<code>！</code> 感叹号。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">![图片alt](图片地址  &quot;optional title&quot;)</span><br><span class="line">图片alt就是显示在图片下面的文字，相当于对图片内容的解释，可以不写。</span><br><span class="line">图片地址链接可以是图片的本地地址或网址。</span><br><span class="line">图片optional title是图片的标题，当鼠标悬置于图片上时显示的内容。title可加可不加。</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p><img data-src="/Tips/Markdown/16781754751832.jpg"></p>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【Flutter】导出iOS包时，如何自动与手动更改版本号？</title>
     <url>/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/</url>
     <content><![CDATA[<h1 id="【Flutter】导出iOS包时，如何自动与手动更改版本号？"><a href="#【Flutter】导出iOS包时，如何自动与手动更改版本号？" class="headerlink" title="【Flutter】导出iOS包时，如何自动与手动更改版本号？"></a>【Flutter】导出iOS包时，如何自动与手动更改版本号？</h1><h2 id="1、通过flutter工程更改版本号"><a href="#1、通过flutter工程更改版本号" class="headerlink" title="1、通过flutter工程更改版本号"></a>1、通过flutter工程更改版本号</h2><p>1）首先，打开项目下的iOS工程，找到<code>info.plist</code>文件，右键以<code>Source Code</code>方式打开，找到版本号配置参数 <code>CFBundleShortVersionString</code>和<code>CFBundleVersion</code>。</p>
@@ -117,6 +301,126 @@
         <tag>iOS</tag>
         <tag>Flutter</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>【Hexo】Mac 上使用Hexo + Github搭建个人博客</title>
+    <url>/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="【Hexo】Mac-上使用Hexo-Github搭建个人博客"><a href="#【Hexo】Mac-上使用Hexo-Github搭建个人博客" class="headerlink" title="【Hexo】Mac 上使用Hexo + Github搭建个人博客"></a>【Hexo】Mac 上使用Hexo + Github搭建个人博客</h1><h2 id="为什么要用Hexo-Github？"><a href="#为什么要用Hexo-Github？" class="headerlink" title="为什么要用Hexo + Github？"></a>为什么要用Hexo + Github？</h2><h3 id="Hexo介绍"><a href="#Hexo介绍" class="headerlink" title="Hexo介绍"></a>Hexo介绍</h3><p>Hexo是一款基于Nodejs的，快速、简洁且高效的博客框架。它具有丰富的插件和主题，具有超快的速度，支持Makedown语法，可以方便快捷的编写博客文档。同时还支持node命令，可以一键部署到GitHub Pages, Heroku 或其他平台。更详细的信息可以看一下 <a href="https://hexo.io/zh-cn">Hexo官网</a> 。</p>
+<p>值得一提的是，它在github上的<em>star</em>现在已经达到了<a href="https://github.com/hexojs/hexo">36.3k</a>，优不优秀可见一斑。</p>
+<span id="more"></span>
+
+<p>Hexo主要有以下特点：</p>
+<ol>
+<li><p>超快速度：<em>Node.js</em>所带来的超快生成速度，可以让上百个页面在几秒内完成渲染。</p>
+</li>
+<li><p>支持 <em>Markdown</em>：Hexo 支持 GitHub Flavored Markdown 的所有功能，甚至可以整合 Octopress 的大多数插件。</p>
+</li>
+<li><p>一键部署：只需一条指令即可部署到 <em>GitHub Pages, Heroku</em> 或其他平台。</p>
+</li>
+<li><p>插件或可扩展性：强大的 API 带来无限的可能，与数种模板引擎（<em>EJS，Pug，Nunjucks</em>）和工具（<em>Babel，PostCSS，Less/Sass</em>）轻易集成。</p>
+</li>
+</ol>
+<h3 id="Guthub"><a href="#Guthub" class="headerlink" title="Guthub"></a>Guthub</h3><p>GitHub 那就更不用说了，做程序员的都知道，它是多nice的一个东西。</p>
+<p>今天我们要说的主要是它提供的一个功能：<em>GitHub Pages</em> ，GitHub Pages 允许每个账户创建一个名为 {username}.<a href="http://github.io/">http://github.io</a> 的仓库，另外它还会自动为这个仓库分配一个 <a href="http://github.io/">http://github.io</a> 的二级域名，这就为我们搭建个人博客提供了很大的方便，既为我们解决了域名、服务器的问题，又为我们提供了一个稳定且免费的静态站点。</p>
+<h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><ol>
+<li>官网下载<br>下载地址：<a href="https://nodejs.org/en/">https://nodejs.org/en/</a></li>
+</ol>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778370777438.jpg" alt="16778370777438"></p>
+<ol start="2">
+<li>使用homebrew安装</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">## 搜索现有node版本</span><br><span class="line">brew search node</span><br><span class="line">## 安装指定版本</span><br><span class="line">brew install node@x</span><br></pre></td></tr></table></figure>
+<p>安装完成之后，可以用 <em>npm -v</em> 查询验证，如果不指定版本安装为最新版本</p>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778374510393.jpg" alt="16778374510393"></p>
+<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><ol>
+<li>使用外网下载（相对比较慢）</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用命令去安装Hexo</span></span><br><span class="line">npm install -g hexo-cli </span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>更换国内镜像后下载</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用命令安装淘宝镜像：</span></span><br><span class="line">npm install -g cnpm --registry=<span class="attr">https</span>:<span class="comment">//registry.npm.taobao.org</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用淘宝源安装Hexo</span></span><br><span class="line">cnpm install -g hexo-cli </span><br></pre></td></tr></table></figure>
+<p>安装成功后，可以使用 <em>hexo -v</em> 命令查看一下hexo版本：</p>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778379318597.jpg" alt="16778379318597"></p>
+<h2 id="初始化Hexo-Blog"><a href="#初始化Hexo-Blog" class="headerlink" title="初始化Hexo Blog"></a>初始化Hexo Blog</h2><h3 id="新建一个文件夹"><a href="#新建一个文件夹" class="headerlink" title="新建一个文件夹"></a>新建一个文件夹</h3><p>我这里创建一个名为Blogs的文件夹，并进入该文件夹内：</p>
+<h3 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 初始化hexo</span></span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+<p>初始化成功如下：</p>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778382111564.jpg" alt="16778382111564"></p>
+<p>这时候Blogs下的目录结构如下：</p>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778382603905.jpg" alt="16778382603905"></p>
+<h3 id="本地启动Hexo"><a href="#本地启动Hexo" class="headerlink" title="本地启动Hexo"></a>本地启动Hexo</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 启动Hexo</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778384529301.jpg" alt="16778384529301"></p>
+<h3 id="浏览器打开博客网站"><a href="#浏览器打开博客网站" class="headerlink" title="浏览器打开博客网站"></a>浏览器打开博客网站</h3><p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778384888543.jpg" alt="16778384888543"></p>
+<h2 id="创建博客文章"><a href="#创建博客文章" class="headerlink" title="创建博客文章"></a>创建博客文章</h2><h3 id="创建博客"><a href="#创建博客" class="headerlink" title="创建博客"></a>创建博客</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建一篇博客</span></span><br><span class="line">hexo n <span class="string">&quot;first blog&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>文章在Blogs目录下的结构如下：</p>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778386968316.jpg" alt="16778386968316"></p>
+<h3 id="清理项目缓存"><a href="#清理项目缓存" class="headerlink" title="清理项目缓存"></a>清理项目缓存</h3><p>新增博客文章或者修改博客文章内容，需要执行此命令:</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 清理之前生成的网站</span></span><br><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
+
+<h3 id="重新生成博客"><a href="#重新生成博客" class="headerlink" title="重新生成博客"></a>重新生成博客</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 重新生成博客</span></span><br><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<h3 id="再次启动项目"><a href="#再次启动项目" class="headerlink" title="再次启动项目"></a>再次启动项目</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 再次启动博客网站</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>浏览器页面展示如下：</p>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778388704782.jpg" alt="16778388704782"></p>
+<h2 id="修改网站主题"><a href="#修改网站主题" class="headerlink" title="修改网站主题"></a>修改网站主题</h2><p>Hexo框架默认的是landscape主题，Hexo上有三百多种主题，大家可以上Hexo官网选择自己喜欢的<a href="https://hexo.io/themes/">主题</a>，我这里以next为例：</p>
+<h3 id="下载next主题"><a href="#下载next主题" class="headerlink" title="下载next主题"></a>下载next主题</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下载next</span></span><br><span class="line">git clone <span class="attr">https</span>:<span class="comment">//github.com/theme-next/hexo-theme-next themes/next</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778391682864.jpg" alt="16778391682864"></p>
+<p>我们下载的主题都存放在Blogs/themes文件夹下：</p>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778392610610.jpg" alt="16778392610610"></p>
+<h3 id="修改项目配置文件"><a href="#修改项目配置文件" class="headerlink" title="修改项目配置文件"></a>修改项目配置文件</h3><p>主题下载下来之后，我们需要在项目配置文件_config.yml里面修改我们的主题：</p>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778393394648.jpg" alt="16778393394648"></p>
+<p>把默认的landscape修改为我们下载好的主题 next</p>
+<h3 id="重新生成项目"><a href="#重新生成项目" class="headerlink" title="重新生成项目"></a>重新生成项目</h3><p>这时候再执行我们Hexo三连：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 清理项目缓存</span></span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重新生成项目</span></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment">// 本地启动项目</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>Tips：重新生成项目和本地启动项目可以合并： <em>hexo g &amp; hexo s</em><br>再次打开项目，效果图如下：</p>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778394696679.jpg" alt="16778394696679"></p>
+<p>到这里，我们的主题修改就完成了，后期我们可以根据自己的需要去修改next的配置文件，让我们的博客网站更加个性化。</p>
+<p>下一篇文章我将说说如何修改主题让我们的博客网站更具个性化。</p>
+<p>关于Hexo搭建博客到这里就讲得差不多了，下面我们就想怎么把博客部署到Github上。</p>
+<h2 id="部署博客到Github"><a href="#部署博客到Github" class="headerlink" title="部署博客到Github"></a>部署博客到Github</h2><p>首先，你得要有一个自己的Github账号吧，我相信99.99%的开发者都是有Github账号的，如果你是那0.01%，请前往<a href="https://github.com/">Github</a>自行注册。</p>
+<h3 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h3><p>在Github里创建一个存放博客项目的仓库，操作如下：</p>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778397130902.jpg" alt="16778397130902"></p>
+<p>这里有几个注意点：</p>
+<ol>
+<li>仓库的名称必须与你Github账号名相同</li>
+<li>仓库必须以gitHub.io结尾（这里我已经创建过了，所以报错）</li>
+<li>使用GitHub Pages最好选 <em>Public</em> repo（Private需要付费）</li>
+</ol>
+<p>比如你Github账号名叫：zhangsan，那你新建的这个仓库名就叫：zhangsan.github.io</p>
+<p>创建之后，我们就有了一个存放博客项目仓库：</p>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778399347942.jpg" alt="16778399347942"></p>
+<h3 id="安装Hexo部署插件"><a href="#安装Hexo部署插件" class="headerlink" title="安装Hexo部署插件"></a>安装Hexo部署插件</h3><p>进入到Blogs目录下，安装部署插件：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">#使用淘宝镜像安装</span><br><span class="line">cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改项目配置文件-1"><a href="#修改项目配置文件-1" class="headerlink" title="修改项目配置文件"></a>修改项目配置文件</h3><p>好了，万事俱备，只欠修改 <em>_config.yml</em> 文件了，打开_config.yml文件，拖拽到最后，修改文件：</p>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778401117276.jpg" alt="16778401117276"></p>
+<p>修改为：</p>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778401892146.jpg" alt="16778401892146"></p>
+<p>注意：<em>repo</em> 为你刚创建的Github项目的地址，如果你是使用的 <em>vim</em> 打开的 <em>_config.yml</em>，记得修改了要 <em>:wq</em> 保存退出</p>
+<h3 id="重新生成项目-1"><a href="#重新生成项目-1" class="headerlink" title="重新生成项目"></a>重新生成项目</h3><p>清理项目缓存：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
+
+<p>重新生成博客：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<p>部署到云端（Github）:</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>注意：这里每次使用 <em>hexo d</em> 部署到Github为了安全都要求输入账号密码，如果你不希望每次都输入账号密码，可以跟博主一样设置Github的 <em>SSH Keys</em>，以后每次发布到Github就不需要输入账号密码了。</p>
+<p>访问云端博客主页</p>
+<p>访问地址：https://博客仓库名.github.io<br>比如我的博客地址：<a href="https://fengyanxin.github.io/">https://fengyanxin.github.io</a></p>
+<p>可以在以下路径查看：</p>
+<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778403847380.jpg" alt="16778403847380"></p>
+<p>最后</p>
+<p>基本上到这里，属于我们自己的博客就搭建完成啦，整个搭建流程如果不出错半个小时之内其实是可以搞定的，但是这路哪里那么好走呢，每个人去搭建的过程中或多或少都会遇到一些问题，我自己在搭建的过程中也碰到了一些问题，我会抽空把遇到的问题详细整理出来，希望能够帮助大家如果要搭建博客的时候少踩点坑。</p>
+<p>大兄弟，都看到这里了，就不要吝啬你的小星星了，为博主点个赞再走吧～</p>
+]]></content>
   </entry>
   <entry>
     <title>【Tips】ASCII码对应表</title>
@@ -732,131 +1036,6 @@
       </categories>
       <tags>
         <tag>Tips</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【iOS】集成阿里云消息推送</title>
-    <url>/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/</url>
-    <content><![CDATA[<h1 id="集成阿里云消息推送"><a href="#集成阿里云消息推送" class="headerlink" title="集成阿里云消息推送"></a>集成阿里云消息推送</h1><h2 id="基本的业务流程："><a href="#基本的业务流程：" class="headerlink" title="基本的业务流程："></a>基本的业务流程：</h2><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782576576028.jpg"></p>
-<span id="more"></span>
-
-<p>集成阿里云消息推送的流程基本如上图所示，还是比较简单的，我们只需要重点关注一下红框中的部分。</p>
-<p>下面我们就来分步骤讲解一下：</p>
-<h3 id="一：创建应用"><a href="#一：创建应用" class="headerlink" title="一：创建应用"></a>一：创建应用</h3><p>创建应用获取初始化推送所需的AppKey和Secret</p>
-<h4 id="1-登录阿里云控制台，添加产品"><a href="#1-登录阿里云控制台，添加产品" class="headerlink" title="1. 登录阿里云控制台，添加产品"></a>1. 登录阿里云控制台，添加产品</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782584388892.jpg"></p>
-<h4 id="2-点击添加应用，创建ios和android对应的平台"><a href="#2-点击添加应用，创建ios和android对应的平台" class="headerlink" title="2. 点击添加应用，创建ios和android对应的平台"></a>2. 点击添加应用，创建ios和android对应的平台</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782585058067.jpg"></p>
-<h3 id="二：上传证书"><a href="#二：上传证书" class="headerlink" title="二：上传证书"></a>二：上传证书</h3><p>集成阿里云推送，我们需要在阿里云控制台上传两个证书，分别是<strong>开发环境的推送证书</strong>和<strong>生成环境的推送证书</strong>，如下图所示：</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782586952344.jpg"></p>
-<p>那么我们要如何获取这两个证书呢？</p>
-<h4 id="1-获取CSR文件"><a href="#1-获取CSR文件" class="headerlink" title="1.获取CSR文件"></a>1.获取CSR文件</h4><p>1.1 在Mac的应用程序中打开钥匙串访问，在顶部菜单栏中选择钥匙串访问&gt;证书助理&gt;从证书颁发机构请求证书</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782592582016.jpg"></p>
-<p>1.2 在弹出的证书信息中，输入邮箱地址，设置选择储存到磁盘，单击继续将CSR文件存储到本地</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782593206219.jpg"></p>
-<p>1.3 生成之后，在目录下找到此文件</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782593919466.jpg"></p>
-<h4 id="2-生成AppID"><a href="#2-生成AppID" class="headerlink" title="2.生成AppID"></a>2.生成AppID</h4><p>2.1 登录 <a href="https://developer.apple.com/account">Apple Developer</a>，选择Certificates，Identifiers &amp; Profiles选项</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782595884680.jpg"></p>
-<p>2.2 选择Identifiers，项目如果是自动证书管理的话我们可以看到一些以 <code>XC</code>开头的 Bundle ID ，如下图所示：</p>
-<p>如果是手动证书管理，需要点击<code>+</code>号创建 App ID，此处我们自动证书管理为例。</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782596990503.jpg"></p>
-<p>2.3 在上图的 Identifiers 列表中选择需要配置推送的<br>Bundle ID。（如果列表中没有，可以在Xcode工程中配置）</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782603043050.jpg"></p>
-<p>在上图配置文件中填写Bundle ID，然后勾选<code>Automatically manage signing</code>，在下图弹框中选择<code>Enable Automatic</code>，然后回到<a href="https://developer.apple.com/account">Apple Developer</a>，就可以<code>Identifiers</code>列表中看到我们刚才设置的<code>Bundle ID</code>了。</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782604788362.jpg"></p>
-<p>2.4 点击Identifiers 列表进入详情，向下划动找到<code>Push Notification</code>选项，勾选开启远程推送服务</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782606658935.jpg"></p>
-<h4 id="3-创建生产和开发推送证书"><a href="#3-创建生产和开发推送证书" class="headerlink" title="3.创建生产和开发推送证书"></a>3.创建生产和开发推送证书</h4><p>3.1 点击上图中的<code>Edit</code>按钮，进入配置页面</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782609693712.jpg"></p>
-<p>3.2 单击<code>Choose File</code>上传已获取到的CSR文件</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782610616057.jpg"></p>
-<p>3.3 生成后，<code>download</code>到本地</p>
-<p>3.4 双击打开并安装证书，系统会自动将其导入到钥匙串中</p>
-<p>3.5 在Mac中打开钥匙串应用，选择登录&gt;证书，分别右键导出开发环境（<code>Apple Sandbox Push Services</code>）和生产环境(<code>Apple Push Services</code>)的<code>.P12</code>证书文件</p>
-<p><font color="#ff0000">此处导出.p12文件时需要设置密码，阿里云配置证书时必填</font></p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782614735761.jpg"></p>
-<p>导出结果如下：</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782616606924.jpg"></p>
-<p>3.6 在阿里云控制台配置相应的开发和生产证书，如下图所示：</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782617708004.jpg"></p>
-<h3 id="三：下载配置文件并集成"><a href="#三：下载配置文件并集成" class="headerlink" title="三：下载配置文件并集成"></a>三：下载配置文件并集成</h3><p>1.在阿里云控制台应用设置找到相应应用，点击<code>iOS配置下载</code>，将我们刚才生成好的配置文件下载下来，如下图所示：</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782621859000.jpg"></p>
-<p>下载完成之后，文件如下图：</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782626642638.jpg"></p>
-<p>将此文件导入到工程中，可以通过<code>CloudPushSDK.autoInit</code>方法自动生成推送配置，下文<strong>功能实现</strong>模块我们将做详细介绍。</p>
-<h3 id="四：下载推送SDK与集成"><a href="#四：下载推送SDK与集成" class="headerlink" title="四：下载推送SDK与集成"></a>四：下载推送SDK与集成</h3><h4 id="1-集成SDK"><a href="#1-集成SDK" class="headerlink" title="1.集成SDK"></a>1.集成SDK</h4><p>一共有两种方法，手动集成和Pod集成，这里我们主要介绍pod集成的方法。</p>
-<p>1.1 在Podfile中添加阿里云仓库source源</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">source &#x27;https://github.com/aliyun/aliyun-specs.git&#x27;</span><br></pre></td></tr></table></figure>
-
-<p>1.2 pod 阿里云推送</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pod &#x27;AlicloudPush&#x27;, &#x27;~&gt; 1.9.9.5&#x27;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-引入头文件"><a href="#2-引入头文件" class="headerlink" title="2.引入头文件"></a>2.引入头文件</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import CloudPushSDK</span><br></pre></td></tr></table></figure>
-
-<p>或者OC桥接文件中引入</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#import &lt;CloudPushSDK/CloudPushSDK.h&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-Objc配置"><a href="#3-Objc配置" class="headerlink" title="3.Objc配置"></a>3.Objc配置</h4><p>iOS端集成SDK时需要做<code>-ObjC</code>配置 ，即应用的 <em>TARGETS -&gt; Build Settings -&gt; Linking -&gt; Other Linker Flags</em> ，需添加上<code>-ObjC</code>这个属性，否则推送服务无法正常使用 。</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782636066930.jpg"></p>
-<h4 id="4-打开系统通知"><a href="#4-打开系统通知" class="headerlink" title="4.打开系统通知"></a>4.打开系统通知</h4><p><font color="#ff0000">注意：此处千万不要忘记打开，否则收不到推送，这是一个小点，很难定位</font></p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782638087381.jpg"></p>
-<h3 id="五：功能实现"><a href="#五：功能实现" class="headerlink" title="五：功能实现"></a>五：功能实现</h3><p>推送功能主要在<code>AppDelegate</code>文件中实现</p>
-<h4 id="1-初始化SDK"><a href="#1-初始化SDK" class="headerlink" title="1.初始化SDK"></a>1.初始化SDK</h4><p>使用配置文件<code>AliyunEmasServices-Info.plist</code>直接调用<code>autoInit</code>，这个在前文有提到过。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">setup</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>, <span class="params">launchOptions</span>: [<span class="params">UIApplicationLaunchOptionsKey</span>: <span class="keyword">Any</span>]<span class="operator">?</span>) &#123;</span><br><span class="line">    <span class="type">CloudPushSDK</span>.autoInit &#123; result <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> result <span class="operator">=</span> result <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Push SDK init failed, error: result is nil!&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> result.success &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Push SDK init success, deviceId: <span class="subst">\(String(describing: CloudPushSDK.getDeviceId()))</span>&quot;</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Push SDK init failed, error: <span class="subst">\(String(describing: result.error))</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="comment">// 点击通知将App从关闭状态启动时，将通知打开回执上报</span></span><br><span class="line">    <span class="type">CloudPushSDK</span>.sendNotificationAck(launchOptions)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-请求通知权限并注册远程通知"><a href="#2-请求通知权限并注册远程通知" class="headerlink" title="2.请求通知权限并注册远程通知"></a>2.请求通知权限并注册远程通知</h4><p>第一次安装会弹出请求通知的<code>alert</code></p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">registerAPNS</span>(<span class="params">application</span>: <span class="type">UIApplication</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> center <span class="operator">=</span> <span class="type">UNUserNotificationCenter</span>.current()</span><br><span class="line">    center.delegate <span class="operator">=</span> <span class="keyword">self</span></span><br><span class="line">    <span class="keyword">var</span> options: <span class="type">UNAuthorizationOptions</span> <span class="operator">=</span> [.alert, .sound, .badge]</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">#available</span>(<span class="keyword">iOS</span> <span class="number">12.0</span>, <span class="operator">*</span>) &#123;</span><br><span class="line">        options <span class="operator">=</span> [.alert, .sound, .badge, .providesAppNotificationSettings]</span><br><span class="line">    &#125;</span><br><span class="line">    center.requestAuthorization(options: options) &#123; (granted, error) <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">if</span> granted &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;User authored notification.&quot;</span>)</span><br><span class="line">            <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">                application.registerForRemoteNotifications()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;User denied notification.&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> error <span class="operator">=</span> error &#123;</span><br><span class="line">            log.error(error)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-注册设备并上报deviceToken"><a href="#3-注册设备并上报deviceToken" class="headerlink" title="3.注册设备并上报deviceToken"></a>3.注册设备并上报deviceToken</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">registerDevice</span>(<span class="keyword">_</span> <span class="params">deviceToken</span>: <span class="type">Data</span>) &#123;</span><br><span class="line">    <span class="type">CloudPushSDK</span>.registerDevice(deviceToken) &#123; result <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> result <span class="operator">=</span> result <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Register deviceToken failed, error:: result is nil!&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> result.success &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Register deviceToken success, deviceToken: <span class="subst">\(String(describing: CloudPushSDK.getApnsDeviceToken()))</span>&quot;</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Register deviceToken failed, error: <span class="subst">\(String(describing: result.error))</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">application</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>,</span><br><span class="line">                        <span class="params">didRegisterForRemoteNotificationsWithDeviceToken</span> <span class="params">deviceToken</span>: <span class="type">Data</span>) &#123;</span><br><span class="line">    registerDevice(deviceToken)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注册失败</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">application</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>,</span><br><span class="line">                        <span class="params">didFailToRegisterForRemoteNotificationsWithError</span> <span class="params">error</span>: <span class="type">Error</span>) &#123;</span><br><span class="line">    log.error(<span class="string">&quot;did Fail To Register For Remote Notifications With Error : <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="4-注册通知类别"><a href="#4-注册通知类别" class="headerlink" title="4.注册通知类别"></a>4.注册通知类别</h4><p>通知类别（category）用于给通知分类，可添加按钮或自定义UI</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">createCustomNotificationCategory</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> action <span class="operator">=</span> <span class="type">UNNotificationAction</span>(identifier: <span class="string">&quot;actionID&quot;</span>, title: <span class="string">&quot;buttonTitle&quot;</span>, options: [])</span><br><span class="line">    <span class="keyword">let</span> category <span class="operator">=</span> <span class="type">UNNotificationCategory</span>(identifier: <span class="string">&quot;CategoryID&quot;</span>, actions: [action],</span><br><span class="line">                                          intentIdentifiers: [],</span><br><span class="line">                                          options: .customDismissAction)</span><br><span class="line">    <span class="type">UNUserNotificationCenter</span>.current().setNotificationCategories([category])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="5-UNUserNotificationCenterDelegate"><a href="#5-UNUserNotificationCenterDelegate" class="headerlink" title="5.UNUserNotificationCenterDelegate"></a>5.UNUserNotificationCenterDelegate</h4><p><code>UNUserNotificationCenterDelegate</code>代替了<code>UIAppDelegate</code>的旧通知接收方法<code>didReceiveRemoteNotification</code>将接收通知的情况分为app开启时（foreground）和app不在前台时（background）</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// app打开时调用</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>,</span><br><span class="line">                                   <span class="params">willPresent</span> <span class="params">notification</span>: <span class="type">UNNotification</span>,</span><br><span class="line">                                   <span class="params">withCompletionHandler</span> <span class="params">completionHandler</span>: <span class="keyword">@escaping</span> (<span class="type">UNNotificationPresentationOptions</span>) -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="comment">// 业务逻辑</span></span><br><span class="line">    handleNotification(notification)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 在app内弹通知</span></span><br><span class="line">    completionHandler([.badge, .alert, .sound])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// app未打开时调用</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>, <span class="params">didReceive</span> <span class="params">response</span>: <span class="type">UNNotificationResponse</span>, <span class="params">withCompletionHandler</span> <span class="params">completionHandler</span>: <span class="keyword">@escaping</span> () -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> userAction <span class="operator">=</span> response.actionIdentifier</span><br><span class="line">    <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="type">UNNotificationDefaultActionIdentifier</span> &#123; </span><br><span class="line">        <span class="comment">// 点击通知栏本身</span></span><br><span class="line">        log.debug(<span class="string">&quot;User opened the notification.&quot;</span>)</span><br><span class="line"></span><br><span class="line">        handleNotification(response.notification)</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="type">UNNotificationDismissActionIdentifier</span> &#123;</span><br><span class="line">        <span class="comment">// 通知dismiss，category创建时传入UNNotificationCategoryOptionCustomDismissAction才可以触发</span></span><br><span class="line">        log.debug(<span class="string">&quot;User dismissed the notification.&quot;</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="string">&quot;actionID&quot;</span> &#123;</span><br><span class="line">        <span class="comment">// 自定义按钮逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    completionHandler()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// iOS12新功能，在app系统通知设置里点击按钮跳到app内通知设置的回调</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>, <span class="params">openSettingsFor</span> <span class="params">notification</span>: <span class="type">UNNotification</span>?) &#123;</span><br><span class="line">    log.debug(<span class="string">&quot;Open notification in-app setting.&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="扩展功能：Notification-Service-Extension（富媒体推送）"><a href="#扩展功能：Notification-Service-Extension（富媒体推送）" class="headerlink" title="扩展功能：Notification Service Extension（富媒体推送）"></a>扩展功能：Notification Service Extension（富媒体推送）</h2><p>众所周知，苹果的apns推送有一个痛点（当然Apple觉得这是亮点），就是<strong>在我们不点击通知时，app是不会执行任何代码的</strong>，这就是静默推送，虽然app能收到推送，但是它不执行任何代码，这极大的保护了手机性能，却也让开发者没办法对推送内容进行修改了。</p>
-<p>那么问题来了，Apple真的不让开发者动态修改推送内容了吗？</p>
-<p>不然，Apple还是很有良心的，在静默推送修改之后，它也推出了另一功能<code>Notification Service Extension</code>，它为我们完美解决了对推送内容进行动态修改的需求，接下来我们就来看一下这一功能：</p>
-<h3 id="了解Notification-Service-Extension"><a href="#了解Notification-Service-Extension" class="headerlink" title="了解Notification Service Extension"></a>了解Notification Service Extension</h3><ul>
-<li><p>iOS 10添加了通知相关的扩展Notification Service Extension，使得通知弹出前可以对通知内容进行修改。</p>
-</li>
-<li><p>iOS远程推送过程如下图所示，APNs推送的通知直接在设备上弹出；</p>
-</li>
-</ul>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782654264853.jpg"></p>
-<ul>
-<li>添加Notification Service Extension后，如下图所示，APNs推送的通知在弹出前，可先到达Extension进行处理。</li>
-</ul>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782655214693.jpg"></p>
-<p><font color="#ff0000">【注意】OpenAPI 需要调用 setiOSMutableContent(true) 接口，这样Extension才可生效。这里的OpenAPI就是阿里云API了，让后台配置一下setiOSMutableContent(true)就好。</font></p>
-<h3 id="使用Notification-Service-Extension"><a href="#使用Notification-Service-Extension" class="headerlink" title="使用Notification Service Extension"></a>使用Notification Service Extension</h3><h4 id="1、点击-file-gt-new-gt-target"><a href="#1、点击-file-gt-new-gt-target" class="headerlink" title="1、点击 file-&gt;new-&gt;target"></a>1、点击 file-&gt;new-&gt;target</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782671772445.jpg"></p>
-<h4 id="2、选择-iOS-gt-Notification-Service-Extension"><a href="#2、选择-iOS-gt-Notification-Service-Extension" class="headerlink" title="2、选择 iOS-&gt;Notification Service Extension"></a>2、选择 iOS-&gt;Notification Service Extension</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782674597379.jpg"></p>
-<h4 id="3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成"><a href="#3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成" class="headerlink" title="3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成"></a>3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782674134664.jpg"></p>
-<h3 id="配置Extension"><a href="#配置Extension" class="headerlink" title="配置Extension"></a>配置Extension</h3><p>创建完成后，主要有两个文件<code>NotificationService.swift</code> 和 <code>info.plist</code></p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782676305569.jpg"></p>
-<p>1、首先，需要在扩展对应的target-&gt;Signing&amp;Capabilities，点击+Capability，添加push notification</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782676848331.jpg"></p>
-<p>2、<code>NotificationService.swift</code>中主要有两个方法</p>
-<p>1）</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">didReceive</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">UNNotificationRequest</span>, <span class="params">withContentHandler</span> <span class="params">contentHandler</span>: <span class="keyword">@escaping</span> (<span class="type">UNNotificationContent</span>) -&gt; <span class="type">Void</span>)</span><br></pre></td></tr></table></figure>
-
-<p>该方法主要是用于在接受到推送时，针对推送内容进行修改，修改完成后展示给用户</p>
-<p>2）</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">serviceExtensionTimeWillExpire</span>()</span><br></pre></td></tr></table></figure>
-
-<p>该方法是用于在方法1）中如果没有向用户展示推送，可以在这里（即apns即将到30s时）向用户推送</p>
-<p>3、推送的消息中必须具备alert和<code>&quot;mutable-content&quot;:&quot;1&quot;</code>（表示推送可修改），这个上文有提到过，OpenAPI 需要调用 <code>setiOSMutableContent(true)</code> 接口，发送出来的消息结构中就会有<code>&quot;mutable-content&quot;:&quot;1&quot;</code>。</p>
-<p>接下来，我们就可以对接收到的推送消息做自定义动态修改了。如下图所示：</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782680346445.jpg"></p>
-<p>然后我们就可以看到手机接收到的推送变了。</p>
-<p>🎉🎉🎉 完结撒花 🎉🎉🎉！</p>
-<p>❤️ Best wish for you ❤️！</p>
-]]></content>
-      <categories>
-        <category>iOS</category>
-      </categories>
-      <tags>
-        <tag>iOS</tag>
       </tags>
   </entry>
   <entry>
@@ -3243,307 +3422,128 @@
       </tags>
   </entry>
   <entry>
-    <title>【Hexo】Mac 上使用Hexo + Github搭建个人博客</title>
-    <url>/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h1 id="【Hexo】Mac-上使用Hexo-Github搭建个人博客"><a href="#【Hexo】Mac-上使用Hexo-Github搭建个人博客" class="headerlink" title="【Hexo】Mac 上使用Hexo + Github搭建个人博客"></a>【Hexo】Mac 上使用Hexo + Github搭建个人博客</h1><h2 id="为什么要用Hexo-Github？"><a href="#为什么要用Hexo-Github？" class="headerlink" title="为什么要用Hexo + Github？"></a>为什么要用Hexo + Github？</h2><h3 id="Hexo介绍"><a href="#Hexo介绍" class="headerlink" title="Hexo介绍"></a>Hexo介绍</h3><p>Hexo是一款基于Nodejs的，快速、简洁且高效的博客框架。它具有丰富的插件和主题，具有超快的速度，支持Makedown语法，可以方便快捷的编写博客文档。同时还支持node命令，可以一键部署到GitHub Pages, Heroku 或其他平台。更详细的信息可以看一下 <a href="https://hexo.io/zh-cn">Hexo官网</a> 。</p>
-<p>值得一提的是，它在github上的<em>star</em>现在已经达到了<a href="https://github.com/hexojs/hexo">36.3k</a>，优不优秀可见一斑。</p>
+    <title>【iOS】集成阿里云消息推送</title>
+    <url>/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/</url>
+    <content><![CDATA[<h1 id="集成阿里云消息推送"><a href="#集成阿里云消息推送" class="headerlink" title="集成阿里云消息推送"></a>集成阿里云消息推送</h1><h2 id="基本的业务流程："><a href="#基本的业务流程：" class="headerlink" title="基本的业务流程："></a>基本的业务流程：</h2><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782576576028.jpg"></p>
 <span id="more"></span>
 
-<p>Hexo主要有以下特点：</p>
-<ol>
-<li><p>超快速度：<em>Node.js</em>所带来的超快生成速度，可以让上百个页面在几秒内完成渲染。</p>
+<p>集成阿里云消息推送的流程基本如上图所示，还是比较简单的，我们只需要重点关注一下红框中的部分。</p>
+<p>下面我们就来分步骤讲解一下：</p>
+<h3 id="一：创建应用"><a href="#一：创建应用" class="headerlink" title="一：创建应用"></a>一：创建应用</h3><p>创建应用获取初始化推送所需的AppKey和Secret</p>
+<h4 id="1-登录阿里云控制台，添加产品"><a href="#1-登录阿里云控制台，添加产品" class="headerlink" title="1. 登录阿里云控制台，添加产品"></a>1. 登录阿里云控制台，添加产品</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782584388892.jpg"></p>
+<h4 id="2-点击添加应用，创建ios和android对应的平台"><a href="#2-点击添加应用，创建ios和android对应的平台" class="headerlink" title="2. 点击添加应用，创建ios和android对应的平台"></a>2. 点击添加应用，创建ios和android对应的平台</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782585058067.jpg"></p>
+<h3 id="二：上传证书"><a href="#二：上传证书" class="headerlink" title="二：上传证书"></a>二：上传证书</h3><p>集成阿里云推送，我们需要在阿里云控制台上传两个证书，分别是<strong>开发环境的推送证书</strong>和<strong>生成环境的推送证书</strong>，如下图所示：</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782586952344.jpg"></p>
+<p>那么我们要如何获取这两个证书呢？</p>
+<h4 id="1-获取CSR文件"><a href="#1-获取CSR文件" class="headerlink" title="1.获取CSR文件"></a>1.获取CSR文件</h4><p>1.1 在Mac的应用程序中打开钥匙串访问，在顶部菜单栏中选择钥匙串访问&gt;证书助理&gt;从证书颁发机构请求证书</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782592582016.jpg"></p>
+<p>1.2 在弹出的证书信息中，输入邮箱地址，设置选择储存到磁盘，单击继续将CSR文件存储到本地</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782593206219.jpg"></p>
+<p>1.3 生成之后，在目录下找到此文件</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782593919466.jpg"></p>
+<h4 id="2-生成AppID"><a href="#2-生成AppID" class="headerlink" title="2.生成AppID"></a>2.生成AppID</h4><p>2.1 登录 <a href="https://developer.apple.com/account">Apple Developer</a>，选择Certificates，Identifiers &amp; Profiles选项</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782595884680.jpg"></p>
+<p>2.2 选择Identifiers，项目如果是自动证书管理的话我们可以看到一些以 <code>XC</code>开头的 Bundle ID ，如下图所示：</p>
+<p>如果是手动证书管理，需要点击<code>+</code>号创建 App ID，此处我们自动证书管理为例。</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782596990503.jpg"></p>
+<p>2.3 在上图的 Identifiers 列表中选择需要配置推送的<br>Bundle ID。（如果列表中没有，可以在Xcode工程中配置）</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782603043050.jpg"></p>
+<p>在上图配置文件中填写Bundle ID，然后勾选<code>Automatically manage signing</code>，在下图弹框中选择<code>Enable Automatic</code>，然后回到<a href="https://developer.apple.com/account">Apple Developer</a>，就可以<code>Identifiers</code>列表中看到我们刚才设置的<code>Bundle ID</code>了。</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782604788362.jpg"></p>
+<p>2.4 点击Identifiers 列表进入详情，向下划动找到<code>Push Notification</code>选项，勾选开启远程推送服务</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782606658935.jpg"></p>
+<h4 id="3-创建生产和开发推送证书"><a href="#3-创建生产和开发推送证书" class="headerlink" title="3.创建生产和开发推送证书"></a>3.创建生产和开发推送证书</h4><p>3.1 点击上图中的<code>Edit</code>按钮，进入配置页面</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782609693712.jpg"></p>
+<p>3.2 单击<code>Choose File</code>上传已获取到的CSR文件</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782610616057.jpg"></p>
+<p>3.3 生成后，<code>download</code>到本地</p>
+<p>3.4 双击打开并安装证书，系统会自动将其导入到钥匙串中</p>
+<p>3.5 在Mac中打开钥匙串应用，选择登录&gt;证书，分别右键导出开发环境（<code>Apple Sandbox Push Services</code>）和生产环境(<code>Apple Push Services</code>)的<code>.P12</code>证书文件</p>
+<p><font color="#ff0000">此处导出.p12文件时需要设置密码，阿里云配置证书时必填</font></p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782614735761.jpg"></p>
+<p>导出结果如下：</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782616606924.jpg"></p>
+<p>3.6 在阿里云控制台配置相应的开发和生产证书，如下图所示：</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782617708004.jpg"></p>
+<h3 id="三：下载配置文件并集成"><a href="#三：下载配置文件并集成" class="headerlink" title="三：下载配置文件并集成"></a>三：下载配置文件并集成</h3><p>1.在阿里云控制台应用设置找到相应应用，点击<code>iOS配置下载</code>，将我们刚才生成好的配置文件下载下来，如下图所示：</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782621859000.jpg"></p>
+<p>下载完成之后，文件如下图：</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782626642638.jpg"></p>
+<p>将此文件导入到工程中，可以通过<code>CloudPushSDK.autoInit</code>方法自动生成推送配置，下文<strong>功能实现</strong>模块我们将做详细介绍。</p>
+<h3 id="四：下载推送SDK与集成"><a href="#四：下载推送SDK与集成" class="headerlink" title="四：下载推送SDK与集成"></a>四：下载推送SDK与集成</h3><h4 id="1-集成SDK"><a href="#1-集成SDK" class="headerlink" title="1.集成SDK"></a>1.集成SDK</h4><p>一共有两种方法，手动集成和Pod集成，这里我们主要介绍pod集成的方法。</p>
+<p>1.1 在Podfile中添加阿里云仓库source源</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">source &#x27;https://github.com/aliyun/aliyun-specs.git&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>1.2 pod 阿里云推送</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pod &#x27;AlicloudPush&#x27;, &#x27;~&gt; 1.9.9.5&#x27;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-引入头文件"><a href="#2-引入头文件" class="headerlink" title="2.引入头文件"></a>2.引入头文件</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import CloudPushSDK</span><br></pre></td></tr></table></figure>
+
+<p>或者OC桥接文件中引入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#import &lt;CloudPushSDK/CloudPushSDK.h&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-Objc配置"><a href="#3-Objc配置" class="headerlink" title="3.Objc配置"></a>3.Objc配置</h4><p>iOS端集成SDK时需要做<code>-ObjC</code>配置 ，即应用的 <em>TARGETS -&gt; Build Settings -&gt; Linking -&gt; Other Linker Flags</em> ，需添加上<code>-ObjC</code>这个属性，否则推送服务无法正常使用 。</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782636066930.jpg"></p>
+<h4 id="4-打开系统通知"><a href="#4-打开系统通知" class="headerlink" title="4.打开系统通知"></a>4.打开系统通知</h4><p><font color="#ff0000">注意：此处千万不要忘记打开，否则收不到推送，这是一个小点，很难定位</font></p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782638087381.jpg"></p>
+<h3 id="五：功能实现"><a href="#五：功能实现" class="headerlink" title="五：功能实现"></a>五：功能实现</h3><p>推送功能主要在<code>AppDelegate</code>文件中实现</p>
+<h4 id="1-初始化SDK"><a href="#1-初始化SDK" class="headerlink" title="1.初始化SDK"></a>1.初始化SDK</h4><p>使用配置文件<code>AliyunEmasServices-Info.plist</code>直接调用<code>autoInit</code>，这个在前文有提到过。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">setup</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>, <span class="params">launchOptions</span>: [<span class="params">UIApplicationLaunchOptionsKey</span>: <span class="keyword">Any</span>]<span class="operator">?</span>) &#123;</span><br><span class="line">    <span class="type">CloudPushSDK</span>.autoInit &#123; result <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> result <span class="operator">=</span> result <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Push SDK init failed, error: result is nil!&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> result.success &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Push SDK init success, deviceId: <span class="subst">\(String(describing: CloudPushSDK.getDeviceId()))</span>&quot;</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Push SDK init failed, error: <span class="subst">\(String(describing: result.error))</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="comment">// 点击通知将App从关闭状态启动时，将通知打开回执上报</span></span><br><span class="line">    <span class="type">CloudPushSDK</span>.sendNotificationAck(launchOptions)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-请求通知权限并注册远程通知"><a href="#2-请求通知权限并注册远程通知" class="headerlink" title="2.请求通知权限并注册远程通知"></a>2.请求通知权限并注册远程通知</h4><p>第一次安装会弹出请求通知的<code>alert</code></p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">registerAPNS</span>(<span class="params">application</span>: <span class="type">UIApplication</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> center <span class="operator">=</span> <span class="type">UNUserNotificationCenter</span>.current()</span><br><span class="line">    center.delegate <span class="operator">=</span> <span class="keyword">self</span></span><br><span class="line">    <span class="keyword">var</span> options: <span class="type">UNAuthorizationOptions</span> <span class="operator">=</span> [.alert, .sound, .badge]</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">#available</span>(<span class="keyword">iOS</span> <span class="number">12.0</span>, <span class="operator">*</span>) &#123;</span><br><span class="line">        options <span class="operator">=</span> [.alert, .sound, .badge, .providesAppNotificationSettings]</span><br><span class="line">    &#125;</span><br><span class="line">    center.requestAuthorization(options: options) &#123; (granted, error) <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">if</span> granted &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;User authored notification.&quot;</span>)</span><br><span class="line">            <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">                application.registerForRemoteNotifications()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;User denied notification.&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> error <span class="operator">=</span> error &#123;</span><br><span class="line">            log.error(error)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-注册设备并上报deviceToken"><a href="#3-注册设备并上报deviceToken" class="headerlink" title="3.注册设备并上报deviceToken"></a>3.注册设备并上报deviceToken</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">registerDevice</span>(<span class="keyword">_</span> <span class="params">deviceToken</span>: <span class="type">Data</span>) &#123;</span><br><span class="line">    <span class="type">CloudPushSDK</span>.registerDevice(deviceToken) &#123; result <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> result <span class="operator">=</span> result <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Register deviceToken failed, error:: result is nil!&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> result.success &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Register deviceToken success, deviceToken: <span class="subst">\(String(describing: CloudPushSDK.getApnsDeviceToken()))</span>&quot;</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Register deviceToken failed, error: <span class="subst">\(String(describing: result.error))</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">application</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>,</span><br><span class="line">                        <span class="params">didRegisterForRemoteNotificationsWithDeviceToken</span> <span class="params">deviceToken</span>: <span class="type">Data</span>) &#123;</span><br><span class="line">    registerDevice(deviceToken)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注册失败</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">application</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>,</span><br><span class="line">                        <span class="params">didFailToRegisterForRemoteNotificationsWithError</span> <span class="params">error</span>: <span class="type">Error</span>) &#123;</span><br><span class="line">    log.error(<span class="string">&quot;did Fail To Register For Remote Notifications With Error : <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-注册通知类别"><a href="#4-注册通知类别" class="headerlink" title="4.注册通知类别"></a>4.注册通知类别</h4><p>通知类别（category）用于给通知分类，可添加按钮或自定义UI</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">createCustomNotificationCategory</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> action <span class="operator">=</span> <span class="type">UNNotificationAction</span>(identifier: <span class="string">&quot;actionID&quot;</span>, title: <span class="string">&quot;buttonTitle&quot;</span>, options: [])</span><br><span class="line">    <span class="keyword">let</span> category <span class="operator">=</span> <span class="type">UNNotificationCategory</span>(identifier: <span class="string">&quot;CategoryID&quot;</span>, actions: [action],</span><br><span class="line">                                          intentIdentifiers: [],</span><br><span class="line">                                          options: .customDismissAction)</span><br><span class="line">    <span class="type">UNUserNotificationCenter</span>.current().setNotificationCategories([category])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-UNUserNotificationCenterDelegate"><a href="#5-UNUserNotificationCenterDelegate" class="headerlink" title="5.UNUserNotificationCenterDelegate"></a>5.UNUserNotificationCenterDelegate</h4><p><code>UNUserNotificationCenterDelegate</code>代替了<code>UIAppDelegate</code>的旧通知接收方法<code>didReceiveRemoteNotification</code>将接收通知的情况分为app开启时（foreground）和app不在前台时（background）</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// app打开时调用</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>,</span><br><span class="line">                                   <span class="params">willPresent</span> <span class="params">notification</span>: <span class="type">UNNotification</span>,</span><br><span class="line">                                   <span class="params">withCompletionHandler</span> <span class="params">completionHandler</span>: <span class="keyword">@escaping</span> (<span class="type">UNNotificationPresentationOptions</span>) -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="comment">// 业务逻辑</span></span><br><span class="line">    handleNotification(notification)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 在app内弹通知</span></span><br><span class="line">    completionHandler([.badge, .alert, .sound])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// app未打开时调用</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>, <span class="params">didReceive</span> <span class="params">response</span>: <span class="type">UNNotificationResponse</span>, <span class="params">withCompletionHandler</span> <span class="params">completionHandler</span>: <span class="keyword">@escaping</span> () -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> userAction <span class="operator">=</span> response.actionIdentifier</span><br><span class="line">    <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="type">UNNotificationDefaultActionIdentifier</span> &#123; </span><br><span class="line">        <span class="comment">// 点击通知栏本身</span></span><br><span class="line">        log.debug(<span class="string">&quot;User opened the notification.&quot;</span>)</span><br><span class="line"></span><br><span class="line">        handleNotification(response.notification)</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="type">UNNotificationDismissActionIdentifier</span> &#123;</span><br><span class="line">        <span class="comment">// 通知dismiss，category创建时传入UNNotificationCategoryOptionCustomDismissAction才可以触发</span></span><br><span class="line">        log.debug(<span class="string">&quot;User dismissed the notification.&quot;</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="string">&quot;actionID&quot;</span> &#123;</span><br><span class="line">        <span class="comment">// 自定义按钮逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    completionHandler()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// iOS12新功能，在app系统通知设置里点击按钮跳到app内通知设置的回调</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>, <span class="params">openSettingsFor</span> <span class="params">notification</span>: <span class="type">UNNotification</span>?) &#123;</span><br><span class="line">    log.debug(<span class="string">&quot;Open notification in-app setting.&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="扩展功能：Notification-Service-Extension（富媒体推送）"><a href="#扩展功能：Notification-Service-Extension（富媒体推送）" class="headerlink" title="扩展功能：Notification Service Extension（富媒体推送）"></a>扩展功能：Notification Service Extension（富媒体推送）</h2><p>众所周知，苹果的apns推送有一个痛点（当然Apple觉得这是亮点），就是<strong>在我们不点击通知时，app是不会执行任何代码的</strong>，这就是静默推送，虽然app能收到推送，但是它不执行任何代码，这极大的保护了手机性能，却也让开发者没办法对推送内容进行修改了。</p>
+<p>那么问题来了，Apple真的不让开发者动态修改推送内容了吗？</p>
+<p>不然，Apple还是很有良心的，在静默推送修改之后，它也推出了另一功能<code>Notification Service Extension</code>，它为我们完美解决了对推送内容进行动态修改的需求，接下来我们就来看一下这一功能：</p>
+<h3 id="了解Notification-Service-Extension"><a href="#了解Notification-Service-Extension" class="headerlink" title="了解Notification Service Extension"></a>了解Notification Service Extension</h3><ul>
+<li><p>iOS 10添加了通知相关的扩展Notification Service Extension，使得通知弹出前可以对通知内容进行修改。</p>
 </li>
-<li><p>支持 <em>Markdown</em>：Hexo 支持 GitHub Flavored Markdown 的所有功能，甚至可以整合 Octopress 的大多数插件。</p>
-</li>
-<li><p>一键部署：只需一条指令即可部署到 <em>GitHub Pages, Heroku</em> 或其他平台。</p>
-</li>
-<li><p>插件或可扩展性：强大的 API 带来无限的可能，与数种模板引擎（<em>EJS，Pug，Nunjucks</em>）和工具（<em>Babel，PostCSS，Less/Sass</em>）轻易集成。</p>
-</li>
-</ol>
-<h3 id="Guthub"><a href="#Guthub" class="headerlink" title="Guthub"></a>Guthub</h3><p>GitHub 那就更不用说了，做程序员的都知道，它是多nice的一个东西。</p>
-<p>今天我们要说的主要是它提供的一个功能：<em>GitHub Pages</em> ，GitHub Pages 允许每个账户创建一个名为 {username}.<a href="http://github.io/">http://github.io</a> 的仓库，另外它还会自动为这个仓库分配一个 <a href="http://github.io/">http://github.io</a> 的二级域名，这就为我们搭建个人博客提供了很大的方便，既为我们解决了域名、服务器的问题，又为我们提供了一个稳定且免费的静态站点。</p>
-<h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><ol>
-<li>官网下载<br>下载地址：<a href="https://nodejs.org/en/">https://nodejs.org/en/</a></li>
-</ol>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778370777438.jpg" alt="16778370777438"></p>
-<ol start="2">
-<li>使用homebrew安装</li>
-</ol>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">## 搜索现有node版本</span><br><span class="line">brew search node</span><br><span class="line">## 安装指定版本</span><br><span class="line">brew install node@x</span><br></pre></td></tr></table></figure>
-<p>安装完成之后，可以用 <em>npm -v</em> 查询验证，如果不指定版本安装为最新版本</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778374510393.jpg" alt="16778374510393"></p>
-<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><ol>
-<li>使用外网下载（相对比较慢）</li>
-</ol>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用命令去安装Hexo</span></span><br><span class="line">npm install -g hexo-cli </span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>更换国内镜像后下载</li>
-</ol>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用命令安装淘宝镜像：</span></span><br><span class="line">npm install -g cnpm --registry=<span class="attr">https</span>:<span class="comment">//registry.npm.taobao.org</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用淘宝源安装Hexo</span></span><br><span class="line">cnpm install -g hexo-cli </span><br></pre></td></tr></table></figure>
-<p>安装成功后，可以使用 <em>hexo -v</em> 命令查看一下hexo版本：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778379318597.jpg" alt="16778379318597"></p>
-<h2 id="初始化Hexo-Blog"><a href="#初始化Hexo-Blog" class="headerlink" title="初始化Hexo Blog"></a>初始化Hexo Blog</h2><h3 id="新建一个文件夹"><a href="#新建一个文件夹" class="headerlink" title="新建一个文件夹"></a>新建一个文件夹</h3><p>我这里创建一个名为Blogs的文件夹，并进入该文件夹内：</p>
-<h3 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 初始化hexo</span></span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure>
-<p>初始化成功如下：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778382111564.jpg" alt="16778382111564"></p>
-<p>这时候Blogs下的目录结构如下：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778382603905.jpg" alt="16778382603905"></p>
-<h3 id="本地启动Hexo"><a href="#本地启动Hexo" class="headerlink" title="本地启动Hexo"></a>本地启动Hexo</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 启动Hexo</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778384529301.jpg" alt="16778384529301"></p>
-<h3 id="浏览器打开博客网站"><a href="#浏览器打开博客网站" class="headerlink" title="浏览器打开博客网站"></a>浏览器打开博客网站</h3><p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778384888543.jpg" alt="16778384888543"></p>
-<h2 id="创建博客文章"><a href="#创建博客文章" class="headerlink" title="创建博客文章"></a>创建博客文章</h2><h3 id="创建博客"><a href="#创建博客" class="headerlink" title="创建博客"></a>创建博客</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建一篇博客</span></span><br><span class="line">hexo n <span class="string">&quot;first blog&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>文章在Blogs目录下的结构如下：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778386968316.jpg" alt="16778386968316"></p>
-<h3 id="清理项目缓存"><a href="#清理项目缓存" class="headerlink" title="清理项目缓存"></a>清理项目缓存</h3><p>新增博客文章或者修改博客文章内容，需要执行此命令:</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 清理之前生成的网站</span></span><br><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
-
-<h3 id="重新生成博客"><a href="#重新生成博客" class="headerlink" title="重新生成博客"></a>重新生成博客</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 重新生成博客</span></span><br><span class="line">hexo g</span><br></pre></td></tr></table></figure>
-
-<h3 id="再次启动项目"><a href="#再次启动项目" class="headerlink" title="再次启动项目"></a>再次启动项目</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 再次启动博客网站</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-<p>浏览器页面展示如下：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778388704782.jpg" alt="16778388704782"></p>
-<h2 id="修改网站主题"><a href="#修改网站主题" class="headerlink" title="修改网站主题"></a>修改网站主题</h2><p>Hexo框架默认的是landscape主题，Hexo上有三百多种主题，大家可以上Hexo官网选择自己喜欢的<a href="https://hexo.io/themes/">主题</a>，我这里以next为例：</p>
-<h3 id="下载next主题"><a href="#下载next主题" class="headerlink" title="下载next主题"></a>下载next主题</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下载next</span></span><br><span class="line">git clone <span class="attr">https</span>:<span class="comment">//github.com/theme-next/hexo-theme-next themes/next</span></span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778391682864.jpg" alt="16778391682864"></p>
-<p>我们下载的主题都存放在Blogs/themes文件夹下：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778392610610.jpg" alt="16778392610610"></p>
-<h3 id="修改项目配置文件"><a href="#修改项目配置文件" class="headerlink" title="修改项目配置文件"></a>修改项目配置文件</h3><p>主题下载下来之后，我们需要在项目配置文件_config.yml里面修改我们的主题：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778393394648.jpg" alt="16778393394648"></p>
-<p>把默认的landscape修改为我们下载好的主题 next</p>
-<h3 id="重新生成项目"><a href="#重新生成项目" class="headerlink" title="重新生成项目"></a>重新生成项目</h3><p>这时候再执行我们Hexo三连：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 清理项目缓存</span></span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重新生成项目</span></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment">// 本地启动项目</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
-<p>Tips：重新生成项目和本地启动项目可以合并： <em>hexo g &amp; hexo s</em><br>再次打开项目，效果图如下：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778394696679.jpg" alt="16778394696679"></p>
-<p>到这里，我们的主题修改就完成了，后期我们可以根据自己的需要去修改next的配置文件，让我们的博客网站更加个性化。</p>
-<p>下一篇文章我将说说如何修改主题让我们的博客网站更具个性化。</p>
-<p>关于Hexo搭建博客到这里就讲得差不多了，下面我们就想怎么把博客部署到Github上。</p>
-<h2 id="部署博客到Github"><a href="#部署博客到Github" class="headerlink" title="部署博客到Github"></a>部署博客到Github</h2><p>首先，你得要有一个自己的Github账号吧，我相信99.99%的开发者都是有Github账号的，如果你是那0.01%，请前往<a href="https://github.com/">Github</a>自行注册。</p>
-<h3 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h3><p>在Github里创建一个存放博客项目的仓库，操作如下：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778397130902.jpg" alt="16778397130902"></p>
-<p>这里有几个注意点：</p>
-<ol>
-<li>仓库的名称必须与你Github账号名相同</li>
-<li>仓库必须以gitHub.io结尾（这里我已经创建过了，所以报错）</li>
-<li>使用GitHub Pages最好选 <em>Public</em> repo（Private需要付费）</li>
-</ol>
-<p>比如你Github账号名叫：zhangsan，那你新建的这个仓库名就叫：zhangsan.github.io</p>
-<p>创建之后，我们就有了一个存放博客项目仓库：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778399347942.jpg" alt="16778399347942"></p>
-<h3 id="安装Hexo部署插件"><a href="#安装Hexo部署插件" class="headerlink" title="安装Hexo部署插件"></a>安装Hexo部署插件</h3><p>进入到Blogs目录下，安装部署插件：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">#使用淘宝镜像安装</span><br><span class="line">cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
-
-<h3 id="修改项目配置文件-1"><a href="#修改项目配置文件-1" class="headerlink" title="修改项目配置文件"></a>修改项目配置文件</h3><p>好了，万事俱备，只欠修改 <em>_config.yml</em> 文件了，打开_config.yml文件，拖拽到最后，修改文件：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778401117276.jpg" alt="16778401117276"></p>
-<p>修改为：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778401892146.jpg" alt="16778401892146"></p>
-<p>注意：<em>repo</em> 为你刚创建的Github项目的地址，如果你是使用的 <em>vim</em> 打开的 <em>_config.yml</em>，记得修改了要 <em>:wq</em> 保存退出</p>
-<h3 id="重新生成项目-1"><a href="#重新生成项目-1" class="headerlink" title="重新生成项目"></a>重新生成项目</h3><p>清理项目缓存：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
-
-<p>重新生成博客：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
-
-<p>部署到云端（Github）:</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<p>注意：这里每次使用 <em>hexo d</em> 部署到Github为了安全都要求输入账号密码，如果你不希望每次都输入账号密码，可以跟博主一样设置Github的 <em>SSH Keys</em>，以后每次发布到Github就不需要输入账号密码了。</p>
-<p>访问云端博客主页</p>
-<p>访问地址：https://博客仓库名.github.io<br>比如我的博客地址：<a href="https://fengyanxin.github.io/">https://fengyanxin.github.io</a></p>
-<p>可以在以下路径查看：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778403847380.jpg" alt="16778403847380"></p>
-<p>最后</p>
-<p>基本上到这里，属于我们自己的博客就搭建完成啦，整个搭建流程如果不出错半个小时之内其实是可以搞定的，但是这路哪里那么好走呢，每个人去搭建的过程中或多或少都会遇到一些问题，我自己在搭建的过程中也碰到了一些问题，我会抽空把遇到的问题详细整理出来，希望能够帮助大家如果要搭建博客的时候少踩点坑。</p>
-<p>大兄弟，都看到这里了，就不要吝啬你的小星星了，为博主点个赞再走吧～</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Markdown语法</title>
-    <url>/Tips/Markdown/</url>
-    <content><![CDATA[<h1 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h1><h2 id="一、Markdown纯文本基本语法"><a href="#一、Markdown纯文本基本语法" class="headerlink" title="一、Markdown纯文本基本语法"></a>一、Markdown纯文本基本语法</h2><h3 id="1-标题"><a href="#1-标题" class="headerlink" title="1. 标题"></a>1. 标题</h3><p>Markdown 支持两种标题的语法，类 Setext 和类 atx 形式。 类 Setext 形式是用底线的形式，利用 = （最高阶标题）和 - （第二阶标题），例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">This is an H1</span><br><span class="line">=======</span><br><span class="line"></span><br><span class="line">This is an H2</span><br><span class="line">----------</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-
-<p>效果如下：</p>
-<h1 id="This-is-an-H1"><a href="#This-is-an-H1" class="headerlink" title="This is an H1"></a>This is an H1</h1><h2 id="This-is-an-H2"><a href="#This-is-an-H2" class="headerlink" title="This is an H2"></a>This is an H2</h2><p>任何数量的 = 和 - 都可以有效果。</p>
-<p>这里需要注意一点，由于分割线也是 “—-”， 因此在使用分割线时，一定要空一行，不然会把上方的文字识别为第二阶标题。原因会在后面的段落和换行中说到。<br>类 Atx 形式则是在行首插入 1 到 6 个 # ，对应到标题 1 到 6 阶，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># this is H1</span><br><span class="line">## this is H2</span><br><span class="line">###### this is H6</span><br></pre></td></tr></table></figure>
-
-<p>效果不再展示，但要注意的是，标准语法一般在 # 后跟个空格再写文字，不然可能会无法识别。</p>
-<h3 id="2-字体"><a href="#2-字体" class="headerlink" title="2. 字体"></a>2. 字体</h3><h4 id="粗-斜-删除线-下划线"><a href="#粗-斜-删除线-下划线" class="headerlink" title="粗/斜/删除线/下划线"></a>粗/斜/删除线/下划线</h4><p>Markdown 使用星号（*）和底线（_）作为标记强调字词的符号，你可以随便用你喜欢的样式，唯一的限制是，你用什么符号开启标签，就要用什么符号结束。但个人感觉写中文时还是（*）比较好用，因为它不区分全角半角，不用切换输入法。 示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">**这是加粗**</span><br><span class="line">__这也是加粗__</span><br><span class="line">*这是倾斜*</span><br><span class="line">_这也是倾斜_</span><br><span class="line">***这是加粗倾斜***</span><br><span class="line">~~这是加删除线~~</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：<br><strong>这是加粗</strong><br><strong>这也是加粗</strong><br><em>这是倾斜</em><br><em>这也是倾斜</em><br><em><strong>这是加粗倾斜</strong></em><br><del>这是加删除线</del></p>
-<p>注意：强调也可以直接插在文字中间，但是如果你的 * 和 _ 两边都有空白的话，它们就只会被当成普通的符号。 如果要在文字前后直接插入普通的星号或底线，你可以用反斜线 \ 。</p>
-<h4 id="字体、字号、颜色"><a href="#字体、字号、颜色" class="headerlink" title="字体、字号、颜色"></a>字体、字号、颜色</h4><p>如果想要指定字体大小、颜色和类型可以通过<code>&lt;font&gt;&lt;/font&gt;</code>语法来完成。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">指定字体类型： &lt;font face=<span class="string">&quot;黑体&quot;</span>&gt;我是黑体字&lt;/font&gt;</span><br><span class="line">指定字体大小： &lt;font size=<span class="number">12</span>&gt;我是<span class="number">12</span>号字&lt;/font&gt;</span><br><span class="line">指定字体颜色：&lt;font color=#0099ff&gt;我是蓝色字&lt;/font&gt; #0099ff 为颜色的<span class="number">16</span>进制代码</span><br><span class="line">指定字体颜色、字号、字体类型&lt;font color=#0099ff size=<span class="number">12</span> face=<span class="string">&quot;黑体&quot;</span>&gt;黑体&lt;/font&gt;</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<p>指定字体类型： <font face="黑体">我是黑体字</font><br>指定字体大小： <font size="12">我是12号字</font><br>指定字体颜色：<font color="#0099ff">我是蓝色字</font> #0099ff 为颜色的16进制代码<br>指定字体颜色、字号、字体类型<font color="#0099ff" size="12" face="黑体">黑体</font></p>
-<h3 id="3-分割线"><a href="#3-分割线" class="headerlink" title="3. 分割线"></a>3. 分割线</h3><p>你可以在一行中用三个以上的星号、减号、底线来建立一个分隔线，行内不能有其他东西。你也可以在星号或是减号中间插入空格。下面每种写法都可以建立分隔线：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* * *</span><br><span class="line">***</span><br><span class="line">**********</span><br><span class="line">- - -</span><br><span class="line">_________________</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<hr>
-<hr>
-<hr>
-<h3 id="4-引用"><a href="#4-引用" class="headerlink" title="4. 引用"></a>4. 引用</h3><p>在引用的文字前加 &gt; 即可。 在 Markdown 文件中建立一个区块引用，那会看起来像是你自己先断好行，然后在每行的最前面加上 &gt; ：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">&gt; consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">&gt; Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">&gt; </span><br><span class="line">&gt; Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse</span><br><span class="line">&gt; id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<blockquote>
-<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,<br>consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.<br>Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
-</blockquote>
-<p>Markdown 也允许你偷懒只在整个段落的第一行最前面加上 &gt; ：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<blockquote>
-<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
-</blockquote>
-<p>区块引用可以嵌套（例如：引用内的引用），只要根据层次加上不同数量的 &gt; ：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is the first level of quoting.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; This is nested blockquote.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; &gt; &gt; Back to the first level.</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<blockquote>
-<p>This is the first level of quoting.</p>
-<blockquote>
-<p>This is nested blockquote.</p>
-</blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>Back to the first level.</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>引用的区块内也可以使用其他的 Markdown 语法，包括标题、列表、代码区块等。</p>
-<h3 id="5-列表"><a href="#5-列表" class="headerlink" title="5. 列表"></a>5. 列表</h3><p>Markdown 支持有序列表和无序列表。 无序列表使用星号、加号或是减号作为列表标记。 示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 列表内容</span><br><span class="line">+ 列表内容</span><br><span class="line">* 列表内容</span><br><span class="line">注意：- + * 跟内容之间都要有一个空格</span><br></pre></td></tr></table></figure>
-
-<p>效果如下： </p>
-<ul>
-<li>列表内容</li>
-</ul>
-<ul>
-<li>列表内容</li>
-</ul>
-<ul>
-<li>列表内容</li>
-</ul>
-<p>有序列表则使用数字接着一个英文句点作为标记。 示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. 列表内容</span><br><span class="line">2. 列表内容</span><br><span class="line">3. 列表内容</span><br><span class="line">注意：序号跟内容之间要有空格 </span><br></pre></td></tr></table></figure>
-<p>效果如下： </p>
-<ol>
-<li>列表内容</li>
-<li>列表内容</li>
-<li>列表内容</li>
-</ol>
-<p>列表可以嵌套，上一级和下一级之间敲三个空格即可。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* 一级无序列表内容</span><br><span class="line"></span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br></pre></td></tr></table></figure>
-
-<p>效果如下： </p>
-<ul>
-<li><p>一级无序列表内容</p>
-<ul>
-<li>二级无序列表内容</li>
-<li>二级无序列表内容</li>
-<li>二级无序列表内容</li>
-</ul>
+<li><p>iOS远程推送过程如下图所示，APNs推送的通知直接在设备上弹出；</p>
 </li>
 </ul>
-<p>要让列表看起来更漂亮，你可以把内容用固定的缩进整理好：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span><br><span class="line">    Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,</span><br><span class="line">    viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.</span><br><span class="line">    Suspendisse id sem consectetuer libero luctus adipiscing</span><br></pre></td></tr></table></figure>
-
-<p>效果如下： </p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782654264853.jpg"></p>
 <ul>
-<li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.<br>  Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,<br>  viverra nec, fringilla in, laoreet vitae, risus.</li>
-<li>Donec sit amet nisl. Aliquam semper ipsum sit amet velit.<br>  Suspendisse id sem consectetuer libero luctus adipiscing</li>
+<li>添加Notification Service Extension后，如下图所示，APNs推送的通知在弹出前，可先到达Extension进行处理。</li>
 </ul>
-<p>列表项目可以包含多个段落，每个项目下的段落都必须缩进 4 个空格或是 1 个制表符：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1.  This is a list item with two paragraphs. Lorem ipsum dolor</span><br><span class="line">    sit amet, consectetuer adipiscing elit. Aliquam hendrerit</span><br><span class="line">    mi posuere lectus.</span><br><span class="line"></span><br><span class="line">    Vestibulum enim wisi, viverra nec, fringilla in, laoreet</span><br><span class="line">    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum</span><br><span class="line">    sit amet velit.</span><br><span class="line"></span><br><span class="line">2.  Suspendisse id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
-<p>效果如下： </p>
-<ol>
-<li><p>This is a list item with two paragraphs. Lorem ipsum dolor<br> sit amet, consectetuer adipiscing elit. Aliquam hendrerit<br> mi posuere lectus.</p>
-<p> Vestibulum enim wisi, viverra nec, fringilla in, laoreet<br> vitae, risus. Donec sit amet nisl. Aliquam semper ipsum<br> sit amet velit.</p>
-</li>
-<li><p> Suspendisse id sem consectetuer libero luctus adipiscing.</p>
-</li>
-</ol>
-<p>如果你每行都有缩进，看起来会看好很多，当然，再次地，如果你很懒惰，Markdown 也允许：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*   This is a list item with two paragraphs.</span><br><span class="line"></span><br><span class="line">    This is the second paragraph in the list item. You&#x27;re</span><br><span class="line">only required to indent the first line. Lorem ipsum dolor</span><br><span class="line">sit amet, consectetuer adipiscing elit.</span><br><span class="line"></span><br><span class="line">*   Another item in the same list.</span><br></pre></td></tr></table></figure>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782655214693.jpg"></p>
+<p><font color="#ff0000">【注意】OpenAPI 需要调用 setiOSMutableContent(true) 接口，这样Extension才可生效。这里的OpenAPI就是阿里云API了，让后台配置一下setiOSMutableContent(true)就好。</font></p>
+<h3 id="使用Notification-Service-Extension"><a href="#使用Notification-Service-Extension" class="headerlink" title="使用Notification Service Extension"></a>使用Notification Service Extension</h3><h4 id="1、点击-file-gt-new-gt-target"><a href="#1、点击-file-gt-new-gt-target" class="headerlink" title="1、点击 file-&gt;new-&gt;target"></a>1、点击 file-&gt;new-&gt;target</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782671772445.jpg"></p>
+<h4 id="2、选择-iOS-gt-Notification-Service-Extension"><a href="#2、选择-iOS-gt-Notification-Service-Extension" class="headerlink" title="2、选择 iOS-&gt;Notification Service Extension"></a>2、选择 iOS-&gt;Notification Service Extension</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782674597379.jpg"></p>
+<h4 id="3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成"><a href="#3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成" class="headerlink" title="3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成"></a>3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782674134664.jpg"></p>
+<h3 id="配置Extension"><a href="#配置Extension" class="headerlink" title="配置Extension"></a>配置Extension</h3><p>创建完成后，主要有两个文件<code>NotificationService.swift</code> 和 <code>info.plist</code></p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782676305569.jpg"></p>
+<p>1、首先，需要在扩展对应的target-&gt;Signing&amp;Capabilities，点击+Capability，添加push notification</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782676848331.jpg"></p>
+<p>2、<code>NotificationService.swift</code>中主要有两个方法</p>
+<p>1）</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">didReceive</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">UNNotificationRequest</span>, <span class="params">withContentHandler</span> <span class="params">contentHandler</span>: <span class="keyword">@escaping</span> (<span class="type">UNNotificationContent</span>) -&gt; <span class="type">Void</span>)</span><br></pre></td></tr></table></figure>
 
-<p>效果不再展示。 此外： 如果要在列表项目内放进引用，那 &gt; 就需要缩进， 如果要放代码区块的话，该区块就需要缩进两次，也就是 8 个空格或是 2 个制表符。</p>
-<h3 id="6-表格"><a href="#6-表格" class="headerlink" title="6. 表格"></a>6. 表格</h3><p>示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">表头|表头|表头</span><br><span class="line">---|:--:|---:</span><br><span class="line">内容|内容|内容</span><br><span class="line">内容|内容|内容</span><br><span class="line"></span><br><span class="line">第二行分割表头和内容。</span><br><span class="line">- 有一个就行，为了对齐，多加了几个</span><br><span class="line">文字默认居左</span><br><span class="line">-两边加：表示文字居中</span><br><span class="line">-右边加：表示文字居右</span><br><span class="line">注：原生的语法两边都要用 | 包起来。此处省略</span><br></pre></td></tr></table></figure>
+<p>该方法主要是用于在接受到推送时，针对推送内容进行修改，修改完成后展示给用户</p>
+<p>2）</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">serviceExtensionTimeWillExpire</span>()</span><br></pre></td></tr></table></figure>
 
-<p>效果如下： </p>
-<table>
-<thead>
-<tr>
-<th>表头</th>
-<th align="center">表头</th>
-<th align="right">表头</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>内容</td>
-<td align="center">内容</td>
-<td align="right">内容</td>
-</tr>
-<tr>
-<td>内容</td>
-<td align="center">内容</td>
-<td align="right">内容</td>
-</tr>
-</tbody></table>
-<h3 id="7-代码"><a href="#7-代码" class="headerlink" title="7. 代码"></a>7. 代码</h3><p>在Markdown中加入代码块有两种方式： 第一种，只要简单地缩进 4 个空格或是 1 个制表符就可以:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这是一个普通段落：</span><br><span class="line"></span><br><span class="line">    这是一个代码区块。</span><br><span class="line"></span><br><span class="line">(当然，前面要有一个空行和前面的文字分隔开)</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<p>这是一个普通段落：</p>
-<pre><code>这是一个代码区块。
-</code></pre>
-<p>第二种方法似乎是更为常用， 单行代码：代码之间分别用一个反引号包起来即可；</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这里有一句代码`代码内容`。</span><br></pre></td></tr></table></figure>
-<p>效果如下：<br>这里有一句代码<code>代码内容</code>。</p>
-<p>代码块：代码之间分别用三个反引号包起来，且两边的反引号单独占一行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\```</span><br><span class="line">  代码...</span><br><span class="line">  代码...</span><br><span class="line">  代码...</span><br><span class="line">\```</span><br><span class="line">\ 是为了防止转译，实际是没有的。</span><br></pre></td></tr></table></figure>
-<p>效果如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">代码...</span><br><span class="line">代码...</span><br><span class="line">代码...</span><br></pre></td></tr></table></figure>
-<p>还可以在上面的 ``` 后面注明你的代码类型，可以产生相应的代码高亮。</p>
-<h3 id="8-段落和换行"><a href="#8-段落和换行" class="headerlink" title="8. 段落和换行"></a>8. 段落和换行</h3><p>一个 Markdown 段落是由一个或多个连续的文本行组成，它的前后要有一个以上的空行（空行的定义是显示上看起来像是空的，便会被视为空行。比方说，若某一行只包含空格和制表符，则该行也会被视为空行）。普通段落不该用空格或制表符来缩进。 我们在两个不同的文字块之间，一定要空行以示区分，不然就会被归入同一文字块中。 </p>
-<h4 id="换行"><a href="#换行" class="headerlink" title="换行"></a>换行</h4><p>Markdown 允许段落内的强迫换行（插入换行符）。 如果想要空一行，在插入处先按入两个以上的空格然后回车，即可。</p>
-<ul>
-<li>方法1：连敲2个以上空格+enter键；</li>
-<li>方法2：利用html语法，<code>&lt;br&gt;</code>。</li>
-</ul>
-<h4 id="缩进-空格"><a href="#缩进-空格" class="headerlink" title="缩进/空格"></a>缩进/空格</h4><p>但有时也可以使用标记来强制空行和空格，比如需要首行缩进的时候： 一个空格大小的表示：\  或 \  两个空格的大小表示：\ 或 \ 不换行空格：\ 或 \ 强制空行： \</p>
-<blockquote>
-<p>由于平时中文的排版习惯，首行通常缩进两字符什么的，所以顺便也了解以下操作,在markdown里这个还稍微有点麻烦，不是敲两下空格键就搞定的。这里需要借用html方面的空格实体。<br>首先明确1个汉字=2个空格大小<br>1、一个空格大小的表示&ensp; &#8194;两种用法显示效果一致。<br>2、两个空格大小的表示&emsp; &#8195;两种用法显示效果一致。<br>3、不换行空格的表示&nbsp; &#160;也是占一个空格的宽度大小。</p>
-</blockquote>
-<h3 id="9-插入超链接"><a href="#9-插入超链接" class="headerlink" title="9. 插入超链接"></a>9. 插入超链接</h3><p>链接分两种。一种是链接到其他网上地址的，还有一种是链接到本文中的某个位置的。<br>两种的基本格式一样<code>[]()</code>。需要添加链接的文字内容用<code>[方括号]</code>来括起来，后面紧跟着带有网址的<code>(圆括号)</code>，如果要加上连接的title文字，在网址后面，把 title文字放到双引号里面。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[超链接名](超链接地址 &quot;超链接title&quot;)</span><br><span class="line">title可加可不加</span><br><span class="line">文字链接 [链接名称](http://链接网址)</span><br><span class="line">网址链接 &lt;http://链接网址&gt;</span><br><span class="line">实例：</span><br><span class="line">[Github](https://github.com/fengyanxin) &amp;emsp;&lt;https://github.com/fengyanxin&gt;</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<p><a href="https://github.com/fengyanxin">Github</a>：<a href="https://github.com/fengyanxin">https://github.com/fengyanxin</a></p>
-<h3 id="10-插入图片"><a href="#10-插入图片" class="headerlink" title="10. 插入图片"></a>10. 插入图片</h3><p>添加图片形式和链接相似，只需要在链接的基础上前方加一个<code>！</code> 感叹号。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">![图片alt](图片地址  &quot;optional title&quot;)</span><br><span class="line">图片alt就是显示在图片下面的文字，相当于对图片内容的解释，可以不写。</span><br><span class="line">图片地址链接可以是图片的本地地址或网址。</span><br><span class="line">图片optional title是图片的标题，当鼠标悬置于图片上时显示的内容。title可加可不加。</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<p><img data-src="/Tips/Markdown/16781754751832.jpg"></p>
+<p>该方法是用于在方法1）中如果没有向用户展示推送，可以在这里（即apns即将到30s时）向用户推送</p>
+<p>3、推送的消息中必须具备alert和<code>&quot;mutable-content&quot;:&quot;1&quot;</code>（表示推送可修改），这个上文有提到过，OpenAPI 需要调用 <code>setiOSMutableContent(true)</code> 接口，发送出来的消息结构中就会有<code>&quot;mutable-content&quot;:&quot;1&quot;</code>。</p>
+<p>接下来，我们就可以对接收到的推送消息做自定义动态修改了。如下图所示：</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782680346445.jpg"></p>
+<p>然后我们就可以看到手机接收到的推送变了。</p>
+<p>🎉🎉🎉 完结撒花 🎉🎉🎉！</p>
+<p>❤️ Best wish for you ❤️！</p>
 ]]></content>
       <categories>
-        <category>Tips</category>
+        <category>iOS</category>
       </categories>
       <tags>
-        <tag>Tips</tag>
+        <tag>iOS</tag>
       </tags>
   </entry>
 </search>
