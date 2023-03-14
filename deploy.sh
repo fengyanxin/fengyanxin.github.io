@@ -1,6 +1,8 @@
 #!/bin/bash
 DIR=`dirname $0`
 
+echo "=====> Start ! <====="
+
 # Generate blog
 hexo clean
 hexo generate
@@ -10,7 +12,7 @@ sleep 2
 hexo deploy
 sleep 5
 
-echo "=====>Deploy finish!<====="
+echo "=====> Deploy finish! <====="
 
 # Push hexo code
 git add .
@@ -21,4 +23,6 @@ sleep 2
 
 git push origin hexo
 
-echo "=====>Push finish!<====="
+echo "=====> Push finish! <====="
+
+echo "=====> End ! <====="
