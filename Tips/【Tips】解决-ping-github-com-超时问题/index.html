@@ -22,20 +22,31 @@
     var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Git常用命令汇总常用命令git init1$ git init">
+  <meta name="description" content="解决 ping github.com 超时问题1、尝试 ping github.com，结果发现Ping不通，但是 ping baidu.com 却是正常的。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Tips】Git常用命令汇总">
-<meta property="og:url" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:title" content="【Tips】解决 ping github.com 超时问题">
+<meta property="og:url" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="凤炎忻的个人笔记">
-<meta property="og:description" content="Git常用命令汇总常用命令git init1$ git init">
+<meta property="og:description" content="解决 ping github.com 超时问题1、尝试 ping github.com，结果发现Ping不通，但是 ping baidu.com 却是正常的。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-03-08T00:46:58.000Z">
-<meta property="article:modified_time" content="2023-03-08T02:37:31.067Z">
+<meta property="og:image" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg">
+<meta property="og:image" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg">
+<meta property="article:published_time" content="2023-03-14T06:23:43.000Z">
+<meta property="article:modified_time" content="2023-03-14T06:49:39.815Z">
 <meta property="article:author" content="凤炎忻">
 <meta property="article:tag" content="Tips">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg">
 
-<link rel="canonical" href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/">
+<link rel="canonical" href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/">
 
 
 <script id="page-configurations">
@@ -61,7 +72,7 @@
   padding: 1px 4px;
 }
 </style>
-  <title>【Tips】Git常用命令汇总 | 凤炎忻的个人笔记</title>
+  <title>【Tips】解决 ping github.com 超时问题 | 凤炎忻的个人笔记</title>
   
 
 
@@ -206,7 +217,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/apple-touch-icon-next.png">
@@ -219,7 +230,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【Tips】Git常用命令汇总
+          【Tips】解决 ping github.com 超时问题
         </h1>
 
         <div class="post-meta">
@@ -230,7 +241,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-03-08 08:46:58 / 修改时间：10:37:31" itemprop="dateCreated datePublished" datetime="2023-03-08T08:46:58+08:00">2023-03-08</time>
+              <time title="创建时间：2023-03-14 14:23:43 / 修改时间：14:49:39" itemprop="dateCreated datePublished" datetime="2023-03-14T14:23:43+08:00">2023-03-14</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -243,7 +254,7 @@
             </span>
 
           
-            <span id="/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/" class="post-meta-item leancloud_visitors" data-flag-title="【Tips】Git常用命令汇总" title="阅读次数">
+            <span id="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/" class="post-meta-item leancloud_visitors" data-flag-title="【Tips】解决 ping github.com 超时问题" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -258,8 +269,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/" itemprop="commentCount"></span>
+    <a title="valine" href="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -269,14 +280,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.5k</span>
+              <span>455</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -288,71 +299,44 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Git常用命令汇总"><a href="#Git常用命令汇总" class="headerlink" title="Git常用命令汇总"></a>Git常用命令汇总</h1><h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="git-init"><a href="#git-init" class="headerlink" title="git init"></a>git init</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git init </span><br></pre></td></tr></table></figure>
-
+        <h1 id="解决-ping-github-com-超时问题"><a href="#解决-ping-github-com-超时问题" class="headerlink" title="解决 ping github.com 超时问题"></a>解决 ping github.com 超时问题</h1><p>1、尝试 <code>ping github.com</code>，结果发现Ping不通，但是 <code>ping baidu.com</code> 却是正常的。</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg"></p>
 <span id="more"></span>
 
-<p>在本地新建一个repo，进入一个项目目录，执行git init，会初始化一个repo，并在当前文件夹下创建一个.git文件夹。</p>
-<h3 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a>git add</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add README</span><br></pre></td></tr></table></figure>
+<p>2、初步分心应该是本地的DNS无法解析导致的，需要修改Hosts文件，添加 github 的ip地址项</p>
+<h2 id="如何修改Hosts文件？"><a href="#如何修改Hosts文件？" class="headerlink" title="如何修改Hosts文件？"></a>如何修改Hosts文件？</h2><h3 id="1、通过终端命令修改"><a href="#1、通过终端命令修改" class="headerlink" title="1、通过终端命令修改"></a>1、通过终端命令修改</h3><p>（1）打开终端，输入命令行：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># sudo 以管理员权限执行</span><br><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
 
-<p>在提交之前, Git有一个<code>暂存区(staging area)</code>,可以放入新添加的文件或者加入新的改动, commit时提交的改动是上一次加入到staging area中的改动, 而不是我们<code>disk</code>上的改动。<code>git add .</code>会递归地添加当前工作目录中的所有文件.</p>
-<h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m &quot;first commit&quot;</span><br><span class="line">$ git commit -a</span><br><span class="line">$ git commit --amend</span><br></pre></td></tr></table></figure>
+<p>（2）输入本机密码后，会自动打开hosts文件 。</p>
+<ul>
+<li>键盘输入<code>i</code>（插入），修改完成后，按 <code>esc</code> 键退出插入页面</li>
+<li>保存退出：输入  <code>:wq</code> 或者<code>:wq!</code>，再<code>enter</code>键 </li>
+<li>不保存退出：输入<code>q</code>和<code>！</code>键，再<code>enter</code>键</li>
+</ul>
+<h3 id="2、在-Finder-中修改"><a href="#2、在-Finder-中修改" class="headerlink" title="2、在 Finder 中修改"></a>2、在 Finder 中修改</h3><p>方法一：</p>
+<p>（1）打开 <code>Finder</code> ，快捷键 <code>Command+Shift+G</code> 查找文件，输入 <code>/etc/hosts</code>，点击前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg"></p>
+<p>（2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg"></p>
+<p>方法二：</p>
+<p>（1）打开Finder，快捷键 <code>Shift+Command+G</code> 查找文件，输入 <code>/private</code> 前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg"></p>
+<p>（2）找到 <code>etc</code> 文件之后，选择显示简介</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg"></p>
+<p>（3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg"></p>
+<h2 id="如何在-Hosts-文件中配置-github-com-映射"><a href="#如何在-Hosts-文件中配置-github-com-映射" class="headerlink" title="如何在 Hosts 文件中配置 github.com 映射"></a>如何在 Hosts 文件中配置 github.com 映射</h2><p>host文件打开之后可以看到：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg"></p>
+<p>在文件下面添加如下代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#<span class="title class_">GitHub</span>地址</span><br><span class="line"><span class="number">140.82</span><span class="number">.114</span><span class="number">.3</span> github.<span class="property">com</span> git</span><br><span class="line"><span class="number">151.101</span><span class="number">.129</span><span class="number">.194</span> github.<span class="property">global</span>.<span class="property">ssl</span>.<span class="property">fastly</span>.<span class="property">net</span></span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p>提交已经被add进来的改动。</p>
-</blockquote>
-<p><code>git commit -m “the commit message&quot;</code><br><code>git commit -a</code> 会先把所有已经<code>track</code>的文件的改动add进来，然后提交(有点像svn的一次提交，不用先暂存)。对于没有track的文件，还是需要<code>git add</code>一下。<br><code>git commit --amend</code> 增补提交，会使用与当前提交节点相同的父节点进行一次新的提交，旧的提交将会被取消。</p>
-<h3 id="git-remote"><a href="#git-remote" class="headerlink" title="git remote"></a>git remote</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git remote</span><br><span class="line">$ git remote -v</span><br><span class="line">$ git remote add [alias] [url]</span><br><span class="line">$ git remote rm [alias]</span><br><span class="line">$ git remote rename [old-alias] [new-alias]</span><br><span class="line">$ git remote set-url [alias] [url]</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong><code>git remote</code>: list，add and delete remote repository aliases。<br>因为不需要每次都用完整的url，所以Git为每一个remote repo的url都建立一个别名，然后用git remote来管理这个list。</strong></p>
-</blockquote>
-<p><code>git remote</code>：列出remote aliases。<br>如果你clone一个project，Git会自动将原来的url添加进来，别名就叫做: origin。<br><code>git remote -v</code>：可以看见每一个别名对应的实际url。<br><code>git remote add [alias] [url]</code>： 添加一个新的remote repo。<br><code>git remote rm [alias]</code>： 删除一个存在的remote alias。<br><code>git remote rename [old-alias] [new-alias]</code>： 重命名。<br><code>git remote set-url [alias] [url]</code>：更新url，可以加上—push和fetch参数，为同一个别名set不同的存取地址。</p>
-<h3 id="git-branch"><a href="#git-branch" class="headerlink" title="git branch"></a>git branch</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -v</span><br><span class="line">$ git branch</span><br><span class="line">$ git branch [branch-name]</span><br><span class="line">$ git branch -d [branch-name]</span><br><span class="line">$ git branch -D [branch-name]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>git branch，可以用来列出分支，创建分支和删除分支。</strong></p>
-</blockquote>
-<p><code>git branch -v</code>： 可以看见每一个分支的最后一次提交。<br><code>git branch</code>： 列出本地所有分支，当前分支会被星号标示出。<br><code>git branch [branch-name]</code>: 创建一个新的分支(当你用这种方式创建分支的时候，分支是基于你的上一次提交建立的)。<br><code>git branch -d [branch-name]</code>: 删除指定分支。（<em>查看哪些分支已被并入当前分支，清单中带有<code>*</code>字符的表示当前所在的分支。一般来说，列表中没有<code>*</code>的分支通常都可以用 <code>git branch -d</code> 来删掉。对于未合并的分支，用 git branch -d 删除该分支会导致失败。不过，如果你坚信你要删除它，可以用大写的删除选项 <code>git branch -D</code> 强制执行</em>）</p>
-<h3 id="git-checkout"><a href="#git-checkout" class="headerlink" title="git checkout"></a>git checkout</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout [branch-name]</span><br><span class="line">$ git checkout -b [branch-name]</span><br><span class="line">$ git checkout --&lt;filename&gt;</span><br></pre></td></tr></table></figure>
-
-<p><code>git checkout [branch-name]</code> ： 切换到一个分支。<br><code>git checkout -b [branch-name]</code>：创建并切换到新的分支。这个命令是将 <code>git branch newbranch</code> 和 <code>git checkout newbranch</code> 合在一起的结果。</p>
-<p>checkout 还有另一个作用：替换本地改动。</p>
-<p><code>git checkout --&lt;filename&gt;</code>：此命令会使用HEAD中的最新内容替换掉你的工作目录中的文件，已添加到暂存区的改动以及新文件都不会受到影响。</p>
-<p><font color="#FF0000"><strong>注意: git checkout filename 会删除该文件中所有没有暂存和提交的改动,这个操作是不可逆的.</strong></font></p>
-<h3 id="git-merge"><a href="#git-merge" class="headerlink" title="git merge"></a>git merge</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git merge [alias]/[branch]</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>git merge，把一个分支merge进当前的分支。</strong></p>
-</blockquote>
-<p><code>git merge [alias]/[branch]</code>：把远程分支merge到当前分支。</p>
-<p>如果出现冲突，需要手动修改，可以用<code>git mergetool</code>。解决冲突的时候可以用到<code>git diff</code>，解决完之后用<code>git add</code>添加，即表示冲突已经被resolved。</p>
-<h3 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push [alias] [branch]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>push your new branches and data to a remote repository aliases.</strong></p>
-</blockquote>
-<p><code>git push [alias] [branch]</code> ：将会把当前分支 merge 到 [alias] 上的 [branch] 分支。如果分支已经存在，将会更新，如果不存在，将会添加这个分支。</p>
-<p>如果有多个人向同一个 <code>remote repo</code> push代码， Git会首先在你试图 push 的分支上运行 git log，检查它的历史中是否能看到 server 上的 branch 现在的 tip，如果本地历史中不能看到server的tip，说明本地的代码不是最新的，Git会拒绝你的push，让你先<code>fetch + merge (pull)</code>，之后再 push，这样就保证了所有人的改动都会被考虑进来。</p>
-<h3 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>fetch from a remote repo and try to merge into the current branch.<br>pull == fetch + merge FETCH_HEAD</strong></p>
-</blockquote>
-<p><code>git pull</code>：会首先执行<code>git fetch</code>，然后执行<code>git merge</code>，把取来的分支的 head <code>merge</code> 到当前分支。这个 merge 操作会产生一个新的commit。<br>如果使用<code>--rebase</code>参数，它会执行<code>git rebase</code>来取代原来的<code>git merge</code>。</p>
-<h3 id="git-clone"><a href="#git-clone" class="headerlink" title="git clone"></a>git clone</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git clone [url]</span><br><span class="line">$ git clone [url] [newname]</span><br></pre></td></tr></table></figure>
-
-<p><code>git clone [url]</code>：获取一个url对应的远程Git repo， 创建一个local copy。</p>
-<p>clone下来的repo会以url最后一个斜线后面的名称命名,创建一个文件夹，如果想要指定特定的名称，可以<code>git clone [url] newname</code>指定。</p>
-<h3 id="git-tag"><a href="#git-tag" class="headerlink" title="git tag"></a>git tag</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git tag v1.0</span><br><span class="line">$ git tag -a v1.0</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>tag a point in history as import.</strong></p>
-</blockquote>
-<p><code>git tag v1.0</code>，会在一个提交上建立永久性的书签，通常是发布一个release版本或者ship了什么东西之后加tag。</p>
-<p><code>git tag -a v1.0</code>, -a 参数会允许你添加一些信息，即make an annotated tag。当你运行git tag -a命令的时候，Git会打开一个编辑器让你输入tag信息。</p>
-<p>我们可以利用commit SHA来给一个过去的提交打tag:<br><code>git tag -a v0.9 XXXX</code></p>
-<p>push的时候是不包含tag的，如果想包含，可以在push时加上<code>--tags</code>参数。</p>
-<p>fetch的时候，branch HEAD可以reach的tags是自动被fetch下来的，tags that aren’t reachable from branch heads will be skipped。如果想确保所有的tags都被包含进来，需要加上<code>--tags</code>选项。</p>
+<p>上图中的 IP 可以通过， <a target="_blank" rel="noopener" href="https://www.ipaddress.com/">ipaddress</a> 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg"></p>
+<p><code>140.82.114.3</code>：这个IP地址修改为 <code>github.com</code>搜索到的IP地址</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg"></p>
+<p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
+<p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
 
     </div>
 
@@ -402,7 +386,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/" title="【Tips】Git常用命令汇总">https://fengyanxin.github.io/Tips/【Tips】Git常用命令汇总/</a>
+    <a href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/" title="【Tips】解决 ping github.com 超时问题">https://fengyanxin.github.io/Tips/【Tips】解决-ping-github-com-超时问题/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -482,12 +466,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/" rel="prev" title="【Flutter】导出iOS包时，如何自动与手动更改版本号？">
-      <i class="fa fa-chevron-left"></i> 【Flutter】导出iOS包时，如何自动与手动更改版本号？
+    <a href="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/" rel="prev" title="【iOS】集成阿里云消息推送">
+      <i class="fa fa-chevron-left"></i> 【iOS】集成阿里云消息推送
     </a></div>
       <div class="post-nav-item">
-    <a href="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/" rel="next" title="【iOS】集成阿里云消息推送">
-      【iOS】集成阿里云消息推送 <i class="fa fa-chevron-right"></i>
+    <a href="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/" rel="next" title="【Hexo】添加 .sh 脚本文件，快速测试和部署">
+      【Hexo】添加 .sh 脚本文件，快速测试和部署 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -548,7 +532,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB"><span class="nav-number">1.</span> <span class="nav-text">Git常用命令汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.1.</span> <span class="nav-text">常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#git-init"><span class="nav-number">1.1.1.</span> <span class="nav-text">git init</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-add"><span class="nav-number">1.1.2.</span> <span class="nav-text">git add</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-commit"><span class="nav-number">1.1.3.</span> <span class="nav-text">git commit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-remote"><span class="nav-number">1.1.4.</span> <span class="nav-text">git remote</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-branch"><span class="nav-number">1.1.5.</span> <span class="nav-text">git branch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-checkout"><span class="nav-number">1.1.6.</span> <span class="nav-text">git checkout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-merge"><span class="nav-number">1.1.7.</span> <span class="nav-text">git merge</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-push"><span class="nav-number">1.1.8.</span> <span class="nav-text">git push</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-pull"><span class="nav-number">1.1.9.</span> <span class="nav-text">git pull</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-clone"><span class="nav-number">1.1.10.</span> <span class="nav-text">git clone</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-tag"><span class="nav-number">1.1.11.</span> <span class="nav-text">git tag</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">解决 ping github.com 超时问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%AE%E6%94%B9Hosts%E6%96%87%E4%BB%B6%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">如何修改Hosts文件？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E9%80%9A%E8%BF%87%E7%BB%88%E7%AB%AF%E5%91%BD%E4%BB%A4%E4%BF%AE%E6%94%B9"><span class="nav-number">1.1.1.</span> <span class="nav-text">1、通过终端命令修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E5%9C%A8-Finder-%E4%B8%AD%E4%BF%AE%E6%94%B9"><span class="nav-number">1.1.2.</span> <span class="nav-text">2、在 Finder 中修改</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8-Hosts-%E6%96%87%E4%BB%B6%E4%B8%AD%E9%85%8D%E7%BD%AE-github-com-%E6%98%A0%E5%B0%84"><span class="nav-number">1.2.</span> <span class="nav-text">如何在 Hosts 文件中配置 github.com 映射</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

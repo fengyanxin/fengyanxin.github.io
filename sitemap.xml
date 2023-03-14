@@ -2,6 +2,33 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</loc>
+    
+    <lastmod>2023-03-14</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</loc>
+    
+    <lastmod>2023-03-14</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/</loc>
+    
+    <lastmod>2023-03-14</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%20|%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/</loc>
     
     <lastmod>2023-03-13</lastmod>
@@ -65,15 +92,6 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</loc>
-    
-    <lastmod>2023-03-06</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://fengyanxin.github.io/categories/index.html</loc>
     
     <lastmod>2023-03-03</lastmod>
@@ -124,6 +142,13 @@
   </url>
   
   <url>
+    <loc>https://fengyanxin.github.io/tags/Tips/</loc>
+    <lastmod>2023-03-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://fengyanxin.github.io/tags/Flutter/</loc>
     <lastmod>2023-03-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -131,7 +156,7 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/tags/Tips/</loc>
+    <loc>https://fengyanxin.github.io/tags/Hexo/</loc>
     <lastmod>2023-03-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -147,6 +172,13 @@
   </url>
   
   <url>
+    <loc>https://fengyanxin.github.io/categories/Tips/</loc>
+    <lastmod>2023-03-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://fengyanxin.github.io/categories/Flutter/</loc>
     <lastmod>2023-03-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -154,7 +186,7 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/categories/Tips/</loc>
+    <loc>https://fengyanxin.github.io/categories/Hexo/</loc>
     <lastmod>2023-03-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

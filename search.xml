@@ -129,170 +129,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【Flutter】导出iOS包时，如何自动与手动更改版本号？</title>
-    <url>/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/</url>
-    <content><![CDATA[<h1 id="【Flutter】导出iOS包时，如何自动与手动更改版本号？"><a href="#【Flutter】导出iOS包时，如何自动与手动更改版本号？" class="headerlink" title="【Flutter】导出iOS包时，如何自动与手动更改版本号？"></a>【Flutter】导出iOS包时，如何自动与手动更改版本号？</h1><h2 id="1、通过flutter工程更改版本号"><a href="#1、通过flutter工程更改版本号" class="headerlink" title="1、通过flutter工程更改版本号"></a>1、通过flutter工程更改版本号</h2><p>1）首先，打开项目下的iOS工程，找到<code>info.plist</code>文件，右键以<code>Source Code</code>方式打开，找到版本号配置参数 <code>CFBundleShortVersionString</code>和<code>CFBundleVersion</code>。</p>
-<p>一般未做改动之前的效果如下，<code>$(FLUTTER_BUILD_NAME)</code>表示跟随flutter工程创建。</p>
-<span id="more"></span>
-
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">&lt;</span>key<span class="operator">&gt;</span><span class="type">CFBundleShortVersionString</span>&lt;/key&gt;</span><br><span class="line"><span class="operator">&lt;</span>string<span class="operator">&gt;</span>$(<span class="type">FLUTTER_BUILD_NAME</span>)<span class="operator">&lt;/</span>string<span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;</span>key<span class="operator">&gt;</span><span class="type">CFBundleVersion</span>&lt;/key&gt;</span><br><span class="line"><span class="operator">&lt;</span>string<span class="operator">&gt;</span>$(<span class="type">FLUTTER_BUILD_NAME</span>)<span class="operator">&lt;/</span>string<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>2）其次，了解了<code>$(FLUTTER_BUILD_NAME)</code>的含义之后，我们再来打开<code>flutter</code>工程目录下的<code>pubspec.yaml</code>文件。</p>
-<p>如下图所示，我们可以看到关于版本信息的代码<code>version: 0.6.0+1</code>。</p>
-<p>这里的<code>0.6.0</code>就是构建iOS包的版本号，而<code>1</code>就是build号。分别对应前面的<code>CFBundleVersion</code>和<code>CFBundleShortVersionString</code>。</p>
-<p><img data-src="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781763866764.jpg" alt="16781763866764"></p>
-<p>3）最后，了解了上面的信息之后，我们想要修改构建出来的iOS包的版本号就好办了。</p>
-<p>一般有两种办法：</p>
-<p>方法一：更改上图中的版本信息代码</p>
-<p>将<code>version: 0.6.0+1</code>更改成你想要的版本，比如：<code>version: 1.0.0+2</code></p>
-<p>然后<code>cd</code>到<code>flutter</code>项目目录下运行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flutter clean</span><br><span class="line">flutter build ios --release</span><br></pre></td></tr></table></figure>
-
-<p>然后再使用Xcode打开iOS工程，此时我们就可以很清晰的看到自动生成的版本信息文件<code>(Generated)</code>发生变化了。内容如下：</p>
-<p><img data-src="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781777724396.jpg" alt="16781777724396"></p>
-<p>确认完以上信息，我们就可以手动打包了。</p>
-<p>方法二：清理工程，直接用<code>flutter</code>脚本语言打包</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flutter clean</span><br><span class="line">flutter build ios --build-name=0.6.0 --build-number=1</span><br></pre></td></tr></table></figure>
-
-<p>这里的<code>--build-name=0.6.0</code>就对应上图的<code>FLUTTER BUILD NAME=0.6.0</code>，<code>build-number=1</code>对应<code>FLUTTER BUILD NUMBER=1</code>。</p>
-<h2 id="2、通过iOS工程更改版本号"><a href="#2、通过iOS工程更改版本号" class="headerlink" title="2、通过iOS工程更改版本号"></a>2、通过iOS工程更改版本号</h2><p>1）首先，还是回到iOS工程下，找到<code>info.plist</code>文件，右键以<code>Source Code</code>方式打开，找到版本号配置参数<code>CFBundleShortVersionString</code>和<code>CFBundleVersion</code>。</p>
-<p>对这两个参数的<code>value</code>值进行修改，让它们不再跟随<code>flutter</code>工程创建，修改如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;key&gt;CFBundleShortVersionString&lt;/key&gt;</span><br><span class="line">&lt;string&gt;$(MARKETING_VERSION)&lt;/string&gt;</span><br><span class="line">&lt;key&gt;CFBundleVersion&lt;/key&gt;</span><br><span class="line">&lt;string&gt;$(CURRENT_PROJECT_VERSION)&lt;/string&gt;</span><br></pre></td></tr></table></figure>
-
-<p>这里，<code>$(CURRENT_PROJECT_VERSION)</code>: 表示当前项目版本号；<br><code>$(MARKETING_VERSION)</code>：表示当前项目build号。</p>
-<p>更改以上配置之后，我们就可以在iOS工程配置中手动修改iOS包的版本信息了。效果如下图：</p>
-<p><img data-src="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781786409936.jpg" alt="16781786409936"></p>
-<p>修改完进行打包。</p>
-]]></content>
-      <categories>
-        <category>Flutter</category>
-      </categories>
-      <tags>
-        <tag>iOS</tag>
-        <tag>Flutter</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【Hexo】Mac 上使用Hexo + Github搭建个人博客</title>
-    <url>/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h1 id="【Hexo】Mac-上使用Hexo-Github搭建个人博客"><a href="#【Hexo】Mac-上使用Hexo-Github搭建个人博客" class="headerlink" title="【Hexo】Mac 上使用Hexo + Github搭建个人博客"></a>【Hexo】Mac 上使用Hexo + Github搭建个人博客</h1><h2 id="为什么要用Hexo-Github？"><a href="#为什么要用Hexo-Github？" class="headerlink" title="为什么要用Hexo + Github？"></a>为什么要用Hexo + Github？</h2><h3 id="Hexo介绍"><a href="#Hexo介绍" class="headerlink" title="Hexo介绍"></a>Hexo介绍</h3><p>Hexo是一款基于Nodejs的，快速、简洁且高效的博客框架。它具有丰富的插件和主题，具有超快的速度，支持Makedown语法，可以方便快捷的编写博客文档。同时还支持node命令，可以一键部署到GitHub Pages, Heroku 或其他平台。更详细的信息可以看一下 <a href="https://hexo.io/zh-cn">Hexo官网</a> 。</p>
-<p>值得一提的是，它在github上的<em>star</em>现在已经达到了<a href="https://github.com/hexojs/hexo">36.3k</a>，优不优秀可见一斑。</p>
-<span id="more"></span>
-
-<p>Hexo主要有以下特点：</p>
-<ol>
-<li><p>超快速度：<em>Node.js</em>所带来的超快生成速度，可以让上百个页面在几秒内完成渲染。</p>
-</li>
-<li><p>支持 <em>Markdown</em>：Hexo 支持 GitHub Flavored Markdown 的所有功能，甚至可以整合 Octopress 的大多数插件。</p>
-</li>
-<li><p>一键部署：只需一条指令即可部署到 <em>GitHub Pages, Heroku</em> 或其他平台。</p>
-</li>
-<li><p>插件或可扩展性：强大的 API 带来无限的可能，与数种模板引擎（<em>EJS，Pug，Nunjucks</em>）和工具（<em>Babel，PostCSS，Less/Sass</em>）轻易集成。</p>
-</li>
-</ol>
-<h3 id="Guthub"><a href="#Guthub" class="headerlink" title="Guthub"></a>Guthub</h3><p>GitHub 那就更不用说了，做程序员的都知道，它是多nice的一个东西。</p>
-<p>今天我们要说的主要是它提供的一个功能：<em>GitHub Pages</em> ，GitHub Pages 允许每个账户创建一个名为 {username}.<a href="http://github.io/">http://github.io</a> 的仓库，另外它还会自动为这个仓库分配一个 <a href="http://github.io/">http://github.io</a> 的二级域名，这就为我们搭建个人博客提供了很大的方便，既为我们解决了域名、服务器的问题，又为我们提供了一个稳定且免费的静态站点。</p>
-<h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><ol>
-<li>官网下载<br>下载地址：<a href="https://nodejs.org/en/">https://nodejs.org/en/</a></li>
-</ol>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778370777438.jpg" alt="16778370777438"></p>
-<ol start="2">
-<li>使用homebrew安装</li>
-</ol>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">## 搜索现有node版本</span><br><span class="line">brew search node</span><br><span class="line">## 安装指定版本</span><br><span class="line">brew install node@x</span><br></pre></td></tr></table></figure>
-<p>安装完成之后，可以用 <em>npm -v</em> 查询验证，如果不指定版本安装为最新版本</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778374510393.jpg" alt="16778374510393"></p>
-<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><ol>
-<li>使用外网下载（相对比较慢）</li>
-</ol>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用命令去安装Hexo</span></span><br><span class="line">npm install -g hexo-cli </span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>更换国内镜像后下载</li>
-</ol>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用命令安装淘宝镜像：</span></span><br><span class="line">npm install -g cnpm --registry=<span class="attr">https</span>:<span class="comment">//registry.npm.taobao.org</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用淘宝源安装Hexo</span></span><br><span class="line">cnpm install -g hexo-cli </span><br></pre></td></tr></table></figure>
-<p>安装成功后，可以使用 <em>hexo -v</em> 命令查看一下hexo版本：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778379318597.jpg" alt="16778379318597"></p>
-<h2 id="初始化Hexo-Blog"><a href="#初始化Hexo-Blog" class="headerlink" title="初始化Hexo Blog"></a>初始化Hexo Blog</h2><h3 id="新建一个文件夹"><a href="#新建一个文件夹" class="headerlink" title="新建一个文件夹"></a>新建一个文件夹</h3><p>我这里创建一个名为Blogs的文件夹，并进入该文件夹内：</p>
-<h3 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 初始化hexo</span></span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure>
-<p>初始化成功如下：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778382111564.jpg" alt="16778382111564"></p>
-<p>这时候Blogs下的目录结构如下：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778382603905.jpg" alt="16778382603905"></p>
-<h3 id="本地启动Hexo"><a href="#本地启动Hexo" class="headerlink" title="本地启动Hexo"></a>本地启动Hexo</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 启动Hexo</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778384529301.jpg" alt="16778384529301"></p>
-<h3 id="浏览器打开博客网站"><a href="#浏览器打开博客网站" class="headerlink" title="浏览器打开博客网站"></a>浏览器打开博客网站</h3><p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778384888543.jpg" alt="16778384888543"></p>
-<h2 id="创建博客文章"><a href="#创建博客文章" class="headerlink" title="创建博客文章"></a>创建博客文章</h2><h3 id="创建博客"><a href="#创建博客" class="headerlink" title="创建博客"></a>创建博客</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建一篇博客</span></span><br><span class="line">hexo n <span class="string">&quot;first blog&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>文章在Blogs目录下的结构如下：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778386968316.jpg" alt="16778386968316"></p>
-<h3 id="清理项目缓存"><a href="#清理项目缓存" class="headerlink" title="清理项目缓存"></a>清理项目缓存</h3><p>新增博客文章或者修改博客文章内容，需要执行此命令:</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 清理之前生成的网站</span></span><br><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
-
-<h3 id="重新生成博客"><a href="#重新生成博客" class="headerlink" title="重新生成博客"></a>重新生成博客</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 重新生成博客</span></span><br><span class="line">hexo g</span><br></pre></td></tr></table></figure>
-
-<h3 id="再次启动项目"><a href="#再次启动项目" class="headerlink" title="再次启动项目"></a>再次启动项目</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 再次启动博客网站</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-<p>浏览器页面展示如下：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778388704782.jpg" alt="16778388704782"></p>
-<h2 id="修改网站主题"><a href="#修改网站主题" class="headerlink" title="修改网站主题"></a>修改网站主题</h2><p>Hexo框架默认的是landscape主题，Hexo上有三百多种主题，大家可以上Hexo官网选择自己喜欢的<a href="https://hexo.io/themes/">主题</a>，我这里以next为例：</p>
-<h3 id="下载next主题"><a href="#下载next主题" class="headerlink" title="下载next主题"></a>下载next主题</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下载next</span></span><br><span class="line">git clone <span class="attr">https</span>:<span class="comment">//github.com/theme-next/hexo-theme-next themes/next</span></span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778391682864.jpg" alt="16778391682864"></p>
-<p>我们下载的主题都存放在Blogs/themes文件夹下：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778392610610.jpg" alt="16778392610610"></p>
-<h3 id="修改项目配置文件"><a href="#修改项目配置文件" class="headerlink" title="修改项目配置文件"></a>修改项目配置文件</h3><p>主题下载下来之后，我们需要在项目配置文件_config.yml里面修改我们的主题：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778393394648.jpg" alt="16778393394648"></p>
-<p>把默认的landscape修改为我们下载好的主题 next</p>
-<h3 id="重新生成项目"><a href="#重新生成项目" class="headerlink" title="重新生成项目"></a>重新生成项目</h3><p>这时候再执行我们Hexo三连：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 清理项目缓存</span></span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重新生成项目</span></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment">// 本地启动项目</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
-<p>Tips：重新生成项目和本地启动项目可以合并： <em>hexo g &amp; hexo s</em><br>再次打开项目，效果图如下：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778394696679.jpg" alt="16778394696679"></p>
-<p>到这里，我们的主题修改就完成了，后期我们可以根据自己的需要去修改next的配置文件，让我们的博客网站更加个性化。</p>
-<p>下一篇文章我将说说如何修改主题让我们的博客网站更具个性化。</p>
-<p>关于Hexo搭建博客到这里就讲得差不多了，下面我们就想怎么把博客部署到Github上。</p>
-<h2 id="部署博客到Github"><a href="#部署博客到Github" class="headerlink" title="部署博客到Github"></a>部署博客到Github</h2><p>首先，你得要有一个自己的Github账号吧，我相信99.99%的开发者都是有Github账号的，如果你是那0.01%，请前往<a href="https://github.com/">Github</a>自行注册。</p>
-<h3 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h3><p>在Github里创建一个存放博客项目的仓库，操作如下：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778397130902.jpg" alt="16778397130902"></p>
-<p>这里有几个注意点：</p>
-<ol>
-<li>仓库的名称必须与你Github账号名相同</li>
-<li>仓库必须以gitHub.io结尾（这里我已经创建过了，所以报错）</li>
-<li>使用GitHub Pages最好选 <em>Public</em> repo（Private需要付费）</li>
-</ol>
-<p>比如你Github账号名叫：zhangsan，那你新建的这个仓库名就叫：zhangsan.github.io</p>
-<p>创建之后，我们就有了一个存放博客项目仓库：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778399347942.jpg" alt="16778399347942"></p>
-<h3 id="安装Hexo部署插件"><a href="#安装Hexo部署插件" class="headerlink" title="安装Hexo部署插件"></a>安装Hexo部署插件</h3><p>进入到Blogs目录下，安装部署插件：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">#使用淘宝镜像安装</span><br><span class="line">cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
-
-<h3 id="修改项目配置文件-1"><a href="#修改项目配置文件-1" class="headerlink" title="修改项目配置文件"></a>修改项目配置文件</h3><p>好了，万事俱备，只欠修改 <em>_config.yml</em> 文件了，打开_config.yml文件，拖拽到最后，修改文件：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778401117276.jpg" alt="16778401117276"></p>
-<p>修改为：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778401892146.jpg" alt="16778401892146"></p>
-<p>注意：<em>repo</em> 为你刚创建的Github项目的地址，如果你是使用的 <em>vim</em> 打开的 <em>_config.yml</em>，记得修改了要 <em>:wq</em> 保存退出</p>
-<h3 id="重新生成项目-1"><a href="#重新生成项目-1" class="headerlink" title="重新生成项目"></a>重新生成项目</h3><p>清理项目缓存：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
-
-<p>重新生成博客：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
-
-<p>部署到云端（Github）:</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<p>注意：这里每次使用 <em>hexo d</em> 部署到Github为了安全都要求输入账号密码，如果你不希望每次都输入账号密码，可以跟博主一样设置Github的 <em>SSH Keys</em>，以后每次发布到Github就不需要输入账号密码了。</p>
-<p>访问云端博客主页</p>
-<p>访问地址：https://博客仓库名.github.io<br>比如我的博客地址：<a href="https://fengyanxin.github.io/">https://fengyanxin.github.io</a></p>
-<p>可以在以下路径查看：</p>
-<p><img data-src="/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778403847380.jpg" alt="16778403847380"></p>
-<p>最后</p>
-<p>基本上到这里，属于我们自己的博客就搭建完成啦，整个搭建流程如果不出错半个小时之内其实是可以搞定的，但是这路哪里那么好走呢，每个人去搭建的过程中或多或少都会遇到一些问题，我自己在搭建的过程中也碰到了一些问题，我会抽空把遇到的问题详细整理出来，希望能够帮助大家如果要搭建博客的时候少踩点坑。</p>
-<p>大兄弟，都看到这里了，就不要吝啬你的小星星了，为博主点个赞再走吧～</p>
-]]></content>
-  </entry>
-  <entry>
     <title>Markdown语法</title>
     <url>/Tips/Markdown/</url>
     <content><![CDATA[<h1 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h1><h2 id="一、Markdown纯文本基本语法"><a href="#一、Markdown纯文本基本语法" class="headerlink" title="一、Markdown纯文本基本语法"></a>一、Markdown纯文本基本语法</h2><h3 id="1-标题"><a href="#1-标题" class="headerlink" title="1. 标题"></a>1. 标题</h3><p>Markdown 支持两种标题的语法，类 Setext 和类 atx 形式。 类 Setext 形式是用底线的形式，利用 = （最高阶标题）和 - （第二阶标题），例如：</p>
@@ -474,6 +310,207 @@
       </categories>
       <tags>
         <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Flutter】导出iOS包时，如何自动与手动更改版本号？</title>
+    <url>/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/</url>
+    <content><![CDATA[<h1 id="【Flutter】导出iOS包时，如何自动与手动更改版本号？"><a href="#【Flutter】导出iOS包时，如何自动与手动更改版本号？" class="headerlink" title="【Flutter】导出iOS包时，如何自动与手动更改版本号？"></a>【Flutter】导出iOS包时，如何自动与手动更改版本号？</h1><h2 id="1、通过flutter工程更改版本号"><a href="#1、通过flutter工程更改版本号" class="headerlink" title="1、通过flutter工程更改版本号"></a>1、通过flutter工程更改版本号</h2><p>1）首先，打开项目下的iOS工程，找到<code>info.plist</code>文件，右键以<code>Source Code</code>方式打开，找到版本号配置参数 <code>CFBundleShortVersionString</code>和<code>CFBundleVersion</code>。</p>
+<p>一般未做改动之前的效果如下，<code>$(FLUTTER_BUILD_NAME)</code>表示跟随flutter工程创建。</p>
+<span id="more"></span>
+
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">&lt;</span>key<span class="operator">&gt;</span><span class="type">CFBundleShortVersionString</span>&lt;/key&gt;</span><br><span class="line"><span class="operator">&lt;</span>string<span class="operator">&gt;</span>$(<span class="type">FLUTTER_BUILD_NAME</span>)<span class="operator">&lt;/</span>string<span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;</span>key<span class="operator">&gt;</span><span class="type">CFBundleVersion</span>&lt;/key&gt;</span><br><span class="line"><span class="operator">&lt;</span>string<span class="operator">&gt;</span>$(<span class="type">FLUTTER_BUILD_NAME</span>)<span class="operator">&lt;/</span>string<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>2）其次，了解了<code>$(FLUTTER_BUILD_NAME)</code>的含义之后，我们再来打开<code>flutter</code>工程目录下的<code>pubspec.yaml</code>文件。</p>
+<p>如下图所示，我们可以看到关于版本信息的代码<code>version: 0.6.0+1</code>。</p>
+<p>这里的<code>0.6.0</code>就是构建iOS包的版本号，而<code>1</code>就是build号。分别对应前面的<code>CFBundleVersion</code>和<code>CFBundleShortVersionString</code>。</p>
+<p><img data-src="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781763866764.jpg" alt="16781763866764"></p>
+<p>3）最后，了解了上面的信息之后，我们想要修改构建出来的iOS包的版本号就好办了。</p>
+<p>一般有两种办法：</p>
+<p>方法一：更改上图中的版本信息代码</p>
+<p>将<code>version: 0.6.0+1</code>更改成你想要的版本，比如：<code>version: 1.0.0+2</code></p>
+<p>然后<code>cd</code>到<code>flutter</code>项目目录下运行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flutter clean</span><br><span class="line">flutter build ios --release</span><br></pre></td></tr></table></figure>
+
+<p>然后再使用Xcode打开iOS工程，此时我们就可以很清晰的看到自动生成的版本信息文件<code>(Generated)</code>发生变化了。内容如下：</p>
+<p><img data-src="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781777724396.jpg" alt="16781777724396"></p>
+<p>确认完以上信息，我们就可以手动打包了。</p>
+<p>方法二：清理工程，直接用<code>flutter</code>脚本语言打包</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flutter clean</span><br><span class="line">flutter build ios --build-name=0.6.0 --build-number=1</span><br></pre></td></tr></table></figure>
+
+<p>这里的<code>--build-name=0.6.0</code>就对应上图的<code>FLUTTER BUILD NAME=0.6.0</code>，<code>build-number=1</code>对应<code>FLUTTER BUILD NUMBER=1</code>。</p>
+<h2 id="2、通过iOS工程更改版本号"><a href="#2、通过iOS工程更改版本号" class="headerlink" title="2、通过iOS工程更改版本号"></a>2、通过iOS工程更改版本号</h2><p>1）首先，还是回到iOS工程下，找到<code>info.plist</code>文件，右键以<code>Source Code</code>方式打开，找到版本号配置参数<code>CFBundleShortVersionString</code>和<code>CFBundleVersion</code>。</p>
+<p>对这两个参数的<code>value</code>值进行修改，让它们不再跟随<code>flutter</code>工程创建，修改如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;key&gt;CFBundleShortVersionString&lt;/key&gt;</span><br><span class="line">&lt;string&gt;$(MARKETING_VERSION)&lt;/string&gt;</span><br><span class="line">&lt;key&gt;CFBundleVersion&lt;/key&gt;</span><br><span class="line">&lt;string&gt;$(CURRENT_PROJECT_VERSION)&lt;/string&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这里，<code>$(CURRENT_PROJECT_VERSION)</code>: 表示当前项目版本号；<br><code>$(MARKETING_VERSION)</code>：表示当前项目build号。</p>
+<p>更改以上配置之后，我们就可以在iOS工程配置中手动修改iOS包的版本信息了。效果如下图：</p>
+<p><img data-src="/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/16781786409936.jpg" alt="16781786409936"></p>
+<p>修改完进行打包。</p>
+]]></content>
+      <categories>
+        <category>Flutter</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+        <tag>Flutter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Hexo】Mac 上使用Hexo + Github搭建个人博客</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="【Hexo】Mac-上使用Hexo-Github搭建个人博客"><a href="#【Hexo】Mac-上使用Hexo-Github搭建个人博客" class="headerlink" title="【Hexo】Mac 上使用Hexo + Github搭建个人博客"></a>【Hexo】Mac 上使用Hexo + Github搭建个人博客</h1><h2 id="为什么要用Hexo-Github？"><a href="#为什么要用Hexo-Github？" class="headerlink" title="为什么要用Hexo + Github？"></a>为什么要用Hexo + Github？</h2><h3 id="Hexo介绍"><a href="#Hexo介绍" class="headerlink" title="Hexo介绍"></a>Hexo介绍</h3><p>Hexo是一款基于Nodejs的，快速、简洁且高效的博客框架。它具有丰富的插件和主题，具有超快的速度，支持Makedown语法，可以方便快捷的编写博客文档。同时还支持node命令，可以一键部署到GitHub Pages, Heroku 或其他平台。更详细的信息可以看一下 <a href="https://hexo.io/zh-cn">Hexo官网</a> 。</p>
+<p>值得一提的是，它在github上的<em>star</em>现在已经达到了<a href="https://github.com/hexojs/hexo">36.3k</a>，优不优秀可见一斑。</p>
+<span id="more"></span>
+
+<p>Hexo主要有以下特点：</p>
+<ol>
+<li><p>超快速度：<em>Node.js</em>所带来的超快生成速度，可以让上百个页面在几秒内完成渲染。</p>
+</li>
+<li><p>支持 <em>Markdown</em>：Hexo 支持 GitHub Flavored Markdown 的所有功能，甚至可以整合 Octopress 的大多数插件。</p>
+</li>
+<li><p>一键部署：只需一条指令即可部署到 <em>GitHub Pages, Heroku</em> 或其他平台。</p>
+</li>
+<li><p>插件或可扩展性：强大的 API 带来无限的可能，与数种模板引擎（<em>EJS，Pug，Nunjucks</em>）和工具（<em>Babel，PostCSS，Less/Sass</em>）轻易集成。</p>
+</li>
+</ol>
+<h3 id="Guthub"><a href="#Guthub" class="headerlink" title="Guthub"></a>Guthub</h3><p>GitHub 那就更不用说了，做程序员的都知道，它是多nice的一个东西。</p>
+<p>今天我们要说的主要是它提供的一个功能：<em>GitHub Pages</em> ，GitHub Pages 允许每个账户创建一个名为 {username}.<a href="http://github.io/">http://github.io</a> 的仓库，另外它还会自动为这个仓库分配一个 <a href="http://github.io/">http://github.io</a> 的二级域名，这就为我们搭建个人博客提供了很大的方便，既为我们解决了域名、服务器的问题，又为我们提供了一个稳定且免费的静态站点。</p>
+<h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><ol>
+<li>官网下载<br>下载地址：<a href="https://nodejs.org/en/">https://nodejs.org/en/</a></li>
+</ol>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778370777438.jpg" alt="16778370777438"></p>
+<ol start="2">
+<li>使用homebrew安装</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">## 搜索现有node版本</span><br><span class="line">brew search node</span><br><span class="line">## 安装指定版本</span><br><span class="line">brew install node@x</span><br></pre></td></tr></table></figure>
+<p>安装完成之后，可以用 <em>npm -v</em> 查询验证，如果不指定版本安装为最新版本</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778374510393.jpg" alt="16778374510393"></p>
+<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><ol>
+<li>使用外网下载（相对比较慢）</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用命令去安装Hexo</span></span><br><span class="line">npm install -g hexo-cli </span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>更换国内镜像后下载</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用命令安装淘宝镜像：</span></span><br><span class="line">npm install -g cnpm --registry=<span class="attr">https</span>:<span class="comment">//registry.npm.taobao.org</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用淘宝源安装Hexo</span></span><br><span class="line">cnpm install -g hexo-cli </span><br></pre></td></tr></table></figure>
+<p>安装成功后，可以使用 <em>hexo -v</em> 命令查看一下hexo版本：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778379318597.jpg" alt="16778379318597"></p>
+<h2 id="初始化Hexo-Blog"><a href="#初始化Hexo-Blog" class="headerlink" title="初始化Hexo Blog"></a>初始化Hexo Blog</h2><h3 id="新建一个文件夹"><a href="#新建一个文件夹" class="headerlink" title="新建一个文件夹"></a>新建一个文件夹</h3><p>我这里创建一个名为Blogs的文件夹，并进入该文件夹内：</p>
+<h3 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 初始化hexo</span></span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+<p>初始化成功如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778382111564.jpg" alt="16778382111564"></p>
+<p>这时候Blogs下的目录结构如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778382603905.jpg" alt="16778382603905"></p>
+<h3 id="本地启动Hexo"><a href="#本地启动Hexo" class="headerlink" title="本地启动Hexo"></a>本地启动Hexo</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 启动Hexo</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778384529301.jpg" alt="16778384529301"></p>
+<h3 id="浏览器打开博客网站"><a href="#浏览器打开博客网站" class="headerlink" title="浏览器打开博客网站"></a>浏览器打开博客网站</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778384888543.jpg" alt="16778384888543"></p>
+<h2 id="创建博客文章"><a href="#创建博客文章" class="headerlink" title="创建博客文章"></a>创建博客文章</h2><h3 id="创建博客"><a href="#创建博客" class="headerlink" title="创建博客"></a>创建博客</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建一篇博客</span></span><br><span class="line">hexo n <span class="string">&quot;first blog&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>文章在Blogs目录下的结构如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778386968316.jpg" alt="16778386968316"></p>
+<h3 id="清理项目缓存"><a href="#清理项目缓存" class="headerlink" title="清理项目缓存"></a>清理项目缓存</h3><p>新增博客文章或者修改博客文章内容，需要执行此命令:</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 清理之前生成的网站</span></span><br><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
+
+<h3 id="重新生成博客"><a href="#重新生成博客" class="headerlink" title="重新生成博客"></a>重新生成博客</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 重新生成博客</span></span><br><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<h3 id="再次启动项目"><a href="#再次启动项目" class="headerlink" title="再次启动项目"></a>再次启动项目</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 再次启动博客网站</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>浏览器页面展示如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778388704782.jpg" alt="16778388704782"></p>
+<h2 id="修改网站主题"><a href="#修改网站主题" class="headerlink" title="修改网站主题"></a>修改网站主题</h2><p>Hexo框架默认的是landscape主题，Hexo上有三百多种主题，大家可以上Hexo官网选择自己喜欢的<a href="https://hexo.io/themes/">主题</a>，我这里以next为例：</p>
+<h3 id="下载next主题"><a href="#下载next主题" class="headerlink" title="下载next主题"></a>下载next主题</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下载next</span></span><br><span class="line">git clone <span class="attr">https</span>:<span class="comment">//github.com/theme-next/hexo-theme-next themes/next</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778391682864.jpg" alt="16778391682864"></p>
+<p>我们下载的主题都存放在Blogs/themes文件夹下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778392610610.jpg" alt="16778392610610"></p>
+<h3 id="修改项目配置文件"><a href="#修改项目配置文件" class="headerlink" title="修改项目配置文件"></a>修改项目配置文件</h3><p>主题下载下来之后，我们需要在项目配置文件_config.yml里面修改我们的主题：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778393394648.jpg" alt="16778393394648"></p>
+<p>把默认的landscape修改为我们下载好的主题 next</p>
+<h3 id="重新生成项目"><a href="#重新生成项目" class="headerlink" title="重新生成项目"></a>重新生成项目</h3><p>这时候再执行我们Hexo三连：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 清理项目缓存</span></span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重新生成项目</span></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment">// 本地启动项目</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>Tips：重新生成项目和本地启动项目可以合并： <em>hexo g &amp; hexo s</em><br>再次打开项目，效果图如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778394696679.jpg" alt="16778394696679"></p>
+<p>到这里，我们的主题修改就完成了，后期我们可以根据自己的需要去修改next的配置文件，让我们的博客网站更加个性化。</p>
+<p>下一篇文章我将说说如何修改主题让我们的博客网站更具个性化。</p>
+<p>关于Hexo搭建博客到这里就讲得差不多了，下面我们就想怎么把博客部署到Github上。</p>
+<h2 id="部署博客到Github"><a href="#部署博客到Github" class="headerlink" title="部署博客到Github"></a>部署博客到Github</h2><p>首先，你得要有一个自己的Github账号吧，我相信99.99%的开发者都是有Github账号的，如果你是那0.01%，请前往<a href="https://github.com/">Github</a>自行注册。</p>
+<h3 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h3><p>在Github里创建一个存放博客项目的仓库，操作如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778397130902.jpg" alt="16778397130902"></p>
+<p>这里有几个注意点：</p>
+<ol>
+<li>仓库的名称必须与你Github账号名相同</li>
+<li>仓库必须以gitHub.io结尾（这里我已经创建过了，所以报错）</li>
+<li>使用GitHub Pages最好选 <em>Public</em> repo（Private需要付费）</li>
+</ol>
+<p>比如你Github账号名叫：zhangsan，那你新建的这个仓库名就叫：zhangsan.github.io</p>
+<p>创建之后，我们就有了一个存放博客项目仓库：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778399347942.jpg" alt="16778399347942"></p>
+<h3 id="安装Hexo部署插件"><a href="#安装Hexo部署插件" class="headerlink" title="安装Hexo部署插件"></a>安装Hexo部署插件</h3><p>进入到Blogs目录下，安装部署插件：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">#使用淘宝镜像安装</span><br><span class="line">cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改项目配置文件-1"><a href="#修改项目配置文件-1" class="headerlink" title="修改项目配置文件"></a>修改项目配置文件</h3><p>好了，万事俱备，只欠修改 <em>_config.yml</em> 文件了，打开_config.yml文件，拖拽到最后，修改文件：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778401117276.jpg" alt="16778401117276"></p>
+<p>修改为：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778401892146.jpg" alt="16778401892146"></p>
+<p>注意：<em>repo</em> 为你刚创建的Github项目的地址，如果你是使用的 <em>vim</em> 打开的 <em>_config.yml</em>，记得修改了要 <em>:wq</em> 保存退出</p>
+<h3 id="重新生成项目-1"><a href="#重新生成项目-1" class="headerlink" title="重新生成项目"></a>重新生成项目</h3><p>清理项目缓存：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
+
+<p>重新生成博客：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<p>部署到云端（Github）:</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>注意：这里每次使用 <em>hexo d</em> 部署到Github为了安全都要求输入账号密码，如果你不希望每次都输入账号密码，可以跟博主一样设置Github的 <em>SSH Keys</em>，以后每次发布到Github就不需要输入账号密码了。</p>
+<p>访问云端博客主页</p>
+<p>访问地址：https://博客仓库名.github.io<br>比如我的博客地址：<a href="https://fengyanxin.github.io/">https://fengyanxin.github.io</a></p>
+<p>可以在以下路径查看：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778403847380.jpg" alt="16778403847380"></p>
+<p>最后</p>
+<p>基本上到这里，属于我们自己的博客就搭建完成啦，整个搭建流程如果不出错半个小时之内其实是可以搞定的，但是这路哪里那么好走呢，每个人去搭建的过程中或多或少都会遇到一些问题，我自己在搭建的过程中也碰到了一些问题，我会抽空把遇到的问题详细整理出来，希望能够帮助大家如果要搭建博客的时候少踩点坑。</p>
+<p>大兄弟，都看到这里了，就不要吝啬你的小星星了，为博主点个赞再走吧～</p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Hexo】添加 .sh 脚本文件，快速测试和部署</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<h1 id="添加-sh-脚本文件，快速测试和部署"><a href="#添加-sh-脚本文件，快速测试和部署" class="headerlink" title="添加 .sh 脚本文件，快速测试和部署"></a>添加 .sh 脚本文件，快速测试和部署</h1><h2 id="一、创建-sh-脚本文件"><a href="#一、创建-sh-脚本文件" class="headerlink" title="一、创建 .sh 脚本文件"></a>一、创建 .sh 脚本文件</h2><h3 id="1-启动-Sublime-Test"><a href="#1-启动-Sublime-Test" class="headerlink" title="1.启动 Sublime Test"></a>1.启动 Sublime Test</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755102992.jpg"></p>
+<span id="more"></span>
+
+<h3 id="2-打开的-Sublime-Test"><a href="#2-打开的-Sublime-Test" class="headerlink" title="2.打开的 Sublime Test"></a>2.打开的 Sublime Test</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755213456.jpg"></p>
+<h3 id="3-写入或者复制进去脚本代码"><a href="#3-写入或者复制进去脚本代码" class="headerlink" title="3.写入或者复制进去脚本代码"></a>3.写入或者复制进去脚本代码</h3><p>此处以 Hexo localhost 测试为例</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755345365.jpg"></p>
+<h3 id="4-另存为-sh-文件，导入-hexo-文件夹"><a href="#4-另存为-sh-文件，导入-hexo-文件夹" class="headerlink" title="4.另存为 .sh 文件，导入 hexo 文件夹"></a>4.另存为 .sh 文件，导入 hexo 文件夹</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755472530.jpg"></p>
+<h2 id="二、赋予脚本可执行权限"><a href="#二、赋予脚本可执行权限" class="headerlink" title="二、赋予脚本可执行权限"></a>二、赋予脚本可执行权限</h2><h3 id="1-cd到编写的-sh-文件所在目录"><a href="#1-cd到编写的-sh-文件所在目录" class="headerlink" title="1.cd到编写的 .sh 文件所在目录"></a>1.cd到编写的 .sh 文件所在目录</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755599104.jpg"></p>
+<h3 id="2-执行-chmod-x-指令"><a href="#2-执行-chmod-x-指令" class="headerlink" title="2.执行 chmod +x 指令"></a>2.执行 chmod +x 指令</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x localhost.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-执行脚本"><a href="#3-执行脚本" class="headerlink" title="3.执行脚本"></a>3.执行脚本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./localhost.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>至此，localhost 测试脚本就完成了，部署脚本同理，在文件夹下新建一个 <code>deploy.sh</code> 文件，在其中输入以下代码即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>当然，添加其他助力 Hexo 快速执行的脚本亦可。</p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -1093,6 +1130,131 @@
       </tags>
   </entry>
   <entry>
+    <title>【Tips】Git常用命令汇总</title>
+    <url>/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/</url>
+    <content><![CDATA[<h1 id="Git常用命令汇总"><a href="#Git常用命令汇总" class="headerlink" title="Git常用命令汇总"></a>Git常用命令汇总</h1><h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="git-init"><a href="#git-init" class="headerlink" title="git init"></a>git init</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git init </span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>在本地新建一个repo，进入一个项目目录，执行git init，会初始化一个repo，并在当前文件夹下创建一个.git文件夹。</p>
+<h3 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a>git add</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add README</span><br></pre></td></tr></table></figure>
+
+<p>在提交之前, Git有一个<code>暂存区(staging area)</code>,可以放入新添加的文件或者加入新的改动, commit时提交的改动是上一次加入到staging area中的改动, 而不是我们<code>disk</code>上的改动。<code>git add .</code>会递归地添加当前工作目录中的所有文件.</p>
+<h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git commit -m &quot;first commit&quot;</span><br><span class="line">$ git commit -a</span><br><span class="line">$ git commit --amend</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>提交已经被add进来的改动。</p>
+</blockquote>
+<p><code>git commit -m “the commit message&quot;</code><br><code>git commit -a</code> 会先把所有已经<code>track</code>的文件的改动add进来，然后提交(有点像svn的一次提交，不用先暂存)。对于没有track的文件，还是需要<code>git add</code>一下。<br><code>git commit --amend</code> 增补提交，会使用与当前提交节点相同的父节点进行一次新的提交，旧的提交将会被取消。</p>
+<h3 id="git-remote"><a href="#git-remote" class="headerlink" title="git remote"></a>git remote</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git remote</span><br><span class="line">$ git remote -v</span><br><span class="line">$ git remote add [alias] [url]</span><br><span class="line">$ git remote rm [alias]</span><br><span class="line">$ git remote rename [old-alias] [new-alias]</span><br><span class="line">$ git remote set-url [alias] [url]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong><code>git remote</code>: list，add and delete remote repository aliases。<br>因为不需要每次都用完整的url，所以Git为每一个remote repo的url都建立一个别名，然后用git remote来管理这个list。</strong></p>
+</blockquote>
+<p><code>git remote</code>：列出remote aliases。<br>如果你clone一个project，Git会自动将原来的url添加进来，别名就叫做: origin。<br><code>git remote -v</code>：可以看见每一个别名对应的实际url。<br><code>git remote add [alias] [url]</code>： 添加一个新的remote repo。<br><code>git remote rm [alias]</code>： 删除一个存在的remote alias。<br><code>git remote rename [old-alias] [new-alias]</code>： 重命名。<br><code>git remote set-url [alias] [url]</code>：更新url，可以加上—push和fetch参数，为同一个别名set不同的存取地址。</p>
+<h3 id="git-branch"><a href="#git-branch" class="headerlink" title="git branch"></a>git branch</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git branch -v</span><br><span class="line">$ git branch</span><br><span class="line">$ git branch [branch-name]</span><br><span class="line">$ git branch -d [branch-name]</span><br><span class="line">$ git branch -D [branch-name]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>git branch，可以用来列出分支，创建分支和删除分支。</strong></p>
+</blockquote>
+<p><code>git branch -v</code>： 可以看见每一个分支的最后一次提交。<br><code>git branch</code>： 列出本地所有分支，当前分支会被星号标示出。<br><code>git branch [branch-name]</code>: 创建一个新的分支(当你用这种方式创建分支的时候，分支是基于你的上一次提交建立的)。<br><code>git branch -d [branch-name]</code>: 删除指定分支。（<em>查看哪些分支已被并入当前分支，清单中带有<code>*</code>字符的表示当前所在的分支。一般来说，列表中没有<code>*</code>的分支通常都可以用 <code>git branch -d</code> 来删掉。对于未合并的分支，用 git branch -d 删除该分支会导致失败。不过，如果你坚信你要删除它，可以用大写的删除选项 <code>git branch -D</code> 强制执行</em>）</p>
+<h3 id="git-checkout"><a href="#git-checkout" class="headerlink" title="git checkout"></a>git checkout</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git checkout [branch-name]</span><br><span class="line">$ git checkout -b [branch-name]</span><br><span class="line">$ git checkout --&lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>git checkout [branch-name]</code> ： 切换到一个分支。<br><code>git checkout -b [branch-name]</code>：创建并切换到新的分支。这个命令是将 <code>git branch newbranch</code> 和 <code>git checkout newbranch</code> 合在一起的结果。</p>
+<p>checkout 还有另一个作用：替换本地改动。</p>
+<p><code>git checkout --&lt;filename&gt;</code>：此命令会使用HEAD中的最新内容替换掉你的工作目录中的文件，已添加到暂存区的改动以及新文件都不会受到影响。</p>
+<p><font color="#FF0000"><strong>注意: git checkout filename 会删除该文件中所有没有暂存和提交的改动,这个操作是不可逆的.</strong></font></p>
+<h3 id="git-merge"><a href="#git-merge" class="headerlink" title="git merge"></a>git merge</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git merge [alias]/[branch]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>git merge，把一个分支merge进当前的分支。</strong></p>
+</blockquote>
+<p><code>git merge [alias]/[branch]</code>：把远程分支merge到当前分支。</p>
+<p>如果出现冲突，需要手动修改，可以用<code>git mergetool</code>。解决冲突的时候可以用到<code>git diff</code>，解决完之后用<code>git add</code>添加，即表示冲突已经被resolved。</p>
+<h3 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git push [alias] [branch]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>push your new branches and data to a remote repository aliases.</strong></p>
+</blockquote>
+<p><code>git push [alias] [branch]</code> ：将会把当前分支 merge 到 [alias] 上的 [branch] 分支。如果分支已经存在，将会更新，如果不存在，将会添加这个分支。</p>
+<p>如果有多个人向同一个 <code>remote repo</code> push代码， Git会首先在你试图 push 的分支上运行 git log，检查它的历史中是否能看到 server 上的 branch 现在的 tip，如果本地历史中不能看到server的tip，说明本地的代码不是最新的，Git会拒绝你的push，让你先<code>fetch + merge (pull)</code>，之后再 push，这样就保证了所有人的改动都会被考虑进来。</p>
+<h3 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git pull</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>fetch from a remote repo and try to merge into the current branch.<br>pull == fetch + merge FETCH_HEAD</strong></p>
+</blockquote>
+<p><code>git pull</code>：会首先执行<code>git fetch</code>，然后执行<code>git merge</code>，把取来的分支的 head <code>merge</code> 到当前分支。这个 merge 操作会产生一个新的commit。<br>如果使用<code>--rebase</code>参数，它会执行<code>git rebase</code>来取代原来的<code>git merge</code>。</p>
+<h3 id="git-clone"><a href="#git-clone" class="headerlink" title="git clone"></a>git clone</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git clone [url]</span><br><span class="line">$ git clone [url] [newname]</span><br></pre></td></tr></table></figure>
+
+<p><code>git clone [url]</code>：获取一个url对应的远程Git repo， 创建一个local copy。</p>
+<p>clone下来的repo会以url最后一个斜线后面的名称命名,创建一个文件夹，如果想要指定特定的名称，可以<code>git clone [url] newname</code>指定。</p>
+<h3 id="git-tag"><a href="#git-tag" class="headerlink" title="git tag"></a>git tag</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git tag v1.0</span><br><span class="line">$ git tag -a v1.0</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>tag a point in history as import.</strong></p>
+</blockquote>
+<p><code>git tag v1.0</code>，会在一个提交上建立永久性的书签，通常是发布一个release版本或者ship了什么东西之后加tag。</p>
+<p><code>git tag -a v1.0</code>, -a 参数会允许你添加一些信息，即make an annotated tag。当你运行git tag -a命令的时候，Git会打开一个编辑器让你输入tag信息。</p>
+<p>我们可以利用commit SHA来给一个过去的提交打tag:<br><code>git tag -a v0.9 XXXX</code></p>
+<p>push的时候是不包含tag的，如果想包含，可以在push时加上<code>--tags</code>参数。</p>
+<p>fetch的时候，branch HEAD可以reach的tags是自动被fetch下来的，tags that aren’t reachable from branch heads will be skipped。如果想确保所有的tags都被包含进来，需要加上<code>--tags</code>选项。</p>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Tips】解决 ping github.com 超时问题</title>
+    <url>/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="解决-ping-github-com-超时问题"><a href="#解决-ping-github-com-超时问题" class="headerlink" title="解决 ping github.com 超时问题"></a>解决 ping github.com 超时问题</h1><p>1、尝试 <code>ping github.com</code>，结果发现Ping不通，但是 <code>ping baidu.com</code> 却是正常的。</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg"></p>
+<span id="more"></span>
+
+<p>2、初步分心应该是本地的DNS无法解析导致的，需要修改Hosts文件，添加 github 的ip地址项</p>
+<h2 id="如何修改Hosts文件？"><a href="#如何修改Hosts文件？" class="headerlink" title="如何修改Hosts文件？"></a>如何修改Hosts文件？</h2><h3 id="1、通过终端命令修改"><a href="#1、通过终端命令修改" class="headerlink" title="1、通过终端命令修改"></a>1、通过终端命令修改</h3><p>（1）打开终端，输入命令行：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># sudo 以管理员权限执行</span><br><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>（2）输入本机密码后，会自动打开hosts文件 。</p>
+<ul>
+<li>键盘输入<code>i</code>（插入），修改完成后，按 <code>esc</code> 键退出插入页面</li>
+<li>保存退出：输入  <code>:wq</code> 或者<code>:wq!</code>，再<code>enter</code>键 </li>
+<li>不保存退出：输入<code>q</code>和<code>！</code>键，再<code>enter</code>键</li>
+</ul>
+<h3 id="2、在-Finder-中修改"><a href="#2、在-Finder-中修改" class="headerlink" title="2、在 Finder 中修改"></a>2、在 Finder 中修改</h3><p>方法一：</p>
+<p>（1）打开 <code>Finder</code> ，快捷键 <code>Command+Shift+G</code> 查找文件，输入 <code>/etc/hosts</code>，点击前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg"></p>
+<p>（2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg"></p>
+<p>方法二：</p>
+<p>（1）打开Finder，快捷键 <code>Shift+Command+G</code> 查找文件，输入 <code>/private</code> 前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg"></p>
+<p>（2）找到 <code>etc</code> 文件之后，选择显示简介</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg"></p>
+<p>（3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg"></p>
+<h2 id="如何在-Hosts-文件中配置-github-com-映射"><a href="#如何在-Hosts-文件中配置-github-com-映射" class="headerlink" title="如何在 Hosts 文件中配置 github.com 映射"></a>如何在 Hosts 文件中配置 github.com 映射</h2><p>host文件打开之后可以看到：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg"></p>
+<p>在文件下面添加如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="title class_">GitHub</span>地址</span><br><span class="line"><span class="number">140.82</span><span class="number">.114</span><span class="number">.3</span> github.<span class="property">com</span> git</span><br><span class="line"><span class="number">151.101</span><span class="number">.129</span><span class="number">.194</span> github.<span class="property">global</span>.<span class="property">ssl</span>.<span class="property">fastly</span>.<span class="property">net</span></span><br></pre></td></tr></table></figure>
+
+<p>上图中的 IP 可以通过， <a href="https://www.ipaddress.com/">ipaddress</a> 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg"></p>
+<p><code>140.82.114.3</code>：这个IP地址修改为 <code>github.com</code>搜索到的IP地址</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg"></p>
+<p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
+<p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【iOS】集成阿里云消息推送</title>
     <url>/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/</url>
     <content><![CDATA[<h1 id="集成阿里云消息推送"><a href="#集成阿里云消息推送" class="headerlink" title="集成阿里云消息推送"></a>集成阿里云消息推送</h1><h2 id="基本的业务流程："><a href="#基本的业务流程：" class="headerlink" title="基本的业务流程："></a>基本的业务流程：</h2><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782576576028.jpg"></p>
@@ -1215,82 +1377,6 @@
       </categories>
       <tags>
         <tag>iOS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【Tips】Git常用命令汇总</title>
-    <url>/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/</url>
-    <content><![CDATA[<h1 id="Git常用命令汇总"><a href="#Git常用命令汇总" class="headerlink" title="Git常用命令汇总"></a>Git常用命令汇总</h1><h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="git-init"><a href="#git-init" class="headerlink" title="git init"></a>git init</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git init </span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-<p>在本地新建一个repo，进入一个项目目录，执行git init，会初始化一个repo，并在当前文件夹下创建一个.git文件夹。</p>
-<h3 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a>git add</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add README</span><br></pre></td></tr></table></figure>
-
-<p>在提交之前, Git有一个<code>暂存区(staging area)</code>,可以放入新添加的文件或者加入新的改动, commit时提交的改动是上一次加入到staging area中的改动, 而不是我们<code>disk</code>上的改动。<code>git add .</code>会递归地添加当前工作目录中的所有文件.</p>
-<h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git commit -m &quot;first commit&quot;</span><br><span class="line">$ git commit -a</span><br><span class="line">$ git commit --amend</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>提交已经被add进来的改动。</p>
-</blockquote>
-<p><code>git commit -m “the commit message&quot;</code><br><code>git commit -a</code> 会先把所有已经<code>track</code>的文件的改动add进来，然后提交(有点像svn的一次提交，不用先暂存)。对于没有track的文件，还是需要<code>git add</code>一下。<br><code>git commit --amend</code> 增补提交，会使用与当前提交节点相同的父节点进行一次新的提交，旧的提交将会被取消。</p>
-<h3 id="git-remote"><a href="#git-remote" class="headerlink" title="git remote"></a>git remote</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git remote</span><br><span class="line">$ git remote -v</span><br><span class="line">$ git remote add [alias] [url]</span><br><span class="line">$ git remote rm [alias]</span><br><span class="line">$ git remote rename [old-alias] [new-alias]</span><br><span class="line">$ git remote set-url [alias] [url]</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong><code>git remote</code>: list，add and delete remote repository aliases。<br>因为不需要每次都用完整的url，所以Git为每一个remote repo的url都建立一个别名，然后用git remote来管理这个list。</strong></p>
-</blockquote>
-<p><code>git remote</code>：列出remote aliases。<br>如果你clone一个project，Git会自动将原来的url添加进来，别名就叫做: origin。<br><code>git remote -v</code>：可以看见每一个别名对应的实际url。<br><code>git remote add [alias] [url]</code>： 添加一个新的remote repo。<br><code>git remote rm [alias]</code>： 删除一个存在的remote alias。<br><code>git remote rename [old-alias] [new-alias]</code>： 重命名。<br><code>git remote set-url [alias] [url]</code>：更新url，可以加上—push和fetch参数，为同一个别名set不同的存取地址。</p>
-<h3 id="git-branch"><a href="#git-branch" class="headerlink" title="git branch"></a>git branch</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git branch -v</span><br><span class="line">$ git branch</span><br><span class="line">$ git branch [branch-name]</span><br><span class="line">$ git branch -d [branch-name]</span><br><span class="line">$ git branch -D [branch-name]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>git branch，可以用来列出分支，创建分支和删除分支。</strong></p>
-</blockquote>
-<p><code>git branch -v</code>： 可以看见每一个分支的最后一次提交。<br><code>git branch</code>： 列出本地所有分支，当前分支会被星号标示出。<br><code>git branch [branch-name]</code>: 创建一个新的分支(当你用这种方式创建分支的时候，分支是基于你的上一次提交建立的)。<br><code>git branch -d [branch-name]</code>: 删除指定分支。（<em>查看哪些分支已被并入当前分支，清单中带有<code>*</code>字符的表示当前所在的分支。一般来说，列表中没有<code>*</code>的分支通常都可以用 <code>git branch -d</code> 来删掉。对于未合并的分支，用 git branch -d 删除该分支会导致失败。不过，如果你坚信你要删除它，可以用大写的删除选项 <code>git branch -D</code> 强制执行</em>）</p>
-<h3 id="git-checkout"><a href="#git-checkout" class="headerlink" title="git checkout"></a>git checkout</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git checkout [branch-name]</span><br><span class="line">$ git checkout -b [branch-name]</span><br><span class="line">$ git checkout --&lt;filename&gt;</span><br></pre></td></tr></table></figure>
-
-<p><code>git checkout [branch-name]</code> ： 切换到一个分支。<br><code>git checkout -b [branch-name]</code>：创建并切换到新的分支。这个命令是将 <code>git branch newbranch</code> 和 <code>git checkout newbranch</code> 合在一起的结果。</p>
-<p>checkout 还有另一个作用：替换本地改动。</p>
-<p><code>git checkout --&lt;filename&gt;</code>：此命令会使用HEAD中的最新内容替换掉你的工作目录中的文件，已添加到暂存区的改动以及新文件都不会受到影响。</p>
-<p><font color="#FF0000"><strong>注意: git checkout filename 会删除该文件中所有没有暂存和提交的改动,这个操作是不可逆的.</strong></font></p>
-<h3 id="git-merge"><a href="#git-merge" class="headerlink" title="git merge"></a>git merge</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git merge [alias]/[branch]</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>git merge，把一个分支merge进当前的分支。</strong></p>
-</blockquote>
-<p><code>git merge [alias]/[branch]</code>：把远程分支merge到当前分支。</p>
-<p>如果出现冲突，需要手动修改，可以用<code>git mergetool</code>。解决冲突的时候可以用到<code>git diff</code>，解决完之后用<code>git add</code>添加，即表示冲突已经被resolved。</p>
-<h3 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git push [alias] [branch]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>push your new branches and data to a remote repository aliases.</strong></p>
-</blockquote>
-<p><code>git push [alias] [branch]</code> ：将会把当前分支 merge 到 [alias] 上的 [branch] 分支。如果分支已经存在，将会更新，如果不存在，将会添加这个分支。</p>
-<p>如果有多个人向同一个 <code>remote repo</code> push代码， Git会首先在你试图 push 的分支上运行 git log，检查它的历史中是否能看到 server 上的 branch 现在的 tip，如果本地历史中不能看到server的tip，说明本地的代码不是最新的，Git会拒绝你的push，让你先<code>fetch + merge (pull)</code>，之后再 push，这样就保证了所有人的改动都会被考虑进来。</p>
-<h3 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git pull</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>fetch from a remote repo and try to merge into the current branch.<br>pull == fetch + merge FETCH_HEAD</strong></p>
-</blockquote>
-<p><code>git pull</code>：会首先执行<code>git fetch</code>，然后执行<code>git merge</code>，把取来的分支的 head <code>merge</code> 到当前分支。这个 merge 操作会产生一个新的commit。<br>如果使用<code>--rebase</code>参数，它会执行<code>git rebase</code>来取代原来的<code>git merge</code>。</p>
-<h3 id="git-clone"><a href="#git-clone" class="headerlink" title="git clone"></a>git clone</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git clone [url]</span><br><span class="line">$ git clone [url] [newname]</span><br></pre></td></tr></table></figure>
-
-<p><code>git clone [url]</code>：获取一个url对应的远程Git repo， 创建一个local copy。</p>
-<p>clone下来的repo会以url最后一个斜线后面的名称命名,创建一个文件夹，如果想要指定特定的名称，可以<code>git clone [url] newname</code>指定。</p>
-<h3 id="git-tag"><a href="#git-tag" class="headerlink" title="git tag"></a>git tag</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git tag v1.0</span><br><span class="line">$ git tag -a v1.0</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>tag a point in history as import.</strong></p>
-</blockquote>
-<p><code>git tag v1.0</code>，会在一个提交上建立永久性的书签，通常是发布一个release版本或者ship了什么东西之后加tag。</p>
-<p><code>git tag -a v1.0</code>, -a 参数会允许你添加一些信息，即make an annotated tag。当你运行git tag -a命令的时候，Git会打开一个编辑器让你输入tag信息。</p>
-<p>我们可以利用commit SHA来给一个过去的提交打tag:<br><code>git tag -a v0.9 XXXX</code></p>
-<p>push的时候是不包含tag的，如果想包含，可以在push时加上<code>--tags</code>参数。</p>
-<p>fetch的时候，branch HEAD可以reach的tags是自动被fetch下来的，tags that aren’t reachable from branch heads will be skipped。如果想确保所有的tags都被包含进来，需要加上<code>--tags</code>选项。</p>
-]]></content>
-      <categories>
-        <category>Tips</category>
-      </categories>
-      <tags>
-        <tag>Tips</tag>
       </tags>
   </entry>
   <entry>

@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2023-03-08T09:57:49.674Z</updated>
+  <updated>2023-03-14T06:39:32.549Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,47 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【Hexo】添加 .sh 脚本文件，快速测试和部署</title>
+    <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/"/>
+    <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/</id>
+    <published>2023-03-14T06:31:01.000Z</published>
+    <updated>2023-03-14T06:39:32.549Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;添加-sh-脚本文件，快速测试和部署&quot;&gt;&lt;a href=&quot;#添加-sh-脚本文件，快速测试和部署&quot; class=&quot;headerlink&quot; title=&quot;添加 .sh 脚本文件，快速测试和部署&quot;&gt;&lt;/a&gt;添加 .sh 脚本文件，快速测试和部署&lt;/h1&gt;&lt;h2 id=&quot;一、创建-sh-脚本文件&quot;&gt;&lt;a href=&quot;#一、创建-sh-脚本文件&quot; class=&quot;headerlink&quot; title=&quot;一、创建 .sh 脚本文件&quot;&gt;&lt;/a&gt;一、创建 .sh 脚本文件&lt;/h2&gt;&lt;h3 id=&quot;1-启动-Sublime-Test&quot;&gt;&lt;a href=&quot;#1-启动-Sublime-Test&quot; class=&quot;headerlink&quot; title=&quot;1.启动 Sublime Test&quot;&gt;&lt;/a&gt;1.启动 Sublime Test&lt;/h3&gt;&lt;p&gt;&lt;img data-src=&quot;/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755102992.jpg&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Hexo" scheme="https://fengyanxin.github.io/categories/Hexo/"/>
+    
+    
+    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【Tips】解决 ping github.com 超时问题</title>
+    <link href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/"/>
+    <id>https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</id>
+    <published>2023-03-14T06:23:43.000Z</published>
+    <updated>2023-03-14T06:49:39.815Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;解决-ping-github-com-超时问题&quot;&gt;&lt;a href=&quot;#解决-ping-github-com-超时问题&quot; class=&quot;headerlink&quot; title=&quot;解决 ping github.com 超时问题&quot;&gt;&lt;/a&gt;解决 ping github.com 超时问题&lt;/h1&gt;&lt;p&gt;1、尝试 &lt;code&gt;ping github.com&lt;/code&gt;，结果发现Ping不通，但是 &lt;code&gt;ping baidu.com&lt;/code&gt; 却是正常的。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&quot;/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3-ping-github-com-%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Tips" scheme="https://fengyanxin.github.io/categories/Tips/"/>
+    
+    
+    <category term="Tips" scheme="https://fengyanxin.github.io/tags/Tips/"/>
+    
+  </entry>
   
   <entry>
     <title>【iOS】集成阿里云消息推送</title>
@@ -116,10 +157,10 @@
   
   <entry>
     <title>【Hexo】Mac 上使用Hexo + Github搭建个人博客</title>
-    <link href="https://fengyanxin.github.io/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"/>
-    <id>https://fengyanxin.github.io/uncategorized/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</id>
+    <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"/>
+    <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</id>
     <published>2023-03-03T10:51:41.000Z</published>
-    <updated>2023-03-06T09:23:02.438Z</updated>
+    <updated>2023-03-14T06:40:56.231Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;【Hexo】Mac-上使用Hexo-Github搭建个人博客&quot;&gt;&lt;a href=&quot;#【Hexo】Mac-上使用Hexo-Github搭建个人博客&quot; class=&quot;headerlink&quot; title=&quot;【Hexo】Mac 上使用Hexo + Github搭建个人博客&quot;&gt;&lt;/a&gt;【Hexo】Mac 上使用Hexo + Github搭建个人博客&lt;/h1&gt;&lt;h2 id=&quot;为什么要用Hexo-Github？&quot;&gt;&lt;a href=&quot;#为什么要用Hexo-Github？&quot; class=&quot;headerlink&quot; title=&quot;为什么要用Hexo + Github？&quot;&gt;&lt;/a&gt;为什么要用Hexo + Github？&lt;/h2&gt;&lt;h3 id=&quot;Hexo介绍&quot;&gt;&lt;a href=&quot;#Hexo介绍&quot; class=&quot;headerlink&quot; title=&quot;Hexo介绍&quot;&gt;&lt;/a&gt;Hexo介绍&lt;/h3&gt;&lt;p&gt;Hexo是一款基于Nodejs的，快速、简洁且高效的博客框架。它具有丰富的插件和主题，具有超快的速度，支持Makedown语法，可以方便快捷的编写博客文档。同时还支持node命令，可以一键部署到GitHub Pages, Heroku 或其他平台。更详细的信息可以看一下 &lt;a href=&quot;https://hexo.io/zh-cn&quot;&gt;Hexo官网&lt;/a&gt; 。&lt;/p&gt;
@@ -127,6 +168,12 @@
     
     
     
+    <category term="Hexo" scheme="https://fengyanxin.github.io/categories/Hexo/"/>
+    
+    
+    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
     
   </entry>
   
