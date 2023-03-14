@@ -1,0 +1,125 @@
+// CSS Style Guide: http://codeguide.co/#css
+
+
+$scheme    = hexo-config('scheme') ? hexo-config('scheme') : 'Muse';
+
+$variables = base $scheme;
+
+
+// Variables Layer
+// --------------------------------------------------
+for $variable in $variables
+  @import "_variables/" + $variable;
+for $inject_variable in hexo-config('injects.variable')
+  @import $inject_variable;
+
+// Mixins Layer
+// --------------------------------------------------
+@import "_mixins.styl";
+for $inject_mixin in hexo-config('injects.mixin')
+  @import $inject_mixin;
+
+// Dark mode colors
+// --------------------------------------------------
+@import "_colors.styl";
+
+// Common Layer
+// --------------------------------------------------
+
+// Scaffolding
+@import "_common/scaffolding";
+
+// Layout
+@import "_common/outline";
+
+// Components
+@import "_common/components";
+
+
+// Schemes Layer
+// --------------------------------------------------
+@import "_schemes/" + $scheme;
+
+
+// Custom Layer
+// --------------------------------------------------
+for $inject_style in hexo-config('injects.style')
+//  @import $inject_style;
+  @import '../_data/styles.styl';
+
+
+/* 侧边栏图标格式设置 */
+.fa-jinritoutiao {
+  background-image: url('/images/jinritoutiao-fill-round.svg');
+  background-size: 1em 1.5em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.05rem;
+  background-repeat: no-repeat;
+  height: 1rem;
+  width: 1rem; 
+  border-radius: 0rem;
+  /*鼠标停留在图标上时，图标呈现发光效果*/
+  &:hover {
+      opacity: 1;
+    }
+} 
+
+.fa-toutiao {
+  background-image: url('/images/jinritoutiao.svg');
+  background-size: 1em 1em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.5rem;
+  background-repeat: no-repeat;
+  height: 2rem;
+  width: 2rem; 
+  border-radius: 0rem;
+  /*鼠标停留在图标上时，图标呈现发光效果*/
+  &:hover {
+      opacity: 1;
+    }
+} 
+
+.fa-baidu {
+  background-image: url('/images/baidu.svg');
+  background-size: 1em 1.5em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.05rem;
+  background-repeat: no-repeat;
+  height: 1rem;
+  width: 1rem; 
+  border-radius: 0rem;
+  /*鼠标停留在图标上时，图标呈现发光效果*/
+  &:hover {
+      opacity: 1;
+    }
+} 
+
+.fa-baidu1 {
+  background-image: url('/images/baidu.svg');
+  background-size: 1em 1em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.35rem;
+  background-repeat: no-repeat;
+  height: 2rem;
+  width: 2rem; 
+  border-radius: 0rem;
+  /*鼠标停留在图标上时，图标呈现发光效果*/
+  &:hover {
+      opacity: 1;
+    }
+} 
+
+.fa-mail {
+  background-image: url('/images/email.svg');
+  background-size: 1em 1em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.25rem;
+  background-repeat: no-repeat;
+  height: 1rem;
+  width: 1rem; 
+  border-radius: 0rem;
+  /*鼠标停留在图标上时，图标呈现发光效果*/
+  &:hover {
+      opacity: 1;
+    }
+} 

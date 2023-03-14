@@ -1,0 +1,22 @@
+//背景图片设置
+body {
+    background-image: url(/images/bg1.jpeg);
+//  background-image: url(/images/bg2.jpeg);
+//  background-image: url(/images/bg3.jpeg);
+//  background-image: url(/images/bg4.jpeg);
+//  background-image: url(/images/bg5.webp);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    //background-size: 100% 100%;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -ms-background-size: cover;
+    opacity: 0.85;
+     //可选
+    +mobile(){
+      background-image: url(https://ziyuan.lruihao.cn/images/bg_cell.png);
+      background-size: cover;
+    }
+}
