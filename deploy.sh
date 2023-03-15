@@ -6,7 +6,7 @@ echo "=====> Start ! <====="
 # Generate blog
 hexo clean
 hexo generate
-sleep 2
+sleep 5
 
 # Deploy
 hexo deploy
