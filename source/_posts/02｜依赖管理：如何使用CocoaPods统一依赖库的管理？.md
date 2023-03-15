@@ -265,7 +265,7 @@ https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile
 
 # 学习笔记与扩展
 
-## Cartahge 的简单使用
+## Carthage 的简单使用
 
 ### 一、安装 Carthage：
 
