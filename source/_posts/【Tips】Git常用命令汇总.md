@@ -149,8 +149,9 @@ clone下来的repo会以url最后一个斜线后面的名称命名,创建一个�
 ### git tag
 
 ```
-$ git tag v1.0
-$ git tag -a v1.0
+git tag v1.0
+git tag -a v1.0
+git push -v origin refs/tags/0.1.0
 ```
 
 >**tag a point in history as import.**
@@ -158,6 +159,8 @@ $ git tag -a v1.0
 `git tag v1.0`，会在一个提交上建立永久性的书签，通常是发布一个release版本或者ship了什么东西之后加tag。
 
 `git tag -a v1.0`, -a 参数会允许你添加一些信息，即make an annotated tag。当你运行git tag -a命令的时候，Git会打开一个编辑器让你输入tag信息。
+
+`git push -v origin refs/tags/0.1.0`， 推送标签至远端。
      
 我们可以利用commit SHA来给一个过去的提交打tag:
 `git tag -a v0.9 XXXX`
