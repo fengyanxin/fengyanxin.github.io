@@ -170,7 +170,8 @@ sidebar:
 avatar:
   # Replace the default image and set the url here.
 #  url: /images/avatar.gif
-  url: /images/apple-touch-icon-next.png
+#  url: /images/apple-touch-icon-next.png
+  url: /images/flyingPig.jpeg
   # If true, the avatar will be dispalyed in circle.
   rounded: true
   # If true, the avatar will be rotated with the cursor.
@@ -976,7 +977,7 @@ canvas_ribbon:
   alpha: 0.9 # The transparency of the ribbon
   zIndex: -1 # The display level of the ribbon
   
-## 没起作用，需要
+## 上面丝带背景没起作用，需要进行下一行操作，集成canvas-nest
 ## cd themes/next
 ## git clone https://github.com/theme-next/theme-next-canvas-nest source/lib/canvas-nest
 ## Canvas-nest

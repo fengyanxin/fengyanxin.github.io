@@ -60,6 +60,9 @@ pod 'SwiftLint', '= 0.41.0', configurations: ['Debug']
 
 当我们执行 `SwiftLint` 命令时，它会自动帮我们启动一堆编码规则，并扫描和检查我们的项目。这些规则有`comma`（逗号前后的空格处理），`private_over_fileprivate`（优先使用 priviate），`force_cast`（避免强制转型）等等 。详细规则列表你也可以在 [SwiftLint 官网](https://realm.github.io/SwiftLint/rule-directory.html) 找到。
 
+![SwiftLint官网](assets/SwiftLint%E5%AE%98%E7%BD%91.png)
+
+
 但正如 SwiftLint 的作者所说： *“规则存在，但并不意味着你必须用它”*。我们需要根据团队自身的情况和成员的统一意见，来决定需要启动和关闭哪些规则。此时，就需要用到 `.swiftlint.yml` 文件了。
 
 `.swiftlint.yml`主要用于启动和关闭 SwiftLint 所提供的规则，以及自定义配置与规则。一旦我们有了 .swiftlint.yml 文件以后，SwiftLint 在执行过程中会严格按照该文件的定义来扫描和检查代码。由于 .swiftlint.yml 是一个纯文本文件，我们可以通过 Git 统一管理，这样能保证整个团队在执行 SwiftLint 的时候都会得到一模一样的效果，从而保证了整个团队代码规范的一致性。
