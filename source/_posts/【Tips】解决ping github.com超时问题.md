@@ -1,6 +1,6 @@
 ---
 title: 【Tips】解决 ping github.com 超时问题
-date: 2023-03-14 14:23:43
+date: 2023-03-14 22:23:43
 tags:
 - Tips
 categories:
