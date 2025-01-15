@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2023-10-13T08:59:24.787Z</updated>
+  <updated>2025-01-15T09:16:36.919Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -17,11 +17,38 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>【OC】UIButton 防止重复点击的3种方法</title>
+    <link href="https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91UIButton%E9%98%B2%E6%AD%A2%E9%87%8D%E5%A4%8D%E7%82%B9%E5%87%BB%E7%9A%843%E7%A7%8D%E6%96%B9%E6%B3%95/"/>
+    <id>https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91UIButton%E9%98%B2%E6%AD%A2%E9%87%8D%E5%A4%8D%E7%82%B9%E5%87%BB%E7%9A%843%E7%A7%8D%E6%96%B9%E6%B3%95/</id>
+    <published>2025-01-15T08:14:30.000Z</published>
+    <updated>2025-01-15T09:16:36.919Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;一、使用场景&quot;&gt;&lt;a href=&quot;#一、使用场景&quot; class=&quot;headerlink&quot; title=&quot;一、使用场景&quot;&gt;&lt;/a&gt;一、使用场景&lt;/h2&gt;&lt;p&gt;在实际应用过程中，有一些业务场景可能需要我们对 UIButton 响应事件的时间间隔进行控制，比如：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;当点击按钮来执行网络请求时，若请求耗时稍长，用户往往会多次点击。这样，就会执行多次请求，造成资源浪费&lt;/li&gt;
+&lt;li&gt;在移动终端设备性能较差时，连续点击按钮会执行多次事件 &lt;strong&gt;（比如 push 出来多个 viewController ）&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;防止暴力点击&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;二、使用方法&quot;&gt;&lt;a href=&quot;#二、使用方法&quot; class=&quot;headerlink&quot; title=&quot;二、使用方法&quot;&gt;&lt;/a&gt;二、使用方法&lt;/h2&gt;</summary>
+    
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/categories/iOS/"/>
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+    <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
+    
+  </entry>
+  
+  <entry>
     <title>【OC】方法拦截器：如何 hook 三方 SDK 中的方法?</title>
     <link href="https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91%E6%96%B9%E6%B3%95%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%9A%E5%A6%82%E4%BD%95-hook-%E4%B8%89%E6%96%B9-SDK-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95/"/>
     <id>https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91%E6%96%B9%E6%B3%95%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%9A%E5%A6%82%E4%BD%95-hook-%E4%B8%89%E6%96%B9-SDK-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95/</id>
     <published>2023-10-13T08:43:33.000Z</published>
-    <updated>2023-10-13T08:59:24.787Z</updated>
+    <updated>2023-10-16T00:56:44.279Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;一、前因&quot;&gt;&lt;a href=&quot;#一、前因&quot; class=&quot;headerlink&quot; title=&quot;一、前因&quot;&gt;&lt;/a&gt;一、前因&lt;/h2&gt;&lt;p&gt;缘由：项目中使用 &lt;code&gt;Pod&lt;/code&gt; 集成了一个三方的远端SDK，这个SDK中的某个类遵循了一个代理协议，这个代理中有很多方法实现。现在的需求是，我在使用这个SDK的类时，只想实现代理方法中的其中一个方法，而不想把所有方法都实现一遍，而且也没办法全部实现。但是，我如果在引用类中遵循代理，就得把所有方法都实现一遍，这显然不现实；如果只实现固定方法，其他方法就会失效，这也不行。&lt;/p&gt;</summary>
