@@ -186,9 +186,11 @@ site_state: true
 # Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
 social:
   GitHub: https://github.com/fengyanxin || fab fa-github
-  E-Mail: mailto:ph18317192001@163.com || fa fa-mail
-  今日头条: https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065 || fa fa-jinritoutiao
-  百家号: https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477 || fa fa-baidu
+  E-Mail: mailto:ph18317192001@163.com || fab fa-mail
+  今日头条: https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065 || fab fa-jinritoutiao
+  百家号: https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477 || fab fa-baidu
+  小红书: https://www.xiaohongshu.com/user/profile/642cb9650000000011023394 || fab fa-xiaohongshu
+  LibLib: https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e || fab fa-liblib
   #Weibo: https://weibo.com/yourname || fab fa-weibo
   #Google: https://plus.google.com/yourname || fab fa-google
   #Twitter: https://twitter.com/yourname || fab fa-twitter
