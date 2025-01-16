@@ -986,6 +986,233 @@
       </tags>
   </entry>
   <entry>
+    <title>【Hexo】Next 主题的使用与美化</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</url>
+    <content><![CDATA[<h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>Next 主题是 <a href="https://hexo.io/zh-cn">Hexo</a> 上使用最广，同时在 GitHub 上也是 Star 最多的主题，bug 修复和功能更新也比较快。当前博客就是使用 Hexo 配合 Next 主题搭建的</p>
+<h2 id="二、版本"><a href="#二、版本" class="headerlink" title="二、版本"></a>二、版本</h2><p>在 GitHub 上的 <code>Next</code> 的官方文档：<a href="https://github.com/next-theme/hexo-theme-next/issues/4">【必读】更新说明及常见问题</a> 中有相关说明，Next 一共有三个不同的仓库：</p>
+<table>
+<thead>
+<tr>
+<th align="center">版本</th>
+<th align="center">年份</th>
+<th align="center">仓库</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">v5.1.4 或更低</td>
+<td align="center">2014 ~ 2017</td>
+<td align="center"><a href="https://github.com/iissnan/hexo-theme-next">iissnan/hexo-theme-next</a></td>
+</tr>
+<tr>
+<td align="center">v6.0.0 ~ v7.8.0</td>
+<td align="center">2018 ~ 2019</td>
+<td align="center"><a href="https://github.com/theme-next/hexo-theme-next">theme-next/hexo-theme-next</a></td>
+</tr>
+<tr>
+<td align="center">v8.0.0 或更高</td>
+<td align="center">2020</td>
+<td align="center"><a href="https://github.com/next-theme/hexo-theme-next">next-theme/hexo-theme-next</a></td>
+</tr>
+</tbody></table>
+<span id="more"></span>
+
+<p>旧的仓库基本上已经不再更新，因此推荐选择最新的 <a href="https://github.com/next-theme/hexo-theme-next">next-theme/hexo-theme-next</a> 仓库的 Next 主题</p>
+<p>我所使用的版本如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">hexo: <span class="number">5.4</span>.<span class="number">2</span></span><br><span class="line">next: <span class="number">7.8</span>.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="三、安装"><a href="#三、安装" class="headerlink" title="三、安装"></a>三、安装</h2><p>推荐使用 GitHub 进行安装，可以随时更新</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">$ cd hexo文件目录</span><br><span class="line">$ git clone https:<span class="comment">//github.com/theme-next/hexo-theme-next themes/next</span></span><br></pre></td></tr></table></figure>
+
+<p>然后设置站点配置文件 <code>_config.yml</code>:</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">$ theme: next</span><br></pre></td></tr></table></figure>
+
+<p>即可将我们的 Hexo 博客主题替换为 Next 主题。</p>
+<h2 id="四、配置"><a href="#四、配置" class="headerlink" title="四、配置"></a>四、配置</h2><h3 id="1、基础配置"><a href="#1、基础配置" class="headerlink" title="1、基础配置"></a>1、基础配置</h3><p>对 Next 主题的配置可以直接在 Hexo 仓库下的配置文件 <code>_config.next.yml</code> 中进行修改即可，该文件的修改会在生成页面时覆盖主题目录下的配置文件 <code>.\themes\next\_config.yml</code></p>
+<p>衍生拓展：<a href="https://hexo.io/zh-cn/docs/configuration#%E4%BD%BF%E7%94%A8%E4%BB%A3%E6%9B%BF%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">【Hexo】配置文件优先级</a></p>
+<h4 id="风格-主题"><a href="#风格-主题" class="headerlink" title="风格/主题"></a>风格/主题</h4><p>Next 主题包含了 4 个风格，分别是Muse、Mist、Pisces、Gemini，我个人更喜欢 <strong>Gemini</strong>，这种风格类似卡片，边界感会比较明显，如果加上圆角的话会更为突出</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Schemes</span></span><br><span class="line">#scheme: <span class="type">Muse</span></span><br><span class="line">#scheme: <span class="type">Mist</span></span><br><span class="line">#scheme: <span class="type">Pisces</span></span><br><span class="line">scheme: <span class="type">Gemini</span></span><br></pre></td></tr></table></figure>
+
+<p>修改 <code>_config.next.yml</code> 之后，用 <code>hexo clean; hexo g; hexo s</code> 重新生成一下，就可以在 本地 预览了 <strong>（后续流程如果没有特殊说明则基本一致）</strong></p>
+<p>初始 4 种风格效果如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/Next%E4%B8%BB%E9%A2%98.jpg" alt="Next主题"></p>
+<p>美化后的 <strong>Gemini</strong> 风格效果如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/%E7%BE%8E%E5%8C%96%E7%9A%84Gemini.jpg" alt="美化的Gemini"></p>
+<h4 id="网页图标"><a href="#网页图标" class="headerlink" title="网页图标"></a>网页图标</h4><p>在各类网站上下载合适图标，按照配置文件中的文件名命名，并放在 <code>themes/next/source/images</code> 下即可</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">favicon:</span><br><span class="line">  small: <span class="operator">/</span>images<span class="operator">/</span>favicon<span class="operator">-</span>16x16<span class="operator">-</span>next.png</span><br><span class="line">  medium: <span class="operator">/</span>images<span class="operator">/</span>favicon<span class="operator">-</span>32x32<span class="operator">-</span>next.png</span><br><span class="line">  apple_touch_icon: <span class="operator">/</span>images<span class="operator">/</span>apple<span class="operator">-</span>touch<span class="operator">-</span>icon<span class="operator">-</span>next.png</span><br><span class="line">  safari_pinned_tab: <span class="operator">/</span>images<span class="operator">/</span>logo.svg</span><br><span class="line">  #android_manifest: <span class="operator">/</span>images<span class="operator">/</span>manifest.json</span><br><span class="line">  #ms_browserconfig: <span class="operator">/</span>images<span class="operator">/</span>browserconfig.xml</span><br></pre></td></tr></table></figure>
+
+<h4 id="菜单栏"><a href="#菜单栏" class="headerlink" title="菜单栏"></a>菜单栏</h4><p>菜单栏配置默认没有开启，我个人开启了 <code>首页、标签、分类、归档、搜索</code> 五个子项目，开启图标，但是没有显示数量</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Usage</span>: `<span class="type">Key</span>: <span class="operator">/</span>link<span class="operator">/</span> <span class="operator">||</span> icon`</span><br><span class="line"># <span class="type">Key</span> <span class="keyword">is</span> the name of menu item. <span class="type">If</span> the translation <span class="keyword">for</span> this item <span class="keyword">is</span> available, the translated text will be loaded, otherwise the <span class="type">Key</span> name will be used. <span class="type">Key</span> <span class="keyword">is</span> <span class="keyword">case</span><span class="operator">-</span>senstive.</span><br><span class="line"># <span class="type">Value</span> before `<span class="operator">||</span>` delimiter <span class="keyword">is</span> the target link, value after `<span class="operator">||</span>` delimiter <span class="keyword">is</span> the name of <span class="type">Font</span> <span class="type">Awesome</span> icon.</span><br><span class="line"># <span class="type">When</span> running the site <span class="keyword">in</span> a subdirectory (e.g. yoursite.com<span class="operator">/</span>blog), remove the leading slash from link value (<span class="operator">/</span>archives -&gt; archives).</span><br><span class="line"># <span class="type">External</span> url should start with http:<span class="comment">// or https://</span></span><br><span class="line">menu:</span><br><span class="line">  home: <span class="operator">/</span> <span class="operator">||</span> fa fa<span class="operator">-</span>home</span><br><span class="line">#  about: <span class="operator">/</span>about<span class="operator">/</span> <span class="operator">||</span> fa fa<span class="operator">-</span>user</span><br><span class="line">  tags: <span class="operator">/</span>tags<span class="operator">/</span> <span class="operator">||</span> fa fa<span class="operator">-</span>tags</span><br><span class="line">  categories: <span class="operator">/</span>categories<span class="operator">/</span> <span class="operator">||</span> fa fa<span class="operator">-</span>th</span><br><span class="line">  archives: <span class="operator">/</span>archives<span class="operator">/</span> <span class="operator">||</span> fa fa<span class="operator">-</span>archive</span><br><span class="line">  #schedule: <span class="operator">/</span>schedule<span class="operator">/</span> <span class="operator">||</span> fa fa<span class="operator">-</span>calendar</span><br><span class="line">  #sitemap: <span class="operator">/</span>sitemap.xml <span class="operator">||</span> fa fa<span class="operator">-</span>sitemap</span><br><span class="line">  #commonweal: <span class="operator">/</span><span class="number">404</span><span class="operator">/</span> <span class="operator">||</span> fa fa<span class="operator">-</span>heartbeat</span><br><span class="line"></span><br><span class="line"># <span class="type">Enable</span> <span class="operator">/</span> <span class="type">Disable</span> menu icons <span class="operator">/</span> item badges.</span><br><span class="line">menu_settings:</span><br><span class="line">  icons: <span class="literal">true</span></span><br><span class="line">  badges: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p>系统自动帮我们创建了<code>home</code>和<code>archives</code>页面，所以我们只需要使用终端创建<code>tags</code>和<code>categories</code>页面即可：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">$ cd hexo文件目录</span><br><span class="line">$ hexo new page <span class="string">&quot;tages&quot;</span></span><br><span class="line">$ hexo new page <span class="string">&quot;categories&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>创建好的页面在站点 sources 中，我们需要对相关页面进行 type 修改，如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">---</span></span><br><span class="line">title: 手把手教你使用<span class="type">Hexo搭建github个人博客</span></span><br><span class="line">date: <span class="number">2019</span><span class="operator">-</span><span class="number">09</span><span class="operator">-</span><span class="number">11</span> <span class="number">19</span>:<span class="number">06</span>:<span class="number">18</span></span><br><span class="line">comments: <span class="literal">false</span></span><br><span class="line">tags:</span><br><span class="line"><span class="operator">-</span> 工具</span><br><span class="line"><span class="operator">-</span> hexo</span><br><span class="line">categories: </span><br><span class="line"><span class="operator">-</span> 工具</span><br><span class="line"><span class="operator">-</span> hexo</span><br><span class="line"><span class="operator">---</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="搜索功能"><a href="#搜索功能" class="headerlink" title="搜索功能"></a>搜索功能</h4><ol>
+<li>安装 <a href="https://github.com/theme-next/hexo-generator-search">hexo-generator-searchdb</a> 插件</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">$ cd 文件目录</span><br><span class="line">$ npm install hexo<span class="operator">-</span>generator<span class="operator">-</span>searchdb <span class="operator">--</span>save</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打开站点配置文件 <code>_config.yml</code>，找到<code>Extensions</code>在下面添加:</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># 搜索</span><br><span class="line">search:</span><br><span class="line">  path: search.xml</span><br><span class="line">  field: post</span><br><span class="line">  format: html</span><br><span class="line">  limit: <span class="number">10000</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>打开主题配置文件 <code>themes/next/_config.yml</code>或者<code>_config.next.yml</code>，找到<code>Local search</code>，将<code>enable</code>设置为 <code>true</code></li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Local</span> <span class="type">Search</span></span><br><span class="line"># <span class="type">Dependencies</span>: https:<span class="comment">//github.com/theme-next/hexo-generator-searchdb</span></span><br><span class="line">local_search:</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  # <span class="type">If</span> auto, trigger search by changing input.</span><br><span class="line">  # <span class="type">If</span> manual, trigger search by pressing enter key or search button.</span><br><span class="line">  trigger: auto</span><br><span class="line">  # <span class="type">Show</span> top n results per article, show all results by setting to <span class="operator">-</span><span class="number">1</span></span><br><span class="line">  top_n_per_article: <span class="number">1</span></span><br><span class="line">  # <span class="type">Unescape</span> html strings to the readable one.</span><br><span class="line">  unescape: <span class="literal">false</span></span><br><span class="line">  # <span class="type">Preload</span> the search data when the page loads.</span><br><span class="line">  preload: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>效果如下：</li>
+</ol>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/17370245926708.jpg" alt="搜索效果"></p>
+<h4 id="侧边栏"><a href="#侧边栏" class="headerlink" title="侧边栏"></a>侧边栏</h4><p>默认头像会开启旋转功能，花里胡哨的而且旋转有点快，我个人选择了关闭旋转，并且自定义了头像，图片放在 <code>themes/next/source/images</code> 下即可</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Sidebar</span> <span class="type">Avatar</span></span><br><span class="line">avatar:</span><br><span class="line">  # <span class="type">Replace</span> the <span class="keyword">default</span> image and <span class="keyword">set</span> the url here.</span><br><span class="line">#  url: <span class="operator">/</span>images<span class="operator">/</span>avatar.gif</span><br><span class="line">#  url: <span class="operator">/</span>images<span class="operator">/</span>apple<span class="operator">-</span>touch<span class="operator">-</span>icon<span class="operator">-</span>next.png</span><br><span class="line">  url: <span class="operator">/</span>images<span class="operator">/</span>flyingPig.jpeg</span><br><span class="line">  # <span class="type">If</span> <span class="literal">true</span>, the avatar will be dispalyed <span class="keyword">in</span> circle.</span><br><span class="line">  rounded: <span class="literal">true</span></span><br><span class="line">  # <span class="type">If</span> <span class="literal">true</span>, the avatar will be rotated with the cursor.</span><br><span class="line">  rotated: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p>在单独的文章页面时侧边栏会默认显示为目录</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Posts</span> <span class="operator">/</span> <span class="type">Categories</span> <span class="operator">/</span> <span class="type">Tags</span> <span class="keyword">in</span> sidebar.</span><br><span class="line">site_state: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h4 id="社交网站"><a href="#社交网站" class="headerlink" title="社交网站"></a>社交网站</h4><p>社交网站的主页，官方支持的网站配置起来比较简单，简单替换一下链接，并且取消注释即可；但是若是官方不支持的网站，想要自定义的话，却要费一番功夫</p>
+<p>我个人是增加了几个不在官方之列的社交平台，比如<strong>小红书</strong>、<strong>LibLib</strong>等，如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Social</span> <span class="type">Links</span></span><br><span class="line"># <span class="type">Usage</span>: `<span class="type">Key</span>: permalink <span class="operator">||</span> icon`</span><br><span class="line"># <span class="type">Key</span> <span class="keyword">is</span> the link label showing to end users.</span><br><span class="line"># <span class="type">Value</span> before `<span class="operator">||</span>` delimiter <span class="keyword">is</span> the target permalink, value after `<span class="operator">||</span>` delimiter <span class="keyword">is</span> the name of <span class="type">Font</span> <span class="type">Awesome</span> icon.</span><br><span class="line">social:</span><br><span class="line">  <span class="type">GitHub</span>: https:<span class="comment">//github.com/fengyanxin || fab fa-github</span></span><br><span class="line">  <span class="type">E</span><span class="operator">-</span><span class="type">Mail</span>: mailto:ph18317192001@<span class="number">163</span>.com <span class="operator">||</span> fab fa<span class="operator">-</span>mail</span><br><span class="line">  今日头条: https:<span class="comment">//profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065 || fab fa-jinritoutiao</span></span><br><span class="line">  百家号: https:<span class="comment">//author.baidu.com/home?from=bjh_article&amp;app_id=1665765419554477 || fab fa-baidu</span></span><br><span class="line">  小红书: https:<span class="comment">//www.xiaohongshu.com/user/profile/642cb9650000000011023394 || fab fa-xiaohongshu</span></span><br><span class="line">  <span class="type">LibLib</span>: https:<span class="comment">//www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e || fab fa-liblib</span></span><br><span class="line">  #<span class="type">Weibo</span>: https:<span class="comment">//weibo.com/yourname || fab fa-weibo</span></span><br><span class="line">  #<span class="type">Google</span>: https:<span class="comment">//plus.google.com/yourname || fab fa-google</span></span><br><span class="line">  #<span class="type">Twitter</span>: https:<span class="comment">//twitter.com/yourname || fab fa-twitter</span></span><br><span class="line">  #<span class="type">FB</span> <span class="type">Page</span>: https:<span class="comment">//www.facebook.com/yourname || fab fa-facebook</span></span><br><span class="line">  #<span class="type">StackOverflow</span>: https:<span class="comment">//stackoverflow.com/yourname || fab fa-stack-overflow</span></span><br><span class="line">  #<span class="type">YouTube</span>: https:<span class="comment">//youtube.com/yourname || fab fa-youtube</span></span><br><span class="line">  #<span class="type">Instagram</span>: https:<span class="comment">//instagram.com/yourname || fab fa-instagram</span></span><br><span class="line">  #<span class="type">Skype</span>: skype:yourname<span class="operator">?</span>call<span class="operator">|</span>chat <span class="operator">||</span> fab fa<span class="operator">-</span>skype</span><br><span class="line"></span><br><span class="line">social_icons:</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  icons_only: <span class="literal">false</span></span><br><span class="line">  transition: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>想要自定义社交平台，可以先去 <a href="https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a">iconfont</a>，下载一下需要的平台 <strong>SVG</strong> 图标，比如小红书，将图片放在 <code>themes/next/source/images</code>目录下：</li>
+</ol>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/17370128583449.jpg" alt="平台图标"></p>
+<ol start="2">
+<li>然后找到 <code>themes/next/source/css/main.styl</code> 目录文件，编辑如下：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">.fa<span class="operator">-</span>xiaohongshu &#123;</span><br><span class="line">  background<span class="operator">-</span>image: url(&#x27;<span class="operator">/</span>images<span class="operator">/</span>xiaohongshu.svg&#x27;);</span><br><span class="line">  background<span class="operator">-</span>size: 1em <span class="number">1</span>.5em;</span><br><span class="line">  opacity: <span class="number">0.8</span>;</span><br><span class="line">  background<span class="operator">-</span>position: <span class="number">0</span>.1rem <span class="number">0</span>.05rem;</span><br><span class="line">  background<span class="operator">-</span><span class="keyword">repeat</span>: no<span class="operator">-</span><span class="keyword">repeat</span>;</span><br><span class="line">  height: 1rem;</span><br><span class="line">  width: 1rem; </span><br><span class="line">  border<span class="operator">-</span>radius: 0rem;</span><br><span class="line">  <span class="comment">/*鼠标停留在图标上时，图标呈现发光效果*/</span></span><br><span class="line">  <span class="operator">&amp;</span>:hover &#123;</span><br><span class="line">      opacity: <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>然后将自定义图片名 <strong>fa-xiaohongshu</strong>，与社交平台关联起来即可：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">social:</span><br><span class="line">  小红书: https:<span class="comment">//www.xiaohongshu.com/user/profile/642cb9650000000011023394 || fab fa-xiaohongshu</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h4><p>代码块的高亮有很多种配色可以选，并且可以开启一键复制功能</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">codeblock:</span><br><span class="line">  # <span class="type">Code</span> <span class="type">Highlight</span> theme</span><br><span class="line">  # <span class="type">All</span> available themes: https:<span class="comment">//theme-next.js.org/highlight/</span></span><br><span class="line">  theme:</span><br><span class="line">    light: vs</span><br><span class="line">    dark: vs2015</span><br><span class="line">  prism:</span><br><span class="line">    light: prism</span><br><span class="line">    dark: prism<span class="operator">-</span>dark</span><br><span class="line">  # <span class="type">Add</span> copy button on codeblock</span><br><span class="line">  copy_button:</span><br><span class="line">    enable: <span class="literal">true</span></span><br><span class="line">    # <span class="type">Available</span> values: <span class="keyword">default</span> <span class="operator">|</span> flat <span class="operator">|</span> mac</span><br><span class="line">    style: <span class="keyword">default</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="动画效果"><a href="#动画效果" class="headerlink" title="动画效果"></a>动画效果</h4><p>Next 默认开启了动画效果，但是感觉比较慢，感觉有些影响阅读，推荐开启 <code>async</code>，并且适当的修改动画效果</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">motion:</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  <span class="keyword">async</span>: <span class="literal">true</span></span><br><span class="line">  transition:</span><br><span class="line">    # <span class="type">Transition</span> variants:</span><br><span class="line">    # fadeIn <span class="operator">|</span> flipXIn <span class="operator">|</span> flipYIn <span class="operator">|</span> flipBounceXIn <span class="operator">|</span> flipBounceYIn</span><br><span class="line">    # swoopIn <span class="operator">|</span> whirlIn <span class="operator">|</span> shrinkIn <span class="operator">|</span> expandIn</span><br><span class="line">    # bounceIn <span class="operator">|</span> bounceUpIn <span class="operator">|</span> bounceDownIn <span class="operator">|</span> bounceLeftIn <span class="operator">|</span> bounceRightIn</span><br><span class="line">    # slideUpIn <span class="operator">|</span> slideDownIn <span class="operator">|</span> slideLeftIn <span class="operator">|</span> slideRightIn</span><br><span class="line">    # slideUpBigIn <span class="operator">|</span> slideDownBigIn <span class="operator">|</span> slideLeftBigIn <span class="operator">|</span> slideRightBigIn</span><br><span class="line">    # perspectiveUpIn <span class="operator">|</span> perspectiveDownIn <span class="operator">|</span> perspectiveLeftIn <span class="operator">|</span> perspectiveRightIn</span><br><span class="line">    post_block: fadeIn</span><br><span class="line">    post_header: slideDownIn</span><br><span class="line">    post_body: slideDownIn</span><br><span class="line">    coll_header: slideLeftIn</span><br><span class="line">    # <span class="type">Only</span> <span class="keyword">for</span> <span class="type">Pisces</span> <span class="operator">|</span> <span class="type">Gemini</span>.</span><br><span class="line">    sidebar: slideUpIn</span><br></pre></td></tr></table></figure>
+
+<h4 id="阅读进度"><a href="#阅读进度" class="headerlink" title="阅读进度"></a>阅读进度</h4><p>阅读进度有两种展示方式，一个在回到首页的按钮上直接显示百分比，另一个可以配置在首位部增加进度条，我个人只开启了一个</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">back2top:</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  # <span class="type">Back</span> to top <span class="keyword">in</span> sidebar.</span><br><span class="line">  sidebar: <span class="literal">false</span></span><br><span class="line">  # <span class="type">Scroll</span> percent label <span class="keyword">in</span> b2t button.</span><br><span class="line">  scrollpercent: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"># <span class="type">Reading</span> progress bar</span><br><span class="line">reading_progress:</span><br><span class="line">  enable: <span class="literal">false</span></span><br><span class="line">  # <span class="type">Available</span> values: top <span class="operator">|</span> bottom</span><br><span class="line">  position: top</span><br><span class="line">  color: <span class="string">&quot;#37c6c0&quot;</span></span><br><span class="line">  height: 3px</span><br></pre></td></tr></table></figure>
+
+<h4 id="书签"><a href="#书签" class="headerlink" title="书签"></a>书签</h4><p>Next 的书签功能可以保存当前的阅读进度，下次打开是会在续接该进度</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Bookmark</span> <span class="type">Support</span></span><br><span class="line">bookmark:</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  # <span class="type">Customize</span> the color of the bookmark.</span><br><span class="line">  color: <span class="string">&quot;#222&quot;</span></span><br><span class="line">  # <span class="type">If</span> auto, save the reading progress when closing the page or clicking the bookmark<span class="operator">-</span>icon.</span><br><span class="line">  # <span class="type">If</span> manual, only save it by clicking the bookmark<span class="operator">-</span>icon.</span><br><span class="line">  save: auto</span><br></pre></td></tr></table></figure>
+<h4 id="右上角github绷带"><a href="#右上角github绷带" class="headerlink" title="右上角github绷带"></a>右上角github绷带</h4><ol>
+<li>打开主题配置<code>themes/next/_config.yml</code>或者<code>_config.next.yml</code>，进行相关参数设置：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># `<span class="type">Follow</span> me on <span class="type">GitHub</span>` banner <span class="keyword">in</span> the top<span class="operator">-</span>right corner.</span><br><span class="line">github_banner:</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  permalink: https:<span class="comment">//github.com/fengyanxin</span></span><br><span class="line">  title: <span class="type">Follow</span> me on <span class="type">GitHub</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>效果如下：</li>
+</ol>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/17370209299074.jpg" alt="github绷带"></p>
+<h4 id="Mermaid"><a href="#Mermaid" class="headerlink" title="Mermaid"></a>Mermaid</h4><p>Mermaid 可以快速的用代码生成简单的流程图、时序图、甘特图等</p>
+<p>Next 中开启 Mermaid 支持很方便，同时还有不同的风格可以选</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Mermaid</span> tag</span><br><span class="line">mermaid:</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  # <span class="type">Available</span> themes: <span class="keyword">default</span> <span class="operator">|</span> dark <span class="operator">|</span> forest <span class="operator">|</span> neutral</span><br><span class="line">  theme:</span><br><span class="line">    light: neutral</span><br><span class="line">    dark: dark</span><br></pre></td></tr></table></figure>
+
+<h4 id="懒加载"><a href="#懒加载" class="headerlink" title="懒加载"></a>懒加载</h4><p>lazyload 是网站常用的技术，通过按需加载，避免一次性加载过多内容导致的打开缓慢</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Vanilla</span> <span class="type">JavaScript</span> plugin <span class="keyword">for</span> lazyloading images.</span><br><span class="line"># <span class="type">For</span> more information: https:<span class="comment">//apoorv.pro/lozad.js/demo/</span></span><br><span class="line">lazyload: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="fancybox"><a href="#fancybox" class="headerlink" title="fancybox"></a>fancybox</h4><p>fancybox 可以在点击图片时放大该图片，并且可以快速浏览当前文章的所有图片</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">FancyBox</span> <span class="keyword">is</span> a tool that offers a nice and elegant way to add zooming functionality <span class="keyword">for</span> images.</span><br><span class="line"># <span class="type">For</span> more information: https:<span class="comment">//fancyapps.com/fancybox/</span></span><br><span class="line">fancybox: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="pangu"><a href="#pangu" class="headerlink" title="pangu"></a>pangu</h4><p>对于强迫症来说，中英文混排时加上空格能很大程度改善阅读体验，但是有时候会不小心打漏部分空格，而 pangu 这个项目就可以帮你在展示时自动加上空格</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Pangu</span> <span class="type">Support</span></span><br><span class="line"># <span class="type">For</span> more information: https:<span class="comment">//github.com/vinta/pangu.js</span></span><br><span class="line"># <span class="type">Server</span><span class="operator">-</span>side plugin: https:<span class="comment">//github.com/next-theme/hexo-pangu</span></span><br><span class="line">pangu: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="捐赠"><a href="#捐赠" class="headerlink" title="捐赠"></a>捐赠</h4><p>文章末尾还可以求打赏，需要配置好相应的二维码图片，并且可以修改提示语句</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Donate</span> (<span class="type">Sponsor</span>) settings</span><br><span class="line"># <span class="type">Front</span><span class="operator">-</span>matter variable (nonsupport animation).</span><br><span class="line">reward_settings:</span><br><span class="line">  # <span class="type">If</span> <span class="literal">true</span>, a donate button will be displayed <span class="keyword">in</span> every article by <span class="keyword">default</span>.</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  animation: <span class="literal">false</span></span><br><span class="line">  comment: 赏个鸡腿🍗</span><br><span class="line"></span><br><span class="line">reward:</span><br><span class="line">  wechatpay: <span class="operator">/</span>images<span class="operator">/</span>wechatpay.png</span><br><span class="line">  alipay: <span class="operator">/</span>images<span class="operator">/</span>alipay.jpg</span><br><span class="line">  #paypal: <span class="operator">/</span>images<span class="operator">/</span>paypal.png</span><br><span class="line">  #bitcoin: <span class="operator">/</span>images<span class="operator">/</span>bitcoin.png</span><br></pre></td></tr></table></figure>
+
+<h4 id="版权声明"><a href="#版权声明" class="headerlink" title="版权声明"></a>版权声明</h4><p>Next 内置了文章末尾增加版权声明，只需手动开启即可</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Creative</span> <span class="type">Commons</span> <span class="number">4.0</span> <span class="type">International</span> <span class="type">License</span>.</span><br><span class="line"># <span class="type">See</span>: https:<span class="comment">//creativecommons.org/about/cclicenses/</span></span><br><span class="line">creative_commons:</span><br><span class="line">  # <span class="type">Available</span> values: by <span class="operator">|</span> by<span class="operator">-</span>nc <span class="operator">|</span> by<span class="operator">-</span>nc<span class="operator">-</span>nd <span class="operator">|</span> by<span class="operator">-</span>nc<span class="operator">-</span>sa <span class="operator">|</span> by<span class="operator">-</span>nd <span class="operator">|</span> by<span class="operator">-</span>sa <span class="operator">|</span> cc<span class="operator">-</span>zero</span><br><span class="line">  license: by<span class="operator">-</span>nc<span class="operator">-</span>sa</span><br><span class="line">  # <span class="type">Available</span> values: big <span class="operator">|</span> small</span><br><span class="line">  size: small</span><br><span class="line">  sidebar: <span class="literal">false</span></span><br><span class="line">  post: <span class="literal">true</span></span><br><span class="line">  # <span class="type">You</span> can <span class="keyword">set</span> a language value <span class="keyword">if</span> you prefer a translated version of <span class="type">CC</span> license, e.g. deed.zh</span><br><span class="line">  # <span class="type">CC</span> licenses are available <span class="keyword">in</span> <span class="number">39</span> languages, you can find the specific and correct abbreviation you need on https:<span class="comment">//creativecommons.org</span></span><br><span class="line">  language:</span><br></pre></td></tr></table></figure>
+
+<h4 id="不蒜子"><a href="#不蒜子" class="headerlink" title="不蒜子"></a>不蒜子</h4><p><a href="https://busuanzi.ibruce.info/">不蒜子</a> 是一个极简的网页计数器，Next 已经内置，只需打开即可</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># 不蒜子的访客人数和文章阅读统计功能</span><br><span class="line">busuanzi_count:</span><br><span class="line">  enable: <span class="literal">false</span> # 计数不准，所以关闭</span><br><span class="line">  total_visitors: <span class="literal">false</span>  # 总访问人数</span><br><span class="line">  total_visitors_icon: fa fa<span class="operator">-</span>user</span><br><span class="line">  total_views: <span class="literal">false</span> # 总访问次数</span><br><span class="line">  total_views_icon: fa fa<span class="operator">-</span>eye</span><br><span class="line">  post_views: <span class="literal">true</span> # 文章访问次数 注意：不在首页显示每篇文章的阅读次数，点击全文阅读即显示阅读次数</span><br><span class="line">  post_views_icon: fa fa<span class="operator">-</span>eye</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、进阶配置"><a href="#2、进阶配置" class="headerlink" title="2、进阶配置"></a>2、进阶配置</h3><h4 id="添加更多按钮"><a href="#添加更多按钮" class="headerlink" title="添加更多按钮"></a>添加更多按钮</h4><p>因为在你的博客主页会有多篇文章，如果你想让你的文章只显示一部分，多余的可以点击阅读全文来查看，那么你需要在你的文章中添加：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">&lt;!--</span>more<span class="operator">--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其后面的部分就不会显示了，只能点击 <strong>阅读全文</strong> 才能看。效果如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/17370224998555.jpg" alt="阅读全文"></p>
+<h4 id="添加RSS订阅"><a href="#添加RSS订阅" class="headerlink" title="添加RSS订阅"></a>添加RSS订阅</h4><ol>
+<li>安装RSS插件</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">$ cd 文件目录</span><br><span class="line">$ npm install <span class="operator">--</span>save hexo<span class="operator">-</span>generator<span class="operator">-</span>feed</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打开站点配置文件 <code>_config.yml</code>，进行相关参数修改：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Extensions</span></span><br><span class="line">## <span class="type">Plugins</span>: http:<span class="comment">//hexo.io/plugins/</span></span><br><span class="line"># feed (<span class="type">RSS订阅</span>)</span><br><span class="line"># <span class="type">Dependencies</span>: https:<span class="comment">//github.com/hexojs/hexo-generator-feed</span></span><br><span class="line">feed:</span><br><span class="line">  type: atom</span><br><span class="line">  path: atom.xml</span><br><span class="line">  limit: <span class="number">20</span></span><br><span class="line">  hub:</span><br><span class="line">  content:</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>打开主题配置文件 <code>themes/next/_config.yml</code>或者<code>_config.next.yml</code>，进行相关参数修改：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">$ rss: <span class="operator">/</span>atom.xml <span class="comment">//注意：有一个空格</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="增加页面宠物"><a href="#增加页面宠物" class="headerlink" title="增加页面宠物"></a>增加页面宠物</h4><ol>
+<li>在站点目录下执行：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">$ npm install <span class="operator">-</span>save hexo<span class="operator">-</span>helper<span class="operator">-</span>live2d</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打开主题配置文件<code>themes/next/_config.yml</code>或者<code>_config.next.yml</code>，添加下列相关参数：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">live2d:</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  scriptFrom: local</span><br><span class="line">  pluginRootPath: live2dw<span class="operator">/</span></span><br><span class="line">  pluginJsPath: lib<span class="operator">/</span></span><br><span class="line">  pluginModelPath: assets<span class="operator">/</span></span><br><span class="line">  tagMode: <span class="literal">false</span></span><br><span class="line">  log: <span class="literal">false</span></span><br><span class="line">  model:</span><br><span class="line">    use: live2d<span class="operator">-</span>widget<span class="operator">-</span>model<span class="operator">-</span>tororo</span><br><span class="line">  display:</span><br><span class="line">    position: right</span><br><span class="line">    width: <span class="number">150</span></span><br><span class="line">    height: <span class="number">300</span></span><br><span class="line">  mobile:</span><br><span class="line">    show: <span class="literal">true</span></span><br><span class="line">  react:</span><br><span class="line">    opacity: <span class="number">0.7</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="增加文章结束标志"><a href="#增加文章结束标志" class="headerlink" title="增加文章结束标志"></a>增加文章结束标志</h4><ol>
+<li>在路径 <code>/themes/next/layout/_macro</code>文件夹中新建<code>passage-end-tag.swig</code>文件：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">//切换到路径_macro</span></span><br><span class="line">$ cd [_macro路径]</span><br><span class="line"><span class="comment">//创建passage-end-tag.swig文件</span></span><br><span class="line">$ touch passage<span class="operator">-</span>end<span class="operator">-</span>tag.swig</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打开 <code>passage-end-tag.swig</code>文件，添加以下内容：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">&lt;</span>div<span class="operator">&gt;</span></span><br><span class="line">    &#123;<span class="operator">%</span> <span class="keyword">if</span> not is_index <span class="operator">%</span>&#125;</span><br><span class="line">        <span class="operator">&lt;</span>div style<span class="operator">=</span><span class="string">&quot;text-align:center;color: #ccc;font-size:14px;&quot;</span><span class="operator">&gt;-------------&lt;</span>i <span class="keyword">class</span>=&quot;<span class="title class_">fa</span> <span class="title class_">fa</span>-<span class="title class_">paw</span>&quot;&gt;&lt;/<span class="title class_">i</span>&gt; <span class="title class_">That</span>&#x27;<span class="title class_">s</span> <span class="title class_">all</span>！<span class="title class_">Best</span> <span class="title class_">wishes</span> <span class="title class_">for</span> <span class="title class_">you</span> !!! &lt;<span class="title class_">i</span> <span class="title class_">class</span>=&quot;<span class="title class_">fa</span> <span class="title class_">fa</span>-<span class="title class_">paw</span>&quot;&gt;&lt;/<span class="title class_">i</span>&gt;-------------&lt;/<span class="title class_">div</span>&gt;</span><br><span class="line">    &#123;<span class="operator">%</span> endif <span class="operator">%</span>&#125;</span><br><span class="line"><span class="operator">&lt;/</span>div<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>打开<code>/themes/next/layout/_macro/post.swig</code>，在<code>post-body</code>之后，<code>post-footer</code>之前，添加以下代码：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">&lt;</span>div<span class="operator">&gt;</span></span><br><span class="line">  &#123;<span class="operator">%</span> <span class="keyword">if</span> not is_index <span class="operator">%</span>&#125;</span><br><span class="line">    &#123;<span class="operator">%</span> include &#x27;passage<span class="operator">-</span>end<span class="operator">-</span>tag.swig&#x27; <span class="operator">%</span>&#125;</span><br><span class="line">  &#123;<span class="operator">%</span> endif <span class="operator">%</span>&#125;</span><br><span class="line"><span class="operator">&lt;/</span>div<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>然后打开主题配置文件<code>themes/next/_config.yml</code>或者<code>_config.next.yml</code>,在末尾添加：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># 文章末尾添加“本文结束”标记</span><br><span class="line">passage_end_tag:</span><br><span class="line">  enabled: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>效果如下：</li>
+</ol>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/17370182981965.jpg" alt="文章结束标志"></p>
+<h4 id="自定义头部背景区域"><a href="#自定义头部背景区域" class="headerlink" title="自定义头部背景区域"></a>自定义头部背景区域</h4><p>将图片文件放在 <code>/themes/next/source/images</code> 中，<br>打开 <code>/themes/next/source/css/_schemes/Pisces/_header.styl</code> 目录文件，<br>添加如下代码：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">background<span class="operator">-</span>image: url(<span class="operator">/</span>images<span class="operator">/</span>blogHead.jpg);</span><br><span class="line"> <span class="meta">@media</span>(min<span class="operator">-</span>width: 992px)&#123;</span><br><span class="line">    background<span class="operator">-</span>image: url(<span class="operator">/</span>images<span class="operator">/</span>blogHead.jpg);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加背景丝带"><a href="#添加背景丝带" class="headerlink" title="添加背景丝带"></a>添加背景丝带</h4><ol>
+<li>下载相应的资源包：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">$ git clone https:<span class="comment">//github.com/theme-next/theme-next-canvas-nest themes/next/source/lib/canvas-nest</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在主题配置文件<code>themes/next/_config.yml</code>或者<code>_config.next.yml</code>中，做相关参数修改：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Canvas</span><span class="operator">-</span>nest</span><br><span class="line"># <span class="type">Dependencies</span>: https:<span class="comment">//github.com/theme-next/theme-next-canvas-nest</span></span><br><span class="line">canvas_nest: # 网络背景</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  onmobile: <span class="literal">true</span> # display on mobile or not</span><br><span class="line">  color: &#x27;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#x27; # <span class="type">RGB</span> values, use &#x27;,&#x27; to separate</span><br><span class="line">  opacity: <span class="number">0.5</span> # the opacity of line: <span class="number">0</span><span class="operator">~</span><span class="number">1</span></span><br><span class="line">  zIndex: <span class="operator">-</span><span class="number">1</span> # z<span class="operator">-</span>index property of the background</span><br><span class="line">  count: <span class="number">150</span> # the number of lines</span><br><span class="line"></span><br><span class="line"># <span class="type">JavaScript</span> 3D library.</span><br><span class="line"># <span class="type">Dependencies</span>: https:<span class="comment">//github.com/theme-next/theme-next-three</span></span><br><span class="line"># three_waves</span><br><span class="line">three_waves: <span class="literal">false</span></span><br><span class="line"># canvas_lines</span><br><span class="line">canvas_lines: <span class="literal">false</span></span><br><span class="line"># canvas_sphere</span><br><span class="line">canvas_sphere: <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"># <span class="type">Canvas</span><span class="operator">-</span>ribbon</span><br><span class="line"># <span class="type">Dependencies</span>: https:<span class="comment">//github.com/theme-next/theme-next-canvas-ribbon</span></span><br><span class="line"># size: <span class="type">The</span> width of the ribbon.</span><br><span class="line"># alpha: <span class="type">The</span> transparency of the ribbon.</span><br><span class="line"># zIndex: <span class="type">The</span> display level of the ribbon.</span><br><span class="line">canvas_ribbon:</span><br><span class="line">  enable: <span class="literal">false</span></span><br><span class="line">  size: <span class="number">300</span></span><br><span class="line">  alpha: <span class="number">0.6</span></span><br><span class="line">  zIndex: <span class="operator">-</span><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>效果如下：</li>
+</ol>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/%E8%83%8C%E6%99%AF%E4%B8%9D%E5%B8%A6.gif" alt="背景丝带"></p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【Hexo】如何将博客源码上传到GitHub</title>
     <url>/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</url>
     <content><![CDATA[<h1 id="如何将博客源码上传到-GitHub"><a href="#如何将博客源码上传到-GitHub" class="headerlink" title="如何将博客源码上传到 GitHub"></a>如何将博客源码上传到 GitHub</h1><h2 id="一、为什么要把博客源码上传到-GitHub-？"><a href="#一、为什么要把博客源码上传到-GitHub-？" class="headerlink" title="一、为什么要把博客源码上传到 GitHub ？"></a>一、为什么要把博客源码上传到 GitHub ？</h2><p>首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：</p>
@@ -2090,215 +2317,6 @@
       </categories>
       <tags>
         <tag>Tips</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【Tips】解决 ping github.com 超时问题</title>
-    <url>/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="解决-ping-github-com-超时问题"><a href="#解决-ping-github-com-超时问题" class="headerlink" title="解决 ping github.com 超时问题"></a>解决 ping github.com 超时问题</h1><p>1、尝试 <code>ping github.com</code>，结果发现Ping不通，但是 <code>ping baidu.com</code> 却是正常的。</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg"></p>
-<span id="more"></span>
-
-<p>2、初步分心应该是本地的DNS无法解析导致的，需要修改Hosts文件，添加 github 的ip地址项</p>
-<h2 id="如何修改Hosts文件？"><a href="#如何修改Hosts文件？" class="headerlink" title="如何修改Hosts文件？"></a>如何修改Hosts文件？</h2><h3 id="1、通过终端命令修改"><a href="#1、通过终端命令修改" class="headerlink" title="1、通过终端命令修改"></a>1、通过终端命令修改</h3><p>（1）打开终端，输入命令行：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># sudo 以管理员权限执行</span><br><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
-
-<p>（2）输入本机密码后，会自动打开hosts文件 。</p>
-<ul>
-<li>键盘输入<code>i</code>（插入），修改完成后，按 <code>esc</code> 键退出插入页面</li>
-<li>保存退出：输入  <code>:wq</code> 或者<code>:wq!</code>，再<code>enter</code>键 </li>
-<li>不保存退出：输入<code>q</code>和<code>！</code>键，再<code>enter</code>键</li>
-</ul>
-<h3 id="2、在-Finder-中修改"><a href="#2、在-Finder-中修改" class="headerlink" title="2、在 Finder 中修改"></a>2、在 Finder 中修改</h3><p>方法一：</p>
-<p>（1）打开 <code>Finder</code> ，快捷键 <code>Command+Shift+G</code> 查找文件，输入 <code>/etc/hosts</code>，点击前往</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg"></p>
-<p>（2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg"></p>
-<p>方法二：</p>
-<p>（1）打开Finder，快捷键 <code>Shift+Command+G</code> 查找文件，输入 <code>/private</code> 前往</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg"></p>
-<p>（2）找到 <code>etc</code> 文件之后，选择显示简介</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg"></p>
-<p>（3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg"></p>
-<h2 id="如何在-Hosts-文件中配置-github-com-映射"><a href="#如何在-Hosts-文件中配置-github-com-映射" class="headerlink" title="如何在 Hosts 文件中配置 github.com 映射"></a>如何在 Hosts 文件中配置 github.com 映射</h2><p>host文件打开之后可以看到：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg"></p>
-<p>在文件下面添加如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="title class_">GitHub</span>地址</span><br><span class="line"><span class="number">140.82</span><span class="number">.114</span><span class="number">.3</span> github.<span class="property">com</span> git</span><br><span class="line"><span class="number">151.101</span><span class="number">.129</span><span class="number">.194</span> github.<span class="property">global</span>.<span class="property">ssl</span>.<span class="property">fastly</span>.<span class="property">net</span></span><br></pre></td></tr></table></figure>
-
-<p>上图中的 IP 可以通过， <a href="https://www.ipaddress.com/">ipaddress</a> 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg"></p>
-<p><code>140.82.114.3</code>：这个IP地址修改为 <code>github.com</code>搜索到的IP地址</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg"></p>
-<p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
-<p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
-]]></content>
-      <categories>
-        <category>Tips</category>
-      </categories>
-      <tags>
-        <tag>Tips</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【iOS】集成阿里云消息推送</title>
-    <url>/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/</url>
-    <content><![CDATA[<h1 id="集成阿里云消息推送"><a href="#集成阿里云消息推送" class="headerlink" title="集成阿里云消息推送"></a>集成阿里云消息推送</h1><h2 id="基本的业务流程："><a href="#基本的业务流程：" class="headerlink" title="基本的业务流程："></a>基本的业务流程：</h2><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782576576028.jpg"></p>
-<span id="more"></span>
-
-<p>集成阿里云消息推送的流程基本如上图所示，还是比较简单的，我们只需要重点关注一下红框中的部分。</p>
-<p>下面我们就来分步骤讲解一下：</p>
-<h3 id="一：创建应用"><a href="#一：创建应用" class="headerlink" title="一：创建应用"></a>一：创建应用</h3><p>创建应用获取初始化推送所需的AppKey和Secret</p>
-<h4 id="1-登录阿里云控制台，添加产品"><a href="#1-登录阿里云控制台，添加产品" class="headerlink" title="1. 登录阿里云控制台，添加产品"></a>1. 登录阿里云控制台，添加产品</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782584388892.jpg"></p>
-<h4 id="2-点击添加应用，创建ios和android对应的平台"><a href="#2-点击添加应用，创建ios和android对应的平台" class="headerlink" title="2. 点击添加应用，创建ios和android对应的平台"></a>2. 点击添加应用，创建ios和android对应的平台</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782585058067.jpg"></p>
-<h3 id="二：上传证书"><a href="#二：上传证书" class="headerlink" title="二：上传证书"></a>二：上传证书</h3><p>集成阿里云推送，我们需要在阿里云控制台上传两个证书，分别是<strong>开发环境的推送证书</strong>和<strong>生成环境的推送证书</strong>，如下图所示：</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782586952344.jpg"></p>
-<p>那么我们要如何获取这两个证书呢？</p>
-<h4 id="1-获取CSR文件"><a href="#1-获取CSR文件" class="headerlink" title="1.获取CSR文件"></a>1.获取CSR文件</h4><p>1.1 在Mac的应用程序中打开钥匙串访问，在顶部菜单栏中选择钥匙串访问&gt;证书助理&gt;从证书颁发机构请求证书</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782592582016.jpg"></p>
-<p>1.2 在弹出的证书信息中，输入邮箱地址，设置选择储存到磁盘，单击继续将CSR文件存储到本地</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782593206219.jpg"></p>
-<p>1.3 生成之后，在目录下找到此文件</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782593919466.jpg"></p>
-<h4 id="2-生成AppID"><a href="#2-生成AppID" class="headerlink" title="2.生成AppID"></a>2.生成AppID</h4><p>2.1 登录 <a href="https://developer.apple.com/account">Apple Developer</a>，选择Certificates，Identifiers &amp; Profiles选项</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782595884680.jpg"></p>
-<p>2.2 选择Identifiers，项目如果是自动证书管理的话我们可以看到一些以 <code>XC</code>开头的 Bundle ID ，如下图所示：</p>
-<p>如果是手动证书管理，需要点击<code>+</code>号创建 App ID，此处我们自动证书管理为例。</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782596990503.jpg"></p>
-<p>2.3 在上图的 Identifiers 列表中选择需要配置推送的<br>Bundle ID。（如果列表中没有，可以在Xcode工程中配置）</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782603043050.jpg"></p>
-<p>在上图配置文件中填写Bundle ID，然后勾选<code>Automatically manage signing</code>，在下图弹框中选择<code>Enable Automatic</code>，然后回到<a href="https://developer.apple.com/account">Apple Developer</a>，就可以<code>Identifiers</code>列表中看到我们刚才设置的<code>Bundle ID</code>了。</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782604788362.jpg"></p>
-<p>2.4 点击Identifiers 列表进入详情，向下划动找到<code>Push Notification</code>选项，勾选开启远程推送服务</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782606658935.jpg"></p>
-<h4 id="3-创建生产和开发推送证书"><a href="#3-创建生产和开发推送证书" class="headerlink" title="3.创建生产和开发推送证书"></a>3.创建生产和开发推送证书</h4><p>3.1 点击上图中的<code>Edit</code>按钮，进入配置页面</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782609693712.jpg"></p>
-<p>3.2 单击<code>Choose File</code>上传已获取到的CSR文件</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782610616057.jpg"></p>
-<p>3.3 生成后，<code>download</code>到本地</p>
-<p>3.4 双击打开并安装证书，系统会自动将其导入到钥匙串中</p>
-<p>3.5 在Mac中打开钥匙串应用，选择登录&gt;证书，分别右键导出开发环境（<code>Apple Sandbox Push Services</code>）和生产环境(<code>Apple Push Services</code>)的<code>.P12</code>证书文件</p>
-<p><font color="#ff0000">此处导出.p12文件时需要设置密码，阿里云配置证书时必填</font></p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782614735761.jpg"></p>
-<p>导出结果如下：</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782616606924.jpg"></p>
-<p>3.6 在阿里云控制台配置相应的开发和生产证书，如下图所示：</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782617708004.jpg"></p>
-<h3 id="三：下载配置文件并集成"><a href="#三：下载配置文件并集成" class="headerlink" title="三：下载配置文件并集成"></a>三：下载配置文件并集成</h3><p>1.在阿里云控制台应用设置找到相应应用，点击<code>iOS配置下载</code>，将我们刚才生成好的配置文件下载下来，如下图所示：</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782621859000.jpg"></p>
-<p>下载完成之后，文件如下图：</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782626642638.jpg"></p>
-<p>将此文件导入到工程中，可以通过<code>CloudPushSDK.autoInit</code>方法自动生成推送配置，下文<strong>功能实现</strong>模块我们将做详细介绍。</p>
-<h3 id="四：下载推送SDK与集成"><a href="#四：下载推送SDK与集成" class="headerlink" title="四：下载推送SDK与集成"></a>四：下载推送SDK与集成</h3><h4 id="1-集成SDK"><a href="#1-集成SDK" class="headerlink" title="1.集成SDK"></a>1.集成SDK</h4><p>一共有两种方法，手动集成和Pod集成，这里我们主要介绍pod集成的方法。</p>
-<p>1.1 在Podfile中添加阿里云仓库source源</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">source &#x27;https://github.com/aliyun/aliyun-specs.git&#x27;</span><br></pre></td></tr></table></figure>
-
-<p>1.2 pod 阿里云推送</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pod &#x27;AlicloudPush&#x27;, &#x27;~&gt; 1.9.9.5&#x27;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-引入头文件"><a href="#2-引入头文件" class="headerlink" title="2.引入头文件"></a>2.引入头文件</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import CloudPushSDK</span><br></pre></td></tr></table></figure>
-
-<p>或者OC桥接文件中引入</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#import &lt;CloudPushSDK/CloudPushSDK.h&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-Objc配置"><a href="#3-Objc配置" class="headerlink" title="3.Objc配置"></a>3.Objc配置</h4><p>iOS端集成SDK时需要做<code>-ObjC</code>配置 ，即应用的 <em>TARGETS -&gt; Build Settings -&gt; Linking -&gt; Other Linker Flags</em> ，需添加上<code>-ObjC</code>这个属性，否则推送服务无法正常使用 。</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782636066930.jpg"></p>
-<h4 id="4-打开系统通知"><a href="#4-打开系统通知" class="headerlink" title="4.打开系统通知"></a>4.打开系统通知</h4><p><font color="#ff0000">注意：此处千万不要忘记打开，否则收不到推送，这是一个小点，很难定位</font></p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782638087381.jpg"></p>
-<h3 id="五：功能实现"><a href="#五：功能实现" class="headerlink" title="五：功能实现"></a>五：功能实现</h3><p>推送功能主要在<code>AppDelegate</code>文件中实现</p>
-<h4 id="1-初始化SDK"><a href="#1-初始化SDK" class="headerlink" title="1.初始化SDK"></a>1.初始化SDK</h4><p>使用配置文件<code>AliyunEmasServices-Info.plist</code>直接调用<code>autoInit</code>，这个在前文有提到过。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">setup</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>, <span class="params">launchOptions</span>: [<span class="params">UIApplicationLaunchOptionsKey</span>: <span class="keyword">Any</span>]<span class="operator">?</span>) &#123;</span><br><span class="line">    <span class="type">CloudPushSDK</span>.autoInit &#123; result <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> result <span class="operator">=</span> result <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Push SDK init failed, error: result is nil!&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> result.success &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Push SDK init success, deviceId: <span class="subst">\(String(describing: CloudPushSDK.getDeviceId()))</span>&quot;</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Push SDK init failed, error: <span class="subst">\(String(describing: result.error))</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="comment">// 点击通知将App从关闭状态启动时，将通知打开回执上报</span></span><br><span class="line">    <span class="type">CloudPushSDK</span>.sendNotificationAck(launchOptions)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-请求通知权限并注册远程通知"><a href="#2-请求通知权限并注册远程通知" class="headerlink" title="2.请求通知权限并注册远程通知"></a>2.请求通知权限并注册远程通知</h4><p>第一次安装会弹出请求通知的<code>alert</code></p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">registerAPNS</span>(<span class="params">application</span>: <span class="type">UIApplication</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> center <span class="operator">=</span> <span class="type">UNUserNotificationCenter</span>.current()</span><br><span class="line">    center.delegate <span class="operator">=</span> <span class="keyword">self</span></span><br><span class="line">    <span class="keyword">var</span> options: <span class="type">UNAuthorizationOptions</span> <span class="operator">=</span> [.alert, .sound, .badge]</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">#available</span>(<span class="keyword">iOS</span> <span class="number">12.0</span>, <span class="operator">*</span>) &#123;</span><br><span class="line">        options <span class="operator">=</span> [.alert, .sound, .badge, .providesAppNotificationSettings]</span><br><span class="line">    &#125;</span><br><span class="line">    center.requestAuthorization(options: options) &#123; (granted, error) <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">if</span> granted &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;User authored notification.&quot;</span>)</span><br><span class="line">            <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">                application.registerForRemoteNotifications()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;User denied notification.&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> error <span class="operator">=</span> error &#123;</span><br><span class="line">            log.error(error)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-注册设备并上报deviceToken"><a href="#3-注册设备并上报deviceToken" class="headerlink" title="3.注册设备并上报deviceToken"></a>3.注册设备并上报deviceToken</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">registerDevice</span>(<span class="keyword">_</span> <span class="params">deviceToken</span>: <span class="type">Data</span>) &#123;</span><br><span class="line">    <span class="type">CloudPushSDK</span>.registerDevice(deviceToken) &#123; result <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> result <span class="operator">=</span> result <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Register deviceToken failed, error:: result is nil!&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> result.success &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Register deviceToken success, deviceToken: <span class="subst">\(String(describing: CloudPushSDK.getApnsDeviceToken()))</span>&quot;</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Register deviceToken failed, error: <span class="subst">\(String(describing: result.error))</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">application</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>,</span><br><span class="line">                        <span class="params">didRegisterForRemoteNotificationsWithDeviceToken</span> <span class="params">deviceToken</span>: <span class="type">Data</span>) &#123;</span><br><span class="line">    registerDevice(deviceToken)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注册失败</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">application</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>,</span><br><span class="line">                        <span class="params">didFailToRegisterForRemoteNotificationsWithError</span> <span class="params">error</span>: <span class="type">Error</span>) &#123;</span><br><span class="line">    log.error(<span class="string">&quot;did Fail To Register For Remote Notifications With Error : <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="4-注册通知类别"><a href="#4-注册通知类别" class="headerlink" title="4.注册通知类别"></a>4.注册通知类别</h4><p>通知类别（category）用于给通知分类，可添加按钮或自定义UI</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">createCustomNotificationCategory</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> action <span class="operator">=</span> <span class="type">UNNotificationAction</span>(identifier: <span class="string">&quot;actionID&quot;</span>, title: <span class="string">&quot;buttonTitle&quot;</span>, options: [])</span><br><span class="line">    <span class="keyword">let</span> category <span class="operator">=</span> <span class="type">UNNotificationCategory</span>(identifier: <span class="string">&quot;CategoryID&quot;</span>, actions: [action],</span><br><span class="line">                                          intentIdentifiers: [],</span><br><span class="line">                                          options: .customDismissAction)</span><br><span class="line">    <span class="type">UNUserNotificationCenter</span>.current().setNotificationCategories([category])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="5-UNUserNotificationCenterDelegate"><a href="#5-UNUserNotificationCenterDelegate" class="headerlink" title="5.UNUserNotificationCenterDelegate"></a>5.UNUserNotificationCenterDelegate</h4><p><code>UNUserNotificationCenterDelegate</code>代替了<code>UIAppDelegate</code>的旧通知接收方法<code>didReceiveRemoteNotification</code>将接收通知的情况分为app开启时（foreground）和app不在前台时（background）</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// app打开时调用</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>,</span><br><span class="line">                                   <span class="params">willPresent</span> <span class="params">notification</span>: <span class="type">UNNotification</span>,</span><br><span class="line">                                   <span class="params">withCompletionHandler</span> <span class="params">completionHandler</span>: <span class="keyword">@escaping</span> (<span class="type">UNNotificationPresentationOptions</span>) -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="comment">// 业务逻辑</span></span><br><span class="line">    handleNotification(notification)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 在app内弹通知</span></span><br><span class="line">    completionHandler([.badge, .alert, .sound])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// app未打开时调用</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>, <span class="params">didReceive</span> <span class="params">response</span>: <span class="type">UNNotificationResponse</span>, <span class="params">withCompletionHandler</span> <span class="params">completionHandler</span>: <span class="keyword">@escaping</span> () -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> userAction <span class="operator">=</span> response.actionIdentifier</span><br><span class="line">    <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="type">UNNotificationDefaultActionIdentifier</span> &#123; </span><br><span class="line">        <span class="comment">// 点击通知栏本身</span></span><br><span class="line">        log.debug(<span class="string">&quot;User opened the notification.&quot;</span>)</span><br><span class="line"></span><br><span class="line">        handleNotification(response.notification)</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="type">UNNotificationDismissActionIdentifier</span> &#123;</span><br><span class="line">        <span class="comment">// 通知dismiss，category创建时传入UNNotificationCategoryOptionCustomDismissAction才可以触发</span></span><br><span class="line">        log.debug(<span class="string">&quot;User dismissed the notification.&quot;</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="string">&quot;actionID&quot;</span> &#123;</span><br><span class="line">        <span class="comment">// 自定义按钮逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    completionHandler()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// iOS12新功能，在app系统通知设置里点击按钮跳到app内通知设置的回调</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>, <span class="params">openSettingsFor</span> <span class="params">notification</span>: <span class="type">UNNotification</span>?) &#123;</span><br><span class="line">    log.debug(<span class="string">&quot;Open notification in-app setting.&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="扩展功能：Notification-Service-Extension（富媒体推送）"><a href="#扩展功能：Notification-Service-Extension（富媒体推送）" class="headerlink" title="扩展功能：Notification Service Extension（富媒体推送）"></a>扩展功能：Notification Service Extension（富媒体推送）</h2><p>众所周知，苹果的apns推送有一个痛点（当然Apple觉得这是亮点），就是<strong>在我们不点击通知时，app是不会执行任何代码的</strong>，这就是静默推送，虽然app能收到推送，但是它不执行任何代码，这极大的保护了手机性能，却也让开发者没办法对推送内容进行修改了。</p>
-<p>那么问题来了，Apple真的不让开发者动态修改推送内容了吗？</p>
-<p>不然，Apple还是很有良心的，在静默推送修改之后，它也推出了另一功能<code>Notification Service Extension</code>，它为我们完美解决了对推送内容进行动态修改的需求，接下来我们就来看一下这一功能：</p>
-<h3 id="了解Notification-Service-Extension"><a href="#了解Notification-Service-Extension" class="headerlink" title="了解Notification Service Extension"></a>了解Notification Service Extension</h3><ul>
-<li><p>iOS 10添加了通知相关的扩展Notification Service Extension，使得通知弹出前可以对通知内容进行修改。</p>
-</li>
-<li><p>iOS远程推送过程如下图所示，APNs推送的通知直接在设备上弹出；</p>
-</li>
-</ul>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782654264853.jpg"></p>
-<ul>
-<li>添加Notification Service Extension后，如下图所示，APNs推送的通知在弹出前，可先到达Extension进行处理。</li>
-</ul>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782655214693.jpg"></p>
-<p><font color="#ff0000">【注意】OpenAPI 需要调用 setiOSMutableContent(true) 接口，这样Extension才可生效。这里的OpenAPI就是阿里云API了，让后台配置一下setiOSMutableContent(true)就好。</font></p>
-<h3 id="使用Notification-Service-Extension"><a href="#使用Notification-Service-Extension" class="headerlink" title="使用Notification Service Extension"></a>使用Notification Service Extension</h3><h4 id="1、点击-file-gt-new-gt-target"><a href="#1、点击-file-gt-new-gt-target" class="headerlink" title="1、点击 file-&gt;new-&gt;target"></a>1、点击 file-&gt;new-&gt;target</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782671772445.jpg"></p>
-<h4 id="2、选择-iOS-gt-Notification-Service-Extension"><a href="#2、选择-iOS-gt-Notification-Service-Extension" class="headerlink" title="2、选择 iOS-&gt;Notification Service Extension"></a>2、选择 iOS-&gt;Notification Service Extension</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782674597379.jpg"></p>
-<h4 id="3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成"><a href="#3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成" class="headerlink" title="3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成"></a>3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782674134664.jpg"></p>
-<h3 id="配置Extension"><a href="#配置Extension" class="headerlink" title="配置Extension"></a>配置Extension</h3><p>创建完成后，主要有两个文件<code>NotificationService.swift</code> 和 <code>info.plist</code></p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782676305569.jpg"></p>
-<p>1、首先，需要在扩展对应的target-&gt;Signing&amp;Capabilities，点击+Capability，添加push notification</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782676848331.jpg"></p>
-<p>2、<code>NotificationService.swift</code>中主要有两个方法</p>
-<p>1）</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">didReceive</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">UNNotificationRequest</span>, <span class="params">withContentHandler</span> <span class="params">contentHandler</span>: <span class="keyword">@escaping</span> (<span class="type">UNNotificationContent</span>) -&gt; <span class="type">Void</span>)</span><br></pre></td></tr></table></figure>
-
-<p>该方法主要是用于在接受到推送时，针对推送内容进行修改，修改完成后展示给用户</p>
-<p>2）</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">serviceExtensionTimeWillExpire</span>()</span><br></pre></td></tr></table></figure>
-
-<p>该方法是用于在方法1）中如果没有向用户展示推送，可以在这里（即apns即将到30s时）向用户推送</p>
-<p>3、推送的消息中必须具备alert和<code>&quot;mutable-content&quot;:&quot;1&quot;</code>（表示推送可修改），这个上文有提到过，OpenAPI 需要调用 <code>setiOSMutableContent(true)</code> 接口，发送出来的消息结构中就会有<code>&quot;mutable-content&quot;:&quot;1&quot;</code>。</p>
-<p>接下来，我们就可以对接收到的推送消息做自定义动态修改了。如下图所示：</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782680346445.jpg"></p>
-<p>然后我们就可以看到手机接收到的推送变了。</p>
-<p>🎉🎉🎉 完结撒花 🎉🎉🎉！</p>
-<p>❤️ Best wish for you ❤️！</p>
-]]></content>
-      <categories>
-        <category>iOS</category>
-      </categories>
-      <tags>
-        <tag>iOS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第一次与ChatGPT闲聊</title>
-    <url>/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/</url>
-    <content><![CDATA[<h1 id="第一次与ChatGPT闲聊"><a href="#第一次与ChatGPT闲聊" class="headerlink" title="第一次与ChatGPT闲聊"></a>第一次与ChatGPT闲聊</h1><p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994415736.jpg"></p>
-<span id="more"></span>
-
-<p>开局来一个盲猜，哈哈！</p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994578027.jpg"></p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994726246.jpg"></p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994851225.jpg"></p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994960092.jpg"></p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995226589.jpg"></p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995362169.jpg"></p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995475238.jpg"></p>
-<p>以上回答都比较中规中矩，而且流于表面，没有什么深刻的理解。</p>
-<p>怎么说呢，就好比小学生囫囵吞枣读了一遍红楼，来参加知识竞赛一样，虽然知道一点，但是理解不深，有知识架构，但是没有个人观点的沉淀，甚至还有可能出错和闹笑话，下面错误和笑话就来了。</p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792999646971.jpg"></p>
-<p>薛蟠这个回答是我万万没有想到的！</p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995731944.jpg"></p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995866936.jpg"></p>
-<p>更有甚者，当我问及秦可卿的死因时，它的回答竟是这样的：</p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792996066039.jpg"></p>
-<p>这个回答纯属瞎编乱造！</p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792996214610.jpg"></p>
-<p>这个结局确实是一个方向，但是，相信绝不是大多数红迷想要的。</p>
-<p>第一次和ChatGPT闲聊，竟然问了很多和《红楼梦》相关的问题，估计ChatGPT都没想到吧，差点被我给整晕了…</p>
-<p>未完待续…期待后续的发掘</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
@@ -4606,6 +4624,215 @@
       </categories>
       <tags>
         <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Tips】解决 ping github.com 超时问题</title>
+    <url>/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="解决-ping-github-com-超时问题"><a href="#解决-ping-github-com-超时问题" class="headerlink" title="解决 ping github.com 超时问题"></a>解决 ping github.com 超时问题</h1><p>1、尝试 <code>ping github.com</code>，结果发现Ping不通，但是 <code>ping baidu.com</code> 却是正常的。</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg"></p>
+<span id="more"></span>
+
+<p>2、初步分心应该是本地的DNS无法解析导致的，需要修改Hosts文件，添加 github 的ip地址项</p>
+<h2 id="如何修改Hosts文件？"><a href="#如何修改Hosts文件？" class="headerlink" title="如何修改Hosts文件？"></a>如何修改Hosts文件？</h2><h3 id="1、通过终端命令修改"><a href="#1、通过终端命令修改" class="headerlink" title="1、通过终端命令修改"></a>1、通过终端命令修改</h3><p>（1）打开终端，输入命令行：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># sudo 以管理员权限执行</span><br><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>（2）输入本机密码后，会自动打开hosts文件 。</p>
+<ul>
+<li>键盘输入<code>i</code>（插入），修改完成后，按 <code>esc</code> 键退出插入页面</li>
+<li>保存退出：输入  <code>:wq</code> 或者<code>:wq!</code>，再<code>enter</code>键 </li>
+<li>不保存退出：输入<code>q</code>和<code>！</code>键，再<code>enter</code>键</li>
+</ul>
+<h3 id="2、在-Finder-中修改"><a href="#2、在-Finder-中修改" class="headerlink" title="2、在 Finder 中修改"></a>2、在 Finder 中修改</h3><p>方法一：</p>
+<p>（1）打开 <code>Finder</code> ，快捷键 <code>Command+Shift+G</code> 查找文件，输入 <code>/etc/hosts</code>，点击前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg"></p>
+<p>（2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg"></p>
+<p>方法二：</p>
+<p>（1）打开Finder，快捷键 <code>Shift+Command+G</code> 查找文件，输入 <code>/private</code> 前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg"></p>
+<p>（2）找到 <code>etc</code> 文件之后，选择显示简介</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg"></p>
+<p>（3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg"></p>
+<h2 id="如何在-Hosts-文件中配置-github-com-映射"><a href="#如何在-Hosts-文件中配置-github-com-映射" class="headerlink" title="如何在 Hosts 文件中配置 github.com 映射"></a>如何在 Hosts 文件中配置 github.com 映射</h2><p>host文件打开之后可以看到：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg"></p>
+<p>在文件下面添加如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="title class_">GitHub</span>地址</span><br><span class="line"><span class="number">140.82</span><span class="number">.114</span><span class="number">.3</span> github.<span class="property">com</span> git</span><br><span class="line"><span class="number">151.101</span><span class="number">.129</span><span class="number">.194</span> github.<span class="property">global</span>.<span class="property">ssl</span>.<span class="property">fastly</span>.<span class="property">net</span></span><br></pre></td></tr></table></figure>
+
+<p>上图中的 IP 可以通过， <a href="https://www.ipaddress.com/">ipaddress</a> 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg"></p>
+<p><code>140.82.114.3</code>：这个IP地址修改为 <code>github.com</code>搜索到的IP地址</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg"></p>
+<p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
+<p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【iOS】集成阿里云消息推送</title>
+    <url>/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/</url>
+    <content><![CDATA[<h1 id="集成阿里云消息推送"><a href="#集成阿里云消息推送" class="headerlink" title="集成阿里云消息推送"></a>集成阿里云消息推送</h1><h2 id="基本的业务流程："><a href="#基本的业务流程：" class="headerlink" title="基本的业务流程："></a>基本的业务流程：</h2><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782576576028.jpg"></p>
+<span id="more"></span>
+
+<p>集成阿里云消息推送的流程基本如上图所示，还是比较简单的，我们只需要重点关注一下红框中的部分。</p>
+<p>下面我们就来分步骤讲解一下：</p>
+<h3 id="一：创建应用"><a href="#一：创建应用" class="headerlink" title="一：创建应用"></a>一：创建应用</h3><p>创建应用获取初始化推送所需的AppKey和Secret</p>
+<h4 id="1-登录阿里云控制台，添加产品"><a href="#1-登录阿里云控制台，添加产品" class="headerlink" title="1. 登录阿里云控制台，添加产品"></a>1. 登录阿里云控制台，添加产品</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782584388892.jpg"></p>
+<h4 id="2-点击添加应用，创建ios和android对应的平台"><a href="#2-点击添加应用，创建ios和android对应的平台" class="headerlink" title="2. 点击添加应用，创建ios和android对应的平台"></a>2. 点击添加应用，创建ios和android对应的平台</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782585058067.jpg"></p>
+<h3 id="二：上传证书"><a href="#二：上传证书" class="headerlink" title="二：上传证书"></a>二：上传证书</h3><p>集成阿里云推送，我们需要在阿里云控制台上传两个证书，分别是<strong>开发环境的推送证书</strong>和<strong>生成环境的推送证书</strong>，如下图所示：</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782586952344.jpg"></p>
+<p>那么我们要如何获取这两个证书呢？</p>
+<h4 id="1-获取CSR文件"><a href="#1-获取CSR文件" class="headerlink" title="1.获取CSR文件"></a>1.获取CSR文件</h4><p>1.1 在Mac的应用程序中打开钥匙串访问，在顶部菜单栏中选择钥匙串访问&gt;证书助理&gt;从证书颁发机构请求证书</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782592582016.jpg"></p>
+<p>1.2 在弹出的证书信息中，输入邮箱地址，设置选择储存到磁盘，单击继续将CSR文件存储到本地</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782593206219.jpg"></p>
+<p>1.3 生成之后，在目录下找到此文件</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782593919466.jpg"></p>
+<h4 id="2-生成AppID"><a href="#2-生成AppID" class="headerlink" title="2.生成AppID"></a>2.生成AppID</h4><p>2.1 登录 <a href="https://developer.apple.com/account">Apple Developer</a>，选择Certificates，Identifiers &amp; Profiles选项</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782595884680.jpg"></p>
+<p>2.2 选择Identifiers，项目如果是自动证书管理的话我们可以看到一些以 <code>XC</code>开头的 Bundle ID ，如下图所示：</p>
+<p>如果是手动证书管理，需要点击<code>+</code>号创建 App ID，此处我们自动证书管理为例。</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782596990503.jpg"></p>
+<p>2.3 在上图的 Identifiers 列表中选择需要配置推送的<br>Bundle ID。（如果列表中没有，可以在Xcode工程中配置）</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782603043050.jpg"></p>
+<p>在上图配置文件中填写Bundle ID，然后勾选<code>Automatically manage signing</code>，在下图弹框中选择<code>Enable Automatic</code>，然后回到<a href="https://developer.apple.com/account">Apple Developer</a>，就可以<code>Identifiers</code>列表中看到我们刚才设置的<code>Bundle ID</code>了。</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782604788362.jpg"></p>
+<p>2.4 点击Identifiers 列表进入详情，向下划动找到<code>Push Notification</code>选项，勾选开启远程推送服务</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782606658935.jpg"></p>
+<h4 id="3-创建生产和开发推送证书"><a href="#3-创建生产和开发推送证书" class="headerlink" title="3.创建生产和开发推送证书"></a>3.创建生产和开发推送证书</h4><p>3.1 点击上图中的<code>Edit</code>按钮，进入配置页面</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782609693712.jpg"></p>
+<p>3.2 单击<code>Choose File</code>上传已获取到的CSR文件</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782610616057.jpg"></p>
+<p>3.3 生成后，<code>download</code>到本地</p>
+<p>3.4 双击打开并安装证书，系统会自动将其导入到钥匙串中</p>
+<p>3.5 在Mac中打开钥匙串应用，选择登录&gt;证书，分别右键导出开发环境（<code>Apple Sandbox Push Services</code>）和生产环境(<code>Apple Push Services</code>)的<code>.P12</code>证书文件</p>
+<p><font color="#ff0000">此处导出.p12文件时需要设置密码，阿里云配置证书时必填</font></p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782614735761.jpg"></p>
+<p>导出结果如下：</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782616606924.jpg"></p>
+<p>3.6 在阿里云控制台配置相应的开发和生产证书，如下图所示：</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782617708004.jpg"></p>
+<h3 id="三：下载配置文件并集成"><a href="#三：下载配置文件并集成" class="headerlink" title="三：下载配置文件并集成"></a>三：下载配置文件并集成</h3><p>1.在阿里云控制台应用设置找到相应应用，点击<code>iOS配置下载</code>，将我们刚才生成好的配置文件下载下来，如下图所示：</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782621859000.jpg"></p>
+<p>下载完成之后，文件如下图：</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782626642638.jpg"></p>
+<p>将此文件导入到工程中，可以通过<code>CloudPushSDK.autoInit</code>方法自动生成推送配置，下文<strong>功能实现</strong>模块我们将做详细介绍。</p>
+<h3 id="四：下载推送SDK与集成"><a href="#四：下载推送SDK与集成" class="headerlink" title="四：下载推送SDK与集成"></a>四：下载推送SDK与集成</h3><h4 id="1-集成SDK"><a href="#1-集成SDK" class="headerlink" title="1.集成SDK"></a>1.集成SDK</h4><p>一共有两种方法，手动集成和Pod集成，这里我们主要介绍pod集成的方法。</p>
+<p>1.1 在Podfile中添加阿里云仓库source源</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">source &#x27;https://github.com/aliyun/aliyun-specs.git&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>1.2 pod 阿里云推送</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pod &#x27;AlicloudPush&#x27;, &#x27;~&gt; 1.9.9.5&#x27;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-引入头文件"><a href="#2-引入头文件" class="headerlink" title="2.引入头文件"></a>2.引入头文件</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import CloudPushSDK</span><br></pre></td></tr></table></figure>
+
+<p>或者OC桥接文件中引入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#import &lt;CloudPushSDK/CloudPushSDK.h&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-Objc配置"><a href="#3-Objc配置" class="headerlink" title="3.Objc配置"></a>3.Objc配置</h4><p>iOS端集成SDK时需要做<code>-ObjC</code>配置 ，即应用的 <em>TARGETS -&gt; Build Settings -&gt; Linking -&gt; Other Linker Flags</em> ，需添加上<code>-ObjC</code>这个属性，否则推送服务无法正常使用 。</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782636066930.jpg"></p>
+<h4 id="4-打开系统通知"><a href="#4-打开系统通知" class="headerlink" title="4.打开系统通知"></a>4.打开系统通知</h4><p><font color="#ff0000">注意：此处千万不要忘记打开，否则收不到推送，这是一个小点，很难定位</font></p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782638087381.jpg"></p>
+<h3 id="五：功能实现"><a href="#五：功能实现" class="headerlink" title="五：功能实现"></a>五：功能实现</h3><p>推送功能主要在<code>AppDelegate</code>文件中实现</p>
+<h4 id="1-初始化SDK"><a href="#1-初始化SDK" class="headerlink" title="1.初始化SDK"></a>1.初始化SDK</h4><p>使用配置文件<code>AliyunEmasServices-Info.plist</code>直接调用<code>autoInit</code>，这个在前文有提到过。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">setup</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>, <span class="params">launchOptions</span>: [<span class="params">UIApplicationLaunchOptionsKey</span>: <span class="keyword">Any</span>]<span class="operator">?</span>) &#123;</span><br><span class="line">    <span class="type">CloudPushSDK</span>.autoInit &#123; result <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> result <span class="operator">=</span> result <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Push SDK init failed, error: result is nil!&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> result.success &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Push SDK init success, deviceId: <span class="subst">\(String(describing: CloudPushSDK.getDeviceId()))</span>&quot;</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Push SDK init failed, error: <span class="subst">\(String(describing: result.error))</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="comment">// 点击通知将App从关闭状态启动时，将通知打开回执上报</span></span><br><span class="line">    <span class="type">CloudPushSDK</span>.sendNotificationAck(launchOptions)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-请求通知权限并注册远程通知"><a href="#2-请求通知权限并注册远程通知" class="headerlink" title="2.请求通知权限并注册远程通知"></a>2.请求通知权限并注册远程通知</h4><p>第一次安装会弹出请求通知的<code>alert</code></p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">registerAPNS</span>(<span class="params">application</span>: <span class="type">UIApplication</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> center <span class="operator">=</span> <span class="type">UNUserNotificationCenter</span>.current()</span><br><span class="line">    center.delegate <span class="operator">=</span> <span class="keyword">self</span></span><br><span class="line">    <span class="keyword">var</span> options: <span class="type">UNAuthorizationOptions</span> <span class="operator">=</span> [.alert, .sound, .badge]</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">#available</span>(<span class="keyword">iOS</span> <span class="number">12.0</span>, <span class="operator">*</span>) &#123;</span><br><span class="line">        options <span class="operator">=</span> [.alert, .sound, .badge, .providesAppNotificationSettings]</span><br><span class="line">    &#125;</span><br><span class="line">    center.requestAuthorization(options: options) &#123; (granted, error) <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">if</span> granted &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;User authored notification.&quot;</span>)</span><br><span class="line">            <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">                application.registerForRemoteNotifications()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;User denied notification.&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> error <span class="operator">=</span> error &#123;</span><br><span class="line">            log.error(error)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-注册设备并上报deviceToken"><a href="#3-注册设备并上报deviceToken" class="headerlink" title="3.注册设备并上报deviceToken"></a>3.注册设备并上报deviceToken</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">registerDevice</span>(<span class="keyword">_</span> <span class="params">deviceToken</span>: <span class="type">Data</span>) &#123;</span><br><span class="line">    <span class="type">CloudPushSDK</span>.registerDevice(deviceToken) &#123; result <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> result <span class="operator">=</span> result <span class="keyword">else</span> &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Register deviceToken failed, error:: result is nil!&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> result.success &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Register deviceToken success, deviceToken: <span class="subst">\(String(describing: CloudPushSDK.getApnsDeviceToken()))</span>&quot;</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.debug(<span class="string">&quot;Register deviceToken failed, error: <span class="subst">\(String(describing: result.error))</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">application</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>,</span><br><span class="line">                        <span class="params">didRegisterForRemoteNotificationsWithDeviceToken</span> <span class="params">deviceToken</span>: <span class="type">Data</span>) &#123;</span><br><span class="line">    registerDevice(deviceToken)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注册失败</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">application</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>,</span><br><span class="line">                        <span class="params">didFailToRegisterForRemoteNotificationsWithError</span> <span class="params">error</span>: <span class="type">Error</span>) &#123;</span><br><span class="line">    log.error(<span class="string">&quot;did Fail To Register For Remote Notifications With Error : <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-注册通知类别"><a href="#4-注册通知类别" class="headerlink" title="4.注册通知类别"></a>4.注册通知类别</h4><p>通知类别（category）用于给通知分类，可添加按钮或自定义UI</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">createCustomNotificationCategory</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> action <span class="operator">=</span> <span class="type">UNNotificationAction</span>(identifier: <span class="string">&quot;actionID&quot;</span>, title: <span class="string">&quot;buttonTitle&quot;</span>, options: [])</span><br><span class="line">    <span class="keyword">let</span> category <span class="operator">=</span> <span class="type">UNNotificationCategory</span>(identifier: <span class="string">&quot;CategoryID&quot;</span>, actions: [action],</span><br><span class="line">                                          intentIdentifiers: [],</span><br><span class="line">                                          options: .customDismissAction)</span><br><span class="line">    <span class="type">UNUserNotificationCenter</span>.current().setNotificationCategories([category])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-UNUserNotificationCenterDelegate"><a href="#5-UNUserNotificationCenterDelegate" class="headerlink" title="5.UNUserNotificationCenterDelegate"></a>5.UNUserNotificationCenterDelegate</h4><p><code>UNUserNotificationCenterDelegate</code>代替了<code>UIAppDelegate</code>的旧通知接收方法<code>didReceiveRemoteNotification</code>将接收通知的情况分为app开启时（foreground）和app不在前台时（background）</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// app打开时调用</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>,</span><br><span class="line">                                   <span class="params">willPresent</span> <span class="params">notification</span>: <span class="type">UNNotification</span>,</span><br><span class="line">                                   <span class="params">withCompletionHandler</span> <span class="params">completionHandler</span>: <span class="keyword">@escaping</span> (<span class="type">UNNotificationPresentationOptions</span>) -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="comment">// 业务逻辑</span></span><br><span class="line">    handleNotification(notification)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 在app内弹通知</span></span><br><span class="line">    completionHandler([.badge, .alert, .sound])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// app未打开时调用</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>, <span class="params">didReceive</span> <span class="params">response</span>: <span class="type">UNNotificationResponse</span>, <span class="params">withCompletionHandler</span> <span class="params">completionHandler</span>: <span class="keyword">@escaping</span> () -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> userAction <span class="operator">=</span> response.actionIdentifier</span><br><span class="line">    <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="type">UNNotificationDefaultActionIdentifier</span> &#123; </span><br><span class="line">        <span class="comment">// 点击通知栏本身</span></span><br><span class="line">        log.debug(<span class="string">&quot;User opened the notification.&quot;</span>)</span><br><span class="line"></span><br><span class="line">        handleNotification(response.notification)</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="type">UNNotificationDismissActionIdentifier</span> &#123;</span><br><span class="line">        <span class="comment">// 通知dismiss，category创建时传入UNNotificationCategoryOptionCustomDismissAction才可以触发</span></span><br><span class="line">        log.debug(<span class="string">&quot;User dismissed the notification.&quot;</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> userAction <span class="operator">==</span> <span class="string">&quot;actionID&quot;</span> &#123;</span><br><span class="line">        <span class="comment">// 自定义按钮逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    completionHandler()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// iOS12新功能，在app系统通知设置里点击按钮跳到app内通知设置的回调</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">userNotificationCenter</span>(<span class="keyword">_</span> <span class="params">center</span>: <span class="type">UNUserNotificationCenter</span>, <span class="params">openSettingsFor</span> <span class="params">notification</span>: <span class="type">UNNotification</span>?) &#123;</span><br><span class="line">    log.debug(<span class="string">&quot;Open notification in-app setting.&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="扩展功能：Notification-Service-Extension（富媒体推送）"><a href="#扩展功能：Notification-Service-Extension（富媒体推送）" class="headerlink" title="扩展功能：Notification Service Extension（富媒体推送）"></a>扩展功能：Notification Service Extension（富媒体推送）</h2><p>众所周知，苹果的apns推送有一个痛点（当然Apple觉得这是亮点），就是<strong>在我们不点击通知时，app是不会执行任何代码的</strong>，这就是静默推送，虽然app能收到推送，但是它不执行任何代码，这极大的保护了手机性能，却也让开发者没办法对推送内容进行修改了。</p>
+<p>那么问题来了，Apple真的不让开发者动态修改推送内容了吗？</p>
+<p>不然，Apple还是很有良心的，在静默推送修改之后，它也推出了另一功能<code>Notification Service Extension</code>，它为我们完美解决了对推送内容进行动态修改的需求，接下来我们就来看一下这一功能：</p>
+<h3 id="了解Notification-Service-Extension"><a href="#了解Notification-Service-Extension" class="headerlink" title="了解Notification Service Extension"></a>了解Notification Service Extension</h3><ul>
+<li><p>iOS 10添加了通知相关的扩展Notification Service Extension，使得通知弹出前可以对通知内容进行修改。</p>
+</li>
+<li><p>iOS远程推送过程如下图所示，APNs推送的通知直接在设备上弹出；</p>
+</li>
+</ul>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782654264853.jpg"></p>
+<ul>
+<li>添加Notification Service Extension后，如下图所示，APNs推送的通知在弹出前，可先到达Extension进行处理。</li>
+</ul>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782655214693.jpg"></p>
+<p><font color="#ff0000">【注意】OpenAPI 需要调用 setiOSMutableContent(true) 接口，这样Extension才可生效。这里的OpenAPI就是阿里云API了，让后台配置一下setiOSMutableContent(true)就好。</font></p>
+<h3 id="使用Notification-Service-Extension"><a href="#使用Notification-Service-Extension" class="headerlink" title="使用Notification Service Extension"></a>使用Notification Service Extension</h3><h4 id="1、点击-file-gt-new-gt-target"><a href="#1、点击-file-gt-new-gt-target" class="headerlink" title="1、点击 file-&gt;new-&gt;target"></a>1、点击 file-&gt;new-&gt;target</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782671772445.jpg"></p>
+<h4 id="2、选择-iOS-gt-Notification-Service-Extension"><a href="#2、选择-iOS-gt-Notification-Service-Extension" class="headerlink" title="2、选择 iOS-&gt;Notification Service Extension"></a>2、选择 iOS-&gt;Notification Service Extension</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782674597379.jpg"></p>
+<h4 id="3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成"><a href="#3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成" class="headerlink" title="3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成"></a>3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成</h4><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782674134664.jpg"></p>
+<h3 id="配置Extension"><a href="#配置Extension" class="headerlink" title="配置Extension"></a>配置Extension</h3><p>创建完成后，主要有两个文件<code>NotificationService.swift</code> 和 <code>info.plist</code></p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782676305569.jpg"></p>
+<p>1、首先，需要在扩展对应的target-&gt;Signing&amp;Capabilities，点击+Capability，添加push notification</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782676848331.jpg"></p>
+<p>2、<code>NotificationService.swift</code>中主要有两个方法</p>
+<p>1）</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">didReceive</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">UNNotificationRequest</span>, <span class="params">withContentHandler</span> <span class="params">contentHandler</span>: <span class="keyword">@escaping</span> (<span class="type">UNNotificationContent</span>) -&gt; <span class="type">Void</span>)</span><br></pre></td></tr></table></figure>
+
+<p>该方法主要是用于在接受到推送时，针对推送内容进行修改，修改完成后展示给用户</p>
+<p>2）</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">serviceExtensionTimeWillExpire</span>()</span><br></pre></td></tr></table></figure>
+
+<p>该方法是用于在方法1）中如果没有向用户展示推送，可以在这里（即apns即将到30s时）向用户推送</p>
+<p>3、推送的消息中必须具备alert和<code>&quot;mutable-content&quot;:&quot;1&quot;</code>（表示推送可修改），这个上文有提到过，OpenAPI 需要调用 <code>setiOSMutableContent(true)</code> 接口，发送出来的消息结构中就会有<code>&quot;mutable-content&quot;:&quot;1&quot;</code>。</p>
+<p>接下来，我们就可以对接收到的推送消息做自定义动态修改了。如下图所示：</p>
+<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782680346445.jpg"></p>
+<p>然后我们就可以看到手机接收到的推送变了。</p>
+<p>🎉🎉🎉 完结撒花 🎉🎉🎉！</p>
+<p>❤️ Best wish for you ❤️！</p>
+]]></content>
+      <categories>
+        <category>iOS</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第一次与ChatGPT闲聊</title>
+    <url>/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/</url>
+    <content><![CDATA[<h1 id="第一次与ChatGPT闲聊"><a href="#第一次与ChatGPT闲聊" class="headerlink" title="第一次与ChatGPT闲聊"></a>第一次与ChatGPT闲聊</h1><p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994415736.jpg"></p>
+<span id="more"></span>
+
+<p>开局来一个盲猜，哈哈！</p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994578027.jpg"></p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994726246.jpg"></p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994851225.jpg"></p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994960092.jpg"></p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995226589.jpg"></p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995362169.jpg"></p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995475238.jpg"></p>
+<p>以上回答都比较中规中矩，而且流于表面，没有什么深刻的理解。</p>
+<p>怎么说呢，就好比小学生囫囵吞枣读了一遍红楼，来参加知识竞赛一样，虽然知道一点，但是理解不深，有知识架构，但是没有个人观点的沉淀，甚至还有可能出错和闹笑话，下面错误和笑话就来了。</p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792999646971.jpg"></p>
+<p>薛蟠这个回答是我万万没有想到的！</p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995731944.jpg"></p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995866936.jpg"></p>
+<p>更有甚者，当我问及秦可卿的死因时，它的回答竟是这样的：</p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792996066039.jpg"></p>
+<p>这个回答纯属瞎编乱造！</p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792996214610.jpg"></p>
+<p>这个结局确实是一个方向，但是，相信绝不是大多数红迷想要的。</p>
+<p>第一次和ChatGPT闲聊，竟然问了很多和《红楼梦》相关的问题，估计ChatGPT都没想到吧，差点被我给整晕了…</p>
+<p>未完待续…期待后续的发掘</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
       </tags>
   </entry>
 </search>
