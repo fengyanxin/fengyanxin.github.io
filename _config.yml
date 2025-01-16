@@ -6,7 +6,6 @@
 title: '凤炎忻的个人笔记'
 subtitle: '我有一壶酒，足以慰风尘！'
 description: '性浮脱，难酬一道，广涉寡精，杂而不博'
-#subtitle: ''
 #description: '一只会飞的猪！'
 keywords: 'blog, iOS, 学习笔记, 读书笔记'
 author: '凤炎忻'
@@ -111,7 +110,7 @@ deploy:
   repo: git@github.com:fengyanxin/fengyanxin.github.io.git
   branch: main
 
-# feed
+# feed (RSS订阅)
 # Dependencies: https://github.com/hexojs/hexo-generator-feed
 feed:
   type: atom
@@ -120,6 +119,7 @@ feed:
   hub:
   content:
 
+# 搜索
 search:
   path: search.xml
   field: post

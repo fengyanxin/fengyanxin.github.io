@@ -936,7 +936,7 @@ post_wordcount:
 # For more information: http://velocityjs.org
 motion:
   enable: true
-  async: false
+  async: true
   transition:
     # Transition variants:
     # fadeIn | flipXIn | flipYIn | flipBounceXIn | flipBounceYIn

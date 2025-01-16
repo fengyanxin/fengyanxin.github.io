@@ -1,0 +1,650 @@
+---
+title: 【Hexo】Next 主题的使用与美化
+date: 2025-01-16 14:04:12
+tags:
+- Hexo
+categories:
+- Hexo
+---
+
+## 一、简介
+
+Next 主题是 [Hexo](https://hexo.io/zh-cn) 上使用最广，同时在 GitHub 上也是 Star 最多的主题，bug 修复和功能更新也比较快。当前博客就是使用 Hexo 配合 Next 主题搭建的
+
+## 二、版本
+
+在 GitHub 上的 `Next` 的官方文档：[【必读】更新说明及常见问题](https://github.com/next-theme/hexo-theme-next/issues/4) 中有相关说明，Next 一共有三个不同的仓库：
+
+版本|年份|仓库|
+:---:|:--:|:--:
+v5.1.4 或更低|2014 ~ 2017|[iissnan/hexo-theme-next](https://github.com/iissnan/hexo-theme-next)|
+v6.0.0 ~ v7.8.0|2018 ~ 2019|[theme-next/hexo-theme-next](https://github.com/theme-next/hexo-theme-next)|
+v8.0.0 或更高|2020|[next-theme/hexo-theme-next](https://github.com/next-theme/hexo-theme-next)|
+
+<!-- more -->
+
+旧的仓库基本上已经不再更新，因此推荐选择最新的 [next-theme/hexo-theme-next](https://github.com/next-theme/hexo-theme-next) 仓库的 Next 主题
+
+我所使用的版本如下：
+
+``` swift
+hexo: 5.4.2
+next: 7.8.0
+```
+
+## 三、安装
+
+推荐使用 GitHub 进行安装，可以随时更新
+
+``` swift
+$ cd hexo文件目录
+$ git clone https://github.com/theme-next/hexo-theme-next themes/next
+```
+
+然后设置站点配置文件 `_config.yml`:
+
+``` swift
+$ theme: next
+```
+
+即可将我们的 Hexo 博客主题替换为 Next 主题。
+
+## 四、配置
+
+### 1、基础配置
+
+对 Next 主题的配置可以直接在 Hexo 仓库下的配置文件 `_config.next.yml` 中进行修改即可，该文件的修改会在生成页面时覆盖主题目录下的配置文件 `.\themes\next\_config.yml`
+
+衍生拓展：[【Hexo】配置文件优先级](https://hexo.io/zh-cn/docs/configuration#使用代替主题配置文件)
+
+#### 风格/主题
+
+Next 主题包含了 4 个风格，分别是Muse、Mist、Pisces、Gemini，我个人更喜欢 **Gemini**，这种风格类似卡片，边界感会比较明显，如果加上圆角的话会更为突出
+
+``` swift
+# Schemes
+#scheme: Muse
+#scheme: Mist
+#scheme: Pisces
+scheme: Gemini
+```
+
+修改 `_config.next.yml` 之后，用 `hexo clean; hexo g; hexo s` 重新生成一下，就可以在 本地 预览了 **（后续流程如果没有特殊说明则基本一致）**
+
+初始 4 种风格效果如下：
+
+![Next主题](assets/Next%E4%B8%BB%E9%A2%98.jpg)
+
+美化后的 **Gemini** 风格效果如下：
+
+![美化的Gemini](assets/%E7%BE%8E%E5%8C%96%E7%9A%84Gemini.jpg)
+
+#### 网页图标
+
+在各类网站上下载合适图标，按照配置文件中的文件名命名，并放在 `themes/next/source/images` 下即可
+
+``` swift
+favicon:
+  small: /images/favicon-16x16-next.png
+  medium: /images/favicon-32x32-next.png
+  apple_touch_icon: /images/apple-touch-icon-next.png
+  safari_pinned_tab: /images/logo.svg
+  #android_manifest: /images/manifest.json
+  #ms_browserconfig: /images/browserconfig.xml
+```
+
+#### 菜单栏
+
+菜单栏配置默认没有开启，我个人开启了 `首页、标签、分类、归档、搜索` 五个子项目，开启图标，但是没有显示数量
+
+``` swift
+# Usage: `Key: /link/ || icon`
+# Key is the name of menu item. If the translation for this item is available, the translated text will be loaded, otherwise the Key name will be used. Key is case-senstive.
+# Value before `||` delimiter is the target link, value after `||` delimiter is the name of Font Awesome icon.
+# When running the site in a subdirectory (e.g. yoursite.com/blog), remove the leading slash from link value (/archives -> archives).
+# External url should start with http:// or https://
+menu:
+  home: / || fa fa-home
+#  about: /about/ || fa fa-user
+  tags: /tags/ || fa fa-tags
+  categories: /categories/ || fa fa-th
+  archives: /archives/ || fa fa-archive
+  #schedule: /schedule/ || fa fa-calendar
+  #sitemap: /sitemap.xml || fa fa-sitemap
+  #commonweal: /404/ || fa fa-heartbeat
+
+# Enable / Disable menu icons / item badges.
+menu_settings:
+  icons: true
+  badges: false
+```
+
+系统自动帮我们创建了`home`和`archives`页面，所以我们只需要使用终端创建`tags`和`categories`页面即可：
+
+``` swift
+$ cd hexo文件目录
+$ hexo new page "tages"
+$ hexo new page "categories"
+```
+
+创建好的页面在站点 sources 中，我们需要对相关页面进行 type 修改，如下：
+
+``` swift
+---
+title: 手把手教你使用Hexo搭建github个人博客
+date: 2019-09-11 19:06:18
+comments: false
+tags:
+- 工具
+- hexo
+categories: 
+- 工具
+- hexo
+---
+```
+
+#### 搜索功能
+
+1. 安装 [hexo-generator-searchdb](https://github.com/theme-next/hexo-generator-search) 插件
+
+``` swift
+$ cd 文件目录
+$ npm install hexo-generator-searchdb --save
+```
+
+2. 打开站点配置文件 `_config.yml`，找到`Extensions`在下面添加:
+
+``` swift
+# 搜索
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
+```
+
+3. 打开主题配置文件 `themes/next/_config.yml`或者`_config.next.yml`，找到`Local search`，将`enable`设置为 `true`
+
+``` swift
+# Local Search
+# Dependencies: https://github.com/theme-next/hexo-generator-searchdb
+local_search:
+  enable: true
+  # If auto, trigger search by changing input.
+  # If manual, trigger search by pressing enter key or search button.
+  trigger: auto
+  # Show top n results per article, show all results by setting to -1
+  top_n_per_article: 1
+  # Unescape html strings to the readable one.
+  unescape: false
+  # Preload the search data when the page loads.
+  preload: false
+```
+
+4. 效果如下：
+
+![搜索效果](assets/17370245926708.jpg)
+
+#### 侧边栏
+
+默认头像会开启旋转功能，花里胡哨的而且旋转有点快，我个人选择了关闭旋转，并且自定义了头像，图片放在 `themes/next/source/images` 下即可
+
+``` swift
+# Sidebar Avatar
+avatar:
+  # Replace the default image and set the url here.
+#  url: /images/avatar.gif
+#  url: /images/apple-touch-icon-next.png
+  url: /images/flyingPig.jpeg
+  # If true, the avatar will be dispalyed in circle.
+  rounded: true
+  # If true, the avatar will be rotated with the cursor.
+  rotated: false
+```
+
+在单独的文章页面时侧边栏会默认显示为目录
+
+``` swift
+# Posts / Categories / Tags in sidebar.
+site_state: true
+```
+#### 社交网站
+
+社交网站的主页，官方支持的网站配置起来比较简单，简单替换一下链接，并且取消注释即可；但是若是官方不支持的网站，想要自定义的话，却要费一番功夫
+
+我个人是增加了几个不在官方之列的社交平台，比如**小红书**、**LibLib**等，如下：
+
+``` swift
+# Social Links
+# Usage: `Key: permalink || icon`
+# Key is the link label showing to end users.
+# Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
+social:
+  GitHub: https://github.com/fengyanxin || fab fa-github
+  E-Mail: mailto:ph18317192001@163.com || fab fa-mail
+  今日头条: https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065 || fab fa-jinritoutiao
+  百家号: https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477 || fab fa-baidu
+  小红书: https://www.xiaohongshu.com/user/profile/642cb9650000000011023394 || fab fa-xiaohongshu
+  LibLib: https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e || fab fa-liblib
+  #Weibo: https://weibo.com/yourname || fab fa-weibo
+  #Google: https://plus.google.com/yourname || fab fa-google
+  #Twitter: https://twitter.com/yourname || fab fa-twitter
+  #FB Page: https://www.facebook.com/yourname || fab fa-facebook
+  #StackOverflow: https://stackoverflow.com/yourname || fab fa-stack-overflow
+  #YouTube: https://youtube.com/yourname || fab fa-youtube
+  #Instagram: https://instagram.com/yourname || fab fa-instagram
+  #Skype: skype:yourname?call|chat || fab fa-skype
+
+social_icons:
+  enable: true
+  icons_only: false
+  transition: true
+```
+
+1. 想要自定义社交平台，可以先去 [iconfont](https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a)，下载一下需要的平台 **SVG** 图标，比如小红书，将图片放在 `themes/next/source/images`目录下：
+
+![平台图标](assets/17370128583449.jpg)
+
+2. 然后找到 `themes/next/source/css/main.styl` 目录文件，编辑如下：
+
+``` swift
+.fa-xiaohongshu {
+  background-image: url('/images/xiaohongshu.svg');
+  background-size: 1em 1.5em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.05rem;
+  background-repeat: no-repeat;
+  height: 1rem;
+  width: 1rem; 
+  border-radius: 0rem;
+  /*鼠标停留在图标上时，图标呈现发光效果*/
+  &:hover {
+      opacity: 1;
+    }
+} 
+```
+
+3. 然后将自定义图片名 **fa-xiaohongshu**，与社交平台关联起来即可：
+
+``` swift
+social:
+  小红书: https://www.xiaohongshu.com/user/profile/642cb9650000000011023394 || fab fa-xiaohongshu
+```
+
+#### 代码块
+
+代码块的高亮有很多种配色可以选，并且可以开启一键复制功能
+
+``` swift
+codeblock:
+  # Code Highlight theme
+  # All available themes: https://theme-next.js.org/highlight/
+  theme:
+    light: vs
+    dark: vs2015
+  prism:
+    light: prism
+    dark: prism-dark
+  # Add copy button on codeblock
+  copy_button:
+    enable: true
+    # Available values: default | flat | mac
+    style: default
+```
+
+#### 动画效果
+
+Next 默认开启了动画效果，但是感觉比较慢，感觉有些影响阅读，推荐开启 `async`，并且适当的修改动画效果
+
+``` swift
+motion:
+  enable: true
+  async: true
+  transition:
+    # Transition variants:
+    # fadeIn | flipXIn | flipYIn | flipBounceXIn | flipBounceYIn
+    # swoopIn | whirlIn | shrinkIn | expandIn
+    # bounceIn | bounceUpIn | bounceDownIn | bounceLeftIn | bounceRightIn
+    # slideUpIn | slideDownIn | slideLeftIn | slideRightIn
+    # slideUpBigIn | slideDownBigIn | slideLeftBigIn | slideRightBigIn
+    # perspectiveUpIn | perspectiveDownIn | perspectiveLeftIn | perspectiveRightIn
+    post_block: fadeIn
+    post_header: slideDownIn
+    post_body: slideDownIn
+    coll_header: slideLeftIn
+    # Only for Pisces | Gemini.
+    sidebar: slideUpIn
+```
+
+#### 阅读进度
+
+阅读进度有两种展示方式，一个在回到首页的按钮上直接显示百分比，另一个可以配置在首位部增加进度条，我个人只开启了一个
+
+``` swift
+back2top:
+  enable: true
+  # Back to top in sidebar.
+  sidebar: false
+  # Scroll percent label in b2t button.
+  scrollpercent: true
+
+# Reading progress bar
+reading_progress:
+  enable: false
+  # Available values: top | bottom
+  position: top
+  color: "#37c6c0"
+  height: 3px
+```
+
+#### 书签
+
+Next 的书签功能可以保存当前的阅读进度，下次打开是会在续接该进度
+
+``` swift
+# Bookmark Support
+bookmark:
+  enable: true
+  # Customize the color of the bookmark.
+  color: "#222"
+  # If auto, save the reading progress when closing the page or clicking the bookmark-icon.
+  # If manual, only save it by clicking the bookmark-icon.
+  save: auto
+```
+#### 右上角github绷带
+
+1. 打开主题配置`themes/next/_config.yml`或者`_config.next.yml`，进行相关参数设置：
+
+``` swift
+# `Follow me on GitHub` banner in the top-right corner.
+github_banner:
+  enable: true
+  permalink: https://github.com/fengyanxin
+  title: Follow me on GitHub
+```
+
+2. 效果如下：
+
+![github绷带](assets/17370209299074.jpg)
+
+
+#### Mermaid
+
+Mermaid 可以快速的用代码生成简单的流程图、时序图、甘特图等
+
+Next 中开启 Mermaid 支持很方便，同时还有不同的风格可以选
+
+``` swift
+# Mermaid tag
+mermaid:
+  enable: true
+  # Available themes: default | dark | forest | neutral
+  theme:
+    light: neutral
+    dark: dark
+```
+
+#### 懒加载
+
+lazyload 是网站常用的技术，通过按需加载，避免一次性加载过多内容导致的打开缓慢
+
+``` swift
+# Vanilla JavaScript plugin for lazyloading images.
+# For more information: https://apoorv.pro/lozad.js/demo/
+lazyload: true
+```
+
+#### fancybox
+
+fancybox 可以在点击图片时放大该图片，并且可以快速浏览当前文章的所有图片
+
+``` swift
+# FancyBox is a tool that offers a nice and elegant way to add zooming functionality for images.
+# For more information: https://fancyapps.com/fancybox/
+fancybox: true
+```
+
+#### pangu
+
+对于强迫症来说，中英文混排时加上空格能很大程度改善阅读体验，但是有时候会不小心打漏部分空格，而 pangu 这个项目就可以帮你在展示时自动加上空格
+
+``` swift
+# Pangu Support
+# For more information: https://github.com/vinta/pangu.js
+# Server-side plugin: https://github.com/next-theme/hexo-pangu
+pangu: true
+```
+
+#### 捐赠
+
+文章末尾还可以求打赏，需要配置好相应的二维码图片，并且可以修改提示语句
+
+``` swift
+# Donate (Sponsor) settings
+# Front-matter variable (nonsupport animation).
+reward_settings:
+  # If true, a donate button will be displayed in every article by default.
+  enable: true
+  animation: false
+  comment: 赏个鸡腿🍗
+
+reward:
+  wechatpay: /images/wechatpay.png
+  alipay: /images/alipay.jpg
+  #paypal: /images/paypal.png
+  #bitcoin: /images/bitcoin.png
+```
+
+#### 版权声明
+
+Next 内置了文章末尾增加版权声明，只需手动开启即可
+
+``` swift
+# Creative Commons 4.0 International License.
+# See: https://creativecommons.org/about/cclicenses/
+creative_commons:
+  # Available values: by | by-nc | by-nc-nd | by-nc-sa | by-nd | by-sa | cc-zero
+  license: by-nc-sa
+  # Available values: big | small
+  size: small
+  sidebar: false
+  post: true
+  # You can set a language value if you prefer a translated version of CC license, e.g. deed.zh
+  # CC licenses are available in 39 languages, you can find the specific and correct abbreviation you need on https://creativecommons.org
+  language:
+```
+
+#### 不蒜子
+
+[不蒜子](https://busuanzi.ibruce.info) 是一个极简的网页计数器，Next 已经内置，只需打开即可
+
+``` swift
+# 不蒜子的访客人数和文章阅读统计功能
+busuanzi_count:
+  enable: false # 计数不准，所以关闭
+  total_visitors: false  # 总访问人数
+  total_visitors_icon: fa fa-user
+  total_views: false # 总访问次数
+  total_views_icon: fa fa-eye
+  post_views: true # 文章访问次数 注意：不在首页显示每篇文章的阅读次数，点击全文阅读即显示阅读次数
+  post_views_icon: fa fa-eye
+```
+
+### 2、进阶配置
+
+#### 添加更多按钮
+
+因为在你的博客主页会有多篇文章，如果你想让你的文章只显示一部分，多余的可以点击阅读全文来查看，那么你需要在你的文章中添加：
+
+``` swift
+<!--more-->
+```
+
+其后面的部分就不会显示了，只能点击 **阅读全文** 才能看。效果如下：
+
+![阅读全文](assets/17370224998555.jpg)
+
+#### 添加RSS订阅
+
+1. 安装RSS插件
+
+``` swift
+$ cd 文件目录
+$ npm install --save hexo-generator-feed
+```
+
+2. 打开站点配置文件 `_config.yml`，进行相关参数修改：
+
+``` swift
+# Extensions
+## Plugins: http://hexo.io/plugins/
+# feed (RSS订阅)
+# Dependencies: https://github.com/hexojs/hexo-generator-feed
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+  content:
+```
+
+3. 打开主题配置文件 `themes/next/_config.yml`或者`_config.next.yml`，进行相关参数修改：
+
+``` swift
+$ rss: /atom.xml //注意：有一个空格
+```
+
+#### 增加页面宠物
+
+1. 在站点目录下执行：
+
+``` swift
+$ npm install -save hexo-helper-live2d
+```
+
+2. 打开主题配置文件`themes/next/_config.yml`或者`_config.next.yml`，添加下列相关参数：
+
+``` swift
+live2d:
+  enable: true
+  scriptFrom: local
+  pluginRootPath: live2dw/
+  pluginJsPath: lib/
+  pluginModelPath: assets/
+  tagMode: false
+  log: false
+  model:
+    use: live2d-widget-model-tororo
+  display:
+    position: right
+    width: 150
+    height: 300
+  mobile:
+    show: true
+  react:
+    opacity: 0.7
+```
+
+#### 增加文章结束标志
+
+1. 在路径 `/themes/next/layout/_macro`文件夹中新建`passage-end-tag.swig`文件：
+
+``` swift
+//切换到路径_macro
+$ cd [_macro路径]
+//创建passage-end-tag.swig文件
+$ touch passage-end-tag.swig
+```
+
+2. 打开 `passage-end-tag.swig`文件，添加以下内容：
+
+``` swift 
+<div>
+    {% if not is_index %}
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------<i class="fa fa-paw"></i> That's all！Best wishes for you !!! <i class="fa fa-paw"></i>-------------</div>
+    {% endif %}
+</div>
+```
+
+3. 打开`/themes/next/layout/_macro/post.swig`，在`post-body`之后，`post-footer`之前，添加以下代码：
+
+``` swift
+<div>
+  {% if not is_index %}
+    {% include 'passage-end-tag.swig' %}
+  {% endif %}
+</div>
+```
+
+4. 然后打开主题配置文件`themes/next/_config.yml`或者`_config.next.yml`,在末尾添加：
+
+``` swift
+# 文章末尾添加“本文结束”标记
+passage_end_tag:
+  enabled: true
+```
+
+5. 效果如下：
+
+![文章结束标志](assets/17370182981965.jpg)
+
+
+#### 自定义头部背景区域
+
+将图片文件放在 `/themes/next/source/images` 中，
+打开 `/themes/next/source/css/_schemes/Pisces/_header.styl` 目录文件，
+添加如下代码：
+
+``` swift
+background-image: url(/images/blogHead.jpg);
+ @media(min-width: 992px){
+    background-image: url(/images/blogHead.jpg);
+    }
+```
+
+#### 添加背景丝带
+
+1. 下载相应的资源包：
+
+``` swift
+$ git clone https://github.com/theme-next/theme-next-canvas-nest themes/next/source/lib/canvas-nest
+```
+
+2. 在主题配置文件`themes/next/_config.yml`或者`_config.next.yml`中，做相关参数修改：
+
+``` swift
+# Canvas-nest
+# Dependencies: https://github.com/theme-next/theme-next-canvas-nest
+canvas_nest: # 网络背景
+  enable: true
+  onmobile: true # display on mobile or not
+  color: '0,0,0' # RGB values, use ',' to separate
+  opacity: 0.5 # the opacity of line: 0~1
+  zIndex: -1 # z-index property of the background
+  count: 150 # the number of lines
+
+# JavaScript 3D library.
+# Dependencies: https://github.com/theme-next/theme-next-three
+# three_waves
+three_waves: false
+# canvas_lines
+canvas_lines: false
+# canvas_sphere
+canvas_sphere: false
+
+# Canvas-ribbon
+# Dependencies: https://github.com/theme-next/theme-next-canvas-ribbon
+# size: The width of the ribbon.
+# alpha: The transparency of the ribbon.
+# zIndex: The display level of the ribbon.
+canvas_ribbon:
+  enable: false
+  size: 300
+  alpha: 0.6
+  zIndex: -1
+```
+
+3. 效果如下：
+
+![背景丝带](assets/%E8%83%8C%E6%99%AF%E4%B8%9D%E5%B8%A6.gif)
+
