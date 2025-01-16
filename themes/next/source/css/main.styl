@@ -48,7 +48,7 @@ for $inject_style in hexo-config('injects.style')
   @import '../_data/styles.styl';
 
 
-/* 侧边栏图标格式设置 */
+// 用于首页左侧小图标
 .fa-jinritoutiao {
   background-image: url('/images/jinritoutiao-fill-round.svg');
   background-size: 1em 1.5em;
@@ -64,21 +64,6 @@ for $inject_style in hexo-config('injects.style')
     }
 } 
 
-.fa-toutiao {
-  background-image: url('/images/jinritoutiao.svg');
-  background-size: 1em 1em;
-  opacity: 0.8;
-  background-position: 0.1rem 0.5rem;
-  background-repeat: no-repeat;
-  height: 2rem;
-  width: 2rem; 
-  border-radius: 0rem;
-  /*鼠标停留在图标上时，图标呈现发光效果*/
-  &:hover {
-      opacity: 1;
-    }
-} 
-
 .fa-baidu {
   background-image: url('/images/baidu.svg');
   background-size: 1em 1.5em;
@@ -87,21 +72,6 @@ for $inject_style in hexo-config('injects.style')
   background-repeat: no-repeat;
   height: 1rem;
   width: 1rem; 
-  border-radius: 0rem;
-  /*鼠标停留在图标上时，图标呈现发光效果*/
-  &:hover {
-      opacity: 1;
-    }
-} 
-
-.fa-baidu1 {
-  background-image: url('/images/baidu.svg');
-  background-size: 1em 1em;
-  opacity: 0.8;
-  background-position: 0.1rem 0.35rem;
-  background-repeat: no-repeat;
-  height: 2rem;
-  width: 2rem; 
   border-radius: 0rem;
   /*鼠标停留在图标上时，图标呈现发光效果*/
   &:hover {
@@ -147,6 +117,67 @@ for $inject_style in hexo-config('injects.style')
   background-repeat: no-repeat;
   height: 1rem;
   width: 1rem; 
+  border-radius: 0rem;
+  /*鼠标停留在图标上时，图标呈现发光效果*/
+  &:hover {
+      opacity: 1;
+    }
+} 
+
+// 用于文章底部大图标
+.fa-toutiao {
+  background-image: url('/images/jinritoutiao.svg');
+  background-size: 1em 1em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.5rem;
+  background-repeat: no-repeat;
+  height: 2rem;
+  width: 2rem; 
+  border-radius: 0rem;
+  /*鼠标停留在图标上时，图标呈现发光效果*/
+  &:hover {
+      opacity: 1;
+    }
+} 
+
+.fa-baidu1 {
+  background-image: url('/images/baidu.svg');
+  background-size: 1em 1em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.35rem;
+  background-repeat: no-repeat;
+  height: 2rem;
+  width: 2rem; 
+  border-radius: 0rem;
+  /*鼠标停留在图标上时，图标呈现发光效果*/
+  &:hover {
+      opacity: 1;
+    }
+} 
+
+.fa-xiaohongshu1 {
+  background-image: url('/images/xiaohongshu.svg');
+  background-size: 1em 1em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.35rem;
+  background-repeat: no-repeat;
+  height: 2rem;
+  width: 2rem; 
+  border-radius: 0rem;
+  /*鼠标停留在图标上时，图标呈现发光效果*/
+  &:hover {
+      opacity: 1;
+    }
+} 
+
+.fa-liblib1 {
+  background-image: url('/images/liblib.svg');
+  background-size: 1em 1em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.35rem;
+  background-repeat: no-repeat;
+  height: 2rem;
+  width: 2rem; 
   border-radius: 0rem;
   /*鼠标停留在图标上时，图标呈现发光效果*/
   &:hover {
