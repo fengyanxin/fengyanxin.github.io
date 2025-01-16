@@ -1217,7 +1217,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #2b78f7;
+  background: #7fde22;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2789,7 +2789,6 @@ body {
     background-size: cover;
   }
 }
-/* 侧边栏图标格式设置 */
 .fa-jinritoutiao {
   background-image: url("/images/jinritoutiao-fill-round.svg");
   background-size: 1em 1.5em;
@@ -2804,20 +2803,6 @@ body {
 .fa-jinritoutiao:hover {
   opacity: 1;
 }
-.fa-toutiao {
-  background-image: url("/images/jinritoutiao.svg");
-  background-size: 1em 1em;
-  opacity: 0.8;
-  background-position: 0.1rem 0.5rem;
-  background-repeat: no-repeat;
-  height: 2rem;
-  width: 2rem;
-  border-radius: 0rem;
-/*鼠标停留在图标上时，图标呈现发光效果*/
-}
-.fa-toutiao:hover {
-  opacity: 1;
-}
 .fa-baidu {
   background-image: url("/images/baidu.svg");
   background-size: 1em 1.5em;
@@ -2830,20 +2815,6 @@ body {
 /*鼠标停留在图标上时，图标呈现发光效果*/
 }
 .fa-baidu:hover {
-  opacity: 1;
-}
-.fa-baidu1 {
-  background-image: url("/images/baidu.svg");
-  background-size: 1em 1em;
-  opacity: 0.8;
-  background-position: 0.1rem 0.35rem;
-  background-repeat: no-repeat;
-  height: 2rem;
-  width: 2rem;
-  border-radius: 0rem;
-/*鼠标停留在图标上时，图标呈现发光效果*/
-}
-.fa-baidu1:hover {
   opacity: 1;
 }
 .fa-mail {
@@ -2886,5 +2857,61 @@ body {
 /*鼠标停留在图标上时，图标呈现发光效果*/
 }
 .fa-liblib:hover {
+  opacity: 1;
+}
+.fa-toutiao {
+  background-image: url("/images/jinritoutiao.svg");
+  background-size: 1em 1em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.5rem;
+  background-repeat: no-repeat;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0rem;
+/*鼠标停留在图标上时，图标呈现发光效果*/
+}
+.fa-toutiao:hover {
+  opacity: 1;
+}
+.fa-baidu1 {
+  background-image: url("/images/baidu.svg");
+  background-size: 1em 1em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.35rem;
+  background-repeat: no-repeat;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0rem;
+/*鼠标停留在图标上时，图标呈现发光效果*/
+}
+.fa-baidu1:hover {
+  opacity: 1;
+}
+.fa-xiaohongshu1 {
+  background-image: url("/images/xiaohongshu.svg");
+  background-size: 1em 1em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.35rem;
+  background-repeat: no-repeat;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0rem;
+/*鼠标停留在图标上时，图标呈现发光效果*/
+}
+.fa-xiaohongshu1:hover {
+  opacity: 1;
+}
+.fa-liblib1 {
+  background-image: url("/images/liblib.svg");
+  background-size: 1em 1em;
+  opacity: 0.8;
+  background-position: 0.1rem 0.35rem;
+  background-repeat: no-repeat;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0rem;
+/*鼠标停留在图标上时，图标呈现发光效果*/
+}
+.fa-liblib1:hover {
   opacity: 1;
 }
