@@ -986,6 +986,79 @@
       </tags>
   </entry>
   <entry>
+    <title>【Hexo】如何将博客源码上传到GitHub</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</url>
+    <content><![CDATA[<h1 id="如何将博客源码上传到-GitHub"><a href="#如何将博客源码上传到-GitHub" class="headerlink" title="如何将博客源码上传到 GitHub"></a>如何将博客源码上传到 GitHub</h1><h2 id="一、为什么要把博客源码上传到-GitHub-？"><a href="#一、为什么要把博客源码上传到-GitHub-？" class="headerlink" title="一、为什么要把博客源码上传到 GitHub ？"></a>一、为什么要把博客源码上传到 GitHub ？</h2><p>首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：</p>
+<ul>
+<li>多台电脑同时操作 hexo 源码</li>
+<li>原先 hexo 源码所在电脑重装系统（丢失文件）</li>
+<li>要将 hexo 源码移动到其他磁盘（更换电脑）</li>
+</ul>
+<span id="more"></span>
+
+<p>将 hexo 源码上传到 GitHub，就是做了一个稳定、安全的远程备份，遇到上面的情况将不会再是什么问题。</p>
+<p>因为，之前在 GitHub 上的部署（使用 <code>hexo d</code> 上传部署到github）其实是 hexo 编译后的文件，是用来生成网页的，不包含所有 hexo 生成的网站原始文件。只有把源码也上传才能解决问题。</p>
+<h2 id="二、如何上传博客源码？"><a href="#二、如何上传博客源码？" class="headerlink" title="二、如何上传博客源码？"></a>二、如何上传博客源码？</h2><h3 id="1、思路分析"><a href="#1、思路分析" class="headerlink" title="1、思路分析"></a>1、思路分析</h3><ul>
+<li><p><code>main</code>（<code>master</code>） 分支：存放博客的静态网页。</p>
+</li>
+<li><p><code>hexo</code>分支：存放 Hexo 博客的源码文件。</p>
+</li>
+</ul>
+<h3 id="2、hexo-分支创建及管理"><a href="#2、hexo-分支创建及管理" class="headerlink" title="2、hexo 分支创建及管理"></a>2、hexo 分支创建及管理</h3><h4 id="（1）github-准备"><a href="#（1）github-准备" class="headerlink" title="（1）github 准备"></a>（1）github 准备</h4><p>先在 GitHub 项目创建一个远程分支 <code>hexo</code></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787834628307.jpg"></p>
+<p>将其设置为默认分支</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787836604366.jpg"></p>
+<h4 id="2-打包将要推送到GitHub上的原始文件"><a href="#2-打包将要推送到GitHub上的原始文件" class="headerlink" title="(2) 打包将要推送到GitHub上的原始文件"></a>(2) 打包将要推送到GitHub上的原始文件</h4><ol>
+<li>clone该仓库到本地（clone的是hexo默认分支）</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>下载的文件夹里仅留下 <code>.git</code> 文件夹，其他的文件都删除</p>
+</li>
+<li><p>找见我们 hexo 原位置，将 hexo 文件夹内除 <code>.deploy_git</code> 以外都复制到clone下来的文件夹中</p>
+</li>
+<li><p>修改 <code>.gitignore</code> 文件，将静态网页的目录及其他无需提交的源文件及目录排除掉。(没有即新建添加)</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">.<span class="property">DS_Store</span></span><br><span class="line"><span class="title class_">Thumbs</span>.<span class="property">db</span></span><br><span class="line">db.<span class="property">json</span></span><br><span class="line">*.<span class="property">log</span></span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.<span class="property">deploy</span>*/</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>如果已经 clone 过主题文件，最好把 theme 主题文件夹里的 <code>.git</code> 也删除</li>
+</ol>
+<h4 id="3-将-clone-并修改的文件夹推送到-GitHub"><a href="#3-将-clone-并修改的文件夹推送到-GitHub" class="headerlink" title="(3) 将 clone 并修改的文件夹推送到 GitHub"></a>(3) 将 clone 并修改的文件夹推送到 GitHub</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;Code update&#x27;</span></span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、main-master-分支管理"><a href="#3、main-master-分支管理" class="headerlink" title="3、main (master) 分支管理"></a>3、main (master) 分支管理</h3><p>进入<strong>站点配置文件</strong>，搜索 <code>deploy</code>关键词，修改如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy</span>:</span><br><span class="line">  <span class="attr">type</span>: git</span><br><span class="line">  <span class="attr">repo</span>: git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br><span class="line">  <span class="attr">branch</span>: main</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787847648363.jpg"></p>
+<p>修改完成，执行以下代码进行管理：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//清除本地旧代码。</span></span><br><span class="line">hexo clean</span><br><span class="line"><span class="comment">//生成静态网站</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="comment">//部署静态网站到 GitHub 的 main(master) 分支上</span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、统一分支管理和部署"><a href="#4、统一分支管理和部署" class="headerlink" title="4、统一分支管理和部署"></a>4、统一分支管理和部署</h3><p>利用我上一篇文章讲到的 <code>deploy.sh</code>脚本进行一键部署，可以极大提高部署效率和降低维护成本。</p>
+<p>在 <code>deploy.sh</code> 文件中添加如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line"><span class="variable constant_">DIR</span>=<span class="string">`dirname $0`</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Generate</span> blog</span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Deploy</span></span><br><span class="line">hexo deploy</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Push</span> hexo code</span><br><span class="line">git add .</span><br><span class="line">current_date=<span class="string">`date &quot;+%Y-%m-%d %H:%M:%S&quot;`</span></span><br><span class="line">git commit -m <span class="string">&quot;Blog updated: $current_date&quot;</span></span><br><span class="line"></span><br><span class="line">sleep <span class="number">2</span></span><br><span class="line"></span><br><span class="line">git push origin hexo</span><br><span class="line"></span><br><span class="line">echo <span class="string">&quot;=====&gt;Finish!&lt;=====&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后附加脚本执行权限:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>然后执行即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>如此，便可以一键部署博客及备份博客源码到 github 的分支 <code>hexo</code> 分支上。</p>
+<h3 id="5、其他电脑源码使用"><a href="#5、其他电脑源码使用" class="headerlink" title="5、其他电脑源码使用"></a>5、其他电脑源码使用</h3><p>换到不同电脑上时，只需clone github 上的 hexo 分支即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【Hexo】Next 主题的使用与美化</title>
     <url>/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</url>
     <content><![CDATA[<h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>Next 主题是 <a href="https://hexo.io/zh-cn">Hexo</a> 上使用最广，同时在 GitHub 上也是 Star 最多的主题，bug 修复和功能更新也比较快。当前博客就是使用 Hexo 配合 Next 主题搭建的</p>
@@ -1124,20 +1197,28 @@
 <h4 id="pangu"><a href="#pangu" class="headerlink" title="pangu"></a>pangu</h4><p>对于强迫症来说，中英文混排时加上空格能很大程度改善阅读体验，但是有时候会不小心打漏部分空格，而 pangu 这个项目就可以帮你在展示时自动加上空格</p>
 <figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Pangu</span> <span class="type">Support</span></span><br><span class="line"># <span class="type">For</span> more information: https:<span class="comment">//github.com/vinta/pangu.js</span></span><br><span class="line"># <span class="type">Server</span><span class="operator">-</span>side plugin: https:<span class="comment">//github.com/next-theme/hexo-pangu</span></span><br><span class="line">pangu: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="捐赠"><a href="#捐赠" class="headerlink" title="捐赠"></a>捐赠</h4><p>文章末尾还可以求打赏，需要配置好相应的二维码图片，并且可以修改提示语句</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Donate</span> (<span class="type">Sponsor</span>) settings</span><br><span class="line"># <span class="type">Front</span><span class="operator">-</span>matter variable (nonsupport animation).</span><br><span class="line">reward_settings:</span><br><span class="line">  # <span class="type">If</span> <span class="literal">true</span>, a donate button will be displayed <span class="keyword">in</span> every article by <span class="keyword">default</span>.</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  animation: <span class="literal">false</span></span><br><span class="line">  comment: 赏个鸡腿🍗</span><br><span class="line"></span><br><span class="line">reward:</span><br><span class="line">  wechatpay: <span class="operator">/</span>images<span class="operator">/</span>wechatpay.png</span><br><span class="line">  alipay: <span class="operator">/</span>images<span class="operator">/</span>alipay.jpg</span><br><span class="line">  #paypal: <span class="operator">/</span>images<span class="operator">/</span>paypal.png</span><br><span class="line">  #bitcoin: <span class="operator">/</span>images<span class="operator">/</span>bitcoin.png</span><br></pre></td></tr></table></figure>
-
 <h4 id="版权声明"><a href="#版权声明" class="headerlink" title="版权声明"></a>版权声明</h4><p>Next 内置了文章末尾增加版权声明，只需手动开启即可</p>
 <figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Creative</span> <span class="type">Commons</span> <span class="number">4.0</span> <span class="type">International</span> <span class="type">License</span>.</span><br><span class="line"># <span class="type">See</span>: https:<span class="comment">//creativecommons.org/about/cclicenses/</span></span><br><span class="line">creative_commons:</span><br><span class="line">  # <span class="type">Available</span> values: by <span class="operator">|</span> by<span class="operator">-</span>nc <span class="operator">|</span> by<span class="operator">-</span>nc<span class="operator">-</span>nd <span class="operator">|</span> by<span class="operator">-</span>nc<span class="operator">-</span>sa <span class="operator">|</span> by<span class="operator">-</span>nd <span class="operator">|</span> by<span class="operator">-</span>sa <span class="operator">|</span> cc<span class="operator">-</span>zero</span><br><span class="line">  license: by<span class="operator">-</span>nc<span class="operator">-</span>sa</span><br><span class="line">  # <span class="type">Available</span> values: big <span class="operator">|</span> small</span><br><span class="line">  size: small</span><br><span class="line">  sidebar: <span class="literal">false</span></span><br><span class="line">  post: <span class="literal">true</span></span><br><span class="line">  # <span class="type">You</span> can <span class="keyword">set</span> a language value <span class="keyword">if</span> you prefer a translated version of <span class="type">CC</span> license, e.g. deed.zh</span><br><span class="line">  # <span class="type">CC</span> licenses are available <span class="keyword">in</span> <span class="number">39</span> languages, you can find the specific and correct abbreviation you need on https:<span class="comment">//creativecommons.org</span></span><br><span class="line">  language:</span><br></pre></td></tr></table></figure>
 
 <h4 id="不蒜子"><a href="#不蒜子" class="headerlink" title="不蒜子"></a>不蒜子</h4><p><a href="https://busuanzi.ibruce.info/">不蒜子</a> 是一个极简的网页计数器，Next 已经内置，只需打开即可</p>
 <figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># 不蒜子的访客人数和文章阅读统计功能</span><br><span class="line">busuanzi_count:</span><br><span class="line">  enable: <span class="literal">false</span> # 计数不准，所以关闭</span><br><span class="line">  total_visitors: <span class="literal">false</span>  # 总访问人数</span><br><span class="line">  total_visitors_icon: fa fa<span class="operator">-</span>user</span><br><span class="line">  total_views: <span class="literal">false</span> # 总访问次数</span><br><span class="line">  total_views_icon: fa fa<span class="operator">-</span>eye</span><br><span class="line">  post_views: <span class="literal">true</span> # 文章访问次数 注意：不在首页显示每篇文章的阅读次数，点击全文阅读即显示阅读次数</span><br><span class="line">  post_views_icon: fa fa<span class="operator">-</span>eye</span><br></pre></td></tr></table></figure>
 
-<h3 id="2、进阶配置"><a href="#2、进阶配置" class="headerlink" title="2、进阶配置"></a>2、进阶配置</h3><h4 id="添加更多按钮"><a href="#添加更多按钮" class="headerlink" title="添加更多按钮"></a>添加更多按钮</h4><p>因为在你的博客主页会有多篇文章，如果你想让你的文章只显示一部分，多余的可以点击阅读全文来查看，那么你需要在你的文章中添加：</p>
+<h4 id="站点建立时间"><a href="#站点建立时间" class="headerlink" title="站点建立时间"></a>站点建立时间</h4><p>这个时间将在站点的底部显示，例如 © 2013 - 2015。 编辑 主题配置文件，新增字段 since。</p>
+<p>打开主题配置文件<code>themes/next/_config.yml</code>或者<code>_config.next.yml</code>，找到如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">footer:</span><br><span class="line">  # <span class="type">Specify</span> the date when the site was setup. <span class="type">If</span> not defined, current year will be used.</span><br><span class="line">  since: <span class="number">2020</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2、进阶配置"><a href="#2、进阶配置" class="headerlink" title="2、进阶配置"></a>2、进阶配置</h3><h4 id="文章摘要"><a href="#文章摘要" class="headerlink" title="文章摘要"></a>文章摘要</h4><p>打开主题配置文件<code>themes/next/_config.yml</code>或者<code>_config.next.yml</code>，找到如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Automatically</span> <span class="type">Excerpt</span>. <span class="type">Not</span> recommend.</span><br><span class="line"># <span class="type">Please</span> use <span class="operator">&lt;!--</span> more <span class="operator">--&gt;</span> <span class="keyword">in</span> the post to control excerpt accurately.</span><br><span class="line">auto_excerpt:</span><br><span class="line">  enable: <span class="literal">false</span></span><br><span class="line">  length: <span class="number">150</span></span><br></pre></td></tr></table></figure>
+
+<p>把这里的 false 改为 true 就可以了在首页启动显示文章预览了， length 是显示预览的长度。</p>
+<p>这里我们可以通过在文章使用 <code>&lt;!-- more --&gt;</code> 标志来精确控制文章的摘要预览，比如这篇文章就是在这个段落的末尾添加了该标志，所以本文在首页的预览就会显示到这个段落为止</p>
 <figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">&lt;!--</span>more<span class="operator">--&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>其后面的部分就不会显示了，只能点击 <strong>阅读全文</strong> 才能看。效果如下：</p>
 <p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/17370224998555.jpg" alt="阅读全文"></p>
+<p>其他文章相关配置：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="operator">---------------------------------------------------------------</span></span><br><span class="line"># <span class="type">Post</span> <span class="type">Settings</span></span><br><span class="line"># <span class="operator">---------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"># <span class="type">Automatically</span> scroll page to section which <span class="keyword">is</span> under <span class="operator">&lt;!--</span> more <span class="operator">--&gt;</span> mark.</span><br><span class="line"># 自动将页面滚动到<span class="operator">&lt;!--</span> more <span class="operator">--&gt;</span>标记下的地方<span class="operator">。</span></span><br><span class="line">scroll_to_more: <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"># <span class="type">Automatically</span> saving scroll position on each post<span class="operator">/</span>page <span class="keyword">in</span> cookies.</span><br><span class="line"># 自动保存每篇文章或页面上一次滚动的地方<span class="operator">。</span></span><br><span class="line">save_scroll: <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"># <span class="type">Automatically</span> excerpt description <span class="keyword">in</span> homepage <span class="keyword">as</span> preamble text.</span><br><span class="line"># 自动在首页对文章进行摘要描述作为前言文本<span class="operator">。</span></span><br><span class="line">excerpt_description: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"># <span class="type">Automatically</span> <span class="type">Excerpt</span>. <span class="type">Not</span> recommend.</span><br><span class="line"># <span class="type">Please</span> use <span class="operator">&lt;!--</span> more <span class="operator">--&gt;</span> <span class="keyword">in</span> the post to control excerpt accurately.</span><br><span class="line"># 不推荐使用自动摘要<span class="operator">。</span></span><br><span class="line"># 请在文章中使用<span class="operator">&lt;!--</span> more <span class="operator">--&gt;</span>标志来精确控制摘要长度<span class="operator">。</span></span><br><span class="line">auto_excerpt:</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  length: <span class="number">200</span></span><br><span class="line"></span><br><span class="line"># <span class="type">Post</span> meta display settings</span><br><span class="line"># 文章元数据展示设置</span><br><span class="line">post_meta:</span><br><span class="line">  # 文本显示</span><br><span class="line">  item_text: <span class="literal">true</span></span><br><span class="line">  # 创建时间</span><br><span class="line">  created_at: <span class="literal">true</span></span><br><span class="line">  # 更新时间</span><br><span class="line">  # 这个更新时间有点问题，因为每次重新生成文章<span class="operator">/</span>部署时都会刷新更新时间，不建议使用</span><br><span class="line">  updated_at: <span class="literal">false</span></span><br><span class="line">  # 目录分类</span><br><span class="line">  categories: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"># <span class="type">Post</span> wordcount display settings</span><br><span class="line"># <span class="type">Dependencies</span>: https:<span class="comment">//github.com/willin/hexo-wordcount</span></span><br><span class="line"># 文章字数展示设置</span><br><span class="line">post_wordcount:</span><br><span class="line">  # 文本显示</span><br><span class="line">  item_text: <span class="literal">true</span></span><br><span class="line">  # 文章字数统计</span><br><span class="line">  wordcount: <span class="literal">true</span></span><br><span class="line">  # 阅读时长</span><br><span class="line">  min2read: <span class="literal">true</span></span><br><span class="line">  # 站点总字数统计</span><br><span class="line">  totalcount: <span class="literal">true</span></span><br><span class="line">  # 该post_wordcount的所有设置另起一行显示</span><br><span class="line">  separated_meta: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
 <h4 id="添加RSS订阅"><a href="#添加RSS订阅" class="headerlink" title="添加RSS订阅"></a>添加RSS订阅</h4><ol>
 <li>安装RSS插件</li>
 </ol>
@@ -1204,84 +1285,24 @@
 <li>效果如下：</li>
 </ol>
 <p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/%E8%83%8C%E6%99%AF%E4%B8%9D%E5%B8%A6.gif" alt="背景丝带"></p>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【Hexo】如何将博客源码上传到GitHub</title>
-    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</url>
-    <content><![CDATA[<h1 id="如何将博客源码上传到-GitHub"><a href="#如何将博客源码上传到-GitHub" class="headerlink" title="如何将博客源码上传到 GitHub"></a>如何将博客源码上传到 GitHub</h1><h2 id="一、为什么要把博客源码上传到-GitHub-？"><a href="#一、为什么要把博客源码上传到-GitHub-？" class="headerlink" title="一、为什么要把博客源码上传到 GitHub ？"></a>一、为什么要把博客源码上传到 GitHub ？</h2><p>首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：</p>
-<ul>
-<li>多台电脑同时操作 hexo 源码</li>
-<li>原先 hexo 源码所在电脑重装系统（丢失文件）</li>
-<li>要将 hexo 源码移动到其他磁盘（更换电脑）</li>
-</ul>
-<span id="more"></span>
+<h3 id="3、特殊配置"><a href="#3、特殊配置" class="headerlink" title="3、特殊配置"></a>3、特殊配置</h3><h4 id="捐赠"><a href="#捐赠" class="headerlink" title="捐赠"></a>捐赠</h4><p>文章末尾还可以求打赏，需要配置好相应的二维码图片，并且可以修改提示语句</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># <span class="type">Donate</span> (<span class="type">Sponsor</span>) settings</span><br><span class="line"># <span class="type">Front</span><span class="operator">-</span>matter variable (nonsupport animation).</span><br><span class="line">reward_settings:</span><br><span class="line">  # <span class="type">If</span> <span class="literal">true</span>, a donate button will be displayed <span class="keyword">in</span> every article by <span class="keyword">default</span>.</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  animation: <span class="literal">false</span></span><br><span class="line">  comment: 赏个鸡腿🍗</span><br><span class="line"></span><br><span class="line">reward:</span><br><span class="line">  wechatpay: <span class="operator">/</span>images<span class="operator">/</span>wechatpay.png</span><br><span class="line">  alipay: <span class="operator">/</span>images<span class="operator">/</span>alipay.jpg</span><br><span class="line">  #paypal: <span class="operator">/</span>images<span class="operator">/</span>paypal.png</span><br><span class="line">  #bitcoin: <span class="operator">/</span>images<span class="operator">/</span>bitcoin.png</span><br></pre></td></tr></table></figure>
 
-<p>将 hexo 源码上传到 GitHub，就是做了一个稳定、安全的远程备份，遇到上面的情况将不会再是什么问题。</p>
-<p>因为，之前在 GitHub 上的部署（使用 <code>hexo d</code> 上传部署到github）其实是 hexo 编译后的文件，是用来生成网页的，不包含所有 hexo 生成的网站原始文件。只有把源码也上传才能解决问题。</p>
-<h2 id="二、如何上传博客源码？"><a href="#二、如何上传博客源码？" class="headerlink" title="二、如何上传博客源码？"></a>二、如何上传博客源码？</h2><h3 id="1、思路分析"><a href="#1、思路分析" class="headerlink" title="1、思路分析"></a>1、思路分析</h3><ul>
-<li><p><code>main</code>（<code>master</code>） 分支：存放博客的静态网页。</p>
-</li>
-<li><p><code>hexo</code>分支：存放 Hexo 博客的源码文件。</p>
-</li>
-</ul>
-<h3 id="2、hexo-分支创建及管理"><a href="#2、hexo-分支创建及管理" class="headerlink" title="2、hexo 分支创建及管理"></a>2、hexo 分支创建及管理</h3><h4 id="（1）github-准备"><a href="#（1）github-准备" class="headerlink" title="（1）github 准备"></a>（1）github 准备</h4><p>先在 GitHub 项目创建一个远程分支 <code>hexo</code></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787834628307.jpg"></p>
-<p>将其设置为默认分支</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787836604366.jpg"></p>
-<h4 id="2-打包将要推送到GitHub上的原始文件"><a href="#2-打包将要推送到GitHub上的原始文件" class="headerlink" title="(2) 打包将要推送到GitHub上的原始文件"></a>(2) 打包将要推送到GitHub上的原始文件</h4><ol>
-<li>clone该仓库到本地（clone的是hexo默认分支）</li>
+<h4 id="公益404"><a href="#公益404" class="headerlink" title="公益404"></a>公益404</h4><ol>
+<li>在主题配置文件<code>themes/next/_config.yml</code>或者<code>_config.next.yml</code>中，搜索 <code>menu</code> 关键字，取消 <code>commonweal</code> 前的 # 注释。</li>
 </ol>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: <span class="operator">/</span> <span class="operator">||</span> fa fa<span class="operator">-</span>home</span><br><span class="line">#  about: <span class="operator">/</span>about<span class="operator">/</span> <span class="operator">||</span> fa fa<span class="operator">-</span>user</span><br><span class="line">  tags: <span class="operator">/</span>tags<span class="operator">/</span> <span class="operator">||</span> fa fa<span class="operator">-</span>tags</span><br><span class="line">  categories: <span class="operator">/</span>categories<span class="operator">/</span> <span class="operator">||</span> fa fa<span class="operator">-</span>th</span><br><span class="line">  archives: <span class="operator">/</span>archives<span class="operator">/</span> <span class="operator">||</span> fa fa<span class="operator">-</span>archive</span><br><span class="line">  #schedule: <span class="operator">/</span>schedule<span class="operator">/</span> <span class="operator">||</span> fa fa<span class="operator">-</span>calendar</span><br><span class="line">  #sitemap: <span class="operator">/</span>sitemap.xml <span class="operator">||</span> fa fa<span class="operator">-</span>sitemap</span><br><span class="line">  commonweal: <span class="operator">/</span><span class="number">404</span><span class="operator">/</span> <span class="operator">||</span> fa fa<span class="operator">-</span>heartbeat</span><br></pre></td></tr></table></figure>
 
 <ol start="2">
-<li><p>下载的文件夹里仅留下 <code>.git</code> 文件夹，其他的文件都删除</p>
-</li>
-<li><p>找见我们 hexo 原位置，将 hexo 文件夹内除 <code>.deploy_git</code> 以外都复制到clone下来的文件夹中</p>
-</li>
-<li><p>修改 <code>.gitignore</code> 文件，将静态网页的目录及其他无需提交的源文件及目录排除掉。(没有即新建添加)</p>
-</li>
+<li>在 source 文件夹下新建 <code>404.html</code> 文件，复制粘贴以下代码：</li>
 </ol>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">.<span class="property">DS_Store</span></span><br><span class="line"><span class="title class_">Thumbs</span>.<span class="property">db</span></span><br><span class="line">db.<span class="property">json</span></span><br><span class="line">*.<span class="property">log</span></span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.<span class="property">deploy</span>*/</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>如果已经 clone 过主题文件，最好把 theme 主题文件夹里的 <code>.git</code> 也删除</li>
-</ol>
-<h4 id="3-将-clone-并修改的文件夹推送到-GitHub"><a href="#3-将-clone-并修改的文件夹推送到-GitHub" class="headerlink" title="(3) 将 clone 并修改的文件夹推送到 GitHub"></a>(3) 将 clone 并修改的文件夹推送到 GitHub</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;Code update&#x27;</span></span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure>
-
-<h3 id="3、main-master-分支管理"><a href="#3、main-master-分支管理" class="headerlink" title="3、main (master) 分支管理"></a>3、main (master) 分支管理</h3><p>进入<strong>站点配置文件</strong>，搜索 <code>deploy</code>关键词，修改如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy</span>:</span><br><span class="line">  <span class="attr">type</span>: git</span><br><span class="line">  <span class="attr">repo</span>: git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br><span class="line">  <span class="attr">branch</span>: main</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787847648363.jpg"></p>
-<p>修改完成，执行以下代码进行管理：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//清除本地旧代码。</span></span><br><span class="line">hexo clean</span><br><span class="line"><span class="comment">//生成静态网站</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="comment">//部署静态网站到 GitHub 的 main(master) 分支上</span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<h3 id="4、统一分支管理和部署"><a href="#4、统一分支管理和部署" class="headerlink" title="4、统一分支管理和部署"></a>4、统一分支管理和部署</h3><p>利用我上一篇文章讲到的 <code>deploy.sh</code>脚本进行一键部署，可以极大提高部署效率和降低维护成本。</p>
-<p>在 <code>deploy.sh</code> 文件中添加如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line"><span class="variable constant_">DIR</span>=<span class="string">`dirname $0`</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Generate</span> blog</span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Deploy</span></span><br><span class="line">hexo deploy</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Push</span> hexo code</span><br><span class="line">git add .</span><br><span class="line">current_date=<span class="string">`date &quot;+%Y-%m-%d %H:%M:%S&quot;`</span></span><br><span class="line">git commit -m <span class="string">&quot;Blog updated: $current_date&quot;</span></span><br><span class="line"></span><br><span class="line">sleep <span class="number">2</span></span><br><span class="line"></span><br><span class="line">git push origin hexo</span><br><span class="line"></span><br><span class="line">echo <span class="string">&quot;=====&gt;Finish!&lt;=====&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>然后附加脚本执行权限:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<p>然后执行即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<p>如此，便可以一键部署博客及备份博客源码到 github 的分支 <code>hexo</code> 分支上。</p>
-<h3 id="5、其他电脑源码使用"><a href="#5、其他电脑源码使用" class="headerlink" title="5、其他电脑源码使用"></a>5、其他电脑源码使用</h3><p>换到不同电脑上时，只需clone github 上的 hexo 分支即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">&lt;!</span><span class="type">DOCTYPE</span> <span class="type">HTML</span><span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;</span>html<span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;</span>head<span class="operator">&gt;</span></span><br><span class="line">  <span class="operator">&lt;</span>meta http<span class="operator">-</span>equiv<span class="operator">=</span><span class="string">&quot;content-type&quot;</span> content<span class="operator">=</span><span class="string">&quot;text/html;charset=utf-8;&quot;</span><span class="operator">/&gt;</span></span><br><span class="line">  <span class="operator">&lt;</span>meta http<span class="operator">-</span>equiv<span class="operator">=</span><span class="string">&quot;X-UA-Compatible&quot;</span> content<span class="operator">=</span><span class="string">&quot;IE=edge,chrome=1&quot;</span> <span class="operator">/&gt;</span></span><br><span class="line">  <span class="operator">&lt;</span>meta name<span class="operator">=</span><span class="string">&quot;robots&quot;</span> content<span class="operator">=</span><span class="string">&quot;all&quot;</span> <span class="operator">/&gt;</span></span><br><span class="line">  <span class="operator">&lt;</span>meta name<span class="operator">=</span><span class="string">&quot;robots&quot;</span> content<span class="operator">=</span><span class="string">&quot;index,follow&quot;</span><span class="operator">/&gt;</span></span><br><span class="line">  <span class="operator">&lt;</span>link rel<span class="operator">=</span><span class="string">&quot;stylesheet&quot;</span> type<span class="operator">=</span><span class="string">&quot;text/css&quot;</span> href<span class="operator">=</span><span class="string">&quot;https://qzone.qq.com/gy/404/style/404style.css&quot;</span><span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;/</span>head<span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;</span>body<span class="operator">&gt;</span></span><br><span class="line">  <span class="operator">&lt;</span>script type<span class="operator">=</span><span class="string">&quot;text/plain&quot;</span> src<span class="operator">=</span><span class="string">&quot;http://www.qq.com/404/search_children.js&quot;</span></span><br><span class="line">          charset<span class="operator">=</span><span class="string">&quot;utf-8&quot;</span> homePageUrl<span class="operator">=</span><span class="string">&quot;https://ni256o.github.io&quot;</span></span><br><span class="line">          homePageName<span class="operator">=</span><span class="string">&quot;回到首页&quot;</span><span class="operator">&gt;</span></span><br><span class="line">  <span class="operator">&lt;/</span>script<span class="operator">&gt;</span></span><br><span class="line">  <span class="operator">&lt;</span>script src<span class="operator">=</span><span class="string">&quot;https://qzone.qq.com/gy/404/data.js&quot;</span> charset<span class="operator">=</span><span class="string">&quot;utf-8&quot;</span><span class="operator">&gt;&lt;/</span>script<span class="operator">&gt;</span></span><br><span class="line">  <span class="operator">&lt;</span>script src<span class="operator">=</span><span class="string">&quot;https://qzone.qq.com/gy/404/page.js&quot;</span> charset<span class="operator">=</span><span class="string">&quot;utf-8&quot;</span><span class="operator">&gt;&lt;/</span>script<span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;/</span>body<span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;/</span>html<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
         <category>Hexo</category>
       </categories>
       <tags>
-        <tag>学习笔记</tag>
         <tag>Hexo</tag>
       </tags>
   </entry>
@@ -1440,6 +1461,83 @@
       <tags>
         <tag>iOS</tag>
         <tag>OC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Tips】Git常用命令汇总</title>
+    <url>/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/</url>
+    <content><![CDATA[<h1 id="Git常用命令汇总"><a href="#Git常用命令汇总" class="headerlink" title="Git常用命令汇总"></a>Git常用命令汇总</h1><h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="git-init"><a href="#git-init" class="headerlink" title="git init"></a>git init</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git init </span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>在本地新建一个repo，进入一个项目目录，执行git init，会初始化一个repo，并在当前文件夹下创建一个.git文件夹。</p>
+<h3 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a>git add</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add README</span><br></pre></td></tr></table></figure>
+
+<p>在提交之前, Git有一个<code>暂存区(staging area)</code>,可以放入新添加的文件或者加入新的改动, commit时提交的改动是上一次加入到staging area中的改动, 而不是我们<code>disk</code>上的改动。<code>git add .</code>会递归地添加当前工作目录中的所有文件.</p>
+<h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git commit -m &quot;first commit&quot;</span><br><span class="line">$ git commit -a</span><br><span class="line">$ git commit --amend</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>提交已经被add进来的改动。</p>
+</blockquote>
+<p><code>git commit -m “the commit message&quot;</code><br><code>git commit -a</code> 会先把所有已经<code>track</code>的文件的改动add进来，然后提交(有点像svn的一次提交，不用先暂存)。对于没有track的文件，还是需要<code>git add</code>一下。<br><code>git commit --amend</code> 增补提交，会使用与当前提交节点相同的父节点进行一次新的提交，旧的提交将会被取消。</p>
+<h3 id="git-remote"><a href="#git-remote" class="headerlink" title="git remote"></a>git remote</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git remote</span><br><span class="line">$ git remote -v</span><br><span class="line">$ git remote add [alias] [url]</span><br><span class="line">$ git remote rm [alias]</span><br><span class="line">$ git remote rename [old-alias] [new-alias]</span><br><span class="line">$ git remote set-url [alias] [url]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong><code>git remote</code>: list，add and delete remote repository aliases。<br>因为不需要每次都用完整的url，所以Git为每一个remote repo的url都建立一个别名，然后用git remote来管理这个list。</strong></p>
+</blockquote>
+<p><code>git remote</code>：列出remote aliases。<br>如果你clone一个project，Git会自动将原来的url添加进来，别名就叫做: origin。<br><code>git remote -v</code>：可以看见每一个别名对应的实际url。<br><code>git remote add [alias] [url]</code>： 添加一个新的remote repo。<br><code>git remote rm [alias]</code>： 删除一个存在的remote alias。<br><code>git remote rename [old-alias] [new-alias]</code>： 重命名。<br><code>git remote set-url [alias] [url]</code>：更新url，可以加上—push和fetch参数，为同一个别名set不同的存取地址。</p>
+<h3 id="git-branch"><a href="#git-branch" class="headerlink" title="git branch"></a>git branch</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git branch -v</span><br><span class="line">$ git branch</span><br><span class="line">$ git branch [branch-name]</span><br><span class="line">$ git branch -d [branch-name]</span><br><span class="line">$ git branch -D [branch-name]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>git branch，可以用来列出分支，创建分支和删除分支。</strong></p>
+</blockquote>
+<p><code>git branch -v</code>： 可以看见每一个分支的最后一次提交。<br><code>git branch</code>： 列出本地所有分支，当前分支会被星号标示出。<br><code>git branch [branch-name]</code>: 创建一个新的分支(当你用这种方式创建分支的时候，分支是基于你的上一次提交建立的)。<br><code>git branch -d [branch-name]</code>: 删除指定分支。（<em>查看哪些分支已被并入当前分支，清单中带有<code>*</code>字符的表示当前所在的分支。一般来说，列表中没有<code>*</code>的分支通常都可以用 <code>git branch -d</code> 来删掉。对于未合并的分支，用 git branch -d 删除该分支会导致失败。不过，如果你坚信你要删除它，可以用大写的删除选项 <code>git branch -D</code> 强制执行</em>）</p>
+<h3 id="git-checkout"><a href="#git-checkout" class="headerlink" title="git checkout"></a>git checkout</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git checkout [branch-name]</span><br><span class="line">$ git checkout -b [branch-name]</span><br><span class="line">$ git checkout --&lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>git checkout [branch-name]</code> ： 切换到一个分支。<br><code>git checkout -b [branch-name]</code>：创建并切换到新的分支。这个命令是将 <code>git branch newbranch</code> 和 <code>git checkout newbranch</code> 合在一起的结果。</p>
+<p>checkout 还有另一个作用：替换本地改动。</p>
+<p><code>git checkout --&lt;filename&gt;</code>：此命令会使用HEAD中的最新内容替换掉你的工作目录中的文件，已添加到暂存区的改动以及新文件都不会受到影响。</p>
+<p><font color="#FF0000"><strong>注意: git checkout filename 会删除该文件中所有没有暂存和提交的改动,这个操作是不可逆的.</strong></font></p>
+<h3 id="git-merge"><a href="#git-merge" class="headerlink" title="git merge"></a>git merge</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git merge [alias]/[branch]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>git merge，把一个分支merge进当前的分支。</strong></p>
+</blockquote>
+<p><code>git merge [alias]/[branch]</code>：把远程分支merge到当前分支。</p>
+<p>如果出现冲突，需要手动修改，可以用<code>git mergetool</code>。解决冲突的时候可以用到<code>git diff</code>，解决完之后用<code>git add</code>添加，即表示冲突已经被resolved。</p>
+<h3 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git push [alias] [branch]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>push your new branches and data to a remote repository aliases.</strong></p>
+</blockquote>
+<p><code>git push [alias] [branch]</code> ：将会把当前分支 merge 到 [alias] 上的 [branch] 分支。如果分支已经存在，将会更新，如果不存在，将会添加这个分支。</p>
+<p>如果有多个人向同一个 <code>remote repo</code> push代码， Git会首先在你试图 push 的分支上运行 git log，检查它的历史中是否能看到 server 上的 branch 现在的 tip，如果本地历史中不能看到server的tip，说明本地的代码不是最新的，Git会拒绝你的push，让你先<code>fetch + merge (pull)</code>，之后再 push，这样就保证了所有人的改动都会被考虑进来。</p>
+<h3 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git pull</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>fetch from a remote repo and try to merge into the current branch.<br>pull == fetch + merge FETCH_HEAD</strong></p>
+</blockquote>
+<p><code>git pull</code>：会首先执行<code>git fetch</code>，然后执行<code>git merge</code>，把取来的分支的 head <code>merge</code> 到当前分支。这个 merge 操作会产生一个新的commit。<br>如果使用<code>--rebase</code>参数，它会执行<code>git rebase</code>来取代原来的<code>git merge</code>。</p>
+<h3 id="git-clone"><a href="#git-clone" class="headerlink" title="git clone"></a>git clone</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git clone [url]</span><br><span class="line">$ git clone [url] [newname]</span><br></pre></td></tr></table></figure>
+
+<p><code>git clone [url]</code>：获取一个url对应的远程Git repo， 创建一个local copy。</p>
+<p>clone下来的repo会以url最后一个斜线后面的名称命名,创建一个文件夹，如果想要指定特定的名称，可以<code>git clone [url] newname</code>指定。</p>
+<h3 id="git-tag"><a href="#git-tag" class="headerlink" title="git tag"></a>git tag</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git tag v1.0</span><br><span class="line">git tag -a v1.0</span><br><span class="line">git push -v origin refs/tags/0.1.0</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>tag a point in history as import.</strong></p>
+</blockquote>
+<p><code>git tag v1.0</code>，会在一个提交上建立永久性的书签，通常是发布一个release版本或者ship了什么东西之后加tag。</p>
+<p><code>git tag -a v1.0</code>, -a 参数会允许你添加一些信息，即make an annotated tag。当你运行git tag -a命令的时候，Git会打开一个编辑器让你输入tag信息。</p>
+<p><code>git push -v origin refs/tags/0.1.0</code>， 推送标签至远端。</p>
+<p>我们可以利用commit SHA来给一个过去的提交打tag:<br><code>git tag -a v0.9 XXXX</code></p>
+<p>push的时候是不包含tag的，如果想包含，可以在push时加上<code>--tags</code>参数。</p>
+<p>fetch的时候，branch HEAD可以reach的tags是自动被fetch下来的，tags that aren’t reachable from branch heads will be skipped。如果想确保所有的tags都被包含进来，需要加上<code>--tags</code>选项。</p>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>Tips</tag>
       </tags>
   </entry>
   <entry>
@@ -2050,267 +2148,6 @@
 <td align="center">ESC 换码</td>
 </tr>
 </tbody></table>
-]]></content>
-      <categories>
-        <category>Tips</category>
-      </categories>
-      <tags>
-        <tag>Tips</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【Tips】Git常用命令汇总</title>
-    <url>/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/</url>
-    <content><![CDATA[<h1 id="Git常用命令汇总"><a href="#Git常用命令汇总" class="headerlink" title="Git常用命令汇总"></a>Git常用命令汇总</h1><h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="git-init"><a href="#git-init" class="headerlink" title="git init"></a>git init</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git init </span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-<p>在本地新建一个repo，进入一个项目目录，执行git init，会初始化一个repo，并在当前文件夹下创建一个.git文件夹。</p>
-<h3 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a>git add</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add README</span><br></pre></td></tr></table></figure>
-
-<p>在提交之前, Git有一个<code>暂存区(staging area)</code>,可以放入新添加的文件或者加入新的改动, commit时提交的改动是上一次加入到staging area中的改动, 而不是我们<code>disk</code>上的改动。<code>git add .</code>会递归地添加当前工作目录中的所有文件.</p>
-<h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git commit -m &quot;first commit&quot;</span><br><span class="line">$ git commit -a</span><br><span class="line">$ git commit --amend</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>提交已经被add进来的改动。</p>
-</blockquote>
-<p><code>git commit -m “the commit message&quot;</code><br><code>git commit -a</code> 会先把所有已经<code>track</code>的文件的改动add进来，然后提交(有点像svn的一次提交，不用先暂存)。对于没有track的文件，还是需要<code>git add</code>一下。<br><code>git commit --amend</code> 增补提交，会使用与当前提交节点相同的父节点进行一次新的提交，旧的提交将会被取消。</p>
-<h3 id="git-remote"><a href="#git-remote" class="headerlink" title="git remote"></a>git remote</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git remote</span><br><span class="line">$ git remote -v</span><br><span class="line">$ git remote add [alias] [url]</span><br><span class="line">$ git remote rm [alias]</span><br><span class="line">$ git remote rename [old-alias] [new-alias]</span><br><span class="line">$ git remote set-url [alias] [url]</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong><code>git remote</code>: list，add and delete remote repository aliases。<br>因为不需要每次都用完整的url，所以Git为每一个remote repo的url都建立一个别名，然后用git remote来管理这个list。</strong></p>
-</blockquote>
-<p><code>git remote</code>：列出remote aliases。<br>如果你clone一个project，Git会自动将原来的url添加进来，别名就叫做: origin。<br><code>git remote -v</code>：可以看见每一个别名对应的实际url。<br><code>git remote add [alias] [url]</code>： 添加一个新的remote repo。<br><code>git remote rm [alias]</code>： 删除一个存在的remote alias。<br><code>git remote rename [old-alias] [new-alias]</code>： 重命名。<br><code>git remote set-url [alias] [url]</code>：更新url，可以加上—push和fetch参数，为同一个别名set不同的存取地址。</p>
-<h3 id="git-branch"><a href="#git-branch" class="headerlink" title="git branch"></a>git branch</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git branch -v</span><br><span class="line">$ git branch</span><br><span class="line">$ git branch [branch-name]</span><br><span class="line">$ git branch -d [branch-name]</span><br><span class="line">$ git branch -D [branch-name]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>git branch，可以用来列出分支，创建分支和删除分支。</strong></p>
-</blockquote>
-<p><code>git branch -v</code>： 可以看见每一个分支的最后一次提交。<br><code>git branch</code>： 列出本地所有分支，当前分支会被星号标示出。<br><code>git branch [branch-name]</code>: 创建一个新的分支(当你用这种方式创建分支的时候，分支是基于你的上一次提交建立的)。<br><code>git branch -d [branch-name]</code>: 删除指定分支。（<em>查看哪些分支已被并入当前分支，清单中带有<code>*</code>字符的表示当前所在的分支。一般来说，列表中没有<code>*</code>的分支通常都可以用 <code>git branch -d</code> 来删掉。对于未合并的分支，用 git branch -d 删除该分支会导致失败。不过，如果你坚信你要删除它，可以用大写的删除选项 <code>git branch -D</code> 强制执行</em>）</p>
-<h3 id="git-checkout"><a href="#git-checkout" class="headerlink" title="git checkout"></a>git checkout</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git checkout [branch-name]</span><br><span class="line">$ git checkout -b [branch-name]</span><br><span class="line">$ git checkout --&lt;filename&gt;</span><br></pre></td></tr></table></figure>
-
-<p><code>git checkout [branch-name]</code> ： 切换到一个分支。<br><code>git checkout -b [branch-name]</code>：创建并切换到新的分支。这个命令是将 <code>git branch newbranch</code> 和 <code>git checkout newbranch</code> 合在一起的结果。</p>
-<p>checkout 还有另一个作用：替换本地改动。</p>
-<p><code>git checkout --&lt;filename&gt;</code>：此命令会使用HEAD中的最新内容替换掉你的工作目录中的文件，已添加到暂存区的改动以及新文件都不会受到影响。</p>
-<p><font color="#FF0000"><strong>注意: git checkout filename 会删除该文件中所有没有暂存和提交的改动,这个操作是不可逆的.</strong></font></p>
-<h3 id="git-merge"><a href="#git-merge" class="headerlink" title="git merge"></a>git merge</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git merge [alias]/[branch]</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>git merge，把一个分支merge进当前的分支。</strong></p>
-</blockquote>
-<p><code>git merge [alias]/[branch]</code>：把远程分支merge到当前分支。</p>
-<p>如果出现冲突，需要手动修改，可以用<code>git mergetool</code>。解决冲突的时候可以用到<code>git diff</code>，解决完之后用<code>git add</code>添加，即表示冲突已经被resolved。</p>
-<h3 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git push [alias] [branch]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>push your new branches and data to a remote repository aliases.</strong></p>
-</blockquote>
-<p><code>git push [alias] [branch]</code> ：将会把当前分支 merge 到 [alias] 上的 [branch] 分支。如果分支已经存在，将会更新，如果不存在，将会添加这个分支。</p>
-<p>如果有多个人向同一个 <code>remote repo</code> push代码， Git会首先在你试图 push 的分支上运行 git log，检查它的历史中是否能看到 server 上的 branch 现在的 tip，如果本地历史中不能看到server的tip，说明本地的代码不是最新的，Git会拒绝你的push，让你先<code>fetch + merge (pull)</code>，之后再 push，这样就保证了所有人的改动都会被考虑进来。</p>
-<h3 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git pull</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>fetch from a remote repo and try to merge into the current branch.<br>pull == fetch + merge FETCH_HEAD</strong></p>
-</blockquote>
-<p><code>git pull</code>：会首先执行<code>git fetch</code>，然后执行<code>git merge</code>，把取来的分支的 head <code>merge</code> 到当前分支。这个 merge 操作会产生一个新的commit。<br>如果使用<code>--rebase</code>参数，它会执行<code>git rebase</code>来取代原来的<code>git merge</code>。</p>
-<h3 id="git-clone"><a href="#git-clone" class="headerlink" title="git clone"></a>git clone</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git clone [url]</span><br><span class="line">$ git clone [url] [newname]</span><br></pre></td></tr></table></figure>
-
-<p><code>git clone [url]</code>：获取一个url对应的远程Git repo， 创建一个local copy。</p>
-<p>clone下来的repo会以url最后一个斜线后面的名称命名,创建一个文件夹，如果想要指定特定的名称，可以<code>git clone [url] newname</code>指定。</p>
-<h3 id="git-tag"><a href="#git-tag" class="headerlink" title="git tag"></a>git tag</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git tag v1.0</span><br><span class="line">git tag -a v1.0</span><br><span class="line">git push -v origin refs/tags/0.1.0</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>tag a point in history as import.</strong></p>
-</blockquote>
-<p><code>git tag v1.0</code>，会在一个提交上建立永久性的书签，通常是发布一个release版本或者ship了什么东西之后加tag。</p>
-<p><code>git tag -a v1.0</code>, -a 参数会允许你添加一些信息，即make an annotated tag。当你运行git tag -a命令的时候，Git会打开一个编辑器让你输入tag信息。</p>
-<p><code>git push -v origin refs/tags/0.1.0</code>， 推送标签至远端。</p>
-<p>我们可以利用commit SHA来给一个过去的提交打tag:<br><code>git tag -a v0.9 XXXX</code></p>
-<p>push的时候是不包含tag的，如果想包含，可以在push时加上<code>--tags</code>参数。</p>
-<p>fetch的时候，branch HEAD可以reach的tags是自动被fetch下来的，tags that aren’t reachable from branch heads will be skipped。如果想确保所有的tags都被包含进来，需要加上<code>--tags</code>选项。</p>
-]]></content>
-      <categories>
-        <category>Tips</category>
-      </categories>
-      <tags>
-        <tag>Tips</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【Tips】Markdown 语法</title>
-    <url>/Tips/%E3%80%90Tips%E3%80%91Markdown-%E8%AF%AD%E6%B3%95/</url>
-    <content><![CDATA[<h1 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h1><h2 id="一、Markdown纯文本基本语法"><a href="#一、Markdown纯文本基本语法" class="headerlink" title="一、Markdown纯文本基本语法"></a>一、Markdown纯文本基本语法</h2><h3 id="1-标题"><a href="#1-标题" class="headerlink" title="1. 标题"></a>1. 标题</h3><p>Markdown 支持两种标题的语法，类 Setext 和类 atx 形式。 类 Setext 形式是用底线的形式，利用 = （最高阶标题）和 - （第二阶标题），例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">This is an H1</span><br><span class="line">=======</span><br><span class="line"></span><br><span class="line">This is an H2</span><br><span class="line">----------</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-
-<p>效果如下：</p>
-<h1 id="This-is-an-H1"><a href="#This-is-an-H1" class="headerlink" title="This is an H1"></a>This is an H1</h1><h2 id="This-is-an-H2"><a href="#This-is-an-H2" class="headerlink" title="This is an H2"></a>This is an H2</h2><p>任何数量的 = 和 - 都可以有效果。</p>
-<p>这里需要注意一点，由于分割线也是 “—-”， 因此在使用分割线时，一定要空一行，不然会把上方的文字识别为第二阶标题。原因会在后面的段落和换行中说到。<br>类 Atx 形式则是在行首插入 1 到 6 个 # ，对应到标题 1 到 6 阶，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># this is H1</span><br><span class="line">## this is H2</span><br><span class="line">###### this is H6</span><br></pre></td></tr></table></figure>
-
-<p>效果不再展示，但要注意的是，标准语法一般在 # 后跟个空格再写文字，不然可能会无法识别。</p>
-<h3 id="2-字体"><a href="#2-字体" class="headerlink" title="2. 字体"></a>2. 字体</h3><h4 id="粗-斜-删除线-下划线"><a href="#粗-斜-删除线-下划线" class="headerlink" title="粗/斜/删除线/下划线"></a>粗/斜/删除线/下划线</h4><p>Markdown 使用星号（*）和底线（_）作为标记强调字词的符号，你可以随便用你喜欢的样式，唯一的限制是，你用什么符号开启标签，就要用什么符号结束。但个人感觉写中文时还是（*）比较好用，因为它不区分全角半角，不用切换输入法。 示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">**这是加粗**</span><br><span class="line">__这也是加粗__</span><br><span class="line">*这是倾斜*</span><br><span class="line">_这也是倾斜_</span><br><span class="line">***这是加粗倾斜***</span><br><span class="line">~~这是加删除线~~</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：<br><strong>这是加粗</strong><br><strong>这也是加粗</strong><br><em>这是倾斜</em><br><em>这也是倾斜</em><br><em><strong>这是加粗倾斜</strong></em><br><del>这是加删除线</del></p>
-<p>注意：强调也可以直接插在文字中间，但是如果你的 * 和 _ 两边都有空白的话，它们就只会被当成普通的符号。 如果要在文字前后直接插入普通的星号或底线，你可以用反斜线 \ 。</p>
-<h4 id="字体、字号、颜色"><a href="#字体、字号、颜色" class="headerlink" title="字体、字号、颜色"></a>字体、字号、颜色</h4><p>如果想要指定字体大小、颜色和类型可以通过<code>&lt;font&gt;&lt;/font&gt;</code>语法来完成。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">指定字体类型： &lt;font face=<span class="string">&quot;黑体&quot;</span>&gt;我是黑体字&lt;/font&gt;</span><br><span class="line">指定字体大小： &lt;font size=<span class="number">12</span>&gt;我是<span class="number">12</span>号字&lt;/font&gt;</span><br><span class="line">指定字体颜色：&lt;font color=#0099ff&gt;我是蓝色字&lt;/font&gt; #0099ff 为颜色的<span class="number">16</span>进制代码</span><br><span class="line">指定字体颜色、字号、字体类型&lt;font color=#0099ff size=<span class="number">12</span> face=<span class="string">&quot;黑体&quot;</span>&gt;黑体&lt;/font&gt;</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<p>指定字体类型： <font face="黑体">我是黑体字</font><br>指定字体大小： <font size="12">我是12号字</font><br>指定字体颜色：<font color="#0099ff">我是蓝色字</font> #0099ff 为颜色的16进制代码<br>指定字体颜色、字号、字体类型<font color="#0099ff" size="12" face="黑体">黑体</font></p>
-<h3 id="3-分割线"><a href="#3-分割线" class="headerlink" title="3. 分割线"></a>3. 分割线</h3><p>你可以在一行中用三个以上的星号、减号、底线来建立一个分隔线，行内不能有其他东西。你也可以在星号或是减号中间插入空格。下面每种写法都可以建立分隔线：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* * *</span><br><span class="line">***</span><br><span class="line">**********</span><br><span class="line">- - -</span><br><span class="line">_________________</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<hr>
-<hr>
-<hr>
-<h3 id="4-引用"><a href="#4-引用" class="headerlink" title="4. 引用"></a>4. 引用</h3><p>在引用的文字前加 &gt; 即可。 在 Markdown 文件中建立一个区块引用，那会看起来像是你自己先断好行，然后在每行的最前面加上 &gt; ：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">&gt; consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">&gt; Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">&gt; </span><br><span class="line">&gt; Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse</span><br><span class="line">&gt; id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<blockquote>
-<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,<br>consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.<br>Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
-</blockquote>
-<p>Markdown 也允许你偷懒只在整个段落的第一行最前面加上 &gt; ：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<blockquote>
-<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
-</blockquote>
-<p>区块引用可以嵌套（例如：引用内的引用），只要根据层次加上不同数量的 &gt; ：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is the first level of quoting.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; This is nested blockquote.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; &gt; &gt; Back to the first level.</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<blockquote>
-<p>This is the first level of quoting.</p>
-<blockquote>
-<p>This is nested blockquote.</p>
-</blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>Back to the first level.</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>引用的区块内也可以使用其他的 Markdown 语法，包括标题、列表、代码区块等。</p>
-<h3 id="5-列表"><a href="#5-列表" class="headerlink" title="5. 列表"></a>5. 列表</h3><p>Markdown 支持有序列表和无序列表。 无序列表使用星号、加号或是减号作为列表标记。 示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 列表内容</span><br><span class="line">+ 列表内容</span><br><span class="line">* 列表内容</span><br><span class="line">注意：- + * 跟内容之间都要有一个空格</span><br></pre></td></tr></table></figure>
-
-<p>效果如下： </p>
-<ul>
-<li>列表内容</li>
-</ul>
-<ul>
-<li>列表内容</li>
-</ul>
-<ul>
-<li>列表内容</li>
-</ul>
-<p>有序列表则使用数字接着一个英文句点作为标记。 示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. 列表内容</span><br><span class="line">2. 列表内容</span><br><span class="line">3. 列表内容</span><br><span class="line">注意：序号跟内容之间要有空格 </span><br></pre></td></tr></table></figure>
-<p>效果如下： </p>
-<ol>
-<li>列表内容</li>
-<li>列表内容</li>
-<li>列表内容</li>
-</ol>
-<p>列表可以嵌套，上一级和下一级之间敲三个空格即可。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* 一级无序列表内容</span><br><span class="line"></span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br></pre></td></tr></table></figure>
-
-<p>效果如下： </p>
-<ul>
-<li><p>一级无序列表内容</p>
-<ul>
-<li>二级无序列表内容</li>
-<li>二级无序列表内容</li>
-<li>二级无序列表内容</li>
-</ul>
-</li>
-</ul>
-<p>要让列表看起来更漂亮，你可以把内容用固定的缩进整理好：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span><br><span class="line">    Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,</span><br><span class="line">    viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.</span><br><span class="line">    Suspendisse id sem consectetuer libero luctus adipiscing</span><br></pre></td></tr></table></figure>
-
-<p>效果如下： </p>
-<ul>
-<li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.<br>  Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,<br>  viverra nec, fringilla in, laoreet vitae, risus.</li>
-<li>Donec sit amet nisl. Aliquam semper ipsum sit amet velit.<br>  Suspendisse id sem consectetuer libero luctus adipiscing</li>
-</ul>
-<p>列表项目可以包含多个段落，每个项目下的段落都必须缩进 4 个空格或是 1 个制表符：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1.  This is a list item with two paragraphs. Lorem ipsum dolor</span><br><span class="line">    sit amet, consectetuer adipiscing elit. Aliquam hendrerit</span><br><span class="line">    mi posuere lectus.</span><br><span class="line"></span><br><span class="line">    Vestibulum enim wisi, viverra nec, fringilla in, laoreet</span><br><span class="line">    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum</span><br><span class="line">    sit amet velit.</span><br><span class="line"></span><br><span class="line">2.  Suspendisse id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
-<p>效果如下： </p>
-<ol>
-<li><p>This is a list item with two paragraphs. Lorem ipsum dolor<br> sit amet, consectetuer adipiscing elit. Aliquam hendrerit<br> mi posuere lectus.</p>
-<p> Vestibulum enim wisi, viverra nec, fringilla in, laoreet<br> vitae, risus. Donec sit amet nisl. Aliquam semper ipsum<br> sit amet velit.</p>
-</li>
-<li><p> Suspendisse id sem consectetuer libero luctus adipiscing.</p>
-</li>
-</ol>
-<p>如果你每行都有缩进，看起来会看好很多，当然，再次地，如果你很懒惰，Markdown 也允许：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*   This is a list item with two paragraphs.</span><br><span class="line"></span><br><span class="line">    This is the second paragraph in the list item. You&#x27;re</span><br><span class="line">only required to indent the first line. Lorem ipsum dolor</span><br><span class="line">sit amet, consectetuer adipiscing elit.</span><br><span class="line"></span><br><span class="line">*   Another item in the same list.</span><br></pre></td></tr></table></figure>
-
-<p>效果不再展示。 此外： 如果要在列表项目内放进引用，那 &gt; 就需要缩进， 如果要放代码区块的话，该区块就需要缩进两次，也就是 8 个空格或是 2 个制表符。</p>
-<h3 id="6-表格"><a href="#6-表格" class="headerlink" title="6. 表格"></a>6. 表格</h3><p>示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">表头|表头|表头</span><br><span class="line">---|:--:|---:</span><br><span class="line">内容|内容|内容</span><br><span class="line">内容|内容|内容</span><br><span class="line"></span><br><span class="line">第二行分割表头和内容。</span><br><span class="line">- 有一个就行，为了对齐，多加了几个</span><br><span class="line">文字默认居左</span><br><span class="line">-两边加：表示文字居中</span><br><span class="line">-右边加：表示文字居右</span><br><span class="line">注：原生的语法两边都要用 | 包起来。此处省略</span><br></pre></td></tr></table></figure>
-
-<p>效果如下： </p>
-<table>
-<thead>
-<tr>
-<th>表头</th>
-<th align="center">表头</th>
-<th align="right">表头</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>内容</td>
-<td align="center">内容</td>
-<td align="right">内容</td>
-</tr>
-<tr>
-<td>内容</td>
-<td align="center">内容</td>
-<td align="right">内容</td>
-</tr>
-</tbody></table>
-<h3 id="7-代码"><a href="#7-代码" class="headerlink" title="7. 代码"></a>7. 代码</h3><p>在Markdown中加入代码块有两种方式： 第一种，只要简单地缩进 4 个空格或是 1 个制表符就可以:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这是一个普通段落：</span><br><span class="line"></span><br><span class="line">    这是一个代码区块。</span><br><span class="line"></span><br><span class="line">(当然，前面要有一个空行和前面的文字分隔开)</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<p>这是一个普通段落：</p>
-<pre><code>这是一个代码区块。
-</code></pre>
-<p>第二种方法似乎是更为常用， 单行代码：代码之间分别用一个反引号包起来即可；</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这里有一句代码`代码内容`。</span><br></pre></td></tr></table></figure>
-<p>效果如下：<br>这里有一句代码<code>代码内容</code>。</p>
-<p>代码块：代码之间分别用三个反引号包起来，且两边的反引号单独占一行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\```</span><br><span class="line">  代码...</span><br><span class="line">  代码...</span><br><span class="line">  代码...</span><br><span class="line">\```</span><br><span class="line">\ 是为了防止转译，实际是没有的。</span><br></pre></td></tr></table></figure>
-<p>效果如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">代码...</span><br><span class="line">代码...</span><br><span class="line">代码...</span><br></pre></td></tr></table></figure>
-<p>还可以在上面的 ``` 后面注明你的代码类型，可以产生相应的代码高亮。</p>
-<h3 id="8-段落和换行"><a href="#8-段落和换行" class="headerlink" title="8. 段落和换行"></a>8. 段落和换行</h3><p>一个 Markdown 段落是由一个或多个连续的文本行组成，它的前后要有一个以上的空行（空行的定义是显示上看起来像是空的，便会被视为空行。比方说，若某一行只包含空格和制表符，则该行也会被视为空行）。普通段落不该用空格或制表符来缩进。 我们在两个不同的文字块之间，一定要空行以示区分，不然就会被归入同一文字块中。 </p>
-<h4 id="换行"><a href="#换行" class="headerlink" title="换行"></a>换行</h4><p>Markdown 允许段落内的强迫换行（插入换行符）。 如果想要空一行，在插入处先按入两个以上的空格然后回车，即可。</p>
-<ul>
-<li>方法1：连敲2个以上空格+enter键；</li>
-<li>方法2：利用html语法，<code>&lt;br&gt;</code>。</li>
-</ul>
-<h4 id="缩进-空格"><a href="#缩进-空格" class="headerlink" title="缩进/空格"></a>缩进/空格</h4><p>但有时也可以使用标记来强制空行和空格，比如需要首行缩进的时候： 一个空格大小的表示：\  或 \  两个空格的大小表示：\ 或 \ 不换行空格：\ 或 \ 强制空行： \</p>
-<blockquote>
-<p>由于平时中文的排版习惯，首行通常缩进两字符什么的，所以顺便也了解以下操作,在markdown里这个还稍微有点麻烦，不是敲两下空格键就搞定的。这里需要借用html方面的空格实体。<br>首先明确1个汉字=2个空格大小<br>1、一个空格大小的表示&ensp; &#8194;两种用法显示效果一致。<br>2、两个空格大小的表示&emsp; &#8195;两种用法显示效果一致。<br>3、不换行空格的表示&nbsp; &#160;也是占一个空格的宽度大小。</p>
-</blockquote>
-<h3 id="9-插入超链接"><a href="#9-插入超链接" class="headerlink" title="9. 插入超链接"></a>9. 插入超链接</h3><p>链接分两种。一种是链接到其他网上地址的，还有一种是链接到本文中的某个位置的。<br>两种的基本格式一样<code>[]()</code>。需要添加链接的文字内容用<code>[方括号]</code>来括起来，后面紧跟着带有网址的<code>(圆括号)</code>，如果要加上连接的title文字，在网址后面，把 title文字放到双引号里面。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[超链接名](超链接地址 &quot;超链接title&quot;)</span><br><span class="line">title可加可不加</span><br><span class="line">文字链接 [链接名称](http://链接网址)</span><br><span class="line">网址链接 &lt;http://链接网址&gt;</span><br><span class="line">实例：</span><br><span class="line">[Github](https://github.com/fengyanxin) &amp;emsp;&lt;https://github.com/fengyanxin&gt;</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<p><a href="https://github.com/fengyanxin">Github</a>：<a href="https://github.com/fengyanxin">https://github.com/fengyanxin</a></p>
-<h3 id="10-插入图片"><a href="#10-插入图片" class="headerlink" title="10. 插入图片"></a>10. 插入图片</h3><p>添加图片形式和链接相似，只需要在链接的基础上前方加一个<code>！</code> 感叹号。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">![图片alt](图片地址  &quot;optional title&quot;)</span><br><span class="line">图片alt就是显示在图片下面的文字，相当于对图片内容的解释，可以不写。</span><br><span class="line">图片地址链接可以是图片的本地地址或网址。</span><br><span class="line">图片optional title是图片的标题，当鼠标悬置于图片上时显示的内容。title可加可不加。</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91Markdown-%E8%AF%AD%E6%B3%95/16781754751832.jpg"></p>
 ]]></content>
       <categories>
         <category>Tips</category>
@@ -4667,6 +4504,190 @@
 <p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
 <p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
 <p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Tips】Markdown 语法</title>
+    <url>/Tips/%E3%80%90Tips%E3%80%91Markdown-%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[<h1 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h1><h2 id="一、Markdown纯文本基本语法"><a href="#一、Markdown纯文本基本语法" class="headerlink" title="一、Markdown纯文本基本语法"></a>一、Markdown纯文本基本语法</h2><h3 id="1-标题"><a href="#1-标题" class="headerlink" title="1. 标题"></a>1. 标题</h3><p>Markdown 支持两种标题的语法，类 Setext 和类 atx 形式。 类 Setext 形式是用底线的形式，利用 = （最高阶标题）和 - （第二阶标题），例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">This is an H1</span><br><span class="line">=======</span><br><span class="line"></span><br><span class="line">This is an H2</span><br><span class="line">----------</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<p>效果如下：</p>
+<h1 id="This-is-an-H1"><a href="#This-is-an-H1" class="headerlink" title="This is an H1"></a>This is an H1</h1><h2 id="This-is-an-H2"><a href="#This-is-an-H2" class="headerlink" title="This is an H2"></a>This is an H2</h2><p>任何数量的 = 和 - 都可以有效果。</p>
+<p>这里需要注意一点，由于分割线也是 “—-”， 因此在使用分割线时，一定要空一行，不然会把上方的文字识别为第二阶标题。原因会在后面的段落和换行中说到。<br>类 Atx 形式则是在行首插入 1 到 6 个 # ，对应到标题 1 到 6 阶，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># this is H1</span><br><span class="line">## this is H2</span><br><span class="line">###### this is H6</span><br></pre></td></tr></table></figure>
+
+<p>效果不再展示，但要注意的是，标准语法一般在 # 后跟个空格再写文字，不然可能会无法识别。</p>
+<h3 id="2-字体"><a href="#2-字体" class="headerlink" title="2. 字体"></a>2. 字体</h3><h4 id="粗-斜-删除线-下划线"><a href="#粗-斜-删除线-下划线" class="headerlink" title="粗/斜/删除线/下划线"></a>粗/斜/删除线/下划线</h4><p>Markdown 使用星号（*）和底线（_）作为标记强调字词的符号，你可以随便用你喜欢的样式，唯一的限制是，你用什么符号开启标签，就要用什么符号结束。但个人感觉写中文时还是（*）比较好用，因为它不区分全角半角，不用切换输入法。 示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">**这是加粗**</span><br><span class="line">__这也是加粗__</span><br><span class="line">*这是倾斜*</span><br><span class="line">_这也是倾斜_</span><br><span class="line">***这是加粗倾斜***</span><br><span class="line">~~这是加删除线~~</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：<br><strong>这是加粗</strong><br><strong>这也是加粗</strong><br><em>这是倾斜</em><br><em>这也是倾斜</em><br><em><strong>这是加粗倾斜</strong></em><br><del>这是加删除线</del></p>
+<p>注意：强调也可以直接插在文字中间，但是如果你的 * 和 _ 两边都有空白的话，它们就只会被当成普通的符号。 如果要在文字前后直接插入普通的星号或底线，你可以用反斜线 \ 。</p>
+<h4 id="字体、字号、颜色"><a href="#字体、字号、颜色" class="headerlink" title="字体、字号、颜色"></a>字体、字号、颜色</h4><p>如果想要指定字体大小、颜色和类型可以通过<code>&lt;font&gt;&lt;/font&gt;</code>语法来完成。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">指定字体类型： &lt;font face=<span class="string">&quot;黑体&quot;</span>&gt;我是黑体字&lt;/font&gt;</span><br><span class="line">指定字体大小： &lt;font size=<span class="number">12</span>&gt;我是<span class="number">12</span>号字&lt;/font&gt;</span><br><span class="line">指定字体颜色：&lt;font color=#0099ff&gt;我是蓝色字&lt;/font&gt; #0099ff 为颜色的<span class="number">16</span>进制代码</span><br><span class="line">指定字体颜色、字号、字体类型&lt;font color=#0099ff size=<span class="number">12</span> face=<span class="string">&quot;黑体&quot;</span>&gt;黑体&lt;/font&gt;</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p>指定字体类型： <font face="黑体">我是黑体字</font><br>指定字体大小： <font size="12">我是12号字</font><br>指定字体颜色：<font color="#0099ff">我是蓝色字</font> #0099ff 为颜色的16进制代码<br>指定字体颜色、字号、字体类型<font color="#0099ff" size="12" face="黑体">黑体</font></p>
+<h3 id="3-分割线"><a href="#3-分割线" class="headerlink" title="3. 分割线"></a>3. 分割线</h3><p>你可以在一行中用三个以上的星号、减号、底线来建立一个分隔线，行内不能有其他东西。你也可以在星号或是减号中间插入空格。下面每种写法都可以建立分隔线：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* * *</span><br><span class="line">***</span><br><span class="line">**********</span><br><span class="line">- - -</span><br><span class="line">_________________</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<hr>
+<hr>
+<hr>
+<h3 id="4-引用"><a href="#4-引用" class="headerlink" title="4. 引用"></a>4. 引用</h3><p>在引用的文字前加 &gt; 即可。 在 Markdown 文件中建立一个区块引用，那会看起来像是你自己先断好行，然后在每行的最前面加上 &gt; ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">&gt; consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">&gt; Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">&gt; </span><br><span class="line">&gt; Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse</span><br><span class="line">&gt; id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,<br>consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.<br>Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
+</blockquote>
+<p>Markdown 也允许你偷懒只在整个段落的第一行最前面加上 &gt; ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
+</blockquote>
+<p>区块引用可以嵌套（例如：引用内的引用），只要根据层次加上不同数量的 &gt; ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is the first level of quoting.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; This is nested blockquote.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; &gt; &gt; Back to the first level.</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>This is the first level of quoting.</p>
+<blockquote>
+<p>This is nested blockquote.</p>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Back to the first level.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>引用的区块内也可以使用其他的 Markdown 语法，包括标题、列表、代码区块等。</p>
+<h3 id="5-列表"><a href="#5-列表" class="headerlink" title="5. 列表"></a>5. 列表</h3><p>Markdown 支持有序列表和无序列表。 无序列表使用星号、加号或是减号作为列表标记。 示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 列表内容</span><br><span class="line">+ 列表内容</span><br><span class="line">* 列表内容</span><br><span class="line">注意：- + * 跟内容之间都要有一个空格</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<ul>
+<li>列表内容</li>
+</ul>
+<ul>
+<li>列表内容</li>
+</ul>
+<ul>
+<li>列表内容</li>
+</ul>
+<p>有序列表则使用数字接着一个英文句点作为标记。 示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. 列表内容</span><br><span class="line">2. 列表内容</span><br><span class="line">3. 列表内容</span><br><span class="line">注意：序号跟内容之间要有空格 </span><br></pre></td></tr></table></figure>
+<p>效果如下： </p>
+<ol>
+<li>列表内容</li>
+<li>列表内容</li>
+<li>列表内容</li>
+</ol>
+<p>列表可以嵌套，上一级和下一级之间敲三个空格即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* 一级无序列表内容</span><br><span class="line"></span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<ul>
+<li><p>一级无序列表内容</p>
+<ul>
+<li>二级无序列表内容</li>
+<li>二级无序列表内容</li>
+<li>二级无序列表内容</li>
+</ul>
+</li>
+</ul>
+<p>要让列表看起来更漂亮，你可以把内容用固定的缩进整理好：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span><br><span class="line">    Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,</span><br><span class="line">    viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.</span><br><span class="line">    Suspendisse id sem consectetuer libero luctus adipiscing</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<ul>
+<li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.<br>  Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,<br>  viverra nec, fringilla in, laoreet vitae, risus.</li>
+<li>Donec sit amet nisl. Aliquam semper ipsum sit amet velit.<br>  Suspendisse id sem consectetuer libero luctus adipiscing</li>
+</ul>
+<p>列表项目可以包含多个段落，每个项目下的段落都必须缩进 4 个空格或是 1 个制表符：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1.  This is a list item with two paragraphs. Lorem ipsum dolor</span><br><span class="line">    sit amet, consectetuer adipiscing elit. Aliquam hendrerit</span><br><span class="line">    mi posuere lectus.</span><br><span class="line"></span><br><span class="line">    Vestibulum enim wisi, viverra nec, fringilla in, laoreet</span><br><span class="line">    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum</span><br><span class="line">    sit amet velit.</span><br><span class="line"></span><br><span class="line">2.  Suspendisse id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
+<p>效果如下： </p>
+<ol>
+<li><p>This is a list item with two paragraphs. Lorem ipsum dolor<br> sit amet, consectetuer adipiscing elit. Aliquam hendrerit<br> mi posuere lectus.</p>
+<p> Vestibulum enim wisi, viverra nec, fringilla in, laoreet<br> vitae, risus. Donec sit amet nisl. Aliquam semper ipsum<br> sit amet velit.</p>
+</li>
+<li><p> Suspendisse id sem consectetuer libero luctus adipiscing.</p>
+</li>
+</ol>
+<p>如果你每行都有缩进，看起来会看好很多，当然，再次地，如果你很懒惰，Markdown 也允许：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*   This is a list item with two paragraphs.</span><br><span class="line"></span><br><span class="line">    This is the second paragraph in the list item. You&#x27;re</span><br><span class="line">only required to indent the first line. Lorem ipsum dolor</span><br><span class="line">sit amet, consectetuer adipiscing elit.</span><br><span class="line"></span><br><span class="line">*   Another item in the same list.</span><br></pre></td></tr></table></figure>
+
+<p>效果不再展示。 此外： 如果要在列表项目内放进引用，那 &gt; 就需要缩进， 如果要放代码区块的话，该区块就需要缩进两次，也就是 8 个空格或是 2 个制表符。</p>
+<h3 id="6-表格"><a href="#6-表格" class="headerlink" title="6. 表格"></a>6. 表格</h3><p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">表头|表头|表头</span><br><span class="line">---|:--:|---:</span><br><span class="line">内容|内容|内容</span><br><span class="line">内容|内容|内容</span><br><span class="line"></span><br><span class="line">第二行分割表头和内容。</span><br><span class="line">- 有一个就行，为了对齐，多加了几个</span><br><span class="line">文字默认居左</span><br><span class="line">-两边加：表示文字居中</span><br><span class="line">-右边加：表示文字居右</span><br><span class="line">注：原生的语法两边都要用 | 包起来。此处省略</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<table>
+<thead>
+<tr>
+<th>表头</th>
+<th align="center">表头</th>
+<th align="right">表头</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>内容</td>
+<td align="center">内容</td>
+<td align="right">内容</td>
+</tr>
+<tr>
+<td>内容</td>
+<td align="center">内容</td>
+<td align="right">内容</td>
+</tr>
+</tbody></table>
+<h3 id="7-代码"><a href="#7-代码" class="headerlink" title="7. 代码"></a>7. 代码</h3><p>在Markdown中加入代码块有两种方式： 第一种，只要简单地缩进 4 个空格或是 1 个制表符就可以:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这是一个普通段落：</span><br><span class="line"></span><br><span class="line">    这是一个代码区块。</span><br><span class="line"></span><br><span class="line">(当然，前面要有一个空行和前面的文字分隔开)</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p>这是一个普通段落：</p>
+<pre><code>这是一个代码区块。
+</code></pre>
+<p>第二种方法似乎是更为常用， 单行代码：代码之间分别用一个反引号包起来即可；</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这里有一句代码`代码内容`。</span><br></pre></td></tr></table></figure>
+<p>效果如下：<br>这里有一句代码<code>代码内容</code>。</p>
+<p>代码块：代码之间分别用三个反引号包起来，且两边的反引号单独占一行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\```</span><br><span class="line">  代码...</span><br><span class="line">  代码...</span><br><span class="line">  代码...</span><br><span class="line">\```</span><br><span class="line">\ 是为了防止转译，实际是没有的。</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">代码...</span><br><span class="line">代码...</span><br><span class="line">代码...</span><br></pre></td></tr></table></figure>
+<p>还可以在上面的 ``` 后面注明你的代码类型，可以产生相应的代码高亮。</p>
+<h3 id="8-段落和换行"><a href="#8-段落和换行" class="headerlink" title="8. 段落和换行"></a>8. 段落和换行</h3><p>一个 Markdown 段落是由一个或多个连续的文本行组成，它的前后要有一个以上的空行（空行的定义是显示上看起来像是空的，便会被视为空行。比方说，若某一行只包含空格和制表符，则该行也会被视为空行）。普通段落不该用空格或制表符来缩进。 我们在两个不同的文字块之间，一定要空行以示区分，不然就会被归入同一文字块中。 </p>
+<h4 id="换行"><a href="#换行" class="headerlink" title="换行"></a>换行</h4><p>Markdown 允许段落内的强迫换行（插入换行符）。 如果想要空一行，在插入处先按入两个以上的空格然后回车，即可。</p>
+<ul>
+<li>方法1：连敲2个以上空格+enter键；</li>
+<li>方法2：利用html语法，<code>&lt;br&gt;</code>。</li>
+</ul>
+<h4 id="缩进-空格"><a href="#缩进-空格" class="headerlink" title="缩进/空格"></a>缩进/空格</h4><p>但有时也可以使用标记来强制空行和空格，比如需要首行缩进的时候： 一个空格大小的表示：\  或 \  两个空格的大小表示：\ 或 \ 不换行空格：\ 或 \ 强制空行： \</p>
+<blockquote>
+<p>由于平时中文的排版习惯，首行通常缩进两字符什么的，所以顺便也了解以下操作,在markdown里这个还稍微有点麻烦，不是敲两下空格键就搞定的。这里需要借用html方面的空格实体。<br>首先明确1个汉字=2个空格大小<br>1、一个空格大小的表示&ensp; &#8194;两种用法显示效果一致。<br>2、两个空格大小的表示&emsp; &#8195;两种用法显示效果一致。<br>3、不换行空格的表示&nbsp; &#160;也是占一个空格的宽度大小。</p>
+</blockquote>
+<h3 id="9-插入超链接"><a href="#9-插入超链接" class="headerlink" title="9. 插入超链接"></a>9. 插入超链接</h3><p>链接分两种。一种是链接到其他网上地址的，还有一种是链接到本文中的某个位置的。<br>两种的基本格式一样<code>[]()</code>。需要添加链接的文字内容用<code>[方括号]</code>来括起来，后面紧跟着带有网址的<code>(圆括号)</code>，如果要加上连接的title文字，在网址后面，把 title文字放到双引号里面。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[超链接名](超链接地址 &quot;超链接title&quot;)</span><br><span class="line">title可加可不加</span><br><span class="line">文字链接 [链接名称](http://链接网址)</span><br><span class="line">网址链接 &lt;http://链接网址&gt;</span><br><span class="line">实例：</span><br><span class="line">[Github](https://github.com/fengyanxin) &amp;emsp;&lt;https://github.com/fengyanxin&gt;</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p><a href="https://github.com/fengyanxin">Github</a>：<a href="https://github.com/fengyanxin">https://github.com/fengyanxin</a></p>
+<h3 id="10-插入图片"><a href="#10-插入图片" class="headerlink" title="10. 插入图片"></a>10. 插入图片</h3><p>添加图片形式和链接相似，只需要在链接的基础上前方加一个<code>！</code> 感叹号。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">![图片alt](图片地址  &quot;optional title&quot;)</span><br><span class="line">图片alt就是显示在图片下面的文字，相当于对图片内容的解释，可以不写。</span><br><span class="line">图片地址链接可以是图片的本地地址或网址。</span><br><span class="line">图片optional title是图片的标题，当鼠标悬置于图片上时显示的内容。title可加可不加。</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91Markdown-%E8%AF%AD%E6%B3%95/16781754751832.jpg"></p>
 ]]></content>
       <categories>
         <category>Tips</category>
