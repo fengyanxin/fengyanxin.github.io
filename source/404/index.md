@@ -30,16 +30,14 @@ date: 2025-01-17 09:40:30
     margin-top: -235px;
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="https://qzone.qq.com/gy/404/style/404style.css">
 </head>
-<body onload="redirect();">
-      <div id="gg">
-       <iframe   class="gg" scrolling='no' frameborder='0' src='https://yibo.iyiyun.com/Home/Distribute/ad404/key/1122458' width='654' height='470' style='display:block;'>
-    </iframe>
-    </div>
-<div class="whole">
-    <img src="http://7xwlgt.com1.z0.glb.clouddn.com/20100902105945386.jpg">
-</div>
-
+<body>
+  <script type="text/plain" src="http://www.qq.com/404/search_children.js"
+          charset="utf-8" homePageUrl="https://fengyanxin.github.io"
+          homePageName="回到首页">
+  </script>
+  <script src="https://qzone.qq.com/gy/404/data.js" charset="utf-8"></script>
+  <script src="https://qzone.qq.com/gy/404/page.js" charset="utf-8"></script>
 </body>
-
 </html>
