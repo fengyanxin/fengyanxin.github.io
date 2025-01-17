@@ -9,6 +9,7 @@ hexo generate
 sleep 5
 
 gulp
+sleep 5
 
 # Deploy
 hexo deploy
