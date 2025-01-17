@@ -708,10 +708,43 @@ canvas_ribbon:
 
 ![背景丝带](assets/%E8%83%8C%E6%99%AF%E4%B8%9D%E5%B8%A6.gif)
 
+#### Valine在线评论
+
+1. 首先要先去 [LeanCloud](https://www.leancloud.cn) 注册一个帐号，然后再创建一个应用，如下：
+
+![LeanCloud应用](assets/17370822732228.jpg)
+
+2. 拿到应用的 `appid` 和 `appkey` 之后，打开 `themes/next/_config.yml`主题配置文件，查找 `valine`，填入`appid`和 `appkey` ，如下:
+
+``` swift
+# Valine
+# For more information: https://valine.js.org, https://github.com/xCss/Valine
+# 评论功能
+valine:
+  enable: true
+  appid: ''
+  appkey: ''
+  notify: true # Mail notifier
+  verify: false # Verification code
+  placeholder: '说点什么吧！' # Comment box placeholder
+  avatar: mm # Gravatar style
+  guest_info: nick,mail,link # Custom comment header
+  pageSize: 10 # Pagination size
+  language: # Language, available values: en, zh-cn
+  visitor: true # Article reading statistic
+  comment_count: true # If false, comment count will only be displayed in post page, not in home page
+  recordIP: false # Whether to record the commenter IP
+  serverURLs: # When the custom domain name is enabled, fill it in here (it will be detected automatically by default, no need to fill in)
+  #post_meta_order: 0
+```
+
+3. 效果如下：
+
+![Valine评论](assets/17370825991243.jpg)
 
 ### 3、特殊配置
 
-#### 捐赠
+#### 捐赠（打赏）
 
 文章末尾还可以求打赏，需要配置好相应的二维码图片，并且可以修改提示语句
 
