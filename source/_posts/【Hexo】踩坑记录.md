@@ -11,7 +11,7 @@ categories:
 
 原因：这是因为 `hexo-asset-image`插件没有捕捉到图片`src`
 
-解决：打开 `hexo\node_modules\hexo-asset-image\index.js`，定位到相应代码:
+解决：打开 `hexo/node_modules/hexo-asset-image/index.js`，定位到相应代码:
 
 <!-- more -->
 
@@ -47,7 +47,7 @@ $('img').each(function(){
 
 再看控制台输出的 `this`:
 
-![控制台this](assets/17370933330227.jpg)
+![控制台this](assets/17370984380125.jpg)
 
 可以看到这里的路径是 `data-src`，所以，
 

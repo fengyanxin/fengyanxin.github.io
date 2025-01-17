@@ -742,6 +742,121 @@ valine:
 
 ![Valine评论](assets/17370825991243.jpg)
 
+#### 静态资源压缩
+
+1. 在站点目录下安装插件：
+
+``` swift
+$ npm install gulp -g
+$ npm install gulp-minify-css gulp-uglify gulp-htmlmin gulp-htmlclean gulp-imagemin gulp --save
+# 额外安装
+$ npm install imagemin-gifsicle imagemin-mozjpeg imagemin-optipng imagemin-svgo --save
+```
+
+2. 如下图所示，在站点目录下，新建 `gulpfile.js` ，并填入以下内容：
+
+![](assets/17370990019472.jpg)
+
+3. 填入以下代码：
+
+``` swift
+var gulp = require('gulp');
+var minifycss = require('gulp-minify-css');
+var uglify = require('gulp-uglify');
+var htmlmin = require('gulp-htmlmin');
+var htmlclean = require('gulp-htmlclean');
+// var imagemin = require('gulp-imagemin');
+var imagemin = import('gulp-imagemin');
+var imageminGifsicle = require('imagemin-gifsicle');
+var imageminMozjpeg = require('imagemin-mozjpeg');
+var imageminOptipng = require('imagemin-optipng');
+var imageminSvgo = require('imagemin-svgo');
+
+// 压缩css文件
+gulp.task('minify-css', function() {
+  return gulp.src('./public/**/*.css')
+  .pipe(minifycss())
+  .pipe(gulp.dest('./public'));
+});
+// 压缩html文件
+gulp.task('minify-html', function() {
+  return gulp.src('./public/**/*.html')
+  .pipe(htmlclean())
+  .pipe(htmlmin({
+    removeComments: true,
+    minifyJS: true,
+    minifyCSS: true,
+    minifyURLs: true,
+  }))
+  .pipe(gulp.dest('./public'))
+});
+// 压缩js文件
+gulp.task('minify-js', function() {
+    return gulp.src(['./public/**/.js','!./public/js/**/*min.js'])
+        .pipe(uglify())
+        .pipe(gulp.dest('./public'));
+});
+// 压缩 public/images 目录内图片(Version<3)
+// gulp.task('minify-images', function() {
+//    gulp.src('./public/images/**/*.*')
+//        .pipe(imagemin({
+//           optimizationLevel: 5, //类型：Number  默认：3  取值范围：0-7（优化等级）
+//           progressive: true, //类型：Boolean 默认：false 无损压缩jpg图片
+//           interlaced: false, //类型：Boolean 默认：false 隔行扫描gif进行渲染
+//           multipass: false, //类型：Boolean 默认：false 多次优化svg直到完全优化
+//        }))
+//        .pipe(gulp.dest('./public/uploads'));
+//});
+
+// 压缩 public/images 目录内图片(Version>3)
+// gulp.task('minify-images', function (done) {
+//    gulp.src('./public/images/**/*.*')
+//        .pipe(imagemin([
+//            imageminGifsicle({interlaced: true}),
+//            // imagemin.jpegtran({progressive: true}),
+//            imageminMozjpeg({progressive: true}),
+//            imageminOptipng({optimizationLevel: 5}),
+//            imageminSvgo({
+//                plugins: [
+//                    {removeViewBox: true},
+//                    {cleanupIDs: false}
+//                ]
+//            })
+//        ]))
+//        .pipe(gulp.dest('./public/images'));
+//    done();
+//});
+
+//4.0以前的写法 
+//gulp.task('default', [
+//  'minify-html', 'minify-css', 'minify-js', 'minify-images'
+//]);
+
+//4.0以后的写法
+// 执行 gulp 命令时执行的任务
+gulp.task('default', gulp.series(gulp.parallel('minify-html', 'minify-css', 'minify-js')), function () {
+    console.log("----------gulp Finished----------");
+    // Do something after a, b, and c are finished.
+});
+```
+
+4. 然后需要在每次执行 `generate` 命令后执行`gulp`就可以实现对静态资源的压缩，完成压缩后执行`deploy`命令同步到服务器：
+
+``` swift
+# Generate blog
+hexo clean
+hexo generate
+sleep 5
+
+gulp
+
+# Deploy
+hexo deploy
+sleep 5
+```
+
+> 注意：这里有一个坑，imagemin 压缩，由于版本原因始终无法执行成功，这里暂时先把它给注了
+
 ### 3、特殊配置
 
 #### 捐赠（打赏）

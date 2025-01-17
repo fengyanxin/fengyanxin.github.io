@@ -8,6 +8,8 @@ hexo clean
 hexo generate
 sleep 5
 
+gulp
+
 # Deploy
 hexo deploy
 sleep 5
