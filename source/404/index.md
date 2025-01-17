@@ -30,7 +30,6 @@ date: 2025-01-17 09:40:30
     margin-top: -235px;
         }
     </style>
-    <link rel="stylesheet" type="text/css" href="https://qzone.qq.com/gy/404/style/404style.css">
 </head>
 <body>
   <script type="text/plain" src="http://www.qq.com/404/search_children.js"
