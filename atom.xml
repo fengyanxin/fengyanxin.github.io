@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-01-17T03:54:58.686Z</updated>
+  <updated>2025-01-17T06:38:52.845Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,47 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>07 | 设计规范：如何统一设计规范，提高沟通效率？</title>
+    <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/"/>
+    <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/</id>
+    <published>2025-01-17T06:17:26.000Z</published>
+    <updated>2025-01-17T06:38:52.845Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;如何统一设计规范，提高沟通效率？&quot;&gt;&lt;a href=&quot;#如何统一设计规范，提高沟通效率？&quot; class=&quot;headerlink&quot; title=&quot;如何统一设计规范，提高沟通效率？&quot;&gt;&lt;/a&gt;如何统一设计规范，提高沟通效率？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370948031886.jpg&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="学习笔记" scheme="https://fengyanxin.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【Hexo】踩坑记录</title>
+    <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/"/>
+    <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</id>
+    <published>2025-01-17T05:54:45.000Z</published>
+    <updated>2025-01-17T05:58:33.852Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;一、控制台打印-no-src-attr-skipped…&quot;&gt;&lt;a href=&quot;#一、控制台打印-no-src-attr-skipped…&quot; class=&quot;headerlink&quot; title=&quot;一、控制台打印 no src attr, skipped…&quot;&gt;&lt;/a&gt;一、控制台打印 no src attr, skipped…&lt;/h3&gt;&lt;p&gt;原因：这是因为 &lt;code&gt;hexo-asset-image&lt;/code&gt;插件没有捕捉到图片&lt;code&gt;src&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;解决：打开 &lt;code&gt;hexo\node_modules\hexo-asset-image\index.js&lt;/code&gt;，定位到相应代码:&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Hexo" scheme="https://fengyanxin.github.io/categories/Hexo/"/>
+    
+    
+    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
+    
+  </entry>
   
   <entry>
     <title>【Hexo】Next 主题的使用与美化</title>
@@ -407,47 +448,6 @@
     
     
     <summary type="html">&lt;h1 id=&quot;添加-sh-脚本文件，快速测试和部署&quot;&gt;&lt;a href=&quot;#添加-sh-脚本文件，快速测试和部署&quot; class=&quot;headerlink&quot; title=&quot;添加 .sh 脚本文件，快速测试和部署&quot;&gt;&lt;/a&gt;添加 .sh 脚本文件，快速测试和部署&lt;/h1&gt;&lt;h2 id=&quot;一、创建-sh-脚本文件&quot;&gt;&lt;a href=&quot;#一、创建-sh-脚本文件&quot; class=&quot;headerlink&quot; title=&quot;一、创建 .sh 脚本文件&quot;&gt;&lt;/a&gt;一、创建 .sh 脚本文件&lt;/h2&gt;&lt;h3 id=&quot;1-启动-Sublime-Test&quot;&gt;&lt;a href=&quot;#1-启动-Sublime-Test&quot; class=&quot;headerlink&quot; title=&quot;1.启动 Sublime Test&quot;&gt;&lt;/a&gt;1.启动 Sublime Test&lt;/h3&gt;&lt;p&gt;&lt;img data-src=&quot;/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755102992.jpg&quot;&gt;&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Hexo" scheme="https://fengyanxin.github.io/categories/Hexo/"/>
-    
-    
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【Tips】Git常用命令汇总</title>
-    <link href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/"/>
-    <id>https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/</id>
-    <published>2022-12-08T13:46:58.000Z</published>
-    <updated>2023-07-10T08:22:14.221Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;Git常用命令汇总&quot;&gt;&lt;a href=&quot;#Git常用命令汇总&quot; class=&quot;headerlink&quot; title=&quot;Git常用命令汇总&quot;&gt;&lt;/a&gt;Git常用命令汇总&lt;/h1&gt;&lt;h2 id=&quot;常用命令&quot;&gt;&lt;a href=&quot;#常用命令&quot; class=&quot;headerlink&quot; title=&quot;常用命令&quot;&gt;&lt;/a&gt;常用命令&lt;/h2&gt;&lt;h3 id=&quot;git-init&quot;&gt;&lt;a href=&quot;#git-init&quot; class=&quot;headerlink&quot; title=&quot;git init&quot;&gt;&lt;/a&gt;git init&lt;/h3&gt;&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ git init &lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
-    
-    
-    
-    <category term="Tips" scheme="https://fengyanxin.github.io/categories/Tips/"/>
-    
-    
-    <category term="Tips" scheme="https://fengyanxin.github.io/tags/Tips/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【Hexo】Mac 上使用Hexo + Github搭建个人博客</title>
-    <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"/>
-    <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</id>
-    <published>2022-12-03T10:51:41.000Z</published>
-    <updated>2023-07-10T08:01:40.155Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;【Hexo】Mac-上使用Hexo-Github搭建个人博客&quot;&gt;&lt;a href=&quot;#【Hexo】Mac-上使用Hexo-Github搭建个人博客&quot; class=&quot;headerlink&quot; title=&quot;【Hexo】Mac 上使用Hexo + Github搭建个人博客&quot;&gt;&lt;/a&gt;【Hexo】Mac 上使用Hexo + Github搭建个人博客&lt;/h1&gt;&lt;h2 id=&quot;为什么要用Hexo-Github？&quot;&gt;&lt;a href=&quot;#为什么要用Hexo-Github？&quot; class=&quot;headerlink&quot; title=&quot;为什么要用Hexo + Github？&quot;&gt;&lt;/a&gt;为什么要用Hexo + Github？&lt;/h2&gt;&lt;h3 id=&quot;Hexo介绍&quot;&gt;&lt;a href=&quot;#Hexo介绍&quot; class=&quot;headerlink&quot; title=&quot;Hexo介绍&quot;&gt;&lt;/a&gt;Hexo介绍&lt;/h3&gt;&lt;p&gt;Hexo是一款基于Nodejs的，快速、简洁且高效的博客框架。它具有丰富的插件和主题，具有超快的速度，支持Makedown语法，可以方便快捷的编写博客文档。同时还支持node命令，可以一键部署到GitHub Pages, Heroku 或其他平台。更详细的信息可以看一下 &lt;a href=&quot;https://hexo.io/zh-cn&quot;&gt;Hexo官网&lt;/a&gt; 。&lt;/p&gt;
-&lt;p&gt;值得一提的是，它在github上的&lt;em&gt;star&lt;/em&gt;现在已经达到了&lt;a href=&quot;https://github.com/hexojs/hexo&quot;&gt;36.3k&lt;/a&gt;，优不优秀可见一斑。&lt;/p&gt;</summary>
     
     
     

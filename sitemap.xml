@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/</loc>
+    
+    <lastmod>2025-01-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</loc>
+    
+    <lastmod>2025-01-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</loc>
     
     <lastmod>2025-01-17</lastmod>
@@ -191,7 +209,7 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/categories/index.html</loc>
+    <loc>https://fengyanxin.github.io/about/index.html</loc>
     
     <lastmod>2023-03-25</lastmod>
     
@@ -200,7 +218,7 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/about/index.html</loc>
+    <loc>https://fengyanxin.github.io/categories/index.html</loc>
     
     <lastmod>2023-03-25</lastmod>
     
