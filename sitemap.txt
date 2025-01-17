@@ -1,6 +1,6 @@
-https://fengyanxin.github.io/404_%E5%A4%87%E7%94%A8.html
 https://fengyanxin.github.io/404.html
 https://fengyanxin.github.io/404/index.html
+https://fengyanxin.github.io/404_default.html
 https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/
 https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Markdown-%E8%AF%AD%E6%B3%95/
 https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91UIButton%E9%98%B2%E6%AD%A2%E9%87%8D%E5%A4%8D%E7%82%B9%E5%87%BB%E7%9A%843%E7%A7%8D%E6%96%B9%E6%B3%95/
