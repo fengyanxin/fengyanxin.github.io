@@ -1082,109 +1082,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【Hexo】如何将博客源码上传到GitHub</title>
-    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</url>
-    <content><![CDATA[<h1 id="如何将博客源码上传到-GitHub"><a href="#如何将博客源码上传到-GitHub" class="headerlink" title="如何将博客源码上传到 GitHub"></a>如何将博客源码上传到 GitHub</h1><h2 id="一、为什么要把博客源码上传到-GitHub-？"><a href="#一、为什么要把博客源码上传到-GitHub-？" class="headerlink" title="一、为什么要把博客源码上传到 GitHub ？"></a>一、为什么要把博客源码上传到 GitHub ？</h2><p>首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：</p>
-<ul>
-<li>多台电脑同时操作 hexo 源码</li>
-<li>原先 hexo 源码所在电脑重装系统（丢失文件）</li>
-<li>要将 hexo 源码移动到其他磁盘（更换电脑）</li>
-</ul>
-<span id="more"></span>
-
-<p>将 hexo 源码上传到 GitHub，就是做了一个稳定、安全的远程备份，遇到上面的情况将不会再是什么问题。</p>
-<p>因为，之前在 GitHub 上的部署（使用 <code>hexo d</code> 上传部署到github）其实是 hexo 编译后的文件，是用来生成网页的，不包含所有 hexo 生成的网站原始文件。只有把源码也上传才能解决问题。</p>
-<h2 id="二、如何上传博客源码？"><a href="#二、如何上传博客源码？" class="headerlink" title="二、如何上传博客源码？"></a>二、如何上传博客源码？</h2><h3 id="1、思路分析"><a href="#1、思路分析" class="headerlink" title="1、思路分析"></a>1、思路分析</h3><ul>
-<li><p><code>main</code>（<code>master</code>） 分支：存放博客的静态网页。</p>
-</li>
-<li><p><code>hexo</code>分支：存放 Hexo 博客的源码文件。</p>
-</li>
-</ul>
-<h3 id="2、hexo-分支创建及管理"><a href="#2、hexo-分支创建及管理" class="headerlink" title="2、hexo 分支创建及管理"></a>2、hexo 分支创建及管理</h3><h4 id="（1）github-准备"><a href="#（1）github-准备" class="headerlink" title="（1）github 准备"></a>（1）github 准备</h4><p>先在 GitHub 项目创建一个远程分支 <code>hexo</code></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787834628307.jpg"></p>
-<p>将其设置为默认分支</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787836604366.jpg"></p>
-<h4 id="2-打包将要推送到GitHub上的原始文件"><a href="#2-打包将要推送到GitHub上的原始文件" class="headerlink" title="(2) 打包将要推送到GitHub上的原始文件"></a>(2) 打包将要推送到GitHub上的原始文件</h4><ol>
-<li>clone该仓库到本地（clone的是hexo默认分支）</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li><p>下载的文件夹里仅留下 <code>.git</code> 文件夹，其他的文件都删除</p>
-</li>
-<li><p>找见我们 hexo 原位置，将 hexo 文件夹内除 <code>.deploy_git</code> 以外都复制到clone下来的文件夹中</p>
-</li>
-<li><p>修改 <code>.gitignore</code> 文件，将静态网页的目录及其他无需提交的源文件及目录排除掉。(没有即新建添加)</p>
-</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">.<span class="property">DS_Store</span></span><br><span class="line"><span class="title class_">Thumbs</span>.<span class="property">db</span></span><br><span class="line">db.<span class="property">json</span></span><br><span class="line">*.<span class="property">log</span></span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.<span class="property">deploy</span>*/</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>如果已经 clone 过主题文件，最好把 theme 主题文件夹里的 <code>.git</code> 也删除</li>
-</ol>
-<h4 id="3-将-clone-并修改的文件夹推送到-GitHub"><a href="#3-将-clone-并修改的文件夹推送到-GitHub" class="headerlink" title="(3) 将 clone 并修改的文件夹推送到 GitHub"></a>(3) 将 clone 并修改的文件夹推送到 GitHub</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;Code update&#x27;</span></span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure>
-
-<h3 id="3、main-master-分支管理"><a href="#3、main-master-分支管理" class="headerlink" title="3、main (master) 分支管理"></a>3、main (master) 分支管理</h3><p>进入<strong>站点配置文件</strong>，搜索 <code>deploy</code>关键词，修改如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy</span>:</span><br><span class="line">  <span class="attr">type</span>: git</span><br><span class="line">  <span class="attr">repo</span>: git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br><span class="line">  <span class="attr">branch</span>: main</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787847648363.jpg"></p>
-<p>修改完成，执行以下代码进行管理：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//清除本地旧代码。</span></span><br><span class="line">hexo clean</span><br><span class="line"><span class="comment">//生成静态网站</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="comment">//部署静态网站到 GitHub 的 main(master) 分支上</span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<h3 id="4、统一分支管理和部署"><a href="#4、统一分支管理和部署" class="headerlink" title="4、统一分支管理和部署"></a>4、统一分支管理和部署</h3><p>利用我上一篇文章讲到的 <code>deploy.sh</code>脚本进行一键部署，可以极大提高部署效率和降低维护成本。</p>
-<p>在 <code>deploy.sh</code> 文件中添加如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line"><span class="variable constant_">DIR</span>=<span class="string">`dirname $0`</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Generate</span> blog</span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Deploy</span></span><br><span class="line">hexo deploy</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Push</span> hexo code</span><br><span class="line">git add .</span><br><span class="line">current_date=<span class="string">`date &quot;+%Y-%m-%d %H:%M:%S&quot;`</span></span><br><span class="line">git commit -m <span class="string">&quot;Blog updated: $current_date&quot;</span></span><br><span class="line"></span><br><span class="line">sleep <span class="number">2</span></span><br><span class="line"></span><br><span class="line">git push origin hexo</span><br><span class="line"></span><br><span class="line">echo <span class="string">&quot;=====&gt;Finish!&lt;=====&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>然后附加脚本执行权限:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<p>然后执行即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<p>如此，便可以一键部署博客及备份博客源码到 github 的分支 <code>hexo</code> 分支上。</p>
-<h3 id="5、其他电脑源码使用"><a href="#5、其他电脑源码使用" class="headerlink" title="5、其他电脑源码使用"></a>5、其他电脑源码使用</h3><p>换到不同电脑上时，只需clone github 上的 hexo 分支即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【Hexo】添加 .sh 脚本文件，快速测试和部署</title>
-    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<h1 id="添加-sh-脚本文件，快速测试和部署"><a href="#添加-sh-脚本文件，快速测试和部署" class="headerlink" title="添加 .sh 脚本文件，快速测试和部署"></a>添加 .sh 脚本文件，快速测试和部署</h1><h2 id="一、创建-sh-脚本文件"><a href="#一、创建-sh-脚本文件" class="headerlink" title="一、创建 .sh 脚本文件"></a>一、创建 .sh 脚本文件</h2><h3 id="1-启动-Sublime-Test"><a href="#1-启动-Sublime-Test" class="headerlink" title="1.启动 Sublime Test"></a>1.启动 Sublime Test</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755102992.jpg"></p>
-<span id="more"></span>
-
-<h3 id="2-打开的-Sublime-Test"><a href="#2-打开的-Sublime-Test" class="headerlink" title="2.打开的 Sublime Test"></a>2.打开的 Sublime Test</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755213456.jpg"></p>
-<h3 id="3-写入或者复制进去脚本代码"><a href="#3-写入或者复制进去脚本代码" class="headerlink" title="3.写入或者复制进去脚本代码"></a>3.写入或者复制进去脚本代码</h3><p>此处以 Hexo localhost 测试为例</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755345365.jpg"></p>
-<h3 id="4-另存为-sh-文件，导入-hexo-文件夹"><a href="#4-另存为-sh-文件，导入-hexo-文件夹" class="headerlink" title="4.另存为 .sh 文件，导入 hexo 文件夹"></a>4.另存为 .sh 文件，导入 hexo 文件夹</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755472530.jpg"></p>
-<h2 id="二、赋予脚本可执行权限"><a href="#二、赋予脚本可执行权限" class="headerlink" title="二、赋予脚本可执行权限"></a>二、赋予脚本可执行权限</h2><h3 id="1-cd到编写的-sh-文件所在目录"><a href="#1-cd到编写的-sh-文件所在目录" class="headerlink" title="1.cd到编写的 .sh 文件所在目录"></a>1.cd到编写的 .sh 文件所在目录</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755599104.jpg"></p>
-<h3 id="2-执行-chmod-x-指令"><a href="#2-执行-chmod-x-指令" class="headerlink" title="2.执行 chmod +x 指令"></a>2.执行 chmod +x 指令</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x localhost.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-执行脚本"><a href="#3-执行脚本" class="headerlink" title="3.执行脚本"></a>3.执行脚本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./localhost.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<p>至此，localhost 测试脚本就完成了，部署脚本同理，在文件夹下新建一个 <code>deploy.sh</code> 文件，在其中输入以下代码即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<p>当然，添加其他助力 Hexo 快速执行的脚本亦可。</p>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【Hexo】Next 主题的使用与美化</title>
     <url>/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</url>
     <content><![CDATA[<h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>Next 主题是 <a href="https://hexo.io/zh-cn">Hexo</a> 上使用最广，同时在 GitHub 上也是 Star 最多的主题，bug 修复和功能更新也比较快。当前博客就是使用 Hexo 配合 Next 主题搭建的</p>
@@ -1473,6 +1370,109 @@
         <category>Hexo</category>
       </categories>
       <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Hexo】如何将博客源码上传到GitHub</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</url>
+    <content><![CDATA[<h1 id="如何将博客源码上传到-GitHub"><a href="#如何将博客源码上传到-GitHub" class="headerlink" title="如何将博客源码上传到 GitHub"></a>如何将博客源码上传到 GitHub</h1><h2 id="一、为什么要把博客源码上传到-GitHub-？"><a href="#一、为什么要把博客源码上传到-GitHub-？" class="headerlink" title="一、为什么要把博客源码上传到 GitHub ？"></a>一、为什么要把博客源码上传到 GitHub ？</h2><p>首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：</p>
+<ul>
+<li>多台电脑同时操作 hexo 源码</li>
+<li>原先 hexo 源码所在电脑重装系统（丢失文件）</li>
+<li>要将 hexo 源码移动到其他磁盘（更换电脑）</li>
+</ul>
+<span id="more"></span>
+
+<p>将 hexo 源码上传到 GitHub，就是做了一个稳定、安全的远程备份，遇到上面的情况将不会再是什么问题。</p>
+<p>因为，之前在 GitHub 上的部署（使用 <code>hexo d</code> 上传部署到github）其实是 hexo 编译后的文件，是用来生成网页的，不包含所有 hexo 生成的网站原始文件。只有把源码也上传才能解决问题。</p>
+<h2 id="二、如何上传博客源码？"><a href="#二、如何上传博客源码？" class="headerlink" title="二、如何上传博客源码？"></a>二、如何上传博客源码？</h2><h3 id="1、思路分析"><a href="#1、思路分析" class="headerlink" title="1、思路分析"></a>1、思路分析</h3><ul>
+<li><p><code>main</code>（<code>master</code>） 分支：存放博客的静态网页。</p>
+</li>
+<li><p><code>hexo</code>分支：存放 Hexo 博客的源码文件。</p>
+</li>
+</ul>
+<h3 id="2、hexo-分支创建及管理"><a href="#2、hexo-分支创建及管理" class="headerlink" title="2、hexo 分支创建及管理"></a>2、hexo 分支创建及管理</h3><h4 id="（1）github-准备"><a href="#（1）github-准备" class="headerlink" title="（1）github 准备"></a>（1）github 准备</h4><p>先在 GitHub 项目创建一个远程分支 <code>hexo</code></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787834628307.jpg"></p>
+<p>将其设置为默认分支</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787836604366.jpg"></p>
+<h4 id="2-打包将要推送到GitHub上的原始文件"><a href="#2-打包将要推送到GitHub上的原始文件" class="headerlink" title="(2) 打包将要推送到GitHub上的原始文件"></a>(2) 打包将要推送到GitHub上的原始文件</h4><ol>
+<li>clone该仓库到本地（clone的是hexo默认分支）</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>下载的文件夹里仅留下 <code>.git</code> 文件夹，其他的文件都删除</p>
+</li>
+<li><p>找见我们 hexo 原位置，将 hexo 文件夹内除 <code>.deploy_git</code> 以外都复制到clone下来的文件夹中</p>
+</li>
+<li><p>修改 <code>.gitignore</code> 文件，将静态网页的目录及其他无需提交的源文件及目录排除掉。(没有即新建添加)</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">.<span class="property">DS_Store</span></span><br><span class="line"><span class="title class_">Thumbs</span>.<span class="property">db</span></span><br><span class="line">db.<span class="property">json</span></span><br><span class="line">*.<span class="property">log</span></span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.<span class="property">deploy</span>*/</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>如果已经 clone 过主题文件，最好把 theme 主题文件夹里的 <code>.git</code> 也删除</li>
+</ol>
+<h4 id="3-将-clone-并修改的文件夹推送到-GitHub"><a href="#3-将-clone-并修改的文件夹推送到-GitHub" class="headerlink" title="(3) 将 clone 并修改的文件夹推送到 GitHub"></a>(3) 将 clone 并修改的文件夹推送到 GitHub</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;Code update&#x27;</span></span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、main-master-分支管理"><a href="#3、main-master-分支管理" class="headerlink" title="3、main (master) 分支管理"></a>3、main (master) 分支管理</h3><p>进入<strong>站点配置文件</strong>，搜索 <code>deploy</code>关键词，修改如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy</span>:</span><br><span class="line">  <span class="attr">type</span>: git</span><br><span class="line">  <span class="attr">repo</span>: git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br><span class="line">  <span class="attr">branch</span>: main</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787847648363.jpg"></p>
+<p>修改完成，执行以下代码进行管理：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//清除本地旧代码。</span></span><br><span class="line">hexo clean</span><br><span class="line"><span class="comment">//生成静态网站</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="comment">//部署静态网站到 GitHub 的 main(master) 分支上</span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、统一分支管理和部署"><a href="#4、统一分支管理和部署" class="headerlink" title="4、统一分支管理和部署"></a>4、统一分支管理和部署</h3><p>利用我上一篇文章讲到的 <code>deploy.sh</code>脚本进行一键部署，可以极大提高部署效率和降低维护成本。</p>
+<p>在 <code>deploy.sh</code> 文件中添加如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line"><span class="variable constant_">DIR</span>=<span class="string">`dirname $0`</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Generate</span> blog</span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Deploy</span></span><br><span class="line">hexo deploy</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Push</span> hexo code</span><br><span class="line">git add .</span><br><span class="line">current_date=<span class="string">`date &quot;+%Y-%m-%d %H:%M:%S&quot;`</span></span><br><span class="line">git commit -m <span class="string">&quot;Blog updated: $current_date&quot;</span></span><br><span class="line"></span><br><span class="line">sleep <span class="number">2</span></span><br><span class="line"></span><br><span class="line">git push origin hexo</span><br><span class="line"></span><br><span class="line">echo <span class="string">&quot;=====&gt;Finish!&lt;=====&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后附加脚本执行权限:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>然后执行即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>如此，便可以一键部署博客及备份博客源码到 github 的分支 <code>hexo</code> 分支上。</p>
+<h3 id="5、其他电脑源码使用"><a href="#5、其他电脑源码使用" class="headerlink" title="5、其他电脑源码使用"></a>5、其他电脑源码使用</h3><p>换到不同电脑上时，只需clone github 上的 hexo 分支即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Hexo】添加 .sh 脚本文件，快速测试和部署</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<h1 id="添加-sh-脚本文件，快速测试和部署"><a href="#添加-sh-脚本文件，快速测试和部署" class="headerlink" title="添加 .sh 脚本文件，快速测试和部署"></a>添加 .sh 脚本文件，快速测试和部署</h1><h2 id="一、创建-sh-脚本文件"><a href="#一、创建-sh-脚本文件" class="headerlink" title="一、创建 .sh 脚本文件"></a>一、创建 .sh 脚本文件</h2><h3 id="1-启动-Sublime-Test"><a href="#1-启动-Sublime-Test" class="headerlink" title="1.启动 Sublime Test"></a>1.启动 Sublime Test</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755102992.jpg"></p>
+<span id="more"></span>
+
+<h3 id="2-打开的-Sublime-Test"><a href="#2-打开的-Sublime-Test" class="headerlink" title="2.打开的 Sublime Test"></a>2.打开的 Sublime Test</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755213456.jpg"></p>
+<h3 id="3-写入或者复制进去脚本代码"><a href="#3-写入或者复制进去脚本代码" class="headerlink" title="3.写入或者复制进去脚本代码"></a>3.写入或者复制进去脚本代码</h3><p>此处以 Hexo localhost 测试为例</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755345365.jpg"></p>
+<h3 id="4-另存为-sh-文件，导入-hexo-文件夹"><a href="#4-另存为-sh-文件，导入-hexo-文件夹" class="headerlink" title="4.另存为 .sh 文件，导入 hexo 文件夹"></a>4.另存为 .sh 文件，导入 hexo 文件夹</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755472530.jpg"></p>
+<h2 id="二、赋予脚本可执行权限"><a href="#二、赋予脚本可执行权限" class="headerlink" title="二、赋予脚本可执行权限"></a>二、赋予脚本可执行权限</h2><h3 id="1-cd到编写的-sh-文件所在目录"><a href="#1-cd到编写的-sh-文件所在目录" class="headerlink" title="1.cd到编写的 .sh 文件所在目录"></a>1.cd到编写的 .sh 文件所在目录</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755599104.jpg"></p>
+<h3 id="2-执行-chmod-x-指令"><a href="#2-执行-chmod-x-指令" class="headerlink" title="2.执行 chmod +x 指令"></a>2.执行 chmod +x 指令</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x localhost.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-执行脚本"><a href="#3-执行脚本" class="headerlink" title="3.执行脚本"></a>3.执行脚本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./localhost.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>至此，localhost 测试脚本就完成了，部署脚本同理，在文件夹下新建一个 <code>deploy.sh</code> 文件，在其中输入以下代码即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>当然，添加其他助力 Hexo 快速执行的脚本亦可。</p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
         <tag>Hexo</tag>
       </tags>
   </entry>
@@ -4810,6 +4810,55 @@
       </tags>
   </entry>
   <entry>
+    <title>【Tips】解决 ping github.com 超时问题</title>
+    <url>/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="解决-ping-github-com-超时问题"><a href="#解决-ping-github-com-超时问题" class="headerlink" title="解决 ping github.com 超时问题"></a>解决 ping github.com 超时问题</h1><p>1、尝试 <code>ping github.com</code>，结果发现Ping不通，但是 <code>ping baidu.com</code> 却是正常的。</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg"></p>
+<span id="more"></span>
+
+<p>2、初步分心应该是本地的DNS无法解析导致的，需要修改Hosts文件，添加 github 的ip地址项</p>
+<h2 id="如何修改Hosts文件？"><a href="#如何修改Hosts文件？" class="headerlink" title="如何修改Hosts文件？"></a>如何修改Hosts文件？</h2><h3 id="1、通过终端命令修改"><a href="#1、通过终端命令修改" class="headerlink" title="1、通过终端命令修改"></a>1、通过终端命令修改</h3><p>（1）打开终端，输入命令行：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># sudo 以管理员权限执行</span><br><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>（2）输入本机密码后，会自动打开hosts文件 。</p>
+<ul>
+<li>键盘输入<code>i</code>（插入），修改完成后，按 <code>esc</code> 键退出插入页面</li>
+<li>保存退出：输入  <code>:wq</code> 或者<code>:wq!</code>，再<code>enter</code>键 </li>
+<li>不保存退出：输入<code>q</code>和<code>！</code>键，再<code>enter</code>键</li>
+</ul>
+<h3 id="2、在-Finder-中修改"><a href="#2、在-Finder-中修改" class="headerlink" title="2、在 Finder 中修改"></a>2、在 Finder 中修改</h3><p>方法一：</p>
+<p>（1）打开 <code>Finder</code> ，快捷键 <code>Command+Shift+G</code> 查找文件，输入 <code>/etc/hosts</code>，点击前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg"></p>
+<p>（2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg"></p>
+<p>方法二：</p>
+<p>（1）打开Finder，快捷键 <code>Shift+Command+G</code> 查找文件，输入 <code>/private</code> 前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg"></p>
+<p>（2）找到 <code>etc</code> 文件之后，选择显示简介</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg"></p>
+<p>（3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg"></p>
+<h2 id="如何在-Hosts-文件中配置-github-com-映射"><a href="#如何在-Hosts-文件中配置-github-com-映射" class="headerlink" title="如何在 Hosts 文件中配置 github.com 映射"></a>如何在 Hosts 文件中配置 github.com 映射</h2><p>host文件打开之后可以看到：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg"></p>
+<p>在文件下面添加如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="title class_">GitHub</span>地址</span><br><span class="line"><span class="number">140.82</span><span class="number">.114</span><span class="number">.3</span> github.<span class="property">com</span> git</span><br><span class="line"><span class="number">151.101</span><span class="number">.129</span><span class="number">.194</span> github.<span class="property">global</span>.<span class="property">ssl</span>.<span class="property">fastly</span>.<span class="property">net</span></span><br></pre></td></tr></table></figure>
+
+<p>上图中的 IP 可以通过， <a href="https://www.ipaddress.com/">ipaddress</a> 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg"></p>
+<p><code>140.82.114.3</code>：这个IP地址修改为 <code>github.com</code>搜索到的IP地址</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg"></p>
+<p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
+<p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【iOS】集成阿里云消息推送</title>
     <url>/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/</url>
     <content><![CDATA[<h1 id="集成阿里云消息推送"><a href="#集成阿里云消息推送" class="headerlink" title="集成阿里云消息推送"></a>集成阿里云消息推送</h1><h2 id="基本的业务流程："><a href="#基本的业务流程：" class="headerlink" title="基本的业务流程："></a>基本的业务流程：</h2><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782576576028.jpg"></p>
@@ -4967,55 +5016,6 @@
       </categories>
       <tags>
         <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【Tips】解决 ping github.com 超时问题</title>
-    <url>/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="解决-ping-github-com-超时问题"><a href="#解决-ping-github-com-超时问题" class="headerlink" title="解决 ping github.com 超时问题"></a>解决 ping github.com 超时问题</h1><p>1、尝试 <code>ping github.com</code>，结果发现Ping不通，但是 <code>ping baidu.com</code> 却是正常的。</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg"></p>
-<span id="more"></span>
-
-<p>2、初步分心应该是本地的DNS无法解析导致的，需要修改Hosts文件，添加 github 的ip地址项</p>
-<h2 id="如何修改Hosts文件？"><a href="#如何修改Hosts文件？" class="headerlink" title="如何修改Hosts文件？"></a>如何修改Hosts文件？</h2><h3 id="1、通过终端命令修改"><a href="#1、通过终端命令修改" class="headerlink" title="1、通过终端命令修改"></a>1、通过终端命令修改</h3><p>（1）打开终端，输入命令行：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># sudo 以管理员权限执行</span><br><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
-
-<p>（2）输入本机密码后，会自动打开hosts文件 。</p>
-<ul>
-<li>键盘输入<code>i</code>（插入），修改完成后，按 <code>esc</code> 键退出插入页面</li>
-<li>保存退出：输入  <code>:wq</code> 或者<code>:wq!</code>，再<code>enter</code>键 </li>
-<li>不保存退出：输入<code>q</code>和<code>！</code>键，再<code>enter</code>键</li>
-</ul>
-<h3 id="2、在-Finder-中修改"><a href="#2、在-Finder-中修改" class="headerlink" title="2、在 Finder 中修改"></a>2、在 Finder 中修改</h3><p>方法一：</p>
-<p>（1）打开 <code>Finder</code> ，快捷键 <code>Command+Shift+G</code> 查找文件，输入 <code>/etc/hosts</code>，点击前往</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg"></p>
-<p>（2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg"></p>
-<p>方法二：</p>
-<p>（1）打开Finder，快捷键 <code>Shift+Command+G</code> 查找文件，输入 <code>/private</code> 前往</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg"></p>
-<p>（2）找到 <code>etc</code> 文件之后，选择显示简介</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg"></p>
-<p>（3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg"></p>
-<h2 id="如何在-Hosts-文件中配置-github-com-映射"><a href="#如何在-Hosts-文件中配置-github-com-映射" class="headerlink" title="如何在 Hosts 文件中配置 github.com 映射"></a>如何在 Hosts 文件中配置 github.com 映射</h2><p>host文件打开之后可以看到：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg"></p>
-<p>在文件下面添加如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="title class_">GitHub</span>地址</span><br><span class="line"><span class="number">140.82</span><span class="number">.114</span><span class="number">.3</span> github.<span class="property">com</span> git</span><br><span class="line"><span class="number">151.101</span><span class="number">.129</span><span class="number">.194</span> github.<span class="property">global</span>.<span class="property">ssl</span>.<span class="property">fastly</span>.<span class="property">net</span></span><br></pre></td></tr></table></figure>
-
-<p>上图中的 IP 可以通过， <a href="https://www.ipaddress.com/">ipaddress</a> 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg"></p>
-<p><code>140.82.114.3</code>：这个IP地址修改为 <code>github.com</code>搜索到的IP地址</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg"></p>
-<p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
-<p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
-]]></content>
-      <categories>
-        <category>Tips</category>
-      </categories>
-      <tags>
-        <tag>Tips</tag>
       </tags>
   </entry>
 </search>
