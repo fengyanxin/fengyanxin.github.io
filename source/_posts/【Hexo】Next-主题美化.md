@@ -415,26 +415,6 @@ fancybox: true
 pangu: true
 ```
 
-#### 捐赠
-
-文章末尾还可以求打赏，需要配置好相应的二维码图片，并且可以修改提示语句
-
-``` swift
-# Donate (Sponsor) settings
-# Front-matter variable (nonsupport animation).
-reward_settings:
-  # If true, a donate button will be displayed in every article by default.
-  enable: true
-  animation: false
-  comment: 赏个鸡腿🍗
-
-reward:
-  wechatpay: /images/wechatpay.png
-  alipay: /images/alipay.jpg
-  #paypal: /images/paypal.png
-  #bitcoin: /images/bitcoin.png
-```
-
 #### 版权声明
 
 Next 内置了文章末尾增加版权声明，只需手动开启即可
@@ -470,11 +450,35 @@ busuanzi_count:
   post_views_icon: fa fa-eye
 ```
 
+#### 站点建立时间
+
+这个时间将在站点的底部显示，例如 © 2013 - 2015。 编辑 主题配置文件，新增字段 since。
+
+打开主题配置文件`themes/next/_config.yml`或者`_config.next.yml`，找到如下：
+
+``` swift
+footer:
+  # Specify the date when the site was setup. If not defined, current year will be used.
+  since: 2020
+```
+
 ### 2、进阶配置
 
-#### 添加更多按钮
+#### 文章摘要
 
-因为在你的博客主页会有多篇文章，如果你想让你的文章只显示一部分，多余的可以点击阅读全文来查看，那么你需要在你的文章中添加：
+打开主题配置文件`themes/next/_config.yml`或者`_config.next.yml`，找到如下：
+
+``` swift
+# Automatically Excerpt. Not recommend.
+# Please use <!-- more --> in the post to control excerpt accurately.
+auto_excerpt:
+  enable: false
+  length: 150
+```
+
+把这里的 false 改为 true 就可以了在首页启动显示文章预览了， length 是显示预览的长度。
+
+这里我们可以通过在文章使用 `<!-- more -->` 标志来精确控制文章的摘要预览，比如这篇文章就是在这个段落的末尾添加了该标志，所以本文在首页的预览就会显示到这个段落为止
 
 ``` swift
 <!--more-->
@@ -483,6 +487,62 @@ busuanzi_count:
 其后面的部分就不会显示了，只能点击 **阅读全文** 才能看。效果如下：
 
 ![阅读全文](assets/17370224998555.jpg)
+
+其他文章相关配置：
+
+``` swift
+# ---------------------------------------------------------------
+# Post Settings
+# ---------------------------------------------------------------
+
+# Automatically scroll page to section which is under <!-- more --> mark.
+# 自动将页面滚动到<!-- more -->标记下的地方。
+scroll_to_more: false
+
+# Automatically saving scroll position on each post/page in cookies.
+# 自动保存每篇文章或页面上一次滚动的地方。
+save_scroll: false
+
+# Automatically excerpt description in homepage as preamble text.
+# 自动在首页对文章进行摘要描述作为前言文本。
+excerpt_description: true
+
+# Automatically Excerpt. Not recommend.
+# Please use <!-- more --> in the post to control excerpt accurately.
+# 不推荐使用自动摘要。
+# 请在文章中使用<!-- more -->标志来精确控制摘要长度。
+auto_excerpt:
+  enable: true
+  length: 200
+
+# Post meta display settings
+# 文章元数据展示设置
+post_meta:
+  # 文本显示
+  item_text: true
+  # 创建时间
+  created_at: true
+  # 更新时间
+  # 这个更新时间有点问题，因为每次重新生成文章/部署时都会刷新更新时间，不建议使用
+  updated_at: false
+  # 目录分类
+  categories: true
+
+# Post wordcount display settings
+# Dependencies: https://github.com/willin/hexo-wordcount
+# 文章字数展示设置
+post_wordcount:
+  # 文本显示
+  item_text: true
+  # 文章字数统计
+  wordcount: true
+  # 阅读时长
+  min2read: true
+  # 站点总字数统计
+  totalcount: true
+  # 该post_wordcount的所有设置另起一行显示
+  separated_meta: true
+```
 
 #### 添加RSS订阅
 
@@ -647,4 +707,66 @@ canvas_ribbon:
 3. 效果如下：
 
 ![背景丝带](assets/%E8%83%8C%E6%99%AF%E4%B8%9D%E5%B8%A6.gif)
+
+
+### 3、特殊配置
+
+#### 捐赠
+
+文章末尾还可以求打赏，需要配置好相应的二维码图片，并且可以修改提示语句
+
+``` swift
+# Donate (Sponsor) settings
+# Front-matter variable (nonsupport animation).
+reward_settings:
+  # If true, a donate button will be displayed in every article by default.
+  enable: true
+  animation: false
+  comment: 赏个鸡腿🍗
+
+reward:
+  wechatpay: /images/wechatpay.png
+  alipay: /images/alipay.jpg
+  #paypal: /images/paypal.png
+  #bitcoin: /images/bitcoin.png
+```
+
+#### 公益404
+
+1. 在主题配置文件`themes/next/_config.yml`或者`_config.next.yml`中，搜索 `menu` 关键字，取消 `commonweal` 前的 # 注释。
+
+``` swift
+menu:
+  home: / || fa fa-home
+#  about: /about/ || fa fa-user
+  tags: /tags/ || fa fa-tags
+  categories: /categories/ || fa fa-th
+  archives: /archives/ || fa fa-archive
+  #schedule: /schedule/ || fa fa-calendar
+  #sitemap: /sitemap.xml || fa fa-sitemap
+  commonweal: /404/ || fa fa-heartbeat
+```
+
+2. 在 source 文件夹下新建 `404.html` 文件，复制粘贴以下代码：
+
+``` swift
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8;"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="robots" content="all" />
+  <meta name="robots" content="index,follow"/>
+  <link rel="stylesheet" type="text/css" href="https://qzone.qq.com/gy/404/style/404style.css">
+</head>
+<body>
+  <script type="text/plain" src="http://www.qq.com/404/search_children.js"
+          charset="utf-8" homePageUrl="https://ni256o.github.io"
+          homePageName="回到首页">
+  </script>
+  <script src="https://qzone.qq.com/gy/404/data.js" charset="utf-8"></script>
+  <script src="https://qzone.qq.com/gy/404/page.js" charset="utf-8"></script>
+</body>
+</html>
+```
 
