@@ -1,0 +1,20 @@
+name: Sync-2-gitlab1
+
+on:
+  push:
+    branches: [main, hugo]
+
+jobs:
+  sync-2-gitlab1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync to Gitlab1
+        uses: wearerequired/git-mirror-action@master
+        env:
+          # 注意在 Settings->Secrets 配置 GITLAB
+          SSH_PRIVATE_KEY: ${{ secrets.GITLAB1 }}
+        with:
+          # 注意替换为你的 GitHub 源仓库地址
+          source-repo: git@github.com:fengyanxin/fengyanxin.github.io.git
+          # 注意替换为你的 Gitee 目标仓库地址
+          destination-repo: git@gitlab.com:fengyanxin/fengyanxin.git

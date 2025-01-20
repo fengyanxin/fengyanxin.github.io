@@ -107,8 +107,9 @@ theme: next
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: git@github.com:fengyanxin/fengyanxin.github.io.git
-  branch: main
+  repo:
+     github: git@github.com:fengyanxin/fengyanxin.github.io.git,main
+     gitlab: git@gitlab.com:fengyanxin/fengyanxin.git,main
 
 # feed (RSS订阅)
 # Dependencies: https://github.com/hexojs/hexo-generator-feed
