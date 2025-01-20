@@ -129,187 +129,6 @@
       </tags>
   </entry>
   <entry>
-    <title>02｜依赖管理：如何使用CocoaPods统一依赖库的管理？</title>
-    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/</url>
-    <content><![CDATA[<h1 id="依赖管理：如何使用-CocoaPods-统一依赖库的管理？"><a href="#依赖管理：如何使用-CocoaPods-统一依赖库的管理？" class="headerlink" title="依赖管理：如何使用 CocoaPods 统一依赖库的管理？"></a>依赖管理：如何使用 CocoaPods 统一依赖库的管理？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788496868852.jpg"></p>
-<span id="more"></span>
-
-<p>在 iOS App 开发方面，几乎所有的 App 都需要使用到第三方依赖库。依赖库不仅能为我们提供丰富的功能，还能避免我们从头开发，在节省时间的同时也减少许多 Bug 。</p>
-<p>但伴随着软件功能越来越丰富，依赖库数量越来越多，由此也出现了“依赖地狱”，比如依赖库循环依赖，底层依赖库版本冲突等。为了解决此类问题，于是，依赖库管理工具也就出现了。</p>
-<p>目前流行的依赖库管理工具主要有：<strong>Git Submodules</strong>、<strong>Carthage</strong>、 <strong>Swift Package Manager</strong> 和 <strong>CocoaPods</strong>。在这里我们选择 CocoaPods。为什么呢？原因有三：</p>
-<ol>
-<li><p>CocoaPods 非常成熟，十分稳定，并且简单易用，学习成本低，效果明显；</p>
-</li>
-<li><p>CocoaPods 会自动整合 Xcode 项目，使得其他项目成员在使用第三方库时无须任何额外的手工操作；</p>
-</li>
-<li><p>CocoaPods 已经成为 iOS 业界标准，支持几乎所有的开源库和商业库，即便是 Objective-C 的依赖库以及二进制文件（binary）依赖库，CocoaPods 也提供支持。</p>
-</li>
-</ol>
-<p>那么，怎样使用 CocoaPods 来管理第三方依赖库呢？接下来我会从<strong>语义化版本管理</strong>、<strong>Pod 版本管理</strong>、<strong>Pod 版本更新</strong>三个方面展开介绍。</p>
-<h2 id="语义化版本管理"><a href="#语义化版本管理" class="headerlink" title="语义化版本管理"></a>语义化版本管理</h2><p>开发软件，免不了要更新迭代，所以每一次更新的版本号管理变得很重要。并且，一旦版本号混乱，就会导致一系列问题，比如很难查找和修改线上崩溃，没办法支持多团队并行开发，等等。为了避免此类问题，我们可以使用语义化版本管理（Semantic Versioning）来统一版本号的定义规范。</p>
-<p>语义化版本号是一种通用的版本号格式规范，目前绝大部分优秀的第三方依赖库都遵循这一规范来发布版本。</p>
-<p>具体来说，语义化版本号的版本号一般包括四部分：<code>MAJOR、MINOR、PATCH、BUILD</code>。每一部分都由递增的数值组成，例如 1.2.3.4，其中 1 是MAJOR， 2 是 MINOR。如果我们更新 MINOR 版本号，那么下一个版本就是 1.3.0.0。接下来我详细介绍下这四部分。</p>
-<ul>
-<li><p><strong>MAJOR 是指主版本号</strong>，通常在重大更新的时候才会需要更新主版本号。例如 iOS 每年都会更新一个主版本号。而对于第三方库来说，主版本号的更新，表示该库的 API 新增了重大功能，或者引入了不可兼容的更新 （breaking changes）。</p>
-</li>
-<li><p><strong>MINOR 是指副版本号</strong>，用于小功能的改善。例如 iOS 14 在发布主版本后，在一年内可能发布多个副版本如 14.1、 14.2 来完善其系统功能。一般对于第三方库来说，副版本的更新就是新增一些 API，但不包含不可兼容的更新。</p>
-</li>
-<li><p><strong>PATCH 是指补丁版本号</strong>，一般用于 bug fix 以及修复安全性问题等。对于第三方库来说，补丁版本号的更新也不应该有不可兼容的更新。虽然实际操作中这会有些困难，但我们可以通过把原有 API 标记为 deprecated，或者为新 API 参数提供默认值等办法来解决。</p>
-</li>
-<li><p><strong>BUILD 是指构建版本号</strong>，通常在内部测试时使用。一般当我们使用 CI 服务器进行自动构建时，构建版本号会自动更新。</p>
-</li>
-</ul>
-<h2 id="Pod-版本管理"><a href="#Pod-版本管理" class="headerlink" title="Pod 版本管理"></a>Pod 版本管理</h2><p>要使用 CocoaPods 管理第三方依赖库，首先要新建一个 Podfile 文件，然后执行 <code>bundle exec pod install</code> 命令来安装所有依赖库。这时候 CocoaPods 会自动帮我们建立一个 Podfile.lock 文件和一个 Workspace文档。</p>
-<p>注意，在第一讲我们说过，由于是通过 Bundler 来安装 CocoaPods，每次执行<code>pod</code>命令前，都需要加上<code>bundle exec</code>。不过为了简洁，后面涉及<code>pod</code>命令时，我会省略<code>bundle exec</code>部分。</p>
-<p>接下来，我详细介绍下 Podfile 文件、 Podfile.lock 和 Workspace 文档到底是什么，以及如何使用。</p>
-<h3 id="Podfile-文件"><a href="#Podfile-文件" class="headerlink" title="Podfile 文件"></a>Podfile 文件</h3><p><code>Podfile</code> 文件是一个配置文件，它主要是用来描述 Xcode 项目里各个 target 的依赖库。我们项目的 Podfile 文件可以在<a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile">仓库中</a>找到。在这里，我主要和你介绍一下 Podfile 文件中的几个重要配置。</p>
-<h3 id="source-配置"><a href="#source-配置" class="headerlink" title="source 配置"></a>source 配置</h3><p><code>source</code>用于指向 PodSpec（Pod 规范）文件的 Repo，从而使得 CocoaPods 能查询到相应的 PodSpec 文件。</p>
-<p>具体来说，当使用公共依赖库的时候，source需要指向 CocoaPods Master Repo，这个主仓库集中存放所有公共依赖库的 PodSpec 文件。 由于 CocoaPods 经常被开发者吐槽 Pod 下载很慢，因此 CocoaPods 使用了 CDN （Content Delivery Network，内容分发网络）来缓存整个 CocoaPods Master Repo， 方便开发者快速下载。具体的配置方法就是使source指向 CND 的地址，代码示例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source <span class="string">&#x27;https://cdn.cocoapods.org/&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>如果使用的是私有依赖库，我们也需要把source指向私有库的 PodSpec Repo，以使得 CocoaPods 能找到相应的 PodSpec 文件。 代码示例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source <span class="string">&#x27;https://my-git-server.com/internal-podspecs&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>注意，当我们使用私有库时，执行pod install命令的机器必须能访问到source所指向的 Repo。</p>
-<h3 id="project-和-workspace"><a href="#project-和-workspace" class="headerlink" title="project 和 workspace"></a>project 和 workspace</h3><p>project用于指定我们的主项目文档。该项目文档会使用到 CocoaPods 管理的所有第三方依赖库。</p>
-<p>workspace用于指定要生成和更新的 Workspace 文档。和其他依赖库管理工具不一样，CocoaPods 会自动生成一个 Workspace 文档，然后我们只能使用该文档而不是 Xcode 项目文档来进行后续开发。</p>
-<p>代码示例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">project <span class="string">&#x27;./Moments/Moments.xcodeproj&#x27;</span></span><br><span class="line">workspace <span class="string">&#x27;./Moments.xcworkspace&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>这其中 <code>Moments.xcodeproj</code> 就是我们的主项目文档，它一般放在和项目名字相同的下一层目录下。</p>
-<p>而 <code>Moments.xcworkspace</code> 是 CocoaPods 为我们生成的 Workspace文档，为了统一，我建议名字也是和主项目相同。</p>
-<h3 id="platform-和-use-frameworks"><a href="#platform-和-use-frameworks" class="headerlink" title="platform 和 use_frameworks"></a>platform 和 use_frameworks</h3><p>先看示例，它表示什么呢？</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">platform :ios, <span class="string">&#x27;14.0&#x27;</span></span><br><span class="line">use_frameworks!</span><br></pre></td></tr></table></figure>
-
-<p>为了保证所有依赖库与主项目在编译和运行时兼容，我们指定的系统版本号需要和主项目所支持的系统版本号保持一致。而<code>platform</code>就是用于指定操作系统以及所支持系统的最低版本号。比如，例子中的<code>platform :ios, &#39;14.0&#39;</code>就表示支持 iOS 14.0 以上的所有 iOS 版本。</p>
-<p>另外一行的<code>use_frameworks!</code>这一配置会让 CocoaPods 把所有第三方依赖库打包生成一个动态加载库，而不是静态库。因为动态库是我们经常用到的，它能有效地加快编译和链接的速度。</p>
-<h3 id="组织同类型的第三方依赖库"><a href="#组织同类型的第三方依赖库" class="headerlink" title="组织同类型的第三方依赖库"></a>组织同类型的第三方依赖库</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">def dev_pods</span><br><span class="line">  pod <span class="string">&#x27;SwiftLint&#x27;</span>, <span class="string">&#x27;0.40.3&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line">  pod <span class="string">&#x27;SwiftGen&#x27;</span>, <span class="string">&#x27;6.4.0&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>其中<code>configurations: [&#39;Debug&#39;]</code>用于指定该依赖库只是使用到<code>Debug</code>构建目标（target）里面，而不在其他（如<code>Release</code>）构建目标里面，这样做能有效减少 App Store 发布版本的体积。</p>
-<p><code>def dev_pods end</code>代码块是“复用同一类依赖库方式”的意思，我们可以把同类型的依赖库都放进这个代码块里面。比如，我们的 Moments 项目中就分别有<code>dev_pods</code>（开发相关的库）,<code>core_pods</code>（核心库）以及<code>thirdparty_pods</code>(第三方库)等代码块定义。</p>
-<h3 id="target-配置"><a href="#target-配置" class="headerlink" title="target 配置"></a>target 配置</h3><p>有了这些复用库定义以后，怎样使用到项目的构建目标（target）里面呢？下面就是一个例子。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">target <span class="string">&#x27;Moments&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  dev_pods</span><br><span class="line">  core_pods</span><br><span class="line">  # other pods...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>我们可以把构建目标所使用的所有依赖库放进<code>target</code>代码块中间，上面中的<code>Moments</code>就是我们的 App 构建目标。该构建目标依赖了<code>dev_pods</code>和<code>core_pods</code>等各组依赖库。执行<code>pod install</code>的时候，CocoaPods 会把<code>dev_pods</code>代码块自动展开为<code>SwiftLint</code>和<code>SwiftGen</code>，那么<code>Moments</code>构建目标能使用<code>SwiftLint</code>和<code>SwiftGen</code>依赖库了。</p>
-<h3 id="依赖库的版本"><a href="#依赖库的版本" class="headerlink" title="依赖库的版本"></a>依赖库的版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">pod <span class="string">&#x27;RxSwift&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br><span class="line">pod <span class="string">&#x27;RxRelay&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>在 CocoaPods 里面，每一个依赖库称为一个 Pod （注意这里首字母大写，Pod 指一个库），指定一个 Pod 的命令是<code>pod</code>（注意这里是小写，表示一条命令）。在 Podfile 里面我们可以通过这样的格式<code>pod &#39;RxSwift&#39;, &#39;= 5.1.1&#39;</code>来配置依赖库的版本号。其中，<code>RxSwift</code>或者<code>RxRelay</code>是依赖库的名字，<code>5.1.1</code>为版本号。这些库的名字以及版本号都可以在 CocoaPods 官网上找到。</p>
-<p><strong>为了统一管理第三方依赖库的版本，我建议统一使用 <code>= </code>来锁定该依赖库的版本，这样就能保证每次执行<code>pod install</code>的时候都可以为同一个库下载同一个版本。</strong></p>
-<p>除了 <code>=</code> 操作符以外，CocoaPods 还支持其他操作符来指定版本：</p>
-<ul>
-<li><p><code>&gt; 0.1</code>表示大于 0.1 的任何版本，这样可以包含 0.2 或者 1.0；</p>
-</li>
-<li><p><code>&gt;= 0.1</code>表示大于或等于 0.1 的任何版本；</p>
-</li>
-<li><p><code>&lt; 0.1</code>表示少于 0.1 的任何版本；</p>
-</li>
-<li><p><code>&lt;= 0.1</code>表示少于或等于 0.1 的任何版本；</p>
-</li>
-<li><p><code>~&gt; 0.1.2</code>表示大于 0.1.2 而且最高支持 0.1.* 的版本，但不包含 0.2 版本。</p>
-</li>
-</ul>
-<p>这几个操作符相里面，<code>~&gt;</code>（Squiggy arrow）操作符更为常用，它是以最后一个部分的版本号（例子中 0.1.2 的最后一个部分是补丁版本号 ..2）来计算可以支持的最高版本号。</p>
-<p>例如<code>~&gt; 0.1.2</code>表示 &gt;= 0.1.2 并且 &lt; 0.2.0，但不能等于 0.2.0， 因为 0.2.0 已经更新了副版本号而不仅仅是补丁版本号了。</p>
-<p>另外一个例子是<code>~&gt; 0.1</code>，表示  &gt;= 0.1  并且 &lt; 1.0，举例来说，我们可以更新到 0.9 但不能更新到 1.0。</p>
-<p>前面我介绍的是引用外部的第三方依赖库，如果我们的项目有自己的内部依赖库，要怎样在 CocoaPods 引用它呢？其实很简单，我们可以执行以下命令：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">pod <span class="string">&#x27;DesignKit&#x27;</span>, :<span class="function"><span class="params">path</span> =&gt;</span> <span class="string">&#x27;./Frameworks/DesignKit&#x27;</span>, :<span class="function"><span class="params">inhibit_warnings</span> =&gt;</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
-
-<p>和其他外部依赖库不一样，我们需要使用<code>:path</code>来指定该内部库的路径。</p>
-<h3 id="Podfile-lock-文件"><a href="#Podfile-lock-文件" class="headerlink" title="Podfile.lock 文件"></a>Podfile.lock 文件</h3><p><code>Podfile.lock</code> 文件是由 CocoaPods 自动生成和更新的，该文件会详细列举所有依赖库具体的版本号。比如，</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">DEPENDENCIES</span>:</span><br><span class="line">  - <span class="title class_">Alamofire</span> (= <span class="number">5.2</span><span class="number">.0</span>)</span><br><span class="line">  - <span class="title class_">Firebase</span>/<span class="title class_">Analytics</span> (= <span class="number">7.0</span><span class="number">.0</span>)</span><br><span class="line"><span class="variable constant_">PODFILE</span> <span class="attr">CHECKSUM</span>: 400d19dbc4f5050f438797c5c6459ca0ef74a777</span><br></pre></td></tr></table></figure>
-
-<p>当执行<code>pod install</code>后，CocoaPods 会根据 Podfile 文件解释出各依赖库的特定版本号，然后一一列举在 <code>DEPENDENCIES</code> 下面。在上述的例子中，我们的 App 在构建过程中使用了5.2.0 的 Alamofire 库以及 7.0.0 的 Firebase Analytics 库。</p>
-<p><code>PODFILE CHECKSUM</code> 用于记录 Podfile 的验证码，任何库的版本号的更改，都会改变该验证码。这样能帮助我们在不同的机器上，快速检测依赖库的版本号是否一致。</p>
-<p>我建议要把 <code>Podfile</code> 和 <code>Podfile.lock</code> 文件一同 commit 并 push 到 Git 代码管理服务器里面。特别是在团队开发的环境下，这样能帮助我们保证各个依赖库版本号的一致性。</p>
-<p>在实践操作中，无论我们在哪台机器上执行<code>pod install</code>， <code>PODFILE CHECKSUM</code> 都不应该发生任何改变。因为我们在 Git 保存了 <code>Podfile.lock</code>，一旦我们发现老版本 App 的 Bug ，就可以根据该文件为各个依赖库重新安装同一版本号，来重现和定位问题，从而帮助我们快速修改这些 Bug。</p>
-<h3 id="Workspace-文档"><a href="#Workspace-文档" class="headerlink" title="Workspace 文档"></a>Workspace 文档</h3><p><code>Workspace</code> 文档是 Xcode 管理子项目的方式。通过 Workspace，我们可以把相关联的多个 Xcode 子项目组合起来方便开发。</p>
-<p>前面说过，当我们执行<code>pod install</code>的时候，CocoaPods 会自动创建或者更新一个叫作 Pods 的项目文档（<code>Pods.xcodeproj</code> ）以及一个 Workspace 文档（在我们项目中叫作 <code>Moments.xcworkspace</code>）。</p>
-<p>其中，Pods 项目文档负责统一管理各个依赖库，当我们在 Podfile 里面指定构建成动态库的时候，该项目会自动生成一个名叫<code>Pods_&lt;项目名称&gt;.framework</code>的动态库供我们项目使用。</p>
-<p>而 Workspace 文档则统一管理了我们原有的主项目 （Moments.xcodeproj）以及那个 Pods 项目。</p>
-<p>与此同时，CocoaPods 还会修改 Xcode 项目中的 <code>Build Phases</code>  以此来检测 <code>Podfile.lock</code> 和 <code>Manifest.lock</code> 文件的一致性，并把<code>Pods_&lt;项目名称&gt;.framework</code>动态库嵌入我们的主项目中去。</p>
-<p>以上所有操作都是由 CocoaPods 自动帮我们完成。以后的开发，我们都可以打开 Workspace 文档而不是原有的 Xcode 项目文档来进行。</p>
-<h2 id="Pod-版本更新"><a href="#Pod-版本更新" class="headerlink" title="Pod 版本更新"></a>Pod 版本更新</h2><p>使用 CocoaPods 管理第三方依赖库的操作非常简单，可是一旦使用不当，特别是在 Pod 更新的时候，很容易引起依赖库版本不一致，从而出现各种问题。</p>
-<p>比如，在编译程序的时候，有些开发者可以顺利进行，而另外一些开发者编译时候就会出错；或者程序在本地编译时运行良好，一旦在 <code>CI</code> 上构建，就会出现 App 崩溃，等等。</p>
-<p>那么，怎么保证更新 Pod 的时候都能保证版本一致呢？</p>
-<p>下面结合我的实践经验，以第三方网络库 Alamofire 为例子和你介绍下。</p>
-<p><strong>第一步</strong>，CocoaPods 已经为我们提供了<code>pod outdated</code>命令，我们可以用它一次查看所有 Pod 的最新版本，而无须到 GitHub 上逐一寻找。下面是执行<code>pod outdated</code>命令的其中一条结果：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">The</span> following pod updates are <span class="attr">available</span>:</span><br><span class="line">- <span class="title class_">Alamofire</span> <span class="number">5.2</span><span class="number">.0</span> -&gt; <span class="number">5.2</span><span class="number">.0</span> (latest version <span class="number">5.4</span><span class="number">.0</span>)</span><br></pre></td></tr></table></figure>
-
-<p>这表示当前我们使用了版本为 5.2.0 的 Alamofire ，其最新版本为 5.4.0。如果我们决定更新到版本 5.4.0，那么可以继续下一步。</p>
-<p><strong>第二步</strong>，在更新依赖库版本之前，为了避免在新版本中不小心引入 Bug，我们需要了解新的版本到底提供了哪些新功能，修改了哪些 Bug，与老版本是否兼容等事项。具体我们可以到 CocoaPods 官网上查找需要更新的第三方依赖库，然后在 GitHub 等平台上找到，并仔细阅读该库的版本说明（<code>release note</code>）。</p>
-<p><code>请注意，我们要阅读当前使用版本到要更新的版本之间的所有版本说明</code>。 在这个例子中，我们要阅读 5.2.1，5.2.2，5.3.0 和 5.4.0 的所有版本说明。这些版本说明会列出新增功能，更新的 API，修改的 Bug，有没有不可兼容的更新 。</p>
-<p><strong>第三步</strong>，在 Podfile 文件里把要更新的 Pod 的版本号进行修改。例如把<code>pod &#39;Alamofire&#39;, &#39;= 5.2.0&#39;</code>改成<code>pod &#39;Alamofire&#39;, &#39;= 5.4.0&#39;</code>。 然后执行pod install来重新生成 Podfile.lock 文件。</p>
-<p>此时特别注意的是，我们要使用<code>pod install</code>而不是<code>pod update</code>。因为执行pod update会自动更新所有 Pod 的版本，这可能会更新了一些我们目前还不想更新的 Pod，从而会引入一些难以觉察的问题。</p>
-<p><strong>第四步</strong>，如果所更新的版本包含了不可兼容的更新，我们需要修改代码来保证代码能顺利完成编译。</p>
-<p><strong>第五步</strong>，很多第三方依赖库都是一些通用的基础组件，一旦发生问题会影响到整个 App 的功能，因此我们需要根据所更新的库进行回归测试。例如当更新了 Alamofire 库的时候，我们需要把每个网络请求都执行一遍，避免所更新的版本引入新的 Bug。</p>
-<p><strong>第六步</strong>，为了把更新的版本共享给所有开发者和 CI 服务器，我们需要把 Podfile 和 Podfile.lock 文件一同 commit 并 push 到 Git 代码管理服务器，并通过 Pull Request 流程并入主分支。</p>
-<p><strong>第七步</strong>，一旦更新的代码并入主分支后，要通过 Slack 等内部通信软件告诉所有开发者 pull 或者 rebase 主分支的代码，并执行pod install来更新他们开发环境的所有依赖库。</p>
-<p><code>特别注意，千万不要使用pod update，因为pod update会自动把开发者机器上所有 Pod 的版本自动更新了</code>。这种更新往往不是我们想要的结果，我们希望统一更新各个 Pod 的版本，并通过 Git 进行集中管理。</p>
-<p>如果开发者在编译新代码前没有执行pod install命令，会出现以下的错误。</p>
-<blockquote>
-<p>The sandbox is not in sync with the Podfile.lock. Run ‘pod install’ or update your CocoaPods installation.</p>
-</blockquote>
-<p>这错误可以有效提醒所有开发者，需要再次执行pod install来更新他们本地的依赖库，从而保证所有开发者使用的依赖库的版本都是一致的。</p>
-<p>另外，如果更新了基础组件的依赖库（如网络库），在测试阶段，我们还需要进行全面的回归测试。因为这些基础组件库的新版本如果有 Bug 很可能导致我们的 App 会发生大比例的崩溃，严重影响用户的体验。</p>
-<p>有了上面的一流程，我们就可以有效地保证每个开发者使用的依赖库版本都是一致的，同时也能保证 CI 在自动构建 App 的时候所使用的依赖库版本也是统一的。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲我介绍了如何使用 CocoaPods 来统一管理依赖库的版本。特别是根据我自己的经验总结了一套更新 Pod 版本的流程，希望你灵活使用这些步骤，从而少走弯路。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497199239.jpg"></p>
-<p><strong>这里我再特别强调一下，为了保证依赖库版本都能保持一致，尽量不要执行pod update，而是使用通过修改 Podfile 文件里的版本号并执行pod install来更新 Pod 的版本，然后把 Podfile 和 Podfile.lock 文件一同并入 Git 主分支中进行统一管理。</strong></p>
-<h3 id="源码地址："><a href="#源码地址：" class="headerlink" title="源码地址："></a>源码地址：</h3><blockquote>
-<p>Podfile 文件地址：<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile</a></p>
-</blockquote>
-<h1 id="学习笔记与扩展"><a href="#学习笔记与扩展" class="headerlink" title="学习笔记与扩展"></a>学习笔记与扩展</h1><h2 id="Carthage-的简单使用"><a href="#Carthage-的简单使用" class="headerlink" title="Carthage 的简单使用"></a>Carthage 的简单使用</h2><h3 id="一、安装-Carthage："><a href="#一、安装-Carthage：" class="headerlink" title="一、安装 Carthage："></a>一、安装 Carthage：</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 安装</span></span><br><span class="line">brew install carthage</span><br><span class="line"><span class="comment">// 查看版本</span></span><br><span class="line">carthage version</span><br><span class="line"><span class="comment">// 升级</span></span><br><span class="line">brew upgrade carthage</span><br><span class="line"><span class="comment">// 卸载</span></span><br><span class="line">brew uninstall carthage</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497339391.jpg"></p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497595924.jpg"></p>
-<h3 id="二、使用-Carthage-下载三方库"><a href="#二、使用-Carthage-下载三方库" class="headerlink" title="二、使用 Carthage 下载三方库"></a>二、使用 Carthage 下载三方库</h3><h4 id="1、在工程文件里创建-Cartfile-文件"><a href="#1、在工程文件里创建-Cartfile-文件" class="headerlink" title="1、在工程文件里创建 Cartfile 文件:"></a>1、在工程文件里创建 Cartfile 文件:</h4><p><code>cd</code> 到工程目录下，然后执行如下命令：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建 Cartfile 文件</span></span><br><span class="line">touch <span class="title class_">Cartfile</span></span><br><span class="line"><span class="comment">// 使用 Xcode 命令打开 Cartfile 文件</span></span><br><span class="line">open -a <span class="title class_">Xcode</span> <span class="title class_">Cartfile</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="2、在-Cartfile-文件添加依赖库"><a href="#2、在-Cartfile-文件添加依赖库" class="headerlink" title="2、在 Cartfile 文件添加依赖库"></a>2、在 Cartfile 文件添加依赖库</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">github <span class="string">&quot;SnapKit/SnapKit&quot;</span> ~&gt; <span class="number">5.6</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497742378.jpg"></p>
-<p>版本含义：如果没有指明版本号，则会自动使用最新的版本</p>
-<ul>
-<li><code>~&gt;5.0</code>：表示使用版本 <code>5.0</code> 以上但是低于 <code>6.0</code> 的最新版本，如 <code>5.1</code> ，<code>5.4</code></li>
-<li><code>==5.0</code>：表示使用 <code>5.0</code> 版本</li>
-<li><code>&gt;=5.0</code>：表示使用 <code>5.0</code> 或更高的版本</li>
-</ul>
-<h4 id="3、保存-Cartfile-文件，然后执行安装"><a href="#3、保存-Cartfile-文件，然后执行安装" class="headerlink" title="3、保存 Cartfile 文件，然后执行安装"></a>3、保存 Cartfile 文件，然后执行安装</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下载添加依赖库的第三方框架</span></span><br><span class="line">carthage update</span><br></pre></td></tr></table></figure>
-
-<p>执行成功之后，会在工程目录里生成一个 <code>Carthage</code> 的文件夹，里面有自动生成的 <code>framework</code>:</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497876744.jpg"></p>
-<ul>
-<li>有时候 Carthage 更新会出现 arm64 报错：</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">A shell task (<span class="regexp">/usr/</span>bin/xcrun lipo -create /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Intermediates</span>.<span class="property">noindex</span>/<span class="title class_">ArchiveIntermediates</span>/<span class="title class_">Alamofire</span>\ iOS/<span class="title class_">IntermediateBuildFilesPath</span>/<span class="title class_">UninstalledProducts</span>/iphoneos/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Products</span>/<span class="title class_">Release</span>-iphonesimulator/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> -output /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Desktop</span>/AY_Project/<span class="number">123456</span>/<span class="title class_">Carthage</span>/<span class="title class_">Build</span>/iOS/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span>) failed <span class="keyword">with</span> exit code <span class="number">1</span>:</span><br><span class="line">fatal <span class="attr">error</span>: <span class="regexp">/Applications/</span><span class="title class_">Xcode</span>.<span class="property">app</span>/<span class="title class_">Contents</span>/<span class="title class_">Developer</span>/<span class="title class_">Toolchains</span>/<span class="title class_">XcodeDefault</span>.<span class="property">xctoolchain</span>/usr/bin/<span class="attr">lipo</span>: <span class="regexp">/Users/</span>coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Intermediates</span>.<span class="property">noindex</span>/<span class="title class_">ArchiveIntermediates</span>/<span class="title class_">Alamofire</span> iOS/<span class="title class_">IntermediateBuildFilesPath</span>/<span class="title class_">UninstalledProducts</span>/iphoneos/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> and /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Products</span>/<span class="title class_">Release</span>-iphonesimulator/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> have the same architectures (arm64) and can<span class="string">&#x27;t be in the same fat output file</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Building universal frameworks with common architectures is not possible. The device and simulator slices for &quot;Alamofire&quot; both build for: arm64</span></span><br><span class="line"><span class="string">Rebuild with --use-xcframeworks to create an xcframework bundle instead.</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>根据提示终端重新输入：</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 不区分iOS、macOS</span></span><br><span class="line">carthage update --use-xcframeworks</span><br><span class="line"><span class="comment">// 只限iOS</span></span><br><span class="line">carthage update --platform iOS --use-xcframeworks</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498111841.jpg"></p>
-<h3 id="三、将下载三方框架集成到项目"><a href="#三、将下载三方框架集成到项目" class="headerlink" title="三、将下载三方框架集成到项目"></a>三、将下载三方框架集成到项目</h3><h4 id="1、添加-framework-文件："><a href="#1、添加-framework-文件：" class="headerlink" title="1、添加 framework 文件："></a>1、添加 framework 文件：</h4><p>打开工程文件中的iOS文件夹 -&gt; 将 framework 文件拖入到项目 General 中的 Frameworks，Libraries 中</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498234874.jpg"></p>
-<h4 id="2、添加编译脚本："><a href="#2、添加编译脚本：" class="headerlink" title="2、添加编译脚本："></a>2、添加编译脚本：</h4><p><strong>Target -&gt; Build Phases -&gt; 点击 + -&gt; New Run Script Phase</strong> -&gt; 添加如下脚本：</p>
-<p><code>/usr/local/bin/carthage copy-frameworks</code></p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498355244.jpg"></p>
-<h4 id="3、编译，导入头文件使用"><a href="#3、编译，导入头文件使用" class="headerlink" title="3、编译，导入头文件使用"></a>3、编译，导入头文件使用</h4><p>编译，然后导入头文件使用，但是可能会出现如下错误：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498494980.jpg"></p>
-<p>这是因为，我使用的是模拟器运行，但是导入的却是 iOS 真机的 framework，这时候我们需要将原来的 framework 删除，然后导入模拟器 framework。找到如下目录然后拖入：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498611867.jpg"></p>
-<p>然后，我们再次编译运行，就可以成功了，效果如下：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498763007.jpg"></p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>iOS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>03 | 配置准备：如何搭建多环境支持，为 App 开发作准备</title>
     <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/</url>
     <content><![CDATA[<h1 id="一、配置准备：如何搭建多环境支持，为-App-开发作准备"><a href="#一、配置准备：如何搭建多环境支持，为-App-开发作准备" class="headerlink" title="一、配置准备：如何搭建多环境支持，为 App 开发作准备"></a>一、配置准备：如何搭建多环境支持，为 App 开发作准备</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788668316765.jpg"></p>
@@ -542,6 +361,187 @@
 
 
 
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>02｜依赖管理：如何使用CocoaPods统一依赖库的管理？</title>
+    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/</url>
+    <content><![CDATA[<h1 id="依赖管理：如何使用-CocoaPods-统一依赖库的管理？"><a href="#依赖管理：如何使用-CocoaPods-统一依赖库的管理？" class="headerlink" title="依赖管理：如何使用 CocoaPods 统一依赖库的管理？"></a>依赖管理：如何使用 CocoaPods 统一依赖库的管理？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788496868852.jpg"></p>
+<span id="more"></span>
+
+<p>在 iOS App 开发方面，几乎所有的 App 都需要使用到第三方依赖库。依赖库不仅能为我们提供丰富的功能，还能避免我们从头开发，在节省时间的同时也减少许多 Bug 。</p>
+<p>但伴随着软件功能越来越丰富，依赖库数量越来越多，由此也出现了“依赖地狱”，比如依赖库循环依赖，底层依赖库版本冲突等。为了解决此类问题，于是，依赖库管理工具也就出现了。</p>
+<p>目前流行的依赖库管理工具主要有：<strong>Git Submodules</strong>、<strong>Carthage</strong>、 <strong>Swift Package Manager</strong> 和 <strong>CocoaPods</strong>。在这里我们选择 CocoaPods。为什么呢？原因有三：</p>
+<ol>
+<li><p>CocoaPods 非常成熟，十分稳定，并且简单易用，学习成本低，效果明显；</p>
+</li>
+<li><p>CocoaPods 会自动整合 Xcode 项目，使得其他项目成员在使用第三方库时无须任何额外的手工操作；</p>
+</li>
+<li><p>CocoaPods 已经成为 iOS 业界标准，支持几乎所有的开源库和商业库，即便是 Objective-C 的依赖库以及二进制文件（binary）依赖库，CocoaPods 也提供支持。</p>
+</li>
+</ol>
+<p>那么，怎样使用 CocoaPods 来管理第三方依赖库呢？接下来我会从<strong>语义化版本管理</strong>、<strong>Pod 版本管理</strong>、<strong>Pod 版本更新</strong>三个方面展开介绍。</p>
+<h2 id="语义化版本管理"><a href="#语义化版本管理" class="headerlink" title="语义化版本管理"></a>语义化版本管理</h2><p>开发软件，免不了要更新迭代，所以每一次更新的版本号管理变得很重要。并且，一旦版本号混乱，就会导致一系列问题，比如很难查找和修改线上崩溃，没办法支持多团队并行开发，等等。为了避免此类问题，我们可以使用语义化版本管理（Semantic Versioning）来统一版本号的定义规范。</p>
+<p>语义化版本号是一种通用的版本号格式规范，目前绝大部分优秀的第三方依赖库都遵循这一规范来发布版本。</p>
+<p>具体来说，语义化版本号的版本号一般包括四部分：<code>MAJOR、MINOR、PATCH、BUILD</code>。每一部分都由递增的数值组成，例如 1.2.3.4，其中 1 是MAJOR， 2 是 MINOR。如果我们更新 MINOR 版本号，那么下一个版本就是 1.3.0.0。接下来我详细介绍下这四部分。</p>
+<ul>
+<li><p><strong>MAJOR 是指主版本号</strong>，通常在重大更新的时候才会需要更新主版本号。例如 iOS 每年都会更新一个主版本号。而对于第三方库来说，主版本号的更新，表示该库的 API 新增了重大功能，或者引入了不可兼容的更新 （breaking changes）。</p>
+</li>
+<li><p><strong>MINOR 是指副版本号</strong>，用于小功能的改善。例如 iOS 14 在发布主版本后，在一年内可能发布多个副版本如 14.1、 14.2 来完善其系统功能。一般对于第三方库来说，副版本的更新就是新增一些 API，但不包含不可兼容的更新。</p>
+</li>
+<li><p><strong>PATCH 是指补丁版本号</strong>，一般用于 bug fix 以及修复安全性问题等。对于第三方库来说，补丁版本号的更新也不应该有不可兼容的更新。虽然实际操作中这会有些困难，但我们可以通过把原有 API 标记为 deprecated，或者为新 API 参数提供默认值等办法来解决。</p>
+</li>
+<li><p><strong>BUILD 是指构建版本号</strong>，通常在内部测试时使用。一般当我们使用 CI 服务器进行自动构建时，构建版本号会自动更新。</p>
+</li>
+</ul>
+<h2 id="Pod-版本管理"><a href="#Pod-版本管理" class="headerlink" title="Pod 版本管理"></a>Pod 版本管理</h2><p>要使用 CocoaPods 管理第三方依赖库，首先要新建一个 Podfile 文件，然后执行 <code>bundle exec pod install</code> 命令来安装所有依赖库。这时候 CocoaPods 会自动帮我们建立一个 Podfile.lock 文件和一个 Workspace文档。</p>
+<p>注意，在第一讲我们说过，由于是通过 Bundler 来安装 CocoaPods，每次执行<code>pod</code>命令前，都需要加上<code>bundle exec</code>。不过为了简洁，后面涉及<code>pod</code>命令时，我会省略<code>bundle exec</code>部分。</p>
+<p>接下来，我详细介绍下 Podfile 文件、 Podfile.lock 和 Workspace 文档到底是什么，以及如何使用。</p>
+<h3 id="Podfile-文件"><a href="#Podfile-文件" class="headerlink" title="Podfile 文件"></a>Podfile 文件</h3><p><code>Podfile</code> 文件是一个配置文件，它主要是用来描述 Xcode 项目里各个 target 的依赖库。我们项目的 Podfile 文件可以在<a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile">仓库中</a>找到。在这里，我主要和你介绍一下 Podfile 文件中的几个重要配置。</p>
+<h3 id="source-配置"><a href="#source-配置" class="headerlink" title="source 配置"></a>source 配置</h3><p><code>source</code>用于指向 PodSpec（Pod 规范）文件的 Repo，从而使得 CocoaPods 能查询到相应的 PodSpec 文件。</p>
+<p>具体来说，当使用公共依赖库的时候，source需要指向 CocoaPods Master Repo，这个主仓库集中存放所有公共依赖库的 PodSpec 文件。 由于 CocoaPods 经常被开发者吐槽 Pod 下载很慢，因此 CocoaPods 使用了 CDN （Content Delivery Network，内容分发网络）来缓存整个 CocoaPods Master Repo， 方便开发者快速下载。具体的配置方法就是使source指向 CND 的地址，代码示例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source <span class="string">&#x27;https://cdn.cocoapods.org/&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果使用的是私有依赖库，我们也需要把source指向私有库的 PodSpec Repo，以使得 CocoaPods 能找到相应的 PodSpec 文件。 代码示例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source <span class="string">&#x27;https://my-git-server.com/internal-podspecs&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意，当我们使用私有库时，执行pod install命令的机器必须能访问到source所指向的 Repo。</p>
+<h3 id="project-和-workspace"><a href="#project-和-workspace" class="headerlink" title="project 和 workspace"></a>project 和 workspace</h3><p>project用于指定我们的主项目文档。该项目文档会使用到 CocoaPods 管理的所有第三方依赖库。</p>
+<p>workspace用于指定要生成和更新的 Workspace 文档。和其他依赖库管理工具不一样，CocoaPods 会自动生成一个 Workspace 文档，然后我们只能使用该文档而不是 Xcode 项目文档来进行后续开发。</p>
+<p>代码示例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">project <span class="string">&#x27;./Moments/Moments.xcodeproj&#x27;</span></span><br><span class="line">workspace <span class="string">&#x27;./Moments.xcworkspace&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这其中 <code>Moments.xcodeproj</code> 就是我们的主项目文档，它一般放在和项目名字相同的下一层目录下。</p>
+<p>而 <code>Moments.xcworkspace</code> 是 CocoaPods 为我们生成的 Workspace文档，为了统一，我建议名字也是和主项目相同。</p>
+<h3 id="platform-和-use-frameworks"><a href="#platform-和-use-frameworks" class="headerlink" title="platform 和 use_frameworks"></a>platform 和 use_frameworks</h3><p>先看示例，它表示什么呢？</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">platform :ios, <span class="string">&#x27;14.0&#x27;</span></span><br><span class="line">use_frameworks!</span><br></pre></td></tr></table></figure>
+
+<p>为了保证所有依赖库与主项目在编译和运行时兼容，我们指定的系统版本号需要和主项目所支持的系统版本号保持一致。而<code>platform</code>就是用于指定操作系统以及所支持系统的最低版本号。比如，例子中的<code>platform :ios, &#39;14.0&#39;</code>就表示支持 iOS 14.0 以上的所有 iOS 版本。</p>
+<p>另外一行的<code>use_frameworks!</code>这一配置会让 CocoaPods 把所有第三方依赖库打包生成一个动态加载库，而不是静态库。因为动态库是我们经常用到的，它能有效地加快编译和链接的速度。</p>
+<h3 id="组织同类型的第三方依赖库"><a href="#组织同类型的第三方依赖库" class="headerlink" title="组织同类型的第三方依赖库"></a>组织同类型的第三方依赖库</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">def dev_pods</span><br><span class="line">  pod <span class="string">&#x27;SwiftLint&#x27;</span>, <span class="string">&#x27;0.40.3&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line">  pod <span class="string">&#x27;SwiftGen&#x27;</span>, <span class="string">&#x27;6.4.0&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>configurations: [&#39;Debug&#39;]</code>用于指定该依赖库只是使用到<code>Debug</code>构建目标（target）里面，而不在其他（如<code>Release</code>）构建目标里面，这样做能有效减少 App Store 发布版本的体积。</p>
+<p><code>def dev_pods end</code>代码块是“复用同一类依赖库方式”的意思，我们可以把同类型的依赖库都放进这个代码块里面。比如，我们的 Moments 项目中就分别有<code>dev_pods</code>（开发相关的库）,<code>core_pods</code>（核心库）以及<code>thirdparty_pods</code>(第三方库)等代码块定义。</p>
+<h3 id="target-配置"><a href="#target-配置" class="headerlink" title="target 配置"></a>target 配置</h3><p>有了这些复用库定义以后，怎样使用到项目的构建目标（target）里面呢？下面就是一个例子。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">target <span class="string">&#x27;Moments&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  dev_pods</span><br><span class="line">  core_pods</span><br><span class="line">  # other pods...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>我们可以把构建目标所使用的所有依赖库放进<code>target</code>代码块中间，上面中的<code>Moments</code>就是我们的 App 构建目标。该构建目标依赖了<code>dev_pods</code>和<code>core_pods</code>等各组依赖库。执行<code>pod install</code>的时候，CocoaPods 会把<code>dev_pods</code>代码块自动展开为<code>SwiftLint</code>和<code>SwiftGen</code>，那么<code>Moments</code>构建目标能使用<code>SwiftLint</code>和<code>SwiftGen</code>依赖库了。</p>
+<h3 id="依赖库的版本"><a href="#依赖库的版本" class="headerlink" title="依赖库的版本"></a>依赖库的版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">pod <span class="string">&#x27;RxSwift&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br><span class="line">pod <span class="string">&#x27;RxRelay&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>在 CocoaPods 里面，每一个依赖库称为一个 Pod （注意这里首字母大写，Pod 指一个库），指定一个 Pod 的命令是<code>pod</code>（注意这里是小写，表示一条命令）。在 Podfile 里面我们可以通过这样的格式<code>pod &#39;RxSwift&#39;, &#39;= 5.1.1&#39;</code>来配置依赖库的版本号。其中，<code>RxSwift</code>或者<code>RxRelay</code>是依赖库的名字，<code>5.1.1</code>为版本号。这些库的名字以及版本号都可以在 CocoaPods 官网上找到。</p>
+<p><strong>为了统一管理第三方依赖库的版本，我建议统一使用 <code>= </code>来锁定该依赖库的版本，这样就能保证每次执行<code>pod install</code>的时候都可以为同一个库下载同一个版本。</strong></p>
+<p>除了 <code>=</code> 操作符以外，CocoaPods 还支持其他操作符来指定版本：</p>
+<ul>
+<li><p><code>&gt; 0.1</code>表示大于 0.1 的任何版本，这样可以包含 0.2 或者 1.0；</p>
+</li>
+<li><p><code>&gt;= 0.1</code>表示大于或等于 0.1 的任何版本；</p>
+</li>
+<li><p><code>&lt; 0.1</code>表示少于 0.1 的任何版本；</p>
+</li>
+<li><p><code>&lt;= 0.1</code>表示少于或等于 0.1 的任何版本；</p>
+</li>
+<li><p><code>~&gt; 0.1.2</code>表示大于 0.1.2 而且最高支持 0.1.* 的版本，但不包含 0.2 版本。</p>
+</li>
+</ul>
+<p>这几个操作符相里面，<code>~&gt;</code>（Squiggy arrow）操作符更为常用，它是以最后一个部分的版本号（例子中 0.1.2 的最后一个部分是补丁版本号 ..2）来计算可以支持的最高版本号。</p>
+<p>例如<code>~&gt; 0.1.2</code>表示 &gt;= 0.1.2 并且 &lt; 0.2.0，但不能等于 0.2.0， 因为 0.2.0 已经更新了副版本号而不仅仅是补丁版本号了。</p>
+<p>另外一个例子是<code>~&gt; 0.1</code>，表示  &gt;= 0.1  并且 &lt; 1.0，举例来说，我们可以更新到 0.9 但不能更新到 1.0。</p>
+<p>前面我介绍的是引用外部的第三方依赖库，如果我们的项目有自己的内部依赖库，要怎样在 CocoaPods 引用它呢？其实很简单，我们可以执行以下命令：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">pod <span class="string">&#x27;DesignKit&#x27;</span>, :<span class="function"><span class="params">path</span> =&gt;</span> <span class="string">&#x27;./Frameworks/DesignKit&#x27;</span>, :<span class="function"><span class="params">inhibit_warnings</span> =&gt;</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p>和其他外部依赖库不一样，我们需要使用<code>:path</code>来指定该内部库的路径。</p>
+<h3 id="Podfile-lock-文件"><a href="#Podfile-lock-文件" class="headerlink" title="Podfile.lock 文件"></a>Podfile.lock 文件</h3><p><code>Podfile.lock</code> 文件是由 CocoaPods 自动生成和更新的，该文件会详细列举所有依赖库具体的版本号。比如，</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">DEPENDENCIES</span>:</span><br><span class="line">  - <span class="title class_">Alamofire</span> (= <span class="number">5.2</span><span class="number">.0</span>)</span><br><span class="line">  - <span class="title class_">Firebase</span>/<span class="title class_">Analytics</span> (= <span class="number">7.0</span><span class="number">.0</span>)</span><br><span class="line"><span class="variable constant_">PODFILE</span> <span class="attr">CHECKSUM</span>: 400d19dbc4f5050f438797c5c6459ca0ef74a777</span><br></pre></td></tr></table></figure>
+
+<p>当执行<code>pod install</code>后，CocoaPods 会根据 Podfile 文件解释出各依赖库的特定版本号，然后一一列举在 <code>DEPENDENCIES</code> 下面。在上述的例子中，我们的 App 在构建过程中使用了5.2.0 的 Alamofire 库以及 7.0.0 的 Firebase Analytics 库。</p>
+<p><code>PODFILE CHECKSUM</code> 用于记录 Podfile 的验证码，任何库的版本号的更改，都会改变该验证码。这样能帮助我们在不同的机器上，快速检测依赖库的版本号是否一致。</p>
+<p>我建议要把 <code>Podfile</code> 和 <code>Podfile.lock</code> 文件一同 commit 并 push 到 Git 代码管理服务器里面。特别是在团队开发的环境下，这样能帮助我们保证各个依赖库版本号的一致性。</p>
+<p>在实践操作中，无论我们在哪台机器上执行<code>pod install</code>， <code>PODFILE CHECKSUM</code> 都不应该发生任何改变。因为我们在 Git 保存了 <code>Podfile.lock</code>，一旦我们发现老版本 App 的 Bug ，就可以根据该文件为各个依赖库重新安装同一版本号，来重现和定位问题，从而帮助我们快速修改这些 Bug。</p>
+<h3 id="Workspace-文档"><a href="#Workspace-文档" class="headerlink" title="Workspace 文档"></a>Workspace 文档</h3><p><code>Workspace</code> 文档是 Xcode 管理子项目的方式。通过 Workspace，我们可以把相关联的多个 Xcode 子项目组合起来方便开发。</p>
+<p>前面说过，当我们执行<code>pod install</code>的时候，CocoaPods 会自动创建或者更新一个叫作 Pods 的项目文档（<code>Pods.xcodeproj</code> ）以及一个 Workspace 文档（在我们项目中叫作 <code>Moments.xcworkspace</code>）。</p>
+<p>其中，Pods 项目文档负责统一管理各个依赖库，当我们在 Podfile 里面指定构建成动态库的时候，该项目会自动生成一个名叫<code>Pods_&lt;项目名称&gt;.framework</code>的动态库供我们项目使用。</p>
+<p>而 Workspace 文档则统一管理了我们原有的主项目 （Moments.xcodeproj）以及那个 Pods 项目。</p>
+<p>与此同时，CocoaPods 还会修改 Xcode 项目中的 <code>Build Phases</code>  以此来检测 <code>Podfile.lock</code> 和 <code>Manifest.lock</code> 文件的一致性，并把<code>Pods_&lt;项目名称&gt;.framework</code>动态库嵌入我们的主项目中去。</p>
+<p>以上所有操作都是由 CocoaPods 自动帮我们完成。以后的开发，我们都可以打开 Workspace 文档而不是原有的 Xcode 项目文档来进行。</p>
+<h2 id="Pod-版本更新"><a href="#Pod-版本更新" class="headerlink" title="Pod 版本更新"></a>Pod 版本更新</h2><p>使用 CocoaPods 管理第三方依赖库的操作非常简单，可是一旦使用不当，特别是在 Pod 更新的时候，很容易引起依赖库版本不一致，从而出现各种问题。</p>
+<p>比如，在编译程序的时候，有些开发者可以顺利进行，而另外一些开发者编译时候就会出错；或者程序在本地编译时运行良好，一旦在 <code>CI</code> 上构建，就会出现 App 崩溃，等等。</p>
+<p>那么，怎么保证更新 Pod 的时候都能保证版本一致呢？</p>
+<p>下面结合我的实践经验，以第三方网络库 Alamofire 为例子和你介绍下。</p>
+<p><strong>第一步</strong>，CocoaPods 已经为我们提供了<code>pod outdated</code>命令，我们可以用它一次查看所有 Pod 的最新版本，而无须到 GitHub 上逐一寻找。下面是执行<code>pod outdated</code>命令的其中一条结果：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">The</span> following pod updates are <span class="attr">available</span>:</span><br><span class="line">- <span class="title class_">Alamofire</span> <span class="number">5.2</span><span class="number">.0</span> -&gt; <span class="number">5.2</span><span class="number">.0</span> (latest version <span class="number">5.4</span><span class="number">.0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这表示当前我们使用了版本为 5.2.0 的 Alamofire ，其最新版本为 5.4.0。如果我们决定更新到版本 5.4.0，那么可以继续下一步。</p>
+<p><strong>第二步</strong>，在更新依赖库版本之前，为了避免在新版本中不小心引入 Bug，我们需要了解新的版本到底提供了哪些新功能，修改了哪些 Bug，与老版本是否兼容等事项。具体我们可以到 CocoaPods 官网上查找需要更新的第三方依赖库，然后在 GitHub 等平台上找到，并仔细阅读该库的版本说明（<code>release note</code>）。</p>
+<p><code>请注意，我们要阅读当前使用版本到要更新的版本之间的所有版本说明</code>。 在这个例子中，我们要阅读 5.2.1，5.2.2，5.3.0 和 5.4.0 的所有版本说明。这些版本说明会列出新增功能，更新的 API，修改的 Bug，有没有不可兼容的更新 。</p>
+<p><strong>第三步</strong>，在 Podfile 文件里把要更新的 Pod 的版本号进行修改。例如把<code>pod &#39;Alamofire&#39;, &#39;= 5.2.0&#39;</code>改成<code>pod &#39;Alamofire&#39;, &#39;= 5.4.0&#39;</code>。 然后执行pod install来重新生成 Podfile.lock 文件。</p>
+<p>此时特别注意的是，我们要使用<code>pod install</code>而不是<code>pod update</code>。因为执行pod update会自动更新所有 Pod 的版本，这可能会更新了一些我们目前还不想更新的 Pod，从而会引入一些难以觉察的问题。</p>
+<p><strong>第四步</strong>，如果所更新的版本包含了不可兼容的更新，我们需要修改代码来保证代码能顺利完成编译。</p>
+<p><strong>第五步</strong>，很多第三方依赖库都是一些通用的基础组件，一旦发生问题会影响到整个 App 的功能，因此我们需要根据所更新的库进行回归测试。例如当更新了 Alamofire 库的时候，我们需要把每个网络请求都执行一遍，避免所更新的版本引入新的 Bug。</p>
+<p><strong>第六步</strong>，为了把更新的版本共享给所有开发者和 CI 服务器，我们需要把 Podfile 和 Podfile.lock 文件一同 commit 并 push 到 Git 代码管理服务器，并通过 Pull Request 流程并入主分支。</p>
+<p><strong>第七步</strong>，一旦更新的代码并入主分支后，要通过 Slack 等内部通信软件告诉所有开发者 pull 或者 rebase 主分支的代码，并执行pod install来更新他们开发环境的所有依赖库。</p>
+<p><code>特别注意，千万不要使用pod update，因为pod update会自动把开发者机器上所有 Pod 的版本自动更新了</code>。这种更新往往不是我们想要的结果，我们希望统一更新各个 Pod 的版本，并通过 Git 进行集中管理。</p>
+<p>如果开发者在编译新代码前没有执行pod install命令，会出现以下的错误。</p>
+<blockquote>
+<p>The sandbox is not in sync with the Podfile.lock. Run ‘pod install’ or update your CocoaPods installation.</p>
+</blockquote>
+<p>这错误可以有效提醒所有开发者，需要再次执行pod install来更新他们本地的依赖库，从而保证所有开发者使用的依赖库的版本都是一致的。</p>
+<p>另外，如果更新了基础组件的依赖库（如网络库），在测试阶段，我们还需要进行全面的回归测试。因为这些基础组件库的新版本如果有 Bug 很可能导致我们的 App 会发生大比例的崩溃，严重影响用户的体验。</p>
+<p>有了上面的一流程，我们就可以有效地保证每个开发者使用的依赖库版本都是一致的，同时也能保证 CI 在自动构建 App 的时候所使用的依赖库版本也是统一的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲我介绍了如何使用 CocoaPods 来统一管理依赖库的版本。特别是根据我自己的经验总结了一套更新 Pod 版本的流程，希望你灵活使用这些步骤，从而少走弯路。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497199239.jpg"></p>
+<p><strong>这里我再特别强调一下，为了保证依赖库版本都能保持一致，尽量不要执行pod update，而是使用通过修改 Podfile 文件里的版本号并执行pod install来更新 Pod 的版本，然后把 Podfile 和 Podfile.lock 文件一同并入 Git 主分支中进行统一管理。</strong></p>
+<h3 id="源码地址："><a href="#源码地址：" class="headerlink" title="源码地址："></a>源码地址：</h3><blockquote>
+<p>Podfile 文件地址：<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile</a></p>
+</blockquote>
+<h1 id="学习笔记与扩展"><a href="#学习笔记与扩展" class="headerlink" title="学习笔记与扩展"></a>学习笔记与扩展</h1><h2 id="Carthage-的简单使用"><a href="#Carthage-的简单使用" class="headerlink" title="Carthage 的简单使用"></a>Carthage 的简单使用</h2><h3 id="一、安装-Carthage："><a href="#一、安装-Carthage：" class="headerlink" title="一、安装 Carthage："></a>一、安装 Carthage：</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 安装</span></span><br><span class="line">brew install carthage</span><br><span class="line"><span class="comment">// 查看版本</span></span><br><span class="line">carthage version</span><br><span class="line"><span class="comment">// 升级</span></span><br><span class="line">brew upgrade carthage</span><br><span class="line"><span class="comment">// 卸载</span></span><br><span class="line">brew uninstall carthage</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497339391.jpg"></p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497595924.jpg"></p>
+<h3 id="二、使用-Carthage-下载三方库"><a href="#二、使用-Carthage-下载三方库" class="headerlink" title="二、使用 Carthage 下载三方库"></a>二、使用 Carthage 下载三方库</h3><h4 id="1、在工程文件里创建-Cartfile-文件"><a href="#1、在工程文件里创建-Cartfile-文件" class="headerlink" title="1、在工程文件里创建 Cartfile 文件:"></a>1、在工程文件里创建 Cartfile 文件:</h4><p><code>cd</code> 到工程目录下，然后执行如下命令：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建 Cartfile 文件</span></span><br><span class="line">touch <span class="title class_">Cartfile</span></span><br><span class="line"><span class="comment">// 使用 Xcode 命令打开 Cartfile 文件</span></span><br><span class="line">open -a <span class="title class_">Xcode</span> <span class="title class_">Cartfile</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2、在-Cartfile-文件添加依赖库"><a href="#2、在-Cartfile-文件添加依赖库" class="headerlink" title="2、在 Cartfile 文件添加依赖库"></a>2、在 Cartfile 文件添加依赖库</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">github <span class="string">&quot;SnapKit/SnapKit&quot;</span> ~&gt; <span class="number">5.6</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497742378.jpg"></p>
+<p>版本含义：如果没有指明版本号，则会自动使用最新的版本</p>
+<ul>
+<li><code>~&gt;5.0</code>：表示使用版本 <code>5.0</code> 以上但是低于 <code>6.0</code> 的最新版本，如 <code>5.1</code> ，<code>5.4</code></li>
+<li><code>==5.0</code>：表示使用 <code>5.0</code> 版本</li>
+<li><code>&gt;=5.0</code>：表示使用 <code>5.0</code> 或更高的版本</li>
+</ul>
+<h4 id="3、保存-Cartfile-文件，然后执行安装"><a href="#3、保存-Cartfile-文件，然后执行安装" class="headerlink" title="3、保存 Cartfile 文件，然后执行安装"></a>3、保存 Cartfile 文件，然后执行安装</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下载添加依赖库的第三方框架</span></span><br><span class="line">carthage update</span><br></pre></td></tr></table></figure>
+
+<p>执行成功之后，会在工程目录里生成一个 <code>Carthage</code> 的文件夹，里面有自动生成的 <code>framework</code>:</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497876744.jpg"></p>
+<ul>
+<li>有时候 Carthage 更新会出现 arm64 报错：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">A shell task (<span class="regexp">/usr/</span>bin/xcrun lipo -create /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Intermediates</span>.<span class="property">noindex</span>/<span class="title class_">ArchiveIntermediates</span>/<span class="title class_">Alamofire</span>\ iOS/<span class="title class_">IntermediateBuildFilesPath</span>/<span class="title class_">UninstalledProducts</span>/iphoneos/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Products</span>/<span class="title class_">Release</span>-iphonesimulator/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> -output /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Desktop</span>/AY_Project/<span class="number">123456</span>/<span class="title class_">Carthage</span>/<span class="title class_">Build</span>/iOS/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span>) failed <span class="keyword">with</span> exit code <span class="number">1</span>:</span><br><span class="line">fatal <span class="attr">error</span>: <span class="regexp">/Applications/</span><span class="title class_">Xcode</span>.<span class="property">app</span>/<span class="title class_">Contents</span>/<span class="title class_">Developer</span>/<span class="title class_">Toolchains</span>/<span class="title class_">XcodeDefault</span>.<span class="property">xctoolchain</span>/usr/bin/<span class="attr">lipo</span>: <span class="regexp">/Users/</span>coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Intermediates</span>.<span class="property">noindex</span>/<span class="title class_">ArchiveIntermediates</span>/<span class="title class_">Alamofire</span> iOS/<span class="title class_">IntermediateBuildFilesPath</span>/<span class="title class_">UninstalledProducts</span>/iphoneos/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> and /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Products</span>/<span class="title class_">Release</span>-iphonesimulator/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> have the same architectures (arm64) and can<span class="string">&#x27;t be in the same fat output file</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Building universal frameworks with common architectures is not possible. The device and simulator slices for &quot;Alamofire&quot; both build for: arm64</span></span><br><span class="line"><span class="string">Rebuild with --use-xcframeworks to create an xcframework bundle instead.</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>根据提示终端重新输入：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 不区分iOS、macOS</span></span><br><span class="line">carthage update --use-xcframeworks</span><br><span class="line"><span class="comment">// 只限iOS</span></span><br><span class="line">carthage update --platform iOS --use-xcframeworks</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498111841.jpg"></p>
+<h3 id="三、将下载三方框架集成到项目"><a href="#三、将下载三方框架集成到项目" class="headerlink" title="三、将下载三方框架集成到项目"></a>三、将下载三方框架集成到项目</h3><h4 id="1、添加-framework-文件："><a href="#1、添加-framework-文件：" class="headerlink" title="1、添加 framework 文件："></a>1、添加 framework 文件：</h4><p>打开工程文件中的iOS文件夹 -&gt; 将 framework 文件拖入到项目 General 中的 Frameworks，Libraries 中</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498234874.jpg"></p>
+<h4 id="2、添加编译脚本："><a href="#2、添加编译脚本：" class="headerlink" title="2、添加编译脚本："></a>2、添加编译脚本：</h4><p><strong>Target -&gt; Build Phases -&gt; 点击 + -&gt; New Run Script Phase</strong> -&gt; 添加如下脚本：</p>
+<p><code>/usr/local/bin/carthage copy-frameworks</code></p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498355244.jpg"></p>
+<h4 id="3、编译，导入头文件使用"><a href="#3、编译，导入头文件使用" class="headerlink" title="3、编译，导入头文件使用"></a>3、编译，导入头文件使用</h4><p>编译，然后导入头文件使用，但是可能会出现如下错误：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498494980.jpg"></p>
+<p>这是因为，我使用的是模拟器运行，但是导入的却是 iOS 真机的 framework，这时候我们需要将原来的 framework 删除，然后导入模拟器 framework。找到如下目录然后拖入：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498611867.jpg"></p>
+<p>然后，我们再次编译运行，就可以成功了，效果如下：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498763007.jpg"></p>
 ]]></content>
       <categories>
         <category>学习笔记</category>
@@ -901,6 +901,238 @@
 <h1 id="相关资料："><a href="#相关资料：" class="headerlink" title="相关资料："></a>相关资料：</h1><blockquote>
 <p><a href="https://developer.apple.com/sf-symbols/">SF Symbols 官方下载链接</a></p>
 </blockquote>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>08 | 设计组件：DesignKit组件桥接设计与开发规范</title>
+    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/</url>
+    <content><![CDATA[<h1 id="DesignKit-组件桥接设计与开发规范"><a href="#DesignKit-组件桥接设计与开发规范" class="headerlink" title="DesignKit 组件桥接设计与开发规范"></a>DesignKit 组件桥接设计与开发规范</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/17373431283113.jpg"></p>
+<span id="more"></span>
+
+<p>在上一模块“配置与规范”中，我主要介绍了如何统一项目的配置，以及如何制定统一开发和设计规范。</p>
+<p>接下来我们将进入基础组件设计模块，我会为你介绍一些在 iOS 开发过程中，工程化实践需要用的组件，比如 <strong>设计组件</strong>、<strong>路由组件</strong> 。除此之外，我还会聊聊在开发中如何支持 <strong>多语言</strong>、<strong>动态字体</strong> 和 <strong>深色模式</strong> 等辅助功能，让你的 App 既有国际范，获取更多用户，还能提升用户体验，获得更多好评。</p>
+<p>这一讲，我们就先来聊聊公共组件库，以及如何封装基础设计组件。</p>
+<h2 id="封装公共功能组件库"><a href="#封装公共功能组件库" class="headerlink" title="封装公共功能组件库"></a>封装公共功能组件库</h2><p>随着产品不断发展，我们会发现，越来越多的公共功能可以封装成组件库，从而被各个模块甚至多个 App 共同使用，比如 <strong>字体</strong>、<strong>调色板</strong>、<strong>间距</strong> 和 <strong>头像</strong> 可以封装成 <strong>UI 设计组件库</strong>，<strong>登录会话</strong> 和 <strong>权限管理</strong> 可以封装成 <strong>登录与鉴权组件库</strong>。</p>
+<p>通过利用这些公共功能组件库，不仅能节省大量开发时间，不需要我们再为每个模块重复实现类似的功能；还能减少编译时间，因为如果没有独立的组件库，一点代码的改动都会导致整个 App 重新编译与链接。</p>
+<p>那么，怎样才能创建和使用公共功能组件库呢？下面我们以一个设计组件库 <strong>DesignKit</strong> 为例子介绍下具体怎么做。</p>
+<h3 id="创建内部公共功能组件库"><a href="#创建内部公共功能组件库" class="headerlink" title="创建内部公共功能组件库"></a>创建内部公共功能组件库</h3><p>公共功能组件库根据使用范围可以分为三大类：<strong>内部库</strong>、<strong>私有库</strong> 和 <strong>开源库</strong>。</p>
+<ul>
+<li><p><strong>内部库</strong>，是指该库和主项目共享一个 <code>Repo</code> ，它可以共享到主项目的所有模块中。</p>
+</li>
+<li><p><strong>私有库</strong>，是指该库使用独立的私有 <code>Repo</code> ，它可以共享到公司多个 App 中。</p>
+</li>
+<li><p><strong>开源库</strong>，是指该库发布到 GitHub 等开源社区提供给其他开发者使用。</p>
+</li>
+</ul>
+<p>这三类库的创建和使用方式都是一致的。<strong>在实际操作中，我们一般先创建内部库，如果今后有必要，可以再升级为私有库乃至开源库。</strong> 下面咱们一起看看怎样创建内部库。</p>
+<p>为了方便管理各个内部公共功能组件库，首先我们新建一个叫作 <strong>Frameworks</strong> 的文件夹，来保存所有的内部库。这个文件夹所在位置和主项目文件夹（在我们例子中是 Moments）以及 Workplace 文档（<code>Moments.xcworkspace</code>）平行。</p>
+<p>例如下面的文件结构：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Frameworks</span>          <span class="title class_">Moments</span>             <span class="title class_">Pods</span>            <span class="title class_">Moments</span>.<span class="property">xcworkspace</span></span><br></pre></td></tr></table></figure>
+
+<p>然后我们通过 <strong>CocoaPods</strong> 创建和管理这个内部库。</p>
+<p>怎么做呢？有两种办法可以完成这项工作：</p>
+<p><strong>一种是</strong>，使用 <code>pod lib create [pod name]</code> 命令。比如在这个案例当中，我们可以在 Frameworks 文件夹下执行 <code>bundle exec pod lib create DesignKit</code> 命令，然后输入邮箱、语言和平台等信息，让 CocoaPods 创建一个  <code>DesignKit.podspec</code> 以及例子项目等一堆文件。具体如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">DesignKit</span>         <span class="title class_">Example</span>           <span class="variable constant_">README</span>.<span class="property">md</span></span><br><span class="line"><span class="title class_">DesignKit</span>.<span class="property">podspec</span> <span class="variable constant_">LICENSE</span>           _Pods.<span class="property">xcodeproj</span></span><br></pre></td></tr></table></figure>
+
+<p><code>DesignKit.podspec</code> 是 DesignKit 库的 Pod 描述文件，用于描述该 Pod 库的一个特定版本信息。它存放在 CocoaPods 的中心 Repo 供使用者查找和使用。</p>
+<p>随着这个 Pod 库的迭代，CocoaPods 的中心 Repo 会为每个特定的 Pod 版本存放一个对应的 podspec 文件。每个 podspec 文件都包括 Pod 对应 Repo 的 URL、源码存放的位置、所支持的系统平台及其系统最低版本号、Swift 语言版本，以及 Pod 的名字、版本号和描述等信息。</p>
+<p>DesignKit 组件库的 podspec 文件你可以在 <a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Frameworks/DesignKit/DesignKit.podspec?fileGuid=xxQTRXtVcqtHK6j8">代码仓库</a> 中找到。下面是该 podspec 文件的一些重要配置：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">s.<span class="property">name</span>    = <span class="string">&#x27;DesignKit&#x27;</span></span><br><span class="line">s.<span class="property">version</span> = <span class="string">&#x27;1.0.0&#x27;</span></span><br><span class="line"></span><br><span class="line">s.<span class="property">ios</span>.<span class="property">deployment_target</span> = <span class="string">&#x27;14.0&#x27;</span></span><br><span class="line">s.<span class="property">swift_versions</span> = <span class="string">&#x27;5.3&#x27;</span></span><br><span class="line">s.<span class="property">source_files</span> = <span class="string">&#x27;src/**/*&#x27;</span></span><br><span class="line">s.<span class="property">resources</span> = <span class="string">&#x27;assets/**/*&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>name</code>：是该组件的名字；</li>
+<li><code>version</code>：是组件的版本号，当我们更新组件的时候同时需要使用 <strong>Semantic Versioning</strong>（语义化版本号）更新该版本号。</li>
+<li><code>ios.deployment_target</code>：为该库所支持的平台和所支持平台的最低版本号。</li>
+<li><code>swift_versions</code>：是支持 Swift 语言的版本号。</li>
+<li><code>source_files</code>：是该库的源代码所在的文件夹，在我们例子中是 src。</li>
+<li><code>resources</code>：是该库资源文件所在的文件夹。</li>
+</ul>
+<p><strong>另外一种</strong>，是手工创建 DesignKit.podspec 文件。<strong>我偏向于这一种，因为手工创建出来的项目更简练。</strong></p>
+<p>比如在这里，我们只需要在 Frameworks 新建一个叫作 DesignKit 的文件夹，然后在它下面建立 src 和 assets 这两个文件夹，以及 LICENSE 和 DesignKit.podspec 这两个文件即可。</p>
+<p>如下所示：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">DesignKit</span>.<span class="property">podspec</span>       <span class="variable constant_">LICENSE</span>         assets            src</span><br></pre></td></tr></table></figure>
+
+<p>以后所有 <em>源代码文件</em> 都存放在 <code>src</code> 文件夹下面，而 <em>图片</em>、<em>Xib</em> 和 <em>Storyboard</em> 等 <em>资源文件</em> 存放在 <code>assets</code> 文件夹下。</p>
+<p><code>LICENSE</code> 是许可证文件，如果是开源库，我们必须严格选择一个许可证，这样才能方便其他开发者使用我们的库。</p>
+<h3 id="检测内部公共功能组件库"><a href="#检测内部公共功能组件库" class="headerlink" title="检测内部公共功能组件库"></a>检测内部公共功能组件库</h3><p>为了保证组件库的使用者能顺利安装和使用我们的库，当我们配置好 <code>DesignKit.podspec</code> 文件后，需要执行 <code>bundle exec pod spec lint</code> 命令来检测该 podspec 文件是否正确。如果我们维护的是一个开源库，这一步尤为重要。因为它会影响到使用者的第一印象，因此我们在发布该 Pod 之前需要把每个错误或者警告都修复好。</p>
+<p>不过需要注意的是， CocoaPods 对内部库的检测存在一个 Bug， 会显示下面的警告以及错误信息：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">WARN</span> | <span class="title class_">Missing</span> primary key <span class="keyword">for</span> source attribute </span><br><span class="line"><span class="variable constant_">ERROR</span> | <span class="attr">unknown</span>: <span class="title class_">Encountered</span> an unknown error (<span class="title class_">Unsupported</span> download strategy <span class="string">`&#123;:path=&gt;&quot;.&quot;&#125;`</span>.) during validation</span><br></pre></td></tr></table></figure>
+
+<p>由于我们创建的是内部库，所以可以忽略这个警告和错误，只要没有其他错误信息就可以了。</p>
+<h3 id="使用内部公共功能组件库"><a href="#使用内部公共功能组件库" class="headerlink" title="使用内部公共功能组件库"></a>使用内部公共功能组件库</h3><p>使用内部公共功能组件库非常简单，只要在主项目的 <code>Podfile</code> 里面使用 <code>:path</code> 来指定该内部库的路径即可。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">pod <span class="string">&#x27;DesignKit&#x27;</span>, :<span class="function"><span class="params">path</span> =&gt;</span> <span class="string">&#x27;./Frameworks/DesignKit&#x27;</span>, :<span class="function"><span class="params">inhibit_warnings</span> =&gt;</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p>当执行 <code>bundle exec pod install</code> 命令以后，CocoaPods 会在 Pods 项目下建立一个<br><code>Development Pods</code> 文件夹来存放所有内部库的相关文件。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/17373431509846.jpg"></p>
+<p>有了 CocoaPods，我们新建、管理和使用公共组件库就会变得非常简单。下面我们介绍下如何开发设计组件 DesignKit。</p>
+<h2 id="DesignKit-设计组件"><a href="#DesignKit-设计组件" class="headerlink" title="DesignKit 设计组件"></a>DesignKit 设计组件</h2><p>DesignKit 是一个设计组件，用于封装与 UI 相关的公共组件。为了方便维护，每次新增一个组件，我们最好都建立一个独立的文件夹，例如把 <code>UIButtonExtensions.swift</code> 放在新建的 <code>FavoriteButton</code> 文件夹中。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/17373431685601.jpg"></p>
+<p>下面以几乎每个 App 都会使用到的三个组件：<em>间距（Spacing）</em>、<em>头像（Avatar）</em> 和 <em>点赞按钮（Favorite Button）</em> 为例子，介绍下如何封装基础设计组件。</p>
+<h3 id="间距"><a href="#间距" class="headerlink" title="间距"></a>间距</h3><p>为了呈现信息分组并体现信息的主次关系，所有 App 的所有页面都会使用到间距来添加留白效果。</p>
+<p>间距看起来这么简单，为什么我们还需要为其独立封装为一个公共组件呢？主要原因有这么几条。</p>
+<ol>
+<li><p>可以为整个 App 提供一致的体验，因为我们统一定义了所有间距，各个功能模块的 UI 呈现都保持一致。</p>
+</li>
+<li><p>可以减低设计师和开发者的沟通成本，不会再为某些像素值的多与少而争论不休。设计师只使用预先定义的间距，而开发者也只使用在代码中定义好的间距就行了。</p>
+</li>
+<li><p>可以减低设计师的工作量，很多 UI 界面可以只提供一个设计稿来同时支持 iOS、Android 以及移动 Web。因为设计师只提供预先定义的间距名，而不是 hardcoded （硬编码）的像素值。不同设备上像素值有可能不一样，但间距名却能保持一致。</p>
+</li>
+<li><p>在支持响应式设计的时候，这些间距定义可以根据设备的宽度而自动调整。这远比硬编码的像素值灵活很多，例如在 iPhone 中 twoExtraSmall 是 4 points，而在 iPad 中是 6 points。</p>
+</li>
+</ol>
+<p>别看间距公共组件有那么多优点，但实现起来并不难，一个 <strong>struct</strong> 就搞定了，简直是一本万利的投入。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">public struct <span class="title class_">Spacing</span> &#123;</span><br><span class="line">    public <span class="keyword">static</span> <span class="keyword">let</span> <span class="attr">twoExtraSmall</span>: <span class="title class_">CGFloat</span> = <span class="number">4</span></span><br><span class="line">    public <span class="keyword">static</span> <span class="keyword">let</span> <span class="attr">extraSmall</span>: <span class="title class_">CGFloat</span> = <span class="number">8</span></span><br><span class="line">    public <span class="keyword">static</span> <span class="keyword">let</span> <span class="attr">small</span>: <span class="title class_">CGFloat</span> = <span class="number">12</span></span><br><span class="line">    public <span class="keyword">static</span> <span class="keyword">let</span> <span class="attr">medium</span>: <span class="title class_">CGFloat</span> = <span class="number">18</span></span><br><span class="line">    public <span class="keyword">static</span> <span class="keyword">let</span> <span class="attr">large</span>: <span class="title class_">CGFloat</span> = <span class="number">24</span></span><br><span class="line">    public <span class="keyword">static</span> <span class="keyword">let</span> <span class="attr">extraLarge</span>: <span class="title class_">CGFloat</span> = <span class="number">32</span></span><br><span class="line">    public <span class="keyword">static</span> <span class="keyword">let</span> <span class="attr">twoExtraLarge</span>: <span class="title class_">CGFloat</span> = <span class="number">40</span></span><br><span class="line">    public <span class="keyword">static</span> <span class="keyword">let</span> <span class="attr">threeExtraLarge</span>: <span class="title class_">CGFloat</span> = <span class="number">48</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有了上述的定义以后，使用这些间距变得很简单。请看：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">DesignKit</span></span><br><span class="line"></span><br><span class="line">private <span class="keyword">let</span> <span class="attr">likesStakeView</span>: <span class="title class_">UIStackView</span> = <span class="title function_">configure</span>(<span class="params">.init()</span>) &#123;</span><br><span class="line">    $0.<span class="property">spacing</span> = <span class="title class_">Spacing</span>.<span class="property">twoExtraSmall</span></span><br><span class="line">    $0.<span class="property">directionalLayoutMargins</span> = <span class="title class_">NSDirectionalEdgeInsets</span>(<span class="attr">top</span>: <span class="title class_">Spacing</span>.<span class="property">twoExtraSmall</span>, <span class="attr">leading</span>: <span class="title class_">Spacing</span>.<span class="property">twoExtraSmall</span>, <span class="attr">bottom</span>: <span class="title class_">Spacing</span>.<span class="property">twoExtraSmall</span>, <span class="attr">trailing</span>: <span class="title class_">Spacing</span>.<span class="property">twoExtraSmall</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以先 <code>import DesignKit</code> 库，然后通过 <code>Spacing</code> 结构体直接访问预定义的间距，例如 <code>Spacing.twoExtraSmall</code>。</p>
+<h3 id="头像组件"><a href="#头像组件" class="headerlink" title="头像组件"></a>头像组件</h3><p>iOS 开发者都知道，头像组件应用广泛，例如在房产 App 中显示中介的头像，在我们例子 Moments App 中显示自己和好友头像，在短视频 App 中显示视频博主头像等。</p>
+<p>也许你会问，头像那么简单，为什么需要独立封装为一个组件？原因主要是方便以后改变其 UI 的呈现方式，例如从圆角方形改成圆形，添加边界线（border），添加阴影效果（shadow）等。有了独立的组件以后，我们只需要修改一个地方就能把这个 App 的所有头像一次性地修改呈现效果。</p>
+<p>下面是头像组件的实现方式：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">public extension <span class="title class_">UIImageView</span> &#123;</span><br><span class="line">    func <span class="title function_">asAvatar</span>(<span class="params">cornerRadius: CGFloat = <span class="number">4</span></span>) &#123;</span><br><span class="line">        clipsToBounds = <span class="literal">true</span></span><br><span class="line">        layer.<span class="property">cornerRadius</span> = cornerRadius</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们为 UIKit 所提供的 <code>UIImageView</code> 实现了一个扩展方法 <code>asAvatar(cornerRadius:)</code> ，该方法接收 <code>cornerRadius</code> 作为参数来配置圆角的角度，默认值是 <code>4</code>。</p>
+<p>使用也是非常简单，只有创建一个 <code>UIImageView</code> 的实例，然后调用 <code>asAvatar(cornerRadius:)</code> 方法即可。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">private <span class="keyword">let</span> <span class="attr">userAvatarImageView</span>: <span class="title class_">UIImageView</span> = <span class="title function_">configure</span>(<span class="params">.init()</span>) &#123;</span><br><span class="line">    $0.<span class="title function_">asAvatar</span>(<span class="attr">cornerRadius</span>: <span class="number">4</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是人像组件的显示效果，可以在内部菜单查看。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/17373431939202.jpg"></p>
+<h3 id="点赞按钮"><a href="#点赞按钮" class="headerlink" title="点赞按钮"></a>点赞按钮</h3><p>可以说，每个具有社交属性的 App 都会用到点赞功能，所以在开发当中，点赞按钮也是必不可少的功能组件。</p>
+<p>那么，点赞按钮该如何封装呢？和人像组件十分类似，我们可以通过扩展 <code>UIButton</code>来实现。示例代码如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">public extension <span class="title class_">UIButton</span> &#123;</span><br><span class="line">    func <span class="title function_">asStarFavoriteButton</span>(<span class="params">pointSize: CGFloat = <span class="number">18</span>, weight: UIImage.SymbolWeight = .semibold, scale: UIImage.SymbolScale = .<span class="keyword">default</span>, fillColor: UIColor = UIColor(hex: <span class="number">0xf1c40f</span>)</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> symbolConfiguration = <span class="title class_">UIImage</span>.<span class="title class_">SymbolConfiguration</span>(<span class="attr">pointSize</span>: pointSize, <span class="attr">weight</span>: weight, <span class="attr">scale</span>: scale)</span><br><span class="line">        <span class="keyword">let</span> starImage = <span class="title class_">UIImage</span>(<span class="attr">systemName</span>: <span class="string">&quot;star&quot;</span>, <span class="attr">withConfiguration</span>: symbolConfiguration)</span><br><span class="line">        <span class="title function_">setImage</span>(starImage, <span class="attr">for</span>: .<span class="property">normal</span>)</span><br><span class="line">        <span class="keyword">let</span> starFillImage = <span class="title class_">UIImage</span>(<span class="attr">systemName</span>: <span class="string">&quot;star.fill&quot;</span>, <span class="attr">withConfiguration</span>: symbolConfiguration)</span><br><span class="line">        <span class="title function_">setImage</span>(starFillImage, <span class="attr">for</span>: .<span class="property">selected</span>)</span><br><span class="line">        tintColor = fillColor</span><br><span class="line">        <span class="title function_">addTarget</span>(self, <span class="attr">action</span>: #<span class="title function_">selector</span>(touchUpInside), <span class="attr">for</span>: .<span class="property">touchUpInside</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private extension <span class="title class_">UIButton</span> &#123;</span><br><span class="line">    @objc</span><br><span class="line">    private func <span class="title function_">touchUpInside</span>(<span class="params">sender: UIButton</span>) &#123;</span><br><span class="line">        isSelected = !isSelected</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其核心逻辑把当前 <code>UIButton</code> 对象的普通 (<code>.normal</code>) 状态和选中 (<code>.selected</code>) 状态设置不同的图标。比如在这里我就把星星按钮的普通状态设置成了名叫 “Star” 的图标，并把它的选中状态设置成了名叫 “tar.fill”” 的图标。</p>
+<p>注意，这些图标来自苹果公司的 <a href="https://developer.apple.com/sf-symbols/">SF Symbols</a> 不需要额外安装，<code>iOS 14</code> 系统本身就自带了。而且它们的使用也非常灵活，支持字号、字重、填充色等配置。</p>
+<p>使用点赞按钮组件也非常简单，只需要建立一个 <code>UIButton</code> 的实例，然后调用 <code>asStarFavoriteButton</code> 方法就可以了。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">private <span class="keyword">let</span> <span class="attr">favoriteButton</span>: <span class="title class_">UIButton</span> = <span class="title function_">configure</span>(<span class="params">.init()</span>) &#123;</span><br><span class="line">    $0.<span class="title function_">asStarFavoriteButton</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>点赞按钮的运行效果，也可以在内部菜单查看。</p>
+<p>以上我们以间距、头像、点赞按钮为例介绍了如何使用 DesignKit 封装与 UI 相关的公共组件。以我多年的开发经验来说，在封装 UI 组件的时候，可以遵循下面几个原则:</p>
+<ol>
+<li><p>尽量使用扩展方法而不是子类来扩展组件，这样做可以使其他开发者在使用这些组件时，仅需要调用扩展方法，而不必使用特定的类。</p>
+</li>
+<li><p>尽量使用代码而不要使用 Xib 或者 Storyboard，因为有些 App 完全不使用 Interface Builder。</p>
+</li>
+<li><p>如果可以，要为组件加上 <code>@IBDesignable</code> 和 <code>@IBInspectable</code> 支持，这样能使得开发者在使用 <code>Interface Builder</code> 的时候预览我们的组件。</p>
+</li>
+<li><p>尽量只使用 UIkit 而不要依赖任何第三方库，否则我们可能会引入一个不可控的依赖库。</p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>前面我介绍了如何封装公共功能组件库，以及以怎样封装基础设计组件，希望对你有所帮助。合理使用功能组件可以让你的开发事半功倍。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/17373431283113.jpg"></p>
+<p>不过，在封装组件的时候，我还需要提醒你注意这么几点。</p>
+<ul>
+<li><p><strong>首先</strong>，为了减低组件之间的耦合性，提高组件的健壮性，组件的设计需要符合单一功能原则 。也就是说，一个组件只做一件事情，一个组件库只做一类相关的事情。每个组件库都要相对独立且功能单一。</p>
+<p>比如，我们可以分别封装 <em>网络库</em>、<em>UI 库</em>、<em>蓝牙处理库</em> 等底层库，但不能把所有库合并在一个单独的库里面，这样可以方便上层应用按需使用这些依赖库。例如，广告 SDK 可以依赖于网络库、UI 库，但并不依赖蓝牙处理库。这样做一方面可以减少循环依赖的可能性，另一方面可以加快编译和链接的速度，方便使用。</p>
+</li>
+<li><p><strong>其次</strong>，每次发布新增和更新组件的时候，都需要严格按照 <em>Semantic Versioning</em> 来更新版本号，这样有效防止因为版本的问题而引入 Bug。</p>
+</li>
+<li><p><strong>最后</strong>，组件的开发并不是一蹴而就，很多时候可以根据业务需求把公共模块一点点地移入公共组件库中，一步步地完善组件库的功能。不要为了开发组件而开发组件，很多时候当我们充分理解了使用者的需求后，才能为组件定义完善的接口和完整的功能。</p>
+</li>
+</ul>
+<h3 id="源码地址："><a href="#源码地址：" class="headerlink" title="源码地址："></a>源码地址：</h3><blockquote>
+<p>DesignKit 源代码：<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/tree/main/Frameworks/DesignKit">https://github.com/lagoueduCol/iOS-linyongjian/tree/main/Frameworks/DesignKit</a></p>
+</blockquote>
+<h1 id="学习笔记与扩展"><a href="#学习笔记与扩展" class="headerlink" title="学习笔记与扩展"></a>学习笔记与扩展</h1><p>上文中有提到，功能组件库可以分为三大类：<strong>内部库</strong>、<strong>私有库</strong> 和 <strong>开源库</strong>。而文中只介绍了 <code>Cocoapods</code> 管理 <strong>内部库</strong> 的使用方法，作为学习笔记和扩展，这里就来介绍一下 <strong>私有库</strong> 和 <strong>开源库</strong> 的使用。</p>
+<h2 id="私有库"><a href="#私有库" class="headerlink" title="私有库"></a>私有库</h2><h3 id="什么是私有库？"><a href="#什么是私有库？" class="headerlink" title="什么是私有库？"></a>什么是私有库？</h3><p>顾名思义，就是你的私人代码仓库，而不是开源出去让大家都能看到并参与开发的项目。私有仓库可以进行权限控制，只有拥有权限的人才能访问并修改它，也就是我们所说的合作者。</p>
+<p>私有库不在<code>cocoaPods</code>的官方<code>Repo</code>仓库中，而是在自建的<code>spec repo</code>中，库索引是以 <code>*.podspec</code>文件形式存在，自建的<code>spec repo</code>放在路径<code>~/.cocoapods/repos</code>下，与<code>master</code>同级，其链接的远程仓库可以是公开的，也可以是私有的。</p>
+<h3 id="创建-pod-私有库"><a href="#创建-pod-私有库" class="headerlink" title="创建 pod 私有库"></a>创建 pod 私有库</h3><p>创建私有库有两种方案：<br>第一种方案手动创建 <code>podspec</code>与自己私有仓库进行关联，<br>第二种直接使用 <code>cocoapods</code> 创建</p>
+<h4 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h4><ol>
+<li>首先选择在 Xcode 里新建 <code>framework</code> 项目，并且在公司代码仓库新建两个远程仓库 <strong>（索引库、代码库）</strong> 用 <code>git</code> 将本地 <code>framework</code> 项目推入远端，再用终端本地执行：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">#用于创建一个新的 <span class="type">Pod（即一个</span> iOS 或 macOS 的库或框架）的规范文件（`.podspec` 文件）</span><br><span class="line">pod spec create <span class="type">PodName</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在 <code>.podspec</code> 里面进行编辑，稍后会详细讲解 <code>podspec</code>文件内容<br>最后在终端执行查看当前 <code>pod</code>文件是否规范：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">#用于检查一个 <span class="type">Pod</span> 的规范文件（`.podspec` 文件）是否符合规范和要求</span><br><span class="line">pod spec lint <span class="type">PodName</span>.podspec</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>如果编译成功，符合规范要求就可以提交pod  **(方案一与方案二提交都一样，此处先略过了)**：</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">pod repo push 索引库 podName.podspec<span class="operator">--</span>verbose<span class="operator">--</span>use<span class="operator">-</span>libraries<span class="operator">--</span>allow<span class="operator">-</span>warning</span><br></pre></td></tr></table></figure>
+
+<h4 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h4><ol>
+<li>直接使用 <code>cocoapods</code> 创建</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">pod lib create <span class="type">PodName</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>然后依次输入，执行即可</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="type">What</span> platform <span class="keyword">do</span> you want to use<span class="operator">??</span> [ iOS <span class="operator">/</span> macOS ]</span><br><span class="line"><span class="operator">&gt;</span> iOS</span><br><span class="line"><span class="type">What</span> language <span class="keyword">do</span> you want to use<span class="operator">??</span> [ <span class="type">Swift</span> <span class="operator">/</span> <span class="type">ObjC</span> ]</span><br><span class="line"><span class="operator">&gt;</span> <span class="type">ObjC</span></span><br><span class="line"><span class="type">Would</span> you liketo include a demo application with your library<span class="operator">?</span> [ <span class="type">Yes</span> <span class="operator">/</span> <span class="type">No</span> ]</span><br><span class="line"><span class="operator">&gt;</span> <span class="type">YES</span></span><br><span class="line"><span class="type">Which</span> testing frameworks will you use<span class="operator">?</span> [ <span class="type">Specta</span> <span class="operator">/</span> <span class="type">Kiwi</span> <span class="operator">/</span> <span class="type">None</span> ]</span><br><span class="line"><span class="operator">&gt;</span> <span class="type">None</span></span><br><span class="line"><span class="type">Would</span> you like to <span class="keyword">do</span> view based testing<span class="operator">?</span> [ <span class="type">Yes</span> <span class="operator">/</span> <span class="type">No</span> ]</span><br><span class="line"><span class="operator">&gt;</span> <span class="type">No</span></span><br><span class="line"><span class="type">What</span> <span class="keyword">is</span> your <span class="keyword">class</span> <span class="title class_">prefix</span>?</span><br><span class="line">&gt; <span class="title class_">HY</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>添加库文件</li>
+</ol>
+<p>成功后会创建出一个pod_test工程，目录结构如下:</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/17373534365111.jpg" alt="pod_test工程文件"></p>
+<ol start="4">
+<li>将编写好的一些文件拉入 <code>pod_test/classes</code>中，或者在<code>pod_test/classes</code> 目录下新建代码文件：</li>
+</ol>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/17373535574754.jpg" alt="classes内部文件"></p>
+<ol start="5">
+<li>配置 <code>.podspec</code> 文件</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"># <span class="type">Be</span> sure to run `pod lib lint <span class="type">SYCoreKit</span>.podspec&#x27; to ensure this <span class="keyword">is</span> a</span><br><span class="line"># valid spec before submitting.</span><br><span class="line">#</span><br><span class="line"># <span class="keyword">Any</span> lines starting with a # are <span class="keyword">optional</span>, but their use <span class="keyword">is</span> encouraged</span><br><span class="line"># <span class="type">To</span> learn more about a <span class="type">Podspec</span> see https:<span class="comment">//guides.cocoapods.org/syntax/podspec.html</span></span><br><span class="line">#</span><br><span class="line"></span><br><span class="line"><span class="type">Pod</span>::<span class="type">Spec</span>.new <span class="keyword">do</span> <span class="operator">|</span>s<span class="operator">|</span></span><br><span class="line">  s.name             <span class="operator">=</span> &#x27;xxxxx&#x27;  #搜索的关键词,注意这里一定要和.podspec的名称一样</span><br><span class="line">  s.version          <span class="operator">=</span> &#x27;<span class="number">0.0</span>.<span class="number">1</span>&#x27; #版本号，每一个版本对应一个tag</span><br><span class="line">  s.summary          <span class="operator">=</span> <span class="string">&quot;iOS框架&quot;</span> #项目简介</span><br><span class="line">  s.description      <span class="operator">=</span> <span class="string">&quot;iOS框架&quot;</span> #pod详细描述</span><br><span class="line">  s.homepage         <span class="operator">=</span> &#x27;&#x27; #项目主页地址</span><br><span class="line">  # s.screenshots   <span class="operator">=</span> &#x27;www.example.com<span class="operator">/</span>screenshots_1&#x27;, &#x27;www.example.com<span class="operator">/</span>screenshots_2&#x27;</span><br><span class="line">  s.license          <span class="operator">=</span> &#123; :type <span class="operator">=&gt;</span> &#x27;<span class="type">MIT</span>&#x27;, :file <span class="operator">=&gt;</span> &#x27;<span class="type">LICENSE</span>&#x27; &#125; #许可证</span><br><span class="line">  s.author           <span class="operator">=</span> &#123; &#x27;superMan&#x27; <span class="operator">=&gt;</span> &#x27;xxxxxxxx&#x27; &#125;#作者</span><br><span class="line">  s.source           <span class="operator">=</span> &#123; :git <span class="operator">=&gt;</span> &#x27;http:<span class="comment">//xxx.git&#x27;, :tag =&gt; s.version.to_s &#125;#项目的地址</span></span><br><span class="line">  s.social_media_url <span class="operator">=</span> &#x27;https:<span class="comment">//twitter.com/xxx&#x27;#作者社交地址</span></span><br><span class="line">#  s.pod_target_xcconfig <span class="operator">=</span> &#123; &#x27;<span class="type">VALID_ARCHS</span>&#x27; <span class="operator">=&gt;</span> &#x27;arm64&#x27;&#125; 是修改当前pod工程中的项目设置</span><br><span class="line">#  s.user_target_xcconfig <span class="operator">=</span> &#123; &#x27;<span class="type">VALID_ARCHS</span>&#x27; <span class="operator">=&gt;</span> &#x27;arm64&#x27;,&#x27;<span class="type">EXCLUDED_ARCHS</span>[sdk<span class="operator">=</span>iphonesimulator<span class="operator">*</span>]&#x27; <span class="operator">=&gt;</span> &#x27;arm64&#x27;&#125;  是修改当前用户工程中的项目设置</span><br><span class="line">  s.ios.deployment_target <span class="operator">=</span> &#x27;<span class="number">12.0</span>&#x27; #支持的pod最低版本</span><br><span class="line">  s.static_framework <span class="operator">=</span> <span class="literal">true</span> #动态库模式pod</span><br><span class="line">  s.requires_arc     <span class="operator">=</span> <span class="literal">true</span> # 是否启用<span class="type">ARC</span></span><br><span class="line">  s.source_files <span class="operator">=</span> &#x27;<span class="type">SYCoreKit</span><span class="operator">/</span><span class="type">Classes</span><span class="comment">/**/</span><span class="operator">*</span>&#x27; #需要包含的源文件</span><br><span class="line">  </span><br><span class="line">  # s.resource_bundles <span class="operator">=</span> &#123;</span><br><span class="line">  #   &#x27;<span class="type">SYCoreKit</span>&#x27; <span class="operator">=&gt;</span> [&#x27;<span class="type">SYCoreKit</span><span class="operator">/</span><span class="type">Assets</span><span class="comment">/*.png&#x27;]</span></span><br><span class="line"><span class="comment">  # &#125; 资源文件</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">  # s.public_header_files = &#x27;Pod/Classes<span class="comment">/**/</span>*.h&#x27; #标记公共头文件列表</span></span><br><span class="line"><span class="comment">  s.ios.frameworks = &quot;UIKit&quot;, &quot;Foundation&quot; #支持的系统框架</span></span><br><span class="line"><span class="comment">  s.dependency &#x27;YYModel&#x27;, &#x27;1.0.4&#x27;#三方依赖</span></span><br><span class="line"><span class="comment">end</span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>使用 Example 测试私有库是否可用</li>
+</ol>
+<p><code>Example</code>是创建<code>Pods</code>工程时生成的一个工程，用于验证添加的库文件是否能正常使用。<code>Example</code>目录下<code>Podfile</code>文件中自动设置了<code>pod_test</code>依赖，如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">target &#x27;pod_test_Example&#x27; <span class="keyword">do</span></span><br><span class="line">pod &#x27;pod_test&#x27;, :path <span class="operator">=&gt;</span> &#x27;<span class="operator">../</span>&#x27;    #自动添加了</span><br></pre></td></tr></table></figure>
+
+<p><code>cd Example</code>文件夹下，终端执行<code>pod install</code>或<code>pod update</code>，安装<code>pod_test</code>依赖就可以查看在项目中应用了</p>
+<ol start="7">
+<li>检验 <code>.podspec</code>文件并推送到远端，提交pods库到github上。打标签，推送到远程。</li>
+</ol>
+<p><strong>重点：tag 打的版本号必须和 podspec 中的 s.version 值相同：</strong></p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># 检查 <span class="type">Pod</span> 的规范文件（`.podspec` 文件）是否符合规范和要求</span><br><span class="line">pod spec lint <span class="type">PodName</span>.podspec</span><br><span class="line"># 符合规范要求就可以提交pod</span><br><span class="line">pod repo push 索引库 podName.podspec<span class="operator">--</span>verbose<span class="operator">--</span>use<span class="operator">-</span>libraries<span class="operator">--</span>allow<span class="operator">-</span>warning</span><br></pre></td></tr></table></figure>
+
+<h2 id="公有库"><a href="#公有库" class="headerlink" title="公有库"></a>公有库</h2><p>公有库和私有库基本类似，唯一的区别就是公有库是开源的。</p>
+<p>所以，生成私有库、公有库前面几步都是一样的，只有最后推送位置不同。一个是推送至个人的私有仓库、一个是推送至 <code>pod</code> 公共仓库。</p>
+<p>创建公有库在执行完私有库流程后多了几步：</p>
+<ol>
+<li>检查是否已注册 CocoaPods 账户:</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">pod trunk me</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>注册 cocoaPods 账号，执行该命令后，对应邮箱会收到一份邮件，去邮件内进行验证:</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">pod trunk register 你的邮箱 &#x27;你的用户名&#x27; <span class="operator">--</span>description<span class="operator">=</span>&#x27;这里是描述&#x27; </span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>推送至 pod 公共仓库</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">pod trunk push <span class="type">LXExtension</span>.podspec <span class="operator">--</span>allow<span class="operator">-</span>warnings</span><br></pre></td></tr></table></figure>
+
+<h2 id="相关终端命令总结"><a href="#相关终端命令总结" class="headerlink" title="相关终端命令总结"></a>相关终端命令总结</h2><ul>
+<li><p>生成pod私有库模板<br><code>pod lib create xxx</code> ： 创建私有组件库模板<br>添加对应的Classes、Assets</p>
+</li>
+<li><p>关联远程仓库<br><code>git add .</code> ： 添加git文件<br><code>git commit -m &#39;init&#39;</code> ：提交<br><code>git remote add origin https://github.com/your-username/your-repo.git </code>： 关联到远程仓库<br><code>git push origin master </code>：推送至远程仓库</p>
+</li>
+<li><p>创建tag<br><code>git tag 1.0.0</code> ： 增加1.0.0tag<br><code>git tag</code>：查看本地tag<br><code>git ls-remote</code> ：查看远程所有分支及tag<br><code>git push origin 1.0.4</code> ： 推送特定tag到远程仓库<br><code>git push origin --tags</code> ： 推送所有tags到远程仓库<br><code>git tag -d 1.0.0</code> ： 删除本地tag<br><code>git push origin :refs/tags/1.0.3</code> ：删除远程tag</p>
+</li>
+<li><p>本地库校验<br><code>pod lib lint</code> ： 本地组件库校验<br><code>pod lib lint AFXXXX.podspec --allow-warnings</code> ：本地组件库校验忽略警告<br><code>pod lib lint --sources=https://github.com/xxxx/xxxxspecs.git --use-libraries --allow-warnings</code> ：如果你的库同时依赖了私有库，可通过上面方式指定source索引<br><code>pod lib lint --sources=https://github.com/xxxx/xxxxspecs.git,https://github.com/CocoaPods/Specs.git --use-libraries --allow-warnings</code> ： 如果你的库同时依赖了私有库以及公有库，可通过指定多个source索引，中间用逗号分隔</p>
+</li>
+<li><p>远程库校验<br><code>pod spec lint </code> ：远程组件库校验<br><code>pod spec lint --allow-warnings</code> ： 远程组件库校验忽略警告</p>
+</li>
+<li><p>生成私有库<br><code>pod repo add LXPodSpec https://github.com/xxx/LXPodSpec.git</code> ： 添加私有索引库到本地repo中<br><code>pod repo push LXPodSpec LXMyTools.podspec --allow-warnings</code> ：推送到 CocoaPods 服务器上，其他开发者可通过CocoaPods 安装和使用这个 Pod，但是需要指定source为<a href="https://github.com/xxx/LXPodSpec.git">https://github.com/xxx/LXPodSpec.git</a><br><code>pod repo push LXPodSpec LXMyTools.podspec -skip-import-validation --allow-warnings</code> ：如果你的库同时依赖了私有库以及公有库，可通过上面方式跳过验证，谨慎使用</p>
+</li>
+<li><p>生成公有库<br><code>pod trunk me</code> ：检查是否已注册 CocoaPods 账户<br><code>pod trunk push LXExtension.podspec --allow-warnings</code> ：推送至pod公共仓库</p>
+</li>
+<li><p>一些其他命令<br><code>pod spec cat SnapKit</code> ： 查看SnapKit 的 podspec 文件的内容。</p>
+</li>
+</ul>
 ]]></content>
       <categories>
         <category>学习笔记</category>
