@@ -129,248 +129,6 @@
       </tags>
   </entry>
   <entry>
-    <title>03 | 配置准备：如何搭建多环境支持，为 App 开发作准备</title>
-    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/</url>
-    <content><![CDATA[<h1 id="一、配置准备：如何搭建多环境支持，为-App-开发作准备"><a href="#一、配置准备：如何搭建多环境支持，为-App-开发作准备" class="headerlink" title="一、配置准备：如何搭建多环境支持，为 App 开发作准备"></a>一、配置准备：如何搭建多环境支持，为 App 开发作准备</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788668316765.jpg"></p>
-<span id="more"></span>
-
-<p>在开始之前，我先问你几个问题，在测试的时候，App 一般需要连接测试服务器，那么在上架后，还需要连生产服务器吗？在发布前，你的 App 需要通过 <code>Ad-hoc </code>分发给内部测试组吗？在发布到 <code>App Store</code> 的时候，你的 App 需要同时支持免费版和收费版吗？</p>
-<p>如果你的回答是<code>“是”</code>，那么你的 App 就需要搭建多环境支持，优化开发的工作流程。多环境提供很多好处，比如能基于同一套源代码自动构建出有差异功能的 App；能支持多个团队并行开发，也能分离测试和生产环境，提高产品的迭代速度，保证上架的 App 通过严格测试和功能验证。</p>
-<p>在 Moments App 项目中，我们就使用了三个不同的环境，分别是<code>开发环境</code>，<code>测试环境</code>和<code>生产环境</code>。它们到底有什么区别呢？</p>
-<ul>
-<li><p><strong>开发环境</strong>， 用于日常的开发，一般有未完成的功能模块。编译时，也不进行任何优化，可以打印更多的日志，帮助开发者快速定位问题。</p>
-</li>
-<li><p><strong>测试环境</strong>， 主要是用于测试，以及为产品经理进行功能验证，包括部分完成的功能模块，也提供一些隐藏功能，方便我们进行开发和迭代，例如快速切换用户，清理 Cache，连接到不同后台服务器等等。</p>
-</li>
-<li><p><strong>生产环境</strong>， 只包含通过了测试并验证过的功能模块，它是最终提交到 App Store 供终端用户使用的版本。</p>
-</li>
-</ul>
-<p>多环境支持需要用到 Xcode 的构建配置，这一讲，我就结合 Moments App 项目来聊聊这个问题。</p>
-<h2 id="Xcode-构建基础概念"><a href="#Xcode-构建基础概念" class="headerlink" title="Xcode 构建基础概念"></a>Xcode 构建基础概念</h2><p>一般在构建一个 iOS App 的时候，需要用到 <code>Xcode Project</code>，<code>Xcode Target</code>，<code>Build Settings</code>，<code>Build Configuration</code> 和 <code>Xcode Scheme</code> 等构建配置。它们各有什么用呢？</p>
-<h3 id="Xcode-Project"><a href="#Xcode-Project" class="headerlink" title="Xcode Project"></a>Xcode Project</h3><p><code>Xcode Project</code>用于组织源代码文件和资源文件。一个 Project 可以包含多个 Target，例如当我们新建一个 Xcode Project 的时候，它会自动生成 App 的主 Target，Unit Test Target 和 UI Test Target。</p>
-<p>在 Moments App 项目中，主 Target 就是 Moments，Unit Test Target 是 MomentsTests， UI Test Target 就是 MomentsUITests。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788669693800.jpg"></p>
-<h3 id="Xcode-Target"><a href="#Xcode-Target" class="headerlink" title="Xcode Target"></a>Xcode Target</h3><p><code>Xcode Target</code>用来定义如何构建出一个产品（例如 <code>App</code>， <code>Extension</code> 或者 <code>Framework</code>），Target 可以指定需要编译的源代码文件和需要打包的资源文件，以及构建过程中的步骤。</p>
-<p>例如在我们的 Moments App 项目中，负责单元测试的MomentsTestsTarget 就指定了 14 个测试文件需要构建（见下图的 Compile Sources），并且该 Target 依赖了主 App TargetMoments（见下图的 Dependencies）。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788669841278.jpg"></p>
-<p>有了 Target 的定义，构建系统就可以读取相关的源代码文件进行编译，然后把相关的资源文件进行打包，并严格按照 Target 所指定的设置和步骤执行。那么 Target 所指定的设置哪里来的呢？来自 Build Settings。</p>
-<h3 id="Build-Settings"><a href="#Build-Settings" class="headerlink" title="Build Settings"></a>Build Settings</h3><p><code>Build Setting</code>保存了构建过程中需要用到的信息，它以一个变量的形式而存在，例如所支持的设备平台，或者支持操作系统的最低版本等。</p>
-<p>通常，一条 Build Setting 信息由两部分组成：名字和值。比如下面是一条 Setting 信息，<code>iOS Development Target</code>是名字，而<code>iOS 14.0</code>是值。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788670287057.jpg"></p>
-<p>有了这些基础知识以后，接下来我就结合 Moments App 来和你介绍下如何进行多环境配置，从而生成不同环境版本的 App。</p>
-<h2 id="Moments-App-构建配置"><a href="#Moments-App-构建配置" class="headerlink" title="Moments App 构建配置"></a>Moments App 构建配置</h2><p>一般用 Xcode 编译出不同环境版本的 App 有多种办法，例如拷贝复制所有源代码，建立多个 Target 来包含不同的源码文件等等。不过，在这里我推荐使用 <code>Build Configuration</code> 和 <code>Xcode Scheme</code> 来管理多环境，进而构建出不同环境版本的 App。为什么？因为这两个是目前管理成本最低的办法。接下来我一一介绍下。</p>
-<h3 id="Build-Configuration"><a href="#Build-Configuration" class="headerlink" title="Build Configuration"></a>Build Configuration</h3><p>当我们在 Xcode 上新建一个项目的时候，Xcode 会自动生成两个 Configuration：<code>Debug</code>和<code>Release</code>。Debug 用于日常的本地开发，Release 用于构建和分发 App。而在我们的 Moments App 项目中，有三个 configuration：<code>Debug</code>，<code>Internal</code> 和 <code>AppStore</code>。它们分别用于构建<code>开发环境</code>、<code>测试环境</code>和<code>生产环境</code>。 其中 Internal 和 AppStore 是从自动生成的 Release 拷贝而来的。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788670470474.jpg"></p>
-<p>那什么是 Build Configuration 呢？</p>
-<p><code>Build Configuration</code>就是一组 Build Setting。 我们可以通过 Build Configuration 来分组和管理不同组合的 Build Setting 集合，然后传递给 Xcode 构建系统进行编译。</p>
-<p>有了 Build Configuration 以后，我们就能为同一个 Build Setting 设置不同的值。例如<code>Build Active Architecture Only</code>在 Debug configuration 是<code>Yes</code>，而在 Internal 和 AppStore configuration 则是<code>No</code>。这样就能做到同一份源代码通过使用不同的 Build Configuration 来构建出功能不一样的 App 了。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788670611837.jpg"></p>
-<p>那么，在构建过程中怎样才能选择不同的 Build Configuration 呢？答案是使用 Xcode Scheme。</p>
-<h3 id="Xcode-Scheme"><a href="#Xcode-Scheme" class="headerlink" title="Xcode Scheme"></a>Xcode Scheme</h3><p><code>Xcode Scheme</code>用于定义一个完整的构建过程，其包括指定哪些 Target 需要进行构建，构建过程中使用了哪个 Build Configuration ，以及需要执行哪些测试案例等等。在项目新建的时候只有一个 Scheme，但可以为同一个项目建立多个 Scheme。不过这么多 Scheme 中，同一时刻只能有一个 Scheme 生效。</p>
-<p>我们一起看一下 Moments App 项目的 Scheme 吧。 Moments App 项目有三个 Scheme 来分别代表三个环境，<code>Moments Scheme</code> 用于开发环境，<code>Moments-Internal Scheme</code> 用于测试环境，而 <code>Moments-AppStore Scheme</code> 用于生产环境。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788670751535.jpg"></p>
-<p>下面是<code>MomentsScheme</code> 的配置。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788670865410.jpg"></p>
-<p>左边是该 Scheme 的各个操作，如当前选择了 Build 操作；右边是对应该操作的配置，比如 Build 对应的 Scheme 可以构建三个不同的 Targets。不同的 Scheme 所构建的 Target 数量可以不一样，例如下面是<code>Moments-InternalScheme</code> 的配置。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788670987138.jpg"></p>
-<p>该 Scheme 只构建主 App TargetMoments，而不能构建其他两个测试 Target。</p>
-<p>当我们选择 Run、Test、Profile、 Analyze 和 Archive 等操作时，在右栏有一个很关键的配置<br>叫作 Build Configuration，我们可以通过下拉框来选择 Moments App 项目里面三个 Configuration （Debug，Internal 和 AppStore） 中的其中一个。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788671106806.jpg"></p>
-<p>为了方便管理，我们通常的做法是，一个 <code>Scheme</code> 对应一个 <code>Configuration</code>。有了这三个 Scheme 以后，我们就可以很方便地构建出 <code>Moments α（开发环境）</code>，<code>Moments β（测试环境</code>）和 <code>Moments（生产环境）</code>三个功能差异的 App。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788671219745.jpg"></p>
-<p>你可能已经注意到这三个 App 的名字都不一样，怎么做到的呢？实际上是我们为不同的 Configuration 设置了不一样的 Build Setting。其中决定 App 名字的 Build Setting 叫作<code>PRODUCT_BUNDLE_NAME</code>，然后在 <code>Info.plist</code> 文件里面为 <code>Bundle name</code> 赋值，就能构建出名字不一样的 App。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788671327468.jpg"></p>
-<p>为了构建出不同环境版本的 App，我们需要经常为各个 Build Configuration 下的 Build Setting 设置不一样的值。 在这其中，使用好 xcconfig 配置文件就显得非常重要。</p>
-<h2 id="xcconfig-配置文件"><a href="#xcconfig-配置文件" class="headerlink" title="xcconfig 配置文件"></a>xcconfig 配置文件</h2><p>xcconfig 会起到什么作用呢？</p>
-<p>一般修改 Build Setting 的办法是在 Xcode 的 Build Settings 界面上进行。 例如下面的例子中修改 Suppress Warnings。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788671456874.jpg"></p>
-<p>这样做有一些不好的地方，首先是手工修改很容易出错，例如有时候很难看出来修改的 Setting 到底是 Project 级别的还是 Target 级别的。其次，最关键的是每次修改完毕以后都会修改了 xcodeproj 项目文档 （如下图所示），导致 Git 历史很难查看和对比。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788671580857.jpg"></p>
-<p>幸运的是，Xcode 为我们提供了一个统一管理这些 Build Setting 的便利方法，那就是使用 xcconfig 配置文件来管理。</p>
-<h3 id="xcconfig-概念及其作用"><a href="#xcconfig-概念及其作用" class="headerlink" title="xcconfig 概念及其作用"></a>xcconfig 概念及其作用</h3><p><code>xcconfig</code>也叫作 <code>Build configuration file（构建配置文件）</code>，我们可以使用它来为 Project 或 Target 定义一组 Build Setting。由于它是一个纯文本文件，我们可以使用 Xcode 以外的其他文本编辑器来修改，而且可以保存到 Git 进行统一管理。 这样远比我们在 Xcode 的 Build Settings 界面上手工修改要方便很多，而且还不容易出错。</p>
-<p>在 xcconfig 文件里面的每一条 Setting 都是下面的格式：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">BUILD_SETTING_NAME</span> = value</span><br></pre></td></tr></table></figure>
-
-<p>其中，<code>BUILD_SETTING_NAME</code>表示 Build Setting 的名字，而value是该 Setting 的值。下面是一个例子。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">SWIFT_VERSION</span> = <span class="number">5.0</span></span><br></pre></td></tr></table></figure>
-
-<p><code>SWIFT_VERSION</code>是用于定义 Swift 语言版本的 Build Setting，其值是<code>5.0</code>。Setting 的名字都是由大写字母，数值和下划线组成。这种命名法我们一般称为<code>蛇型命名法</code>，例如<code>SNAKE_CASE_NAME</code>。</p>
-<p>当我们使用 xcconfig 时，Xcode 构建系统会按照下面的优先级来计算出 Build Setting 的最后生效值：</p>
-<ol>
-<li><p><strong>Platform Defaults</strong> (平台默认值)</p>
-</li>
-<li><p><strong>Xcode Project xcconfig File</strong>（Project 级别的 xcconfig 文件）</p>
-</li>
-<li><p><strong>Xcode Project File Build Settings</strong>（Project 级别的手工配置的 Build Setting）</p>
-</li>
-<li><p><strong>Target xcconfig File</strong> （Target 级别的 xcconfig 文件）</p>
-</li>
-<li><p><strong>Target Build Settings</strong>（Target 级别的手工配置的 Build Setting）</p>
-</li>
-</ol>
-<p>Xcode 构建系统会按照上述列表从上而下读取 Build Setting，如果发现同样的 Setting ，就会把下面的 Setting 覆盖掉上面的，越往下优先级别越高。</p>
-<p>例如我们在 Project 级别的 xcconfig 文件配置了<code>SWIFT_VERSION = 5.0</code>而在Target 级别的 xcconfig 文件配置了<code>SWIFT_VERSION = 5.1</code>，那么Target 级别的 Build Setting 会覆盖 Project 级别的<code>SWIFT_VERSION</code>设置，最终<code>SWIFT_VERSION</code>生效的值是<code>5.1</code>。</p>
-<p>那么，要怎样做才能做到不覆盖原有的 Build Setting 呢？我们可以使用下面例子中的<code>$(inherited)</code>来实现。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">BUILD_SETTING_NAME</span> = $(inherited) additional value</span><br></pre></td></tr></table></figure>
-
-<p>可以保留原先的 Setting，然后把新的值添加到后面去。比如：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">FRAMEWORK_SEARCH_PATHS</span> = $(inherited) ./<span class="title class_">Moments</span>/<span class="title class_">Pods</span></span><br></pre></td></tr></table></figure>
-
-<p>其中的<code>FRAMEWORK_SEARCH_PATHS</code>会保留原有的值，然后加上<code>./Moments/Pods</code>作为新值。<br>在配置 Build Setting 时，还可以引用其他已定义的 Build Setting。</p>
-<p>例如下面的例子中，<code>FRAMEWORK_SEARCH_PATHS</code>使用了另外一个 Build Setting <code>PROJECT_DIR</code>。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">FRAMEWORK_SEARCH_PATHS</span> = $(inherited) $(<span class="variable constant_">PROJECT_DIR</span>)</span><br></pre></td></tr></table></figure>
-
-<p>为了重用，我们可以通过<code>#include</code>引入其他 xcconfig 文件。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;path/to/OtherFile.xcconfig&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="Moments-App-xcconfig-配置文件"><a href="#Moments-App-xcconfig-配置文件" class="headerlink" title="Moments App xcconfig 配置文件"></a>Moments App xcconfig 配置文件</h3><p>下面我们一起来看看 Moments App 项目是怎样管理 xcconfig 配置文件吧。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788671799157.jpg"></p>
-<p>我们把所有 xcconfig 文件分成三大类：<code>Shared</code>、 <code>Project</code> 和 <code>Targets</code>。</p>
-<p>其中 Shared 文件夹用于保存分享到整个 App 的 Build Setting，例如 Swift 的版本号、App 所支持的 iOS 版本号等各种共享的基础信息。 下面是 <code>SDKAndDeviceSupport.xcconfig</code> 文件里面所包含的信息：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">TARGETED_DEVICE_FAMILY</span> = <span class="number">1</span></span><br><span class="line"><span class="variable constant_">IPHONEOS_DEPLOYMENT_TARGET</span> = <span class="number">14.0</span></span><br></pre></td></tr></table></figure>
-
-<p><code>TARGETED_DEVICE_FAMILY</code>表示支持的设备，<code>1</code>表示 <code>iPhone</code>。<br>而<code>IPHONEOS_DEPLOYMENT_TARGET</code>表示支持 iOS 的最低版本，我们的 Moments App 所支持的最低版本是 <code>iOS 14.0</code>。</p>
-<p>Project 文件夹用于保存 Xcode Project 级别的 Build Setting，其中 BaseProject.xcconfig 会引入 Shared 文件夹下所有的 xcconfig 配置文件，如下所示：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;CompilerAndLanguage.xcconfig&quot;</span></span><br><span class="line">#include <span class="string">&quot;SDKAndDeviceSupport.xcconfig&quot;</span></span><br><span class="line">#include <span class="string">&quot;BaseConfigurations.xcconfig&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>然后我们会根据三个不同的环境分别建了三个xcconfig 配置文件，如下：</p>
-<ul>
-<li>DebugProject.xcconfig 文件</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;BaseProject.xcconfig&quot;</span></span><br><span class="line"><span class="variable constant_">SWIFT_ACTIVE_COMPILATION_CONDITIONS</span> = $(inherited) <span class="variable constant_">DEBUG</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>InternalProject.xcconfig 文件</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;BaseProject.xcconfig&quot;</span></span><br><span class="line"><span class="variable constant_">SWIFT_ACTIVE_COMPILATION_CONDITIONS</span> = $(inherited) <span class="variable constant_">INTERNAL</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>AppStoreProject.xcconfig 文件</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;BaseProject.xcconfig&quot;</span></span><br><span class="line"><span class="variable constant_">SWIFT_ACTIVE_COMPILATION_CONDITIONS</span> = $(inherited) <span class="variable constant_">PRODUCTION</span></span><br></pre></td></tr></table></figure>
-
-<p>它们的共同点是都引入了用于共享的 BaseProject.xcconfig 文件，然后分别定义了 Swift 编译条件配置<code>SWIFT_ACTIVE_COMPILATION_CONDITIONS</code>。其中<code>$(inherited)</code>表示继承原有的配置，<code>$(inherited)</code>后面的<code>DEBUG</code>或者<code>INTERNAL</code>表示在原有配置的基础上后面添加了一个新条件。有了这些编译条件，我们就可以在代码中这样使用：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="keyword">if</span> <span class="variable constant_">DEBUG</span></span><br><span class="line">    <span class="title function_">print</span>(<span class="string">&quot;Debug Environment&quot;</span>)</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
-
-<p>该段代码只在开发环境执行，因为只有开发环境的<code>SWIFT_ACTIVE_COMPILATION_CONDITIONS</code>才有<code>DEBUG</code>的定义。这样做能有效分离各个环境，保证同一份代码构建出对应不同环境的 App。</p>
-<p>Targets 文件夹用于保存 Xcode Target 级别的 Build Setting，也是由一个 BaseTarget.xcconfig 文件来共享所有 Target 都需要使用的信息。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">PRODUCT_BUNDLE_NAME</span> = <span class="title class_">Moments</span></span><br></pre></td></tr></table></figure>
-
-<p>这里的<code>PRODUCT_BUNDLE_NAME</code>是 App 的名字。<br>下面是三个不同环境的 Target xcconfig 文件。</p>
-<ul>
-<li>DebugTarget.xcconfig</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;../Pods/Target Support Files/Pods-Moments/Pods-Moments.debug.xcconfig&quot;</span></span><br><span class="line">#include <span class="string">&quot;BaseTarget.xcconfig&quot;</span></span><br><span class="line"><span class="variable constant_">PRODUCT_BUNDLE_NAME</span> = $(inherited) α</span><br><span class="line"><span class="variable constant_">PRODUCT_BUNDLE_IDENTIFIER</span> = com.<span class="property">ibanimatable</span>.<span class="property">moments</span>.<span class="property">development</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>InternalTarget.xcconfig</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;../Pods/Target Support Files/Pods-Moments/Pods-Moments.internal.xcconfig&quot;</span></span><br><span class="line">#include <span class="string">&quot;BaseTarget.xcconfig&quot;</span></span><br><span class="line"><span class="variable constant_">PRODUCT_BUNDLE_NAME</span> = $(inherited) β</span><br><span class="line"><span class="variable constant_">PRODUCT_BUNDLE_IDENTIFIER</span> = com.<span class="property">ibanimatable</span>.<span class="property">moments</span>.<span class="property">internal</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>AppStoreTarget.xcconfig</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;../Pods/Target Support Files/Pods-Moments/Pods-Moments.appstore.xcconfig&quot;</span></span><br><span class="line">#include <span class="string">&quot;BaseTarget.xcconfig&quot;</span></span><br><span class="line"><span class="variable constant_">PRODUCT_BUNDLE_NAME</span> = $(inherited)</span><br><span class="line"><span class="variable constant_">PRODUCT_BUNDLE_IDENTIFIER</span> = com.<span class="property">ibanimatable</span>.<span class="property">moments</span></span><br></pre></td></tr></table></figure>
-
-<p>它们都需要引入 CocoaPods 所生成的 xcconfig 和共享的 BaseTarget.xcconfig 文件，然后根据需要改写 App 的名字。例如DebugTarget 覆盖了<code>PRODUCT_BUNDLE_NAME</code>的值为<code>Moments α*</code>, 其所构建的 App 叫作<code>Moments α</code>。</p>
-<p>一般在 App Store 上所有 App 的标识符都必须是唯一的。如果你的项目通过 Configuration 和 Scheme 来生成免费版和收费版的 App，那么，你必须在两个 Configuration 中分别为<code>PRODUCT_BUNDLE_IDENTIFIER</code>配置对应的标识符，例如<code>com.lagou.free</code>和<code>com.lagou.paid</code>。</p>
-<p>在 Moments App 中，我们也为各个环境下的 App 使用了不同的标识符，以方便我们通过 CI 自动构建，并分发到内部测试组或者 App Store。同时，这也能为各个环境版本的 App 分离用户行为数据，方便统计分析。</p>
-<p>一旦有了这些 xcconfig 配置文件，今后我们就可以在 Xcode 的 Project Info 页面里的 Configurations 上引用它们。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788672041808.jpg"></p>
-<p>下面是所有 Configurations 所引用的 xcconfig 文件。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788672157238.jpg"></p>
-<p>在配置好所有 xcconfig 文件的引用以后，可以在 Build Settings 页面查看某个 Build Setting 的生效值。我们以<code>IPHONEOS_DEPLOYMENT_TARGET</code>为例，一起看看。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788672309236.jpg"></p>
-<p>当我们选择<code>All</code>和<code>Levels</code>时，可以看到所有配置信息分成了不同的列。这些列分别代表前面的 Build Setting 优先级：</p>
-<ol>
-<li><p>平台默认值</p>
-</li>
-<li><p>Project 级别的 xcconfig 文件</p>
-</li>
-<li><p>Xcode 项目文件中的 Project 级别配置</p>
-</li>
-<li><p>Target 级别的 xcconfig 文件</p>
-</li>
-<li><p>Xcode 项目文件中的 Target 级别配置</p>
-</li>
-</ol>
-<p><strong>Build Settng 的优先级是从左到右排序的。越是左边优先级就越高</strong>。例如，我们在 Project 级别的 xcconfig 文件里面定义了<code>IPHONEOS_DEPLOYMENT_TARGET</code>的值为14.0，那么Project 级别的 xcconfig 文件（Project Config File） 一列上就会显示iOS 14.0，它覆盖了系统的默认值 （iOS Default）iOS 14.2。这就是因为 Project 级别的 xcconfig 文件，它的优先级高于系统默认值，因此最后生效的值是iOS 14.0。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本讲我介绍了如何通过 Build Configuration、 Xcode Scheme 以及 xcconfig 配置文件来统一项目的构建配置，从而搭建出多个不同环境，为后期构建出对应环境的 App 做准备。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788672568915.jpg"></p>
-<p>在使用 xcconfig 配置时，还是需要注意以下两点：</p>
-<ul>
-<li><p><strong>首先</strong>，我们必须把所有 Build Setting 都配置在 xcconfig 文件里面，并通过 Git 进行统一管理；</p>
-</li>
-<li><p><strong>其次</strong>，我们千万不要在 Xcode 的 Build Settings 页面修改任何 Setting，否则该配置会覆盖 xcconfig 文件里面的配置。如果你不小心修改了，可以通过点击删除键把页面是的配置删掉。</p>
-</li>
-</ul>
-<h3 id="源码地址："><a href="#源码地址：" class="headerlink" title="源码地址："></a>源码地址：</h3><blockquote>
-<p><a href="https://github.com/lagoueduCol/iOS-linyongjian/tree/main/Moments/Moments/Configurations">https://github.com/lagoueduCol/iOS-linyongjian/tree/main/Moments/Moments/Configurations</a></p>
-</blockquote>
-<h1 id="二、学习笔记与扩展"><a href="#二、学习笔记与扩展" class="headerlink" title="二、学习笔记与扩展"></a>二、学习笔记与扩展</h1><h2 id="Swift-多个-Target-的管理与配置"><a href="#Swift-多个-Target-的管理与配置" class="headerlink" title="Swift 多个 Target 的管理与配置"></a>Swift 多个 Target 的管理与配置</h2><h3 id="1、创建多个-Target"><a href="#1、创建多个-Target" class="headerlink" title="1、创建多个 Target"></a>1、创建多个 Target</h3><p>创建一个新的Swift工程，并 <code>Duplicate</code> 多个Target。</p>
-<p>(1)、<code>Duplicate</code> 复制 Target：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788672796397.jpg"></p>
-<p>(2)、可以生成了新的 target 和 info.plist 文件：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788672924486.jpg"></p>
-<p>(3)、修改 target 名字：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673034270.jpg"></p>
-<p>此处：</p>
-<ul>
-<li><code>TargetsDemo</code> ：为正式环境 target</li>
-<li><code>TargetsDemo-Debug</code> ：为开发环境 target</li>
-<li><code>TargetsDemo-Internal</code> ：为测试环境 target</li>
-</ul>
-<p>(4)、配置 Schemes：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673161851.jpg"></p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673310718.jpg"></p>
-<p>修改成功如下：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673438173.jpg"></p>
-<h3 id="2、配置工程相关信息"><a href="#2、配置工程相关信息" class="headerlink" title="2、配置工程相关信息"></a>2、配置工程相关信息</h3><p>我们现在已经有了三个Target，接下来我们为他们命名不同地 <code>Display Name</code> 、<code>Bundle Identifier</code>，并引入不同的 <code>Assets.xcassets</code>资源以生成和管理不同的app。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673572335.jpg"></p>
-<p>为不同的 app 引入不同的 <code>Assets.xcassets</code> 图片资源。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673685116.jpg"></p>
-<p>然后导入图片即可：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673830388.jpg"></p>
-<p>不同图片资源的使用可以自主选择：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673961061.jpg"></p>
-<h3 id="3、宏定义配置"><a href="#3、宏定义配置" class="headerlink" title="3、宏定义配置"></a>3、宏定义配置</h3><p>虽然是swift，我们还是叫它宏定义。接下来我们为不同的 target 设置不同的宏定义以区分它们，然后在代码中引用。</p>
-<p>找到设置路径：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788674590270.jpg"></p>
-<p>以下是 swift 情况下三种 “宏定义” 的配置方式：</p>
-<ul>
-<li>分开写，加引号，加 -D</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">“-D”</span><br><span class="line">“APPSTORE”</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>分开写，不加引号，加 -D</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-D</span><br><span class="line">APPSTORE</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>写成一排，不加引号，加 -D</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-DAPPSTORE</span><br></pre></td></tr></table></figure>
-
-<p>三种方式任选其一即可：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788674715539.jpg"></p>
-<p>分别为 target 设置 “宏定义” 之后，我们就可以在代码中使用了：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788674824238.jpg"></p>
-<h3 id="4、Podfile-设置"><a href="#4、Podfile-设置" class="headerlink" title="4、Podfile 设置"></a>4、Podfile 设置</h3><p>如果不同的 target 需要引入不同三方库，可以在<code>podfile</code> 文件中进行设置：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># <span class="title class_">Uncomment</span> the next line to define a <span class="variable language_">global</span> platform <span class="keyword">for</span> your project</span><br><span class="line">platform :ios, <span class="string">&#x27;13.0&#x27;</span></span><br><span class="line"></span><br><span class="line"># 正式环境</span><br><span class="line">target <span class="string">&#x27;TargetsDemo&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  use_frameworks!</span><br><span class="line"></span><br><span class="line">  pod <span class="string">&#x27;SnapKit&#x27;</span></span><br><span class="line"></span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 开发环境，使用 <span class="title class_">SwiftLint</span> 进行代码规范检测，<span class="title class_">SwiftGen</span> 自动生成资源管理文件</span><br><span class="line">target <span class="string">&#x27;TargetsDemo-Debug&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  use_frameworks!</span><br><span class="line"></span><br><span class="line">  pod <span class="string">&#x27;SwiftLint&#x27;</span>, <span class="string">&#x27;= 0.42.0&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line">  pod <span class="string">&#x27;SwiftGen&#x27;</span>, <span class="string">&#x27;= 6.4.0&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line"></span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 测试环境，引用单元测试三方库</span><br><span class="line">target <span class="string">&#x27;TargetsDemo-Internal&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  use_frameworks!</span><br><span class="line"></span><br><span class="line">  pod <span class="string">&#x27;Quick&#x27;</span>, <span class="string">&#x27;= 3.0.0&#x27;</span></span><br><span class="line">  pod <span class="string">&#x27;Nimble&#x27;</span>, <span class="string">&#x27;= 9.0.0&#x27;</span></span><br><span class="line">  pod <span class="string">&#x27;RxTest&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br><span class="line">  pod <span class="string">&#x27;RxBlocking&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>iOS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>02｜依赖管理：如何使用CocoaPods统一依赖库的管理？</title>
     <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/</url>
     <content><![CDATA[<h1 id="依赖管理：如何使用-CocoaPods-统一依赖库的管理？"><a href="#依赖管理：如何使用-CocoaPods-统一依赖库的管理？" class="headerlink" title="依赖管理：如何使用 CocoaPods 统一依赖库的管理？"></a>依赖管理：如何使用 CocoaPods 统一依赖库的管理？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788496868852.jpg"></p>
@@ -628,6 +386,248 @@
       </tags>
   </entry>
   <entry>
+    <title>03 | 配置准备：如何搭建多环境支持，为 App 开发作准备</title>
+    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/</url>
+    <content><![CDATA[<h1 id="一、配置准备：如何搭建多环境支持，为-App-开发作准备"><a href="#一、配置准备：如何搭建多环境支持，为-App-开发作准备" class="headerlink" title="一、配置准备：如何搭建多环境支持，为 App 开发作准备"></a>一、配置准备：如何搭建多环境支持，为 App 开发作准备</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788668316765.jpg"></p>
+<span id="more"></span>
+
+<p>在开始之前，我先问你几个问题，在测试的时候，App 一般需要连接测试服务器，那么在上架后，还需要连生产服务器吗？在发布前，你的 App 需要通过 <code>Ad-hoc </code>分发给内部测试组吗？在发布到 <code>App Store</code> 的时候，你的 App 需要同时支持免费版和收费版吗？</p>
+<p>如果你的回答是<code>“是”</code>，那么你的 App 就需要搭建多环境支持，优化开发的工作流程。多环境提供很多好处，比如能基于同一套源代码自动构建出有差异功能的 App；能支持多个团队并行开发，也能分离测试和生产环境，提高产品的迭代速度，保证上架的 App 通过严格测试和功能验证。</p>
+<p>在 Moments App 项目中，我们就使用了三个不同的环境，分别是<code>开发环境</code>，<code>测试环境</code>和<code>生产环境</code>。它们到底有什么区别呢？</p>
+<ul>
+<li><p><strong>开发环境</strong>， 用于日常的开发，一般有未完成的功能模块。编译时，也不进行任何优化，可以打印更多的日志，帮助开发者快速定位问题。</p>
+</li>
+<li><p><strong>测试环境</strong>， 主要是用于测试，以及为产品经理进行功能验证，包括部分完成的功能模块，也提供一些隐藏功能，方便我们进行开发和迭代，例如快速切换用户，清理 Cache，连接到不同后台服务器等等。</p>
+</li>
+<li><p><strong>生产环境</strong>， 只包含通过了测试并验证过的功能模块，它是最终提交到 App Store 供终端用户使用的版本。</p>
+</li>
+</ul>
+<p>多环境支持需要用到 Xcode 的构建配置，这一讲，我就结合 Moments App 项目来聊聊这个问题。</p>
+<h2 id="Xcode-构建基础概念"><a href="#Xcode-构建基础概念" class="headerlink" title="Xcode 构建基础概念"></a>Xcode 构建基础概念</h2><p>一般在构建一个 iOS App 的时候，需要用到 <code>Xcode Project</code>，<code>Xcode Target</code>，<code>Build Settings</code>，<code>Build Configuration</code> 和 <code>Xcode Scheme</code> 等构建配置。它们各有什么用呢？</p>
+<h3 id="Xcode-Project"><a href="#Xcode-Project" class="headerlink" title="Xcode Project"></a>Xcode Project</h3><p><code>Xcode Project</code>用于组织源代码文件和资源文件。一个 Project 可以包含多个 Target，例如当我们新建一个 Xcode Project 的时候，它会自动生成 App 的主 Target，Unit Test Target 和 UI Test Target。</p>
+<p>在 Moments App 项目中，主 Target 就是 Moments，Unit Test Target 是 MomentsTests， UI Test Target 就是 MomentsUITests。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788669693800.jpg"></p>
+<h3 id="Xcode-Target"><a href="#Xcode-Target" class="headerlink" title="Xcode Target"></a>Xcode Target</h3><p><code>Xcode Target</code>用来定义如何构建出一个产品（例如 <code>App</code>， <code>Extension</code> 或者 <code>Framework</code>），Target 可以指定需要编译的源代码文件和需要打包的资源文件，以及构建过程中的步骤。</p>
+<p>例如在我们的 Moments App 项目中，负责单元测试的MomentsTestsTarget 就指定了 14 个测试文件需要构建（见下图的 Compile Sources），并且该 Target 依赖了主 App TargetMoments（见下图的 Dependencies）。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788669841278.jpg"></p>
+<p>有了 Target 的定义，构建系统就可以读取相关的源代码文件进行编译，然后把相关的资源文件进行打包，并严格按照 Target 所指定的设置和步骤执行。那么 Target 所指定的设置哪里来的呢？来自 Build Settings。</p>
+<h3 id="Build-Settings"><a href="#Build-Settings" class="headerlink" title="Build Settings"></a>Build Settings</h3><p><code>Build Setting</code>保存了构建过程中需要用到的信息，它以一个变量的形式而存在，例如所支持的设备平台，或者支持操作系统的最低版本等。</p>
+<p>通常，一条 Build Setting 信息由两部分组成：名字和值。比如下面是一条 Setting 信息，<code>iOS Development Target</code>是名字，而<code>iOS 14.0</code>是值。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788670287057.jpg"></p>
+<p>有了这些基础知识以后，接下来我就结合 Moments App 来和你介绍下如何进行多环境配置，从而生成不同环境版本的 App。</p>
+<h2 id="Moments-App-构建配置"><a href="#Moments-App-构建配置" class="headerlink" title="Moments App 构建配置"></a>Moments App 构建配置</h2><p>一般用 Xcode 编译出不同环境版本的 App 有多种办法，例如拷贝复制所有源代码，建立多个 Target 来包含不同的源码文件等等。不过，在这里我推荐使用 <code>Build Configuration</code> 和 <code>Xcode Scheme</code> 来管理多环境，进而构建出不同环境版本的 App。为什么？因为这两个是目前管理成本最低的办法。接下来我一一介绍下。</p>
+<h3 id="Build-Configuration"><a href="#Build-Configuration" class="headerlink" title="Build Configuration"></a>Build Configuration</h3><p>当我们在 Xcode 上新建一个项目的时候，Xcode 会自动生成两个 Configuration：<code>Debug</code>和<code>Release</code>。Debug 用于日常的本地开发，Release 用于构建和分发 App。而在我们的 Moments App 项目中，有三个 configuration：<code>Debug</code>，<code>Internal</code> 和 <code>AppStore</code>。它们分别用于构建<code>开发环境</code>、<code>测试环境</code>和<code>生产环境</code>。 其中 Internal 和 AppStore 是从自动生成的 Release 拷贝而来的。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788670470474.jpg"></p>
+<p>那什么是 Build Configuration 呢？</p>
+<p><code>Build Configuration</code>就是一组 Build Setting。 我们可以通过 Build Configuration 来分组和管理不同组合的 Build Setting 集合，然后传递给 Xcode 构建系统进行编译。</p>
+<p>有了 Build Configuration 以后，我们就能为同一个 Build Setting 设置不同的值。例如<code>Build Active Architecture Only</code>在 Debug configuration 是<code>Yes</code>，而在 Internal 和 AppStore configuration 则是<code>No</code>。这样就能做到同一份源代码通过使用不同的 Build Configuration 来构建出功能不一样的 App 了。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788670611837.jpg"></p>
+<p>那么，在构建过程中怎样才能选择不同的 Build Configuration 呢？答案是使用 Xcode Scheme。</p>
+<h3 id="Xcode-Scheme"><a href="#Xcode-Scheme" class="headerlink" title="Xcode Scheme"></a>Xcode Scheme</h3><p><code>Xcode Scheme</code>用于定义一个完整的构建过程，其包括指定哪些 Target 需要进行构建，构建过程中使用了哪个 Build Configuration ，以及需要执行哪些测试案例等等。在项目新建的时候只有一个 Scheme，但可以为同一个项目建立多个 Scheme。不过这么多 Scheme 中，同一时刻只能有一个 Scheme 生效。</p>
+<p>我们一起看一下 Moments App 项目的 Scheme 吧。 Moments App 项目有三个 Scheme 来分别代表三个环境，<code>Moments Scheme</code> 用于开发环境，<code>Moments-Internal Scheme</code> 用于测试环境，而 <code>Moments-AppStore Scheme</code> 用于生产环境。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788670751535.jpg"></p>
+<p>下面是<code>MomentsScheme</code> 的配置。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788670865410.jpg"></p>
+<p>左边是该 Scheme 的各个操作，如当前选择了 Build 操作；右边是对应该操作的配置，比如 Build 对应的 Scheme 可以构建三个不同的 Targets。不同的 Scheme 所构建的 Target 数量可以不一样，例如下面是<code>Moments-InternalScheme</code> 的配置。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788670987138.jpg"></p>
+<p>该 Scheme 只构建主 App TargetMoments，而不能构建其他两个测试 Target。</p>
+<p>当我们选择 Run、Test、Profile、 Analyze 和 Archive 等操作时，在右栏有一个很关键的配置<br>叫作 Build Configuration，我们可以通过下拉框来选择 Moments App 项目里面三个 Configuration （Debug，Internal 和 AppStore） 中的其中一个。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788671106806.jpg"></p>
+<p>为了方便管理，我们通常的做法是，一个 <code>Scheme</code> 对应一个 <code>Configuration</code>。有了这三个 Scheme 以后，我们就可以很方便地构建出 <code>Moments α（开发环境）</code>，<code>Moments β（测试环境</code>）和 <code>Moments（生产环境）</code>三个功能差异的 App。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788671219745.jpg"></p>
+<p>你可能已经注意到这三个 App 的名字都不一样，怎么做到的呢？实际上是我们为不同的 Configuration 设置了不一样的 Build Setting。其中决定 App 名字的 Build Setting 叫作<code>PRODUCT_BUNDLE_NAME</code>，然后在 <code>Info.plist</code> 文件里面为 <code>Bundle name</code> 赋值，就能构建出名字不一样的 App。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788671327468.jpg"></p>
+<p>为了构建出不同环境版本的 App，我们需要经常为各个 Build Configuration 下的 Build Setting 设置不一样的值。 在这其中，使用好 xcconfig 配置文件就显得非常重要。</p>
+<h2 id="xcconfig-配置文件"><a href="#xcconfig-配置文件" class="headerlink" title="xcconfig 配置文件"></a>xcconfig 配置文件</h2><p>xcconfig 会起到什么作用呢？</p>
+<p>一般修改 Build Setting 的办法是在 Xcode 的 Build Settings 界面上进行。 例如下面的例子中修改 Suppress Warnings。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788671456874.jpg"></p>
+<p>这样做有一些不好的地方，首先是手工修改很容易出错，例如有时候很难看出来修改的 Setting 到底是 Project 级别的还是 Target 级别的。其次，最关键的是每次修改完毕以后都会修改了 xcodeproj 项目文档 （如下图所示），导致 Git 历史很难查看和对比。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788671580857.jpg"></p>
+<p>幸运的是，Xcode 为我们提供了一个统一管理这些 Build Setting 的便利方法，那就是使用 xcconfig 配置文件来管理。</p>
+<h3 id="xcconfig-概念及其作用"><a href="#xcconfig-概念及其作用" class="headerlink" title="xcconfig 概念及其作用"></a>xcconfig 概念及其作用</h3><p><code>xcconfig</code>也叫作 <code>Build configuration file（构建配置文件）</code>，我们可以使用它来为 Project 或 Target 定义一组 Build Setting。由于它是一个纯文本文件，我们可以使用 Xcode 以外的其他文本编辑器来修改，而且可以保存到 Git 进行统一管理。 这样远比我们在 Xcode 的 Build Settings 界面上手工修改要方便很多，而且还不容易出错。</p>
+<p>在 xcconfig 文件里面的每一条 Setting 都是下面的格式：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">BUILD_SETTING_NAME</span> = value</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>BUILD_SETTING_NAME</code>表示 Build Setting 的名字，而value是该 Setting 的值。下面是一个例子。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">SWIFT_VERSION</span> = <span class="number">5.0</span></span><br></pre></td></tr></table></figure>
+
+<p><code>SWIFT_VERSION</code>是用于定义 Swift 语言版本的 Build Setting，其值是<code>5.0</code>。Setting 的名字都是由大写字母，数值和下划线组成。这种命名法我们一般称为<code>蛇型命名法</code>，例如<code>SNAKE_CASE_NAME</code>。</p>
+<p>当我们使用 xcconfig 时，Xcode 构建系统会按照下面的优先级来计算出 Build Setting 的最后生效值：</p>
+<ol>
+<li><p><strong>Platform Defaults</strong> (平台默认值)</p>
+</li>
+<li><p><strong>Xcode Project xcconfig File</strong>（Project 级别的 xcconfig 文件）</p>
+</li>
+<li><p><strong>Xcode Project File Build Settings</strong>（Project 级别的手工配置的 Build Setting）</p>
+</li>
+<li><p><strong>Target xcconfig File</strong> （Target 级别的 xcconfig 文件）</p>
+</li>
+<li><p><strong>Target Build Settings</strong>（Target 级别的手工配置的 Build Setting）</p>
+</li>
+</ol>
+<p>Xcode 构建系统会按照上述列表从上而下读取 Build Setting，如果发现同样的 Setting ，就会把下面的 Setting 覆盖掉上面的，越往下优先级别越高。</p>
+<p>例如我们在 Project 级别的 xcconfig 文件配置了<code>SWIFT_VERSION = 5.0</code>而在Target 级别的 xcconfig 文件配置了<code>SWIFT_VERSION = 5.1</code>，那么Target 级别的 Build Setting 会覆盖 Project 级别的<code>SWIFT_VERSION</code>设置，最终<code>SWIFT_VERSION</code>生效的值是<code>5.1</code>。</p>
+<p>那么，要怎样做才能做到不覆盖原有的 Build Setting 呢？我们可以使用下面例子中的<code>$(inherited)</code>来实现。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">BUILD_SETTING_NAME</span> = $(inherited) additional value</span><br></pre></td></tr></table></figure>
+
+<p>可以保留原先的 Setting，然后把新的值添加到后面去。比如：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">FRAMEWORK_SEARCH_PATHS</span> = $(inherited) ./<span class="title class_">Moments</span>/<span class="title class_">Pods</span></span><br></pre></td></tr></table></figure>
+
+<p>其中的<code>FRAMEWORK_SEARCH_PATHS</code>会保留原有的值，然后加上<code>./Moments/Pods</code>作为新值。<br>在配置 Build Setting 时，还可以引用其他已定义的 Build Setting。</p>
+<p>例如下面的例子中，<code>FRAMEWORK_SEARCH_PATHS</code>使用了另外一个 Build Setting <code>PROJECT_DIR</code>。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">FRAMEWORK_SEARCH_PATHS</span> = $(inherited) $(<span class="variable constant_">PROJECT_DIR</span>)</span><br></pre></td></tr></table></figure>
+
+<p>为了重用，我们可以通过<code>#include</code>引入其他 xcconfig 文件。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;path/to/OtherFile.xcconfig&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Moments-App-xcconfig-配置文件"><a href="#Moments-App-xcconfig-配置文件" class="headerlink" title="Moments App xcconfig 配置文件"></a>Moments App xcconfig 配置文件</h3><p>下面我们一起来看看 Moments App 项目是怎样管理 xcconfig 配置文件吧。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788671799157.jpg"></p>
+<p>我们把所有 xcconfig 文件分成三大类：<code>Shared</code>、 <code>Project</code> 和 <code>Targets</code>。</p>
+<p>其中 Shared 文件夹用于保存分享到整个 App 的 Build Setting，例如 Swift 的版本号、App 所支持的 iOS 版本号等各种共享的基础信息。 下面是 <code>SDKAndDeviceSupport.xcconfig</code> 文件里面所包含的信息：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">TARGETED_DEVICE_FAMILY</span> = <span class="number">1</span></span><br><span class="line"><span class="variable constant_">IPHONEOS_DEPLOYMENT_TARGET</span> = <span class="number">14.0</span></span><br></pre></td></tr></table></figure>
+
+<p><code>TARGETED_DEVICE_FAMILY</code>表示支持的设备，<code>1</code>表示 <code>iPhone</code>。<br>而<code>IPHONEOS_DEPLOYMENT_TARGET</code>表示支持 iOS 的最低版本，我们的 Moments App 所支持的最低版本是 <code>iOS 14.0</code>。</p>
+<p>Project 文件夹用于保存 Xcode Project 级别的 Build Setting，其中 BaseProject.xcconfig 会引入 Shared 文件夹下所有的 xcconfig 配置文件，如下所示：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;CompilerAndLanguage.xcconfig&quot;</span></span><br><span class="line">#include <span class="string">&quot;SDKAndDeviceSupport.xcconfig&quot;</span></span><br><span class="line">#include <span class="string">&quot;BaseConfigurations.xcconfig&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后我们会根据三个不同的环境分别建了三个xcconfig 配置文件，如下：</p>
+<ul>
+<li>DebugProject.xcconfig 文件</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;BaseProject.xcconfig&quot;</span></span><br><span class="line"><span class="variable constant_">SWIFT_ACTIVE_COMPILATION_CONDITIONS</span> = $(inherited) <span class="variable constant_">DEBUG</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>InternalProject.xcconfig 文件</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;BaseProject.xcconfig&quot;</span></span><br><span class="line"><span class="variable constant_">SWIFT_ACTIVE_COMPILATION_CONDITIONS</span> = $(inherited) <span class="variable constant_">INTERNAL</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>AppStoreProject.xcconfig 文件</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;BaseProject.xcconfig&quot;</span></span><br><span class="line"><span class="variable constant_">SWIFT_ACTIVE_COMPILATION_CONDITIONS</span> = $(inherited) <span class="variable constant_">PRODUCTION</span></span><br></pre></td></tr></table></figure>
+
+<p>它们的共同点是都引入了用于共享的 BaseProject.xcconfig 文件，然后分别定义了 Swift 编译条件配置<code>SWIFT_ACTIVE_COMPILATION_CONDITIONS</code>。其中<code>$(inherited)</code>表示继承原有的配置，<code>$(inherited)</code>后面的<code>DEBUG</code>或者<code>INTERNAL</code>表示在原有配置的基础上后面添加了一个新条件。有了这些编译条件，我们就可以在代码中这样使用：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="keyword">if</span> <span class="variable constant_">DEBUG</span></span><br><span class="line">    <span class="title function_">print</span>(<span class="string">&quot;Debug Environment&quot;</span>)</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<p>该段代码只在开发环境执行，因为只有开发环境的<code>SWIFT_ACTIVE_COMPILATION_CONDITIONS</code>才有<code>DEBUG</code>的定义。这样做能有效分离各个环境，保证同一份代码构建出对应不同环境的 App。</p>
+<p>Targets 文件夹用于保存 Xcode Target 级别的 Build Setting，也是由一个 BaseTarget.xcconfig 文件来共享所有 Target 都需要使用的信息。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">PRODUCT_BUNDLE_NAME</span> = <span class="title class_">Moments</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的<code>PRODUCT_BUNDLE_NAME</code>是 App 的名字。<br>下面是三个不同环境的 Target xcconfig 文件。</p>
+<ul>
+<li>DebugTarget.xcconfig</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;../Pods/Target Support Files/Pods-Moments/Pods-Moments.debug.xcconfig&quot;</span></span><br><span class="line">#include <span class="string">&quot;BaseTarget.xcconfig&quot;</span></span><br><span class="line"><span class="variable constant_">PRODUCT_BUNDLE_NAME</span> = $(inherited) α</span><br><span class="line"><span class="variable constant_">PRODUCT_BUNDLE_IDENTIFIER</span> = com.<span class="property">ibanimatable</span>.<span class="property">moments</span>.<span class="property">development</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>InternalTarget.xcconfig</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;../Pods/Target Support Files/Pods-Moments/Pods-Moments.internal.xcconfig&quot;</span></span><br><span class="line">#include <span class="string">&quot;BaseTarget.xcconfig&quot;</span></span><br><span class="line"><span class="variable constant_">PRODUCT_BUNDLE_NAME</span> = $(inherited) β</span><br><span class="line"><span class="variable constant_">PRODUCT_BUNDLE_IDENTIFIER</span> = com.<span class="property">ibanimatable</span>.<span class="property">moments</span>.<span class="property">internal</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>AppStoreTarget.xcconfig</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#include <span class="string">&quot;../Pods/Target Support Files/Pods-Moments/Pods-Moments.appstore.xcconfig&quot;</span></span><br><span class="line">#include <span class="string">&quot;BaseTarget.xcconfig&quot;</span></span><br><span class="line"><span class="variable constant_">PRODUCT_BUNDLE_NAME</span> = $(inherited)</span><br><span class="line"><span class="variable constant_">PRODUCT_BUNDLE_IDENTIFIER</span> = com.<span class="property">ibanimatable</span>.<span class="property">moments</span></span><br></pre></td></tr></table></figure>
+
+<p>它们都需要引入 CocoaPods 所生成的 xcconfig 和共享的 BaseTarget.xcconfig 文件，然后根据需要改写 App 的名字。例如DebugTarget 覆盖了<code>PRODUCT_BUNDLE_NAME</code>的值为<code>Moments α*</code>, 其所构建的 App 叫作<code>Moments α</code>。</p>
+<p>一般在 App Store 上所有 App 的标识符都必须是唯一的。如果你的项目通过 Configuration 和 Scheme 来生成免费版和收费版的 App，那么，你必须在两个 Configuration 中分别为<code>PRODUCT_BUNDLE_IDENTIFIER</code>配置对应的标识符，例如<code>com.lagou.free</code>和<code>com.lagou.paid</code>。</p>
+<p>在 Moments App 中，我们也为各个环境下的 App 使用了不同的标识符，以方便我们通过 CI 自动构建，并分发到内部测试组或者 App Store。同时，这也能为各个环境版本的 App 分离用户行为数据，方便统计分析。</p>
+<p>一旦有了这些 xcconfig 配置文件，今后我们就可以在 Xcode 的 Project Info 页面里的 Configurations 上引用它们。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788672041808.jpg"></p>
+<p>下面是所有 Configurations 所引用的 xcconfig 文件。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788672157238.jpg"></p>
+<p>在配置好所有 xcconfig 文件的引用以后，可以在 Build Settings 页面查看某个 Build Setting 的生效值。我们以<code>IPHONEOS_DEPLOYMENT_TARGET</code>为例，一起看看。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788672309236.jpg"></p>
+<p>当我们选择<code>All</code>和<code>Levels</code>时，可以看到所有配置信息分成了不同的列。这些列分别代表前面的 Build Setting 优先级：</p>
+<ol>
+<li><p>平台默认值</p>
+</li>
+<li><p>Project 级别的 xcconfig 文件</p>
+</li>
+<li><p>Xcode 项目文件中的 Project 级别配置</p>
+</li>
+<li><p>Target 级别的 xcconfig 文件</p>
+</li>
+<li><p>Xcode 项目文件中的 Target 级别配置</p>
+</li>
+</ol>
+<p><strong>Build Settng 的优先级是从左到右排序的。越是左边优先级就越高</strong>。例如，我们在 Project 级别的 xcconfig 文件里面定义了<code>IPHONEOS_DEPLOYMENT_TARGET</code>的值为14.0，那么Project 级别的 xcconfig 文件（Project Config File） 一列上就会显示iOS 14.0，它覆盖了系统的默认值 （iOS Default）iOS 14.2。这就是因为 Project 级别的 xcconfig 文件，它的优先级高于系统默认值，因此最后生效的值是iOS 14.0。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本讲我介绍了如何通过 Build Configuration、 Xcode Scheme 以及 xcconfig 配置文件来统一项目的构建配置，从而搭建出多个不同环境，为后期构建出对应环境的 App 做准备。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788672568915.jpg"></p>
+<p>在使用 xcconfig 配置时，还是需要注意以下两点：</p>
+<ul>
+<li><p><strong>首先</strong>，我们必须把所有 Build Setting 都配置在 xcconfig 文件里面，并通过 Git 进行统一管理；</p>
+</li>
+<li><p><strong>其次</strong>，我们千万不要在 Xcode 的 Build Settings 页面修改任何 Setting，否则该配置会覆盖 xcconfig 文件里面的配置。如果你不小心修改了，可以通过点击删除键把页面是的配置删掉。</p>
+</li>
+</ul>
+<h3 id="源码地址："><a href="#源码地址：" class="headerlink" title="源码地址："></a>源码地址：</h3><blockquote>
+<p><a href="https://github.com/lagoueduCol/iOS-linyongjian/tree/main/Moments/Moments/Configurations">https://github.com/lagoueduCol/iOS-linyongjian/tree/main/Moments/Moments/Configurations</a></p>
+</blockquote>
+<h1 id="二、学习笔记与扩展"><a href="#二、学习笔记与扩展" class="headerlink" title="二、学习笔记与扩展"></a>二、学习笔记与扩展</h1><h2 id="Swift-多个-Target-的管理与配置"><a href="#Swift-多个-Target-的管理与配置" class="headerlink" title="Swift 多个 Target 的管理与配置"></a>Swift 多个 Target 的管理与配置</h2><h3 id="1、创建多个-Target"><a href="#1、创建多个-Target" class="headerlink" title="1、创建多个 Target"></a>1、创建多个 Target</h3><p>创建一个新的Swift工程，并 <code>Duplicate</code> 多个Target。</p>
+<p>(1)、<code>Duplicate</code> 复制 Target：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788672796397.jpg"></p>
+<p>(2)、可以生成了新的 target 和 info.plist 文件：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788672924486.jpg"></p>
+<p>(3)、修改 target 名字：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673034270.jpg"></p>
+<p>此处：</p>
+<ul>
+<li><code>TargetsDemo</code> ：为正式环境 target</li>
+<li><code>TargetsDemo-Debug</code> ：为开发环境 target</li>
+<li><code>TargetsDemo-Internal</code> ：为测试环境 target</li>
+</ul>
+<p>(4)、配置 Schemes：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673161851.jpg"></p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673310718.jpg"></p>
+<p>修改成功如下：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673438173.jpg"></p>
+<h3 id="2、配置工程相关信息"><a href="#2、配置工程相关信息" class="headerlink" title="2、配置工程相关信息"></a>2、配置工程相关信息</h3><p>我们现在已经有了三个Target，接下来我们为他们命名不同地 <code>Display Name</code> 、<code>Bundle Identifier</code>，并引入不同的 <code>Assets.xcassets</code>资源以生成和管理不同的app。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673572335.jpg"></p>
+<p>为不同的 app 引入不同的 <code>Assets.xcassets</code> 图片资源。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673685116.jpg"></p>
+<p>然后导入图片即可：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673830388.jpg"></p>
+<p>不同图片资源的使用可以自主选择：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788673961061.jpg"></p>
+<h3 id="3、宏定义配置"><a href="#3、宏定义配置" class="headerlink" title="3、宏定义配置"></a>3、宏定义配置</h3><p>虽然是swift，我们还是叫它宏定义。接下来我们为不同的 target 设置不同的宏定义以区分它们，然后在代码中引用。</p>
+<p>找到设置路径：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788674590270.jpg"></p>
+<p>以下是 swift 情况下三种 “宏定义” 的配置方式：</p>
+<ul>
+<li>分开写，加引号，加 -D</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">“-D”</span><br><span class="line">“APPSTORE”</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>分开写，不加引号，加 -D</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-D</span><br><span class="line">APPSTORE</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>写成一排，不加引号，加 -D</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-DAPPSTORE</span><br></pre></td></tr></table></figure>
+
+<p>三种方式任选其一即可：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788674715539.jpg"></p>
+<p>分别为 target 设置 “宏定义” 之后，我们就可以在代码中使用了：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788674824238.jpg"></p>
+<h3 id="4、Podfile-设置"><a href="#4、Podfile-设置" class="headerlink" title="4、Podfile 设置"></a>4、Podfile 设置</h3><p>如果不同的 target 需要引入不同三方库，可以在<code>podfile</code> 文件中进行设置：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># <span class="title class_">Uncomment</span> the next line to define a <span class="variable language_">global</span> platform <span class="keyword">for</span> your project</span><br><span class="line">platform :ios, <span class="string">&#x27;13.0&#x27;</span></span><br><span class="line"></span><br><span class="line"># 正式环境</span><br><span class="line">target <span class="string">&#x27;TargetsDemo&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  use_frameworks!</span><br><span class="line"></span><br><span class="line">  pod <span class="string">&#x27;SnapKit&#x27;</span></span><br><span class="line"></span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 开发环境，使用 <span class="title class_">SwiftLint</span> 进行代码规范检测，<span class="title class_">SwiftGen</span> 自动生成资源管理文件</span><br><span class="line">target <span class="string">&#x27;TargetsDemo-Debug&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  use_frameworks!</span><br><span class="line"></span><br><span class="line">  pod <span class="string">&#x27;SwiftLint&#x27;</span>, <span class="string">&#x27;= 0.42.0&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line">  pod <span class="string">&#x27;SwiftGen&#x27;</span>, <span class="string">&#x27;= 6.4.0&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line"></span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 测试环境，引用单元测试三方库</span><br><span class="line">target <span class="string">&#x27;TargetsDemo-Internal&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  use_frameworks!</span><br><span class="line"></span><br><span class="line">  pod <span class="string">&#x27;Quick&#x27;</span>, <span class="string">&#x27;= 3.0.0&#x27;</span></span><br><span class="line">  pod <span class="string">&#x27;Nimble&#x27;</span>, <span class="string">&#x27;= 9.0.0&#x27;</span></span><br><span class="line">  pod <span class="string">&#x27;RxTest&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br><span class="line">  pod <span class="string">&#x27;RxBlocking&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>05 | 自动化准备：如何使用 Fastlane 管理自动化操作？</title>
     <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/</url>
     <content><![CDATA[<h1 id="如何使用-Fastlane-管理自动化操作？"><a href="#如何使用-Fastlane-管理自动化操作？" class="headerlink" title="如何使用 Fastlane 管理自动化操作？"></a>如何使用 Fastlane 管理自动化操作？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/16784358918168.jpg" alt="16784358918168"></p>
@@ -815,102 +815,6 @@
       </tags>
   </entry>
   <entry>
-    <title>07 | 设计规范：如何统一设计规范，提高沟通效率？</title>
-    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/</url>
-    <content><![CDATA[<h1 id="如何统一设计规范，提高沟通效率？"><a href="#如何统一设计规范，提高沟通效率？" class="headerlink" title="如何统一设计规范，提高沟通效率？"></a>如何统一设计规范，提高沟通效率？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370948031886.jpg"></p>
-<span id="more"></span>
-
-<p>作为 iOS 工程师，我们开发的绝大部分功能都是与 <em>用户界面</em> 和 <em>用户交互</em> 有关。所以，和设计师协调沟通也成了我们的日常工作之一。在这个过程中，就免不了和他们争论有关 <strong>间距大小、字体粗细、字号大小、颜色深浅</strong> 等问题。想必有时候你也很烦恼，怎么和这些设计师们沟通就那么麻烦呢！</p>
-<p>其实，这些问题都可以用一套统一的 <em>设计规范</em> 来解决，从而有效降低沟通成本。有了规范，设计师可以根据明确的指引和预定义好的设计元素，来设计出新的界面；而开发者也能使用预先封装好的、可重用的设计组件实现快速开发。最后，开发的产品为用户提供一致的体验。</p>
-<p>那一套统一的设计规范到底是怎样的呢？它通常包括 <strong>间距、字体、颜色、图标和常用组件</strong> 等，这一讲，我们就一起看看怎样定义这些设计规范吧。</p>
-<h2 id="间距"><a href="#间距" class="headerlink" title="间距"></a>间距</h2><p><strong>间距（Spacing）</strong>，是父子组件之间、以及平级组件之间的留白，合理使用间距能有效分离和组织内容，也能保证页面风格一致，提升用户体验。</p>
-<p>但是，在实际工作当中，你有没有遇到过打开设计师给的设计稿后发现，同一个界面里的间距定义杂乱无章，不同页面类似组件的间距也大不相同，这样导致的结果是，开发出的 App 在视觉上会给人风格混乱的感觉。</p>
-<p>那怎样定义统一的间距呢？其实很简单，我们只保留几个可用的间距，并给它们赋予定义，下面是我们 Moments App 的间距定义。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370949005151.jpg"></p>
-<p>根据我们的经验，在选择间距的值时，为了具有和谐感，我们把间距分成三组：<strong>小（Small）、中（Medium）、大（Large）</strong>。两个 <em>小间距</em> 之间的差别是 <code>4pt</code>， <em>中间距</em> 与 <em>小间距</em> 相差 <code>6pt</code>，而 <em>大间距</em> 直接相差 <code>8pt</code>，给用户一种循序渐进的感觉。这些间距的定义能覆盖 App 所有的使用需求了。</p>
-<p>有了统一的间距定义，设计师就可以在设计稿里面标注间距的定义，而不是具体的值。开发者也可以通过代码中原先定义好的间距，而无须每次都 <em>硬编码（Hardcode）</em> 间距的值。</p>
-<p>除了 iOS 以外，统一的间距还可以用到 Android 和 Web 上，如下面是开源设计规范 Backpack 所定义的间距，其包含了 <code>iOS</code>、 <code>Android</code> 和 <code>Web</code> 三个平台。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370949194793.jpg"></p>
-<p>有了这些间距的定义以后，设计师只需设计一份设计稿，不同平台的开发者都可以使用同一份设计稿进行开发。</p>
-<h2 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h2><p>任何一款 App，都离不开文字，除了其本身传达信息，文字的各种样式，包括 <strong>字体类型、大小、粗细</strong> ，在其中也承担着重要角色。比如合理使用行楷会给人美感；字体放大可以暗示优先阅读；字体加粗，会起到强调的作用，吸引用户关注等等。</p>
-<p>在开发当中， <em>字体类型、字号大小、字体粗细</em> 分别由 <code>Font family</code>、<code>Font size</code>、<code>Font weight</code> 属性定义。除非有特殊的原因（如品牌需要，或者为了增强游戏体验），iOS 的 App 一般都使用 iOS 系统所自带的字体系列。这样更能符合用户的阅读习惯。在自带的字体系列的基础上，通过把字号大小和字体粗细组合起来定义一些字体类型。下面是我们 Moments App 所定义的字体规范。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370949335106.jpg"></p>
-<p>根据字体类型的时候，我们分成四组：</p>
-<ul>
-<li><p><strong>大标题（Display）</strong>，用于显示这个页面的唯一标题，使用特大字号（如 <code>42pt</code> 和 <code>36pt</code>）；</p>
-</li>
-<li><p><strong>标题（Titile）</strong>，用于显示段落的标题，我们提供了五种不同的段落标题，其字号由大变小；</p>
-</li>
-<li><p><strong>文本（Body）</strong>，用于显示一般的内容文本，我们提供了普通和加粗两种类型来呈现不同的文本；</p>
-</li>
-<li><p><strong>小文本（Small text）</strong>，使用较小的字体来显示辅佐内容，例如 <em>备注、版本信息</em> 等。</p>
-</li>
-</ul>
-<p>为了让读者有更好的阅读体验，我们在字体粗细上都统一选择了偏细的字重，比如使用 <code>semibold</code> 而不是 <code>bold</code> ，并且选择 <code>light</code> 而不是 <code>regular</code> 来定义这套字体。</p>
-<p>有了这些字体类型的定义，设计师可以很方便地选择字体，比如在设计文章内容部分时，可以从 <code>body</code> 或者 <code>bodyBold</code> 中选择出来，而不需要思考到底是使用 <code>14pt</code>、<code>15pt</code> 还是 <code>16pt</code>。同时，开发者也可以使用原先定义好的字体组件，提升效率。</p>
-<p>除此之外，还有 <strong>动态字体</strong>，因为我们在此之前已经对字体的类型、大小、粗细做了定义，设计师只需要做一个设计稿就行了，无须为不同的字体设计出不同的版本，而我们开发者只需要通过封装好的字体组件来支持即可。<strong>具体如何封装字体组件，我会在第 12 讲详细介绍。</strong></p>
-<h2 id="颜色"><a href="#颜色" class="headerlink" title="颜色"></a>颜色</h2><p>在一款 App 的视觉体验中，颜色毫无疑问在其中占据很重要的位置。如果颜色搭配不当，很容易被用户吐槽甚至弃用。所以设计之初，就要对颜色做好规范。</p>
-<p>为了给用户提供颜色一致的体验，在 App 设计中，我们一般采用统一的 <em>调色板（Color palette）</em> 来完成。在实际工作当中，你可以和设计师一起在各类开源设计网站中寻找，比如，以天蓝为主色调的  <em>Backpack</em> ，还有谷歌的 <em>Material Design</em> 还提供了调色板生成工具，你可以根据自己品牌的颜色来生成一个调色板。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370949510710.jpg" alt="来源：backpack.github.io"></p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370949927338.jpg" alt="来源：2014 Material Design color palettes"></p>
-<p>有了调色板，我们就可以在设计常用组件时（如按钮，卡片，警告信息等）使用调色板里面的颜色。例如  <em>Backpack</em>  的主色是天蓝色，在设计按钮时，主按钮的背景可以使用天蓝色（#0770e3）。</p>
-<p>为了照顾不同用户的使用习惯，提高夜间视觉体验，iOS 系统在原有的浅色模式之外，还提供了深色模式。我们在设计调色板的时候，也最好考虑到对深色模式的支持。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370950144474.jpg" alt="来源：backpack.github.io"></p>
-<p>在  Moments App 项目中，我们采用 Backpack 的调色板来设计深色模式下的颜色。该调色板定义了一组语义化的颜色（<code>Semantic color</code>）供我们选择。比如设计师在选择背景颜色的时候可以根据需要从 <em>背景主色、背景副色、背景</em> 第三色中任选一个，Backpack 每种颜色都提供了 <strong>浅色模式</strong> 和 <strong>深色模式</strong> 两种类型，设计师在设计过程中就不需要为这两种模式制作不同的设计稿了，开发者也可以使用定义好的颜色组件来同时支持两种模式，不需任何额外的工作。</p>
-<p>需要注意的是，在定义语义化颜色时要特别注意颜色之间的对比度，例如使用了 <code>Text Primary Color</code> 的文本在使用 <code>Background Color</code> 的背景下能容易阅读，而使用灰色的背景再使用黑色的文本会难以阅读。</p>
-<p>如果你所在团队没有专门的设计师来定义这些颜色，也可以使用 iOS 提供的 <strong>动态系统颜色（Dynamic System Colors）</strong>，它为我们定义了同时支持 <strong>浅色模式</strong> 和 <strong>深色模式</strong> 的各种颜色。</p>
-<h2 id="图标"><a href="#图标" class="headerlink" title="图标"></a>图标</h2><p><strong>图标（Iconography）</strong>，在 App 设计中也承担重要的作用，它可以有效地把功能呈现给用户，例如一个 <em>加号（+）</em> 的图标能让用户知道点击的时候可以进行新增操作。图标也能简化界面的设计，让页面更加吸引用户，<em>例如在买房的 App 里面我们可以使用一辆车的图标表示多少个车位，一个浴缸的图标表示多少个洗手间</em>，这样能省去大量的文件描述。图标还能帮助用户导航。因此我们在设计 App 的时候也需要合理地使用图标。</p>
-<p>如果你们公司没有专门的图标设计师，那么你可能会购买或者使用一些开源的图标。这里我有一些建议。</p>
-<p>首先，<strong>同一个 App 只需要一种图标，千万不要把不同风格的图标混合使用</strong>。</p>
-<p>其次，如果没有特殊要求，我推荐直接使用苹果公司提供的。具体来说，在 iOS 系统内置的 <code>SF Symbols</code>  为我们提供了 <code>3150</code> 个一致的、可定制的图标，如下面的例子。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370950414375.jpg"></p>
-<p><code>SF Symbols</code> 有很多优点：</p>
-<ol>
-<li><p>它数量巨大，几乎覆盖所有应用场景；</p>
-</li>
-<li><p>整合了 <code>San Francisco</code> 字体系统，当用户改变字体大小的时候，这些图标都会自动对齐；</p>
-</li>
-<li><p>所有图标都支持颜色，我们可以根据需求搭配不同的颜色；</p>
-</li>
-<li><p>使用这些图标时也无须安装，可以减少 App 的体积。</p>
-</li>
-</ol>
-<p>我们的 Moments App 也使用到 <code>SF Symbols</code> 来呈现点赞按钮。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370950563563.jpg"></p>
-<p><code>SF Symbols</code> 里绝大部分的图标都通过了轮廓和填充两个版本，我们可以使用填充的图标表示选中状态。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370950719288.jpg"></p>
-<h2 id="常用组件"><a href="#常用组件" class="headerlink" title="常用组件"></a>常用组件</h2><p>随着 App 功能的增多，你会发现一些 UI 会出现在许多地方，例如下图的用户头像，分别出现在个人主页、朋友圈、点赞处。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370950907203.jpg"></p>
-<p>在这种情况下，我们就可以把这个重复出现的 UI 封装成一个常用的设计组件，并纳入我们在制定设计规范中。常用的组件一般有 <em>按钮（Button）</em>、<em>用户头像（User avatar）</em>、<em>复选框（Checkbox）</em>、<em>徽章（Badge）</em> 等等。下面是 Moments App 设计规定中用户头像组件的定义。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370951068571.jpg"></p>
-<p>有了用户头像组件，设计师在设计过程中就不需要考虑在呈现头像时需要怎样设计，使用的圆角到底要多少度，是否需要阴影和边框等等。开发者也可以使用原先封装好的组件来加快开发。</p>
-<p>需要注意的是，UI 组件是在开发过程中发现某个 UI 反复使用后才封装的，在开始的时候不要贪多，避免定义一堆不用的组件。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在这一讲，我们通过 <strong>间距，字体，颜色，图标和常用组件</strong> 为例子来讲述一套统一的设计规范。有了它，能极大降低设计师与开发者的沟通成本，也节省设计师和开发者在设计或实现过程的时间，一举多得。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370951352722.jpg"></p>
-<p>在定义和管理设计规范过程中需要注意这几点：</p>
-<ul>
-<li><p>在定义规范过程中，设计师和开发者要一起参与进来，达成共识方便后期彼此间的沟通与协作；</p>
-</li>
-<li><p>在更新规范时，要有设计审查流程保证主设计版本一直在受控状态，我建议使用上节课所说的 GitHub Pull Request 流程来管理这套规范；</p>
-</li>
-<li><p>每次更新的时候，都需要更新设计文档，就像 Backpack 的文档一样，当设计师或者开发者有疑问的时候都可以把这个文档作为唯一信息源来查看；</p>
-</li>
-<li><p><strong>坚持少即是多的原则</strong>，特别是在定义规范开始的时候，不要求多求全，可以根据业务需要不断地迭代完善。</p>
-</li>
-</ul>
-<h1 id="相关资料："><a href="#相关资料：" class="headerlink" title="相关资料："></a>相关资料：</h1><blockquote>
-<p><a href="https://developer.apple.com/sf-symbols/">SF Symbols 官方下载链接</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>iOS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>08 | 设计组件：DesignKit组件桥接设计与开发规范</title>
     <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/</url>
     <content><![CDATA[<h1 id="DesignKit-组件桥接设计与开发规范"><a href="#DesignKit-组件桥接设计与开发规范" class="headerlink" title="DesignKit 组件桥接设计与开发规范"></a>DesignKit 组件桥接设计与开发规范</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/17373431283113.jpg"></p>
@@ -1074,11 +978,11 @@
 <li>添加库文件</li>
 </ol>
 <p>成功后会创建出一个pod_test工程，目录结构如下:</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/17373534365111.jpg" alt="pod_test工程文件"></p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/17373534365111.jpg"></p>
 <ol start="4">
 <li>将编写好的一些文件拉入 <code>pod_test/classes</code>中，或者在<code>pod_test/classes</code> 目录下新建代码文件：</li>
 </ol>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/17373535574754.jpg" alt="classes内部文件"></p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/17373535574754.jpg"></p>
 <ol start="5">
 <li>配置 <code>.podspec</code> 文件</li>
 </ol>
@@ -1311,6 +1215,102 @@
       <tags>
         <tag>学习笔记</tag>
         <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>07 | 设计规范：如何统一设计规范，提高沟通效率？</title>
+    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/</url>
+    <content><![CDATA[<h1 id="如何统一设计规范，提高沟通效率？"><a href="#如何统一设计规范，提高沟通效率？" class="headerlink" title="如何统一设计规范，提高沟通效率？"></a>如何统一设计规范，提高沟通效率？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370948031886.jpg"></p>
+<span id="more"></span>
+
+<p>作为 iOS 工程师，我们开发的绝大部分功能都是与 <em>用户界面</em> 和 <em>用户交互</em> 有关。所以，和设计师协调沟通也成了我们的日常工作之一。在这个过程中，就免不了和他们争论有关 <strong>间距大小、字体粗细、字号大小、颜色深浅</strong> 等问题。想必有时候你也很烦恼，怎么和这些设计师们沟通就那么麻烦呢！</p>
+<p>其实，这些问题都可以用一套统一的 <em>设计规范</em> 来解决，从而有效降低沟通成本。有了规范，设计师可以根据明确的指引和预定义好的设计元素，来设计出新的界面；而开发者也能使用预先封装好的、可重用的设计组件实现快速开发。最后，开发的产品为用户提供一致的体验。</p>
+<p>那一套统一的设计规范到底是怎样的呢？它通常包括 <strong>间距、字体、颜色、图标和常用组件</strong> 等，这一讲，我们就一起看看怎样定义这些设计规范吧。</p>
+<h2 id="间距"><a href="#间距" class="headerlink" title="间距"></a>间距</h2><p><strong>间距（Spacing）</strong>，是父子组件之间、以及平级组件之间的留白，合理使用间距能有效分离和组织内容，也能保证页面风格一致，提升用户体验。</p>
+<p>但是，在实际工作当中，你有没有遇到过打开设计师给的设计稿后发现，同一个界面里的间距定义杂乱无章，不同页面类似组件的间距也大不相同，这样导致的结果是，开发出的 App 在视觉上会给人风格混乱的感觉。</p>
+<p>那怎样定义统一的间距呢？其实很简单，我们只保留几个可用的间距，并给它们赋予定义，下面是我们 Moments App 的间距定义。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370949005151.jpg"></p>
+<p>根据我们的经验，在选择间距的值时，为了具有和谐感，我们把间距分成三组：<strong>小（Small）、中（Medium）、大（Large）</strong>。两个 <em>小间距</em> 之间的差别是 <code>4pt</code>， <em>中间距</em> 与 <em>小间距</em> 相差 <code>6pt</code>，而 <em>大间距</em> 直接相差 <code>8pt</code>，给用户一种循序渐进的感觉。这些间距的定义能覆盖 App 所有的使用需求了。</p>
+<p>有了统一的间距定义，设计师就可以在设计稿里面标注间距的定义，而不是具体的值。开发者也可以通过代码中原先定义好的间距，而无须每次都 <em>硬编码（Hardcode）</em> 间距的值。</p>
+<p>除了 iOS 以外，统一的间距还可以用到 Android 和 Web 上，如下面是开源设计规范 Backpack 所定义的间距，其包含了 <code>iOS</code>、 <code>Android</code> 和 <code>Web</code> 三个平台。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370949194793.jpg"></p>
+<p>有了这些间距的定义以后，设计师只需设计一份设计稿，不同平台的开发者都可以使用同一份设计稿进行开发。</p>
+<h2 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h2><p>任何一款 App，都离不开文字，除了其本身传达信息，文字的各种样式，包括 <strong>字体类型、大小、粗细</strong> ，在其中也承担着重要角色。比如合理使用行楷会给人美感；字体放大可以暗示优先阅读；字体加粗，会起到强调的作用，吸引用户关注等等。</p>
+<p>在开发当中， <em>字体类型、字号大小、字体粗细</em> 分别由 <code>Font family</code>、<code>Font size</code>、<code>Font weight</code> 属性定义。除非有特殊的原因（如品牌需要，或者为了增强游戏体验），iOS 的 App 一般都使用 iOS 系统所自带的字体系列。这样更能符合用户的阅读习惯。在自带的字体系列的基础上，通过把字号大小和字体粗细组合起来定义一些字体类型。下面是我们 Moments App 所定义的字体规范。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370949335106.jpg"></p>
+<p>根据字体类型的时候，我们分成四组：</p>
+<ul>
+<li><p><strong>大标题（Display）</strong>，用于显示这个页面的唯一标题，使用特大字号（如 <code>42pt</code> 和 <code>36pt</code>）；</p>
+</li>
+<li><p><strong>标题（Titile）</strong>，用于显示段落的标题，我们提供了五种不同的段落标题，其字号由大变小；</p>
+</li>
+<li><p><strong>文本（Body）</strong>，用于显示一般的内容文本，我们提供了普通和加粗两种类型来呈现不同的文本；</p>
+</li>
+<li><p><strong>小文本（Small text）</strong>，使用较小的字体来显示辅佐内容，例如 <em>备注、版本信息</em> 等。</p>
+</li>
+</ul>
+<p>为了让读者有更好的阅读体验，我们在字体粗细上都统一选择了偏细的字重，比如使用 <code>semibold</code> 而不是 <code>bold</code> ，并且选择 <code>light</code> 而不是 <code>regular</code> 来定义这套字体。</p>
+<p>有了这些字体类型的定义，设计师可以很方便地选择字体，比如在设计文章内容部分时，可以从 <code>body</code> 或者 <code>bodyBold</code> 中选择出来，而不需要思考到底是使用 <code>14pt</code>、<code>15pt</code> 还是 <code>16pt</code>。同时，开发者也可以使用原先定义好的字体组件，提升效率。</p>
+<p>除此之外，还有 <strong>动态字体</strong>，因为我们在此之前已经对字体的类型、大小、粗细做了定义，设计师只需要做一个设计稿就行了，无须为不同的字体设计出不同的版本，而我们开发者只需要通过封装好的字体组件来支持即可。<strong>具体如何封装字体组件，我会在第 12 讲详细介绍。</strong></p>
+<h2 id="颜色"><a href="#颜色" class="headerlink" title="颜色"></a>颜色</h2><p>在一款 App 的视觉体验中，颜色毫无疑问在其中占据很重要的位置。如果颜色搭配不当，很容易被用户吐槽甚至弃用。所以设计之初，就要对颜色做好规范。</p>
+<p>为了给用户提供颜色一致的体验，在 App 设计中，我们一般采用统一的 <em>调色板（Color palette）</em> 来完成。在实际工作当中，你可以和设计师一起在各类开源设计网站中寻找，比如，以天蓝为主色调的  <em>Backpack</em> ，还有谷歌的 <em>Material Design</em> 还提供了调色板生成工具，你可以根据自己品牌的颜色来生成一个调色板。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370949510710.jpg" alt="来源：backpack.github.io"></p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370949927338.jpg" alt="来源：2014 Material Design color palettes"></p>
+<p>有了调色板，我们就可以在设计常用组件时（如按钮，卡片，警告信息等）使用调色板里面的颜色。例如  <em>Backpack</em>  的主色是天蓝色，在设计按钮时，主按钮的背景可以使用天蓝色（#0770e3）。</p>
+<p>为了照顾不同用户的使用习惯，提高夜间视觉体验，iOS 系统在原有的浅色模式之外，还提供了深色模式。我们在设计调色板的时候，也最好考虑到对深色模式的支持。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370950144474.jpg" alt="来源：backpack.github.io"></p>
+<p>在  Moments App 项目中，我们采用 Backpack 的调色板来设计深色模式下的颜色。该调色板定义了一组语义化的颜色（<code>Semantic color</code>）供我们选择。比如设计师在选择背景颜色的时候可以根据需要从 <em>背景主色、背景副色、背景</em> 第三色中任选一个，Backpack 每种颜色都提供了 <strong>浅色模式</strong> 和 <strong>深色模式</strong> 两种类型，设计师在设计过程中就不需要为这两种模式制作不同的设计稿了，开发者也可以使用定义好的颜色组件来同时支持两种模式，不需任何额外的工作。</p>
+<p>需要注意的是，在定义语义化颜色时要特别注意颜色之间的对比度，例如使用了 <code>Text Primary Color</code> 的文本在使用 <code>Background Color</code> 的背景下能容易阅读，而使用灰色的背景再使用黑色的文本会难以阅读。</p>
+<p>如果你所在团队没有专门的设计师来定义这些颜色，也可以使用 iOS 提供的 <strong>动态系统颜色（Dynamic System Colors）</strong>，它为我们定义了同时支持 <strong>浅色模式</strong> 和 <strong>深色模式</strong> 的各种颜色。</p>
+<h2 id="图标"><a href="#图标" class="headerlink" title="图标"></a>图标</h2><p><strong>图标（Iconography）</strong>，在 App 设计中也承担重要的作用，它可以有效地把功能呈现给用户，例如一个 <em>加号（+）</em> 的图标能让用户知道点击的时候可以进行新增操作。图标也能简化界面的设计，让页面更加吸引用户，<em>例如在买房的 App 里面我们可以使用一辆车的图标表示多少个车位，一个浴缸的图标表示多少个洗手间</em>，这样能省去大量的文件描述。图标还能帮助用户导航。因此我们在设计 App 的时候也需要合理地使用图标。</p>
+<p>如果你们公司没有专门的图标设计师，那么你可能会购买或者使用一些开源的图标。这里我有一些建议。</p>
+<p>首先，<strong>同一个 App 只需要一种图标，千万不要把不同风格的图标混合使用</strong>。</p>
+<p>其次，如果没有特殊要求，我推荐直接使用苹果公司提供的。具体来说，在 iOS 系统内置的 <code>SF Symbols</code>  为我们提供了 <code>3150</code> 个一致的、可定制的图标，如下面的例子。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370950414375.jpg"></p>
+<p><code>SF Symbols</code> 有很多优点：</p>
+<ol>
+<li><p>它数量巨大，几乎覆盖所有应用场景；</p>
+</li>
+<li><p>整合了 <code>San Francisco</code> 字体系统，当用户改变字体大小的时候，这些图标都会自动对齐；</p>
+</li>
+<li><p>所有图标都支持颜色，我们可以根据需求搭配不同的颜色；</p>
+</li>
+<li><p>使用这些图标时也无须安装，可以减少 App 的体积。</p>
+</li>
+</ol>
+<p>我们的 Moments App 也使用到 <code>SF Symbols</code> 来呈现点赞按钮。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370950563563.jpg"></p>
+<p><code>SF Symbols</code> 里绝大部分的图标都通过了轮廓和填充两个版本，我们可以使用填充的图标表示选中状态。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370950719288.jpg"></p>
+<h2 id="常用组件"><a href="#常用组件" class="headerlink" title="常用组件"></a>常用组件</h2><p>随着 App 功能的增多，你会发现一些 UI 会出现在许多地方，例如下图的用户头像，分别出现在个人主页、朋友圈、点赞处。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370950907203.jpg"></p>
+<p>在这种情况下，我们就可以把这个重复出现的 UI 封装成一个常用的设计组件，并纳入我们在制定设计规范中。常用的组件一般有 <em>按钮（Button）</em>、<em>用户头像（User avatar）</em>、<em>复选框（Checkbox）</em>、<em>徽章（Badge）</em> 等等。下面是 Moments App 设计规定中用户头像组件的定义。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370951068571.jpg"></p>
+<p>有了用户头像组件，设计师在设计过程中就不需要考虑在呈现头像时需要怎样设计，使用的圆角到底要多少度，是否需要阴影和边框等等。开发者也可以使用原先封装好的组件来加快开发。</p>
+<p>需要注意的是，UI 组件是在开发过程中发现某个 UI 反复使用后才封装的，在开始的时候不要贪多，避免定义一堆不用的组件。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在这一讲，我们通过 <strong>间距，字体，颜色，图标和常用组件</strong> 为例子来讲述一套统一的设计规范。有了它，能极大降低设计师与开发者的沟通成本，也节省设计师和开发者在设计或实现过程的时间，一举多得。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370951352722.jpg"></p>
+<p>在定义和管理设计规范过程中需要注意这几点：</p>
+<ul>
+<li><p>在定义规范过程中，设计师和开发者要一起参与进来，达成共识方便后期彼此间的沟通与协作；</p>
+</li>
+<li><p>在更新规范时，要有设计审查流程保证主设计版本一直在受控状态，我建议使用上节课所说的 GitHub Pull Request 流程来管理这套规范；</p>
+</li>
+<li><p>每次更新的时候，都需要更新设计文档，就像 Backpack 的文档一样，当设计师或者开发者有疑问的时候都可以把这个文档作为唯一信息源来查看；</p>
+</li>
+<li><p><strong>坚持少即是多的原则</strong>，特别是在定义规范开始的时候，不要求多求全，可以根据业务需要不断地迭代完善。</p>
+</li>
+</ul>
+<h1 id="相关资料："><a href="#相关资料：" class="headerlink" title="相关资料："></a>相关资料：</h1><blockquote>
+<p><a href="https://developer.apple.com/sf-symbols/">SF Symbols 官方下载链接</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>iOS</tag>
       </tags>
   </entry>
   <entry>
@@ -1606,79 +1606,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【Hexo】如何将博客源码上传到GitHub</title>
-    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</url>
-    <content><![CDATA[<h1 id="如何将博客源码上传到-GitHub"><a href="#如何将博客源码上传到-GitHub" class="headerlink" title="如何将博客源码上传到 GitHub"></a>如何将博客源码上传到 GitHub</h1><h2 id="一、为什么要把博客源码上传到-GitHub-？"><a href="#一、为什么要把博客源码上传到-GitHub-？" class="headerlink" title="一、为什么要把博客源码上传到 GitHub ？"></a>一、为什么要把博客源码上传到 GitHub ？</h2><p>首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：</p>
-<ul>
-<li>多台电脑同时操作 hexo 源码</li>
-<li>原先 hexo 源码所在电脑重装系统（丢失文件）</li>
-<li>要将 hexo 源码移动到其他磁盘（更换电脑）</li>
-</ul>
-<span id="more"></span>
-
-<p>将 hexo 源码上传到 GitHub，就是做了一个稳定、安全的远程备份，遇到上面的情况将不会再是什么问题。</p>
-<p>因为，之前在 GitHub 上的部署（使用 <code>hexo d</code> 上传部署到github）其实是 hexo 编译后的文件，是用来生成网页的，不包含所有 hexo 生成的网站原始文件。只有把源码也上传才能解决问题。</p>
-<h2 id="二、如何上传博客源码？"><a href="#二、如何上传博客源码？" class="headerlink" title="二、如何上传博客源码？"></a>二、如何上传博客源码？</h2><h3 id="1、思路分析"><a href="#1、思路分析" class="headerlink" title="1、思路分析"></a>1、思路分析</h3><ul>
-<li><p><code>main</code>（<code>master</code>） 分支：存放博客的静态网页。</p>
-</li>
-<li><p><code>hexo</code>分支：存放 Hexo 博客的源码文件。</p>
-</li>
-</ul>
-<h3 id="2、hexo-分支创建及管理"><a href="#2、hexo-分支创建及管理" class="headerlink" title="2、hexo 分支创建及管理"></a>2、hexo 分支创建及管理</h3><h4 id="（1）github-准备"><a href="#（1）github-准备" class="headerlink" title="（1）github 准备"></a>（1）github 准备</h4><p>先在 GitHub 项目创建一个远程分支 <code>hexo</code></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787834628307.jpg"></p>
-<p>将其设置为默认分支</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787836604366.jpg"></p>
-<h4 id="2-打包将要推送到GitHub上的原始文件"><a href="#2-打包将要推送到GitHub上的原始文件" class="headerlink" title="(2) 打包将要推送到GitHub上的原始文件"></a>(2) 打包将要推送到GitHub上的原始文件</h4><ol>
-<li>clone该仓库到本地（clone的是hexo默认分支）</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li><p>下载的文件夹里仅留下 <code>.git</code> 文件夹，其他的文件都删除</p>
-</li>
-<li><p>找见我们 hexo 原位置，将 hexo 文件夹内除 <code>.deploy_git</code> 以外都复制到clone下来的文件夹中</p>
-</li>
-<li><p>修改 <code>.gitignore</code> 文件，将静态网页的目录及其他无需提交的源文件及目录排除掉。(没有即新建添加)</p>
-</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">.<span class="property">DS_Store</span></span><br><span class="line"><span class="title class_">Thumbs</span>.<span class="property">db</span></span><br><span class="line">db.<span class="property">json</span></span><br><span class="line">*.<span class="property">log</span></span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.<span class="property">deploy</span>*/</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>如果已经 clone 过主题文件，最好把 theme 主题文件夹里的 <code>.git</code> 也删除</li>
-</ol>
-<h4 id="3-将-clone-并修改的文件夹推送到-GitHub"><a href="#3-将-clone-并修改的文件夹推送到-GitHub" class="headerlink" title="(3) 将 clone 并修改的文件夹推送到 GitHub"></a>(3) 将 clone 并修改的文件夹推送到 GitHub</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;Code update&#x27;</span></span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure>
-
-<h3 id="3、main-master-分支管理"><a href="#3、main-master-分支管理" class="headerlink" title="3、main (master) 分支管理"></a>3、main (master) 分支管理</h3><p>进入<strong>站点配置文件</strong>，搜索 <code>deploy</code>关键词，修改如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy</span>:</span><br><span class="line">  <span class="attr">type</span>: git</span><br><span class="line">  <span class="attr">repo</span>: git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br><span class="line">  <span class="attr">branch</span>: main</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787847648363.jpg"></p>
-<p>修改完成，执行以下代码进行管理：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//清除本地旧代码。</span></span><br><span class="line">hexo clean</span><br><span class="line"><span class="comment">//生成静态网站</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="comment">//部署静态网站到 GitHub 的 main(master) 分支上</span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<h3 id="4、统一分支管理和部署"><a href="#4、统一分支管理和部署" class="headerlink" title="4、统一分支管理和部署"></a>4、统一分支管理和部署</h3><p>利用我上一篇文章讲到的 <code>deploy.sh</code>脚本进行一键部署，可以极大提高部署效率和降低维护成本。</p>
-<p>在 <code>deploy.sh</code> 文件中添加如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line"><span class="variable constant_">DIR</span>=<span class="string">`dirname $0`</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Generate</span> blog</span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Deploy</span></span><br><span class="line">hexo deploy</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Push</span> hexo code</span><br><span class="line">git add .</span><br><span class="line">current_date=<span class="string">`date &quot;+%Y-%m-%d %H:%M:%S&quot;`</span></span><br><span class="line">git commit -m <span class="string">&quot;Blog updated: $current_date&quot;</span></span><br><span class="line"></span><br><span class="line">sleep <span class="number">2</span></span><br><span class="line"></span><br><span class="line">git push origin hexo</span><br><span class="line"></span><br><span class="line">echo <span class="string">&quot;=====&gt;Finish!&lt;=====&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>然后附加脚本执行权限:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<p>然后执行即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<p>如此，便可以一键部署博客及备份博客源码到 github 的分支 <code>hexo</code> 分支上。</p>
-<h3 id="5、其他电脑源码使用"><a href="#5、其他电脑源码使用" class="headerlink" title="5、其他电脑源码使用"></a>5、其他电脑源码使用</h3><p>换到不同电脑上时，只需clone github 上的 hexo 分支即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【Hexo】添加 .sh 脚本文件，快速测试和部署</title>
     <url>/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<h1 id="添加-sh-脚本文件，快速测试和部署"><a href="#添加-sh-脚本文件，快速测试和部署" class="headerlink" title="添加 .sh 脚本文件，快速测试和部署"></a>添加 .sh 脚本文件，快速测试和部署</h1><h2 id="一、创建-sh-脚本文件"><a href="#一、创建-sh-脚本文件" class="headerlink" title="一、创建 .sh 脚本文件"></a>一、创建 .sh 脚本文件</h2><h3 id="1-启动-Sublime-Test"><a href="#1-启动-Sublime-Test" class="headerlink" title="1.启动 Sublime Test"></a>1.启动 Sublime Test</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755102992.jpg"></p>
@@ -1795,66 +1722,76 @@
       </tags>
   </entry>
   <entry>
-    <title>【OC】方法拦截器：如何 hook 三方 SDK 中的方法?</title>
-    <url>/iOS/%E3%80%90OC%E3%80%91%E6%96%B9%E6%B3%95%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%9A%E5%A6%82%E4%BD%95-hook-%E4%B8%89%E6%96%B9-SDK-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="一、前因"><a href="#一、前因" class="headerlink" title="一、前因"></a>一、前因</h2><p>缘由：项目中使用 <code>Pod</code> 集成了一个三方的远端SDK，这个SDK中的某个类遵循了一个代理协议，这个代理中有很多方法实现。现在的需求是，我在使用这个SDK的类时，只想实现代理方法中的其中一个方法，而不想把所有方法都实现一遍，而且也没办法全部实现。但是，我如果在引用类中遵循代理，就得把所有方法都实现一遍，这显然不现实；如果只实现固定方法，其他方法就会失效，这也不行。</p>
+    <title>【Hexo】如何将博客源码上传到GitHub</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</url>
+    <content><![CDATA[<h1 id="如何将博客源码上传到-GitHub"><a href="#如何将博客源码上传到-GitHub" class="headerlink" title="如何将博客源码上传到 GitHub"></a>如何将博客源码上传到 GitHub</h1><h2 id="一、为什么要把博客源码上传到-GitHub-？"><a href="#一、为什么要把博客源码上传到-GitHub-？" class="headerlink" title="一、为什么要把博客源码上传到 GitHub ？"></a>一、为什么要把博客源码上传到 GitHub ？</h2><p>首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：</p>
+<ul>
+<li>多台电脑同时操作 hexo 源码</li>
+<li>原先 hexo 源码所在电脑重装系统（丢失文件）</li>
+<li>要将 hexo 源码移动到其他磁盘（更换电脑）</li>
+</ul>
 <span id="more"></span>
 
-<p>所以，我就有了一个想法：<strong>不遵循代理，只是对需要实现的方法进行监听，在其执行时，不执行原有方法流程，转而执行自定义方法。</strong></p>
-<p>这个思路显然是可行的，接下来就是如何把这个方法 <code>hook</code> 出来的问题。</p>
-<h2 id="二、后果"><a href="#二、后果" class="headerlink" title="二、后果"></a>二、后果</h2><p>有了思路，剩下的就是验证思路和解决问题，经过一段时间的思考和查阅资料，就有了如下结果和方案：</p>
-<h3 id="1、初版：对三方源码有入侵"><a href="#1、初版：对三方源码有入侵" class="headerlink" title="1、初版：对三方源码有入侵"></a>1、初版：对三方源码有入侵</h3><p>这个方案，对三方源码有一定的入侵，但是因为入侵较小，所以决定尝试一下。</p>
-<p>创建一个 <code>NSObject</code>的 <code>Category</code>，为什么会选择 <code>NSObject</code>，因为他是所有对象类的基类，注册监听方法时更为方便和通用。</p>
-<h4 id="NSObject-SRModuleAuthorization-h"><a href="#NSObject-SRModuleAuthorization-h" class="headerlink" title="NSObject+SRModuleAuthorization.h"></a>NSObject+SRModuleAuthorization.h</h4><p>在 <code>NSObject+SRModuleAuthorization.h</code> 实现代码如下:</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">NSObject</span> (<span class="type">SRModuleAuthorization</span>)</span><br><span class="line"></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel;</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+<p>将 hexo 源码上传到 GitHub，就是做了一个稳定、安全的远程备份，遇到上面的情况将不会再是什么问题。</p>
+<p>因为，之前在 GitHub 上的部署（使用 <code>hexo d</code> 上传部署到github）其实是 hexo 编译后的文件，是用来生成网页的，不包含所有 hexo 生成的网站原始文件。只有把源码也上传才能解决问题。</p>
+<h2 id="二、如何上传博客源码？"><a href="#二、如何上传博客源码？" class="headerlink" title="二、如何上传博客源码？"></a>二、如何上传博客源码？</h2><h3 id="1、思路分析"><a href="#1、思路分析" class="headerlink" title="1、思路分析"></a>1、思路分析</h3><ul>
+<li><p><code>main</code>（<code>master</code>） 分支：存放博客的静态网页。</p>
+</li>
+<li><p><code>hexo</code>分支：存放 Hexo 博客的源码文件。</p>
+</li>
+</ul>
+<h3 id="2、hexo-分支创建及管理"><a href="#2、hexo-分支创建及管理" class="headerlink" title="2、hexo 分支创建及管理"></a>2、hexo 分支创建及管理</h3><h4 id="（1）github-准备"><a href="#（1）github-准备" class="headerlink" title="（1）github 准备"></a>（1）github 准备</h4><p>先在 GitHub 项目创建一个远程分支 <code>hexo</code></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787834628307.jpg"></p>
+<p>将其设置为默认分支</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787836604366.jpg"></p>
+<h4 id="2-打包将要推送到GitHub上的原始文件"><a href="#2-打包将要推送到GitHub上的原始文件" class="headerlink" title="(2) 打包将要推送到GitHub上的原始文件"></a>(2) 打包将要推送到GitHub上的原始文件</h4><ol>
+<li>clone该仓库到本地（clone的是hexo默认分支）</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
 
-<p><code>.h</code> 只对外暴露一个注册需要被监听方法的API。</p>
-<h4 id="NSObject-SRModuleAuthorization-m"><a href="#NSObject-SRModuleAuthorization-m" class="headerlink" title="NSObject+SRModuleAuthorization.m"></a>NSObject+SRModuleAuthorization.m</h4><p>在<code>NSObject+SRModuleAuthorization.m</code> 实现代码如下:</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注册需要被拦截的方法</span></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel&#123;</span><br><span class="line">    <span class="comment">// 获取方法的名称，根据该方法名称设置自定义的方法名称</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(sel);</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;sr_auth_%@&quot;</span>, methodName];</span><br><span class="line">    <span class="comment">// 获取自定义方法的实例</span></span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">Method</span> newMethod <span class="operator">=</span> class_getInstanceMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel);</span><br><span class="line">    <span class="comment">// 判断是否已经添加了自定义的方法，如果为空就添加自定义方法</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">!</span>newMethod)&#123;</span><br><span class="line">        <span class="comment">// 获取被拦截方法的结构体对象</span></span><br><span class="line">        <span class="type">Method</span> method <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, sel);</span><br><span class="line">        <span class="comment">// 获取被拦截方法的方法签名字符串</span></span><br><span class="line">        const char <span class="operator">*</span>functionType  <span class="operator">=</span> method_getTypeEncoding(method);</span><br><span class="line">        <span class="type">NSString</span> <span class="operator">*</span>functionTypeStr <span class="operator">=</span> [<span class="type">NSString</span> stringWithUTF8String:functionType];</span><br><span class="line">        <span class="comment">// 判断方法签名的字符串中，：8是否是最后两个字符</span></span><br><span class="line">        <span class="comment">// 如果是则代表无参方法，否则是有参方法</span></span><br><span class="line">        <span class="comment">// 针对这两种方法添加不同的自定义拦截方法</span></span><br><span class="line">        <span class="type">NSRange</span> range <span class="operator">=</span> [functionTypeStr rangeOfString:@<span class="string">&quot;:8&quot;</span>];</span><br><span class="line">        <span class="type">Method</span> intercetionMethod;</span><br><span class="line">        <span class="keyword">if</span> (range.location <span class="operator">+</span> range.length <span class="operator">&lt;</span> functionTypeStr.length)&#123;</span><br><span class="line">            <span class="comment">// 有参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion::));</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">// 无参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 获取自定义拦截方法的实例，</span></span><br><span class="line">        <span class="comment">// 并将自定义方法的selector与实例关联，动态的添加进当前类型</span></span><br><span class="line">        <span class="type">IMP</span> imp <span class="operator">=</span> method_getImplementation(intercetionMethod);</span><br><span class="line">        class_addMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel, imp, functionType);</span><br><span class="line">        <span class="comment">// 最后重新获取自定义方法的方法结构体</span></span><br><span class="line">        <span class="comment">// 并与被监听方法进行实例交换，交换后，</span></span><br><span class="line">        <span class="comment">// 被监听的方法被调用时，就会执行我们自定义的方法实例，即intercetion</span></span><br><span class="line">        <span class="type">Method</span> method2 <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, newSel);</span><br><span class="line">        method_exchangeImplementations(method, method2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>下载的文件夹里仅留下 <code>.git</code> 文件夹，其他的文件都删除</p>
+</li>
+<li><p>找见我们 hexo 原位置，将 hexo 文件夹内除 <code>.deploy_git</code> 以外都复制到clone下来的文件夹中</p>
+</li>
+<li><p>修改 <code>.gitignore</code> 文件，将静态网页的目录及其他无需提交的源文件及目录排除掉。(没有即新建添加)</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">.<span class="property">DS_Store</span></span><br><span class="line"><span class="title class_">Thumbs</span>.<span class="property">db</span></span><br><span class="line">db.<span class="property">json</span></span><br><span class="line">*.<span class="property">log</span></span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.<span class="property">deploy</span>*/</span><br></pre></td></tr></table></figure>
 
-<p>下面是无参拦截方法的实现：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 执行自定义代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>如果已经 clone 过主题文件，最好把 theme 主题文件夹里的 <code>.git</code> 也删除</li>
+</ol>
+<h4 id="3-将-clone-并修改的文件夹推送到-GitHub"><a href="#3-将-clone-并修改的文件夹推送到-GitHub" class="headerlink" title="(3) 将 clone 并修改的文件夹推送到 GitHub"></a>(3) 将 clone 并修改的文件夹推送到 GitHub</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;Code update&#x27;</span></span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure>
 
-<p>有参拦截方法是一个可变参数列表，我们可以遍历 <code>invocation</code> 对象的参数，以达到传参的目的。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">//有参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion: (id)param1 :(id)param2,<span class="operator">...</span>&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">NSMutableArray</span> *<span class="title class_">params</span> = [<span class="title class_">NSMutableArray</span> <span class="title class_">array</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 参数个数signature.numberOfArguments 默认有一个_cmd 一个target 所以要-2, 正常参数从第三个开始</span></span><br><span class="line">        <span class="keyword">if</span> (signature.numberOfArguments) &#123;</span><br><span class="line">            <span class="type">NSInteger</span> argCount <span class="operator">=</span> signature.numberOfArguments;</span><br><span class="line">            va_list args;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">2</span>)&#123;</span><br><span class="line">                [params addObject:param1];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">3</span>)&#123;</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_start(args, param2);</span><br><span class="line">            <span class="keyword">for</span> (int i <span class="operator">=</span> <span class="number">4</span>; i <span class="operator">&lt;</span> argCount; i<span class="operator">++</span>) &#123;</span><br><span class="line">                param2 <span class="operator">=</span> va_arg(args, id);</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_end(args);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (params.count <span class="operator">!=</span> argCount<span class="operator">-</span><span class="number">2</span>)&#123;</span><br><span class="line">               <span class="type">NSLog</span>(@<span class="string">&quot;proxy --- 传参有误! please check it! ---&quot;</span>);</span><br><span class="line">               <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 执行自定义代码</span></span><br><span class="line">       </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3、main-master-分支管理"><a href="#3、main-master-分支管理" class="headerlink" title="3、main (master) 分支管理"></a>3、main (master) 分支管理</h3><p>进入<strong>站点配置文件</strong>，搜索 <code>deploy</code>关键词，修改如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy</span>:</span><br><span class="line">  <span class="attr">type</span>: git</span><br><span class="line">  <span class="attr">repo</span>: git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br><span class="line">  <span class="attr">branch</span>: main</span><br></pre></td></tr></table></figure>
 
-<p>这里有一个问题：因为参数遍历转化时， <code>va_arg(args, id)</code> 方法会把传递过来的参数转化成 <code>id</code> 类型，如果的不 <code>NSObject</code> 类型的参数无法完成转化。所以，如果被监听的方法的参数类型不是对象类型，会发生错误。</p>
-<p>实现起来很简单，只需要在被监听的类的初始化方法里，调用 <code>registerNeedMonitorSEL</code> 方法即可，如下:</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test)];</span><br><span class="line"><span class="comment">// 有参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:)];</span><br><span class="line"><span class="comment">// 多参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:test1:)];</span><br></pre></td></tr></table></figure>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787847648363.jpg"></p>
+<p>修改完成，执行以下代码进行管理：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//清除本地旧代码。</span></span><br><span class="line">hexo clean</span><br><span class="line"><span class="comment">//生成静态网站</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="comment">//部署静态网站到 GitHub 的 main(master) 分支上</span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
 
-<p>分析：这个方法虽然解决了我的问题，但是缺点也是很明显的:</p>
-<p>问题1: 对参数类型不是<code>NSObject</code>的方法无法监听，可能发生崩溃的情况。</p>
-<p>问题2: 如何是监听三方SDK的方法，会对其造成代码入侵，SDK更新方法会失效。</p>
-<h3 id="2、进阶版：对三方源码无入侵"><a href="#2、进阶版：对三方源码无入侵" class="headerlink" title="2、进阶版：对三方源码无入侵"></a>2、进阶版：对三方源码无入侵</h3><p>初版的方案显然不尽如人意，所以，针对以上问题，我又开始了新一轮的思考。</p>
-<p>如何在不入侵三方源码的情况下，对方法进行 <code>hook</code> 呢？</p>
-<p>结果就有了下面的方案：</p>
-<p>实现思路：对需要的监听方法的类做一个category扩展，利用 <code>Method Swizzling</code> 对监听的方法进行转换，然后把它 <code>hook</code> 出来。</p>
-<p>下面说一下我的代码实现：</p>
-<p>首先，对监听方法的类做一个 <code>category</code> 扩展。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">TUIBaseChatViewController</span> (<span class="type">PHHookMethod</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+<h3 id="4、统一分支管理和部署"><a href="#4、统一分支管理和部署" class="headerlink" title="4、统一分支管理和部署"></a>4、统一分支管理和部署</h3><p>利用我上一篇文章讲到的 <code>deploy.sh</code>脚本进行一键部署，可以极大提高部署效率和降低维护成本。</p>
+<p>在 <code>deploy.sh</code> 文件中添加如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line"><span class="variable constant_">DIR</span>=<span class="string">`dirname $0`</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Generate</span> blog</span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Deploy</span></span><br><span class="line">hexo deploy</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Push</span> hexo code</span><br><span class="line">git add .</span><br><span class="line">current_date=<span class="string">`date &quot;+%Y-%m-%d %H:%M:%S&quot;`</span></span><br><span class="line">git commit -m <span class="string">&quot;Blog updated: $current_date&quot;</span></span><br><span class="line"></span><br><span class="line">sleep <span class="number">2</span></span><br><span class="line"></span><br><span class="line">git push origin hexo</span><br><span class="line"></span><br><span class="line">echo <span class="string">&quot;=====&gt;Finish!&lt;=====&quot;</span></span><br></pre></td></tr></table></figure>
 
-<p>然后，在category的 <code>.m</code> 文件里实现如下代码：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">+</span> (void)load&#123;</span><br><span class="line">    <span class="keyword">static</span> dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(<span class="operator">&amp;</span>onceToken, <span class="operator">^</span>&#123;</span><br><span class="line">        <span class="comment">// 假如要监听方法,则把下面这行代码打开</span></span><br><span class="line">        __gbh_tracer_swizzleMethod([<span class="keyword">self</span> <span class="keyword">class</span>], <span class="meta">@selector</span>(messageController:onSelectMessageAvatar:), <span class="meta">@selector</span>(__gbh_tracer_messageController:onSelectMessageAvatar:));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后附加脚本执行权限:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
 
-<p>这段代码很好理解，就是在程序启动时就注册方法监听，等到方法执行时，对其进行转换，转换方法看下面：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">void __gbh_tracer_swizzleMethod(<span class="type">Class</span> <span class="keyword">class</span>, <span class="type">SEL</span> originalSelector, <span class="type">SEL</span> swizzledSelector)&#123;</span><br><span class="line">    <span class="type">Method</span> originalMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, originalSelector);</span><br><span class="line">    <span class="type">Method</span> swizzledMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, swizzledSelector);</span><br><span class="line">    </span><br><span class="line">    <span class="type">BOOL</span> didAddMethod <span class="operator">=</span></span><br><span class="line">    class_addMethod(<span class="keyword">class</span>,</span><br><span class="line">                    originalSelector,</span><br><span class="line">                    method_getImplementation(swizzledMethod),</span><br><span class="line">                    method_getTypeEncoding(swizzledMethod));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (didAddMethod) &#123;</span><br><span class="line">        class_replaceMethod(<span class="keyword">class</span>,</span><br><span class="line">                            swizzledSelector,</span><br><span class="line">                            method_getImplementation(originalMethod),</span><br><span class="line">                            method_getTypeEncoding(originalMethod));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        method_exchangeImplementations(originalMethod, swizzledMethod);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后执行即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
 
-<p>这是一个标准的 <code>swizzling</code> 写法，当然了  <code>github</code> 上面也有关于 <code>swizzling</code> 的开源库，用起来也顺手，这里就不多说了。</p>
-<p>然后就是 <code>swizzling</code> 转换到的方法：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">-</span> (void)__gbh_tracer_messageController:(<span class="type">TUIBaseMessageController</span> <span class="operator">*</span>)controller onSelectMessageAvatar:(<span class="type">TUIMessageCell</span> <span class="operator">*</span>)cell&#123;</span><br><span class="line"><span class="comment">//    [self __gbh_tracer_messageController:controller onSelectMessageAvatar:cell]; //由于方法已经被交换,这里调用的实际上是messageController:onSelectMessageAvatar:方法</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 执行自定义方法</span></span><br><span class="line">    [<span class="keyword">self</span> clickMessageAvatar:cell];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如此，便可以一键部署博客及备份博客源码到 github 的分支 <code>hexo</code> 分支上。</p>
+<h3 id="5、其他电脑源码使用"><a href="#5、其他电脑源码使用" class="headerlink" title="5、其他电脑源码使用"></a>5、其他电脑源码使用</h3><p>换到不同电脑上时，只需clone github 上的 hexo 分支即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
 
-<p>转换后的方法我们既可以让其继续执行以前的方法流程，也可以执行自己定义的方法，简直不要太爽。</p>
-<p>这就是一整个 <code>hook</code> 流程，即简单又方便，以后，我只需要往工程里面添加这个 <code>Category</code> ，这个被监听的方法就会被 <code>hook</code> 出来，可以让我为所欲为，还不会出现之前的报错和源码入侵的问题。</p>
-<h2 id="三、参考资料"><a href="#三、参考资料" class="headerlink" title="三、参考资料"></a>三、参考资料</h2><blockquote>
-<p>膜拜大神！<br><a href="https://www.jianshu.com/p/57827c100a3f">https://www.jianshu.com/p/57827c100a3f</a><br><a href="https://www.cnblogs.com/n1ckyxu/p/6186850.html">https://www.cnblogs.com/n1ckyxu/p/6186850.html</a><br><a href="https://www.jianshu.com/p/99d06ad0fa51">https://www.jianshu.com/p/99d06ad0fa51</a><br><a href="https://blog.csdn.net/u014600626/article/details/119271920">https://blog.csdn.net/u014600626/article/details/119271920</a><br><a href="http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more">http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more</a></p>
-</blockquote>
 ]]></content>
       <categories>
-        <category>iOS</category>
+        <category>Hexo</category>
       </categories>
       <tags>
-        <tag>iOS</tag>
-        <tag>OC</tag>
+        <tag>学习笔记</tag>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -2732,6 +2669,69 @@
       </categories>
       <tags>
         <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【OC】方法拦截器：如何 hook 三方 SDK 中的方法?</title>
+    <url>/iOS/%E3%80%90OC%E3%80%91%E6%96%B9%E6%B3%95%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%9A%E5%A6%82%E4%BD%95-hook-%E4%B8%89%E6%96%B9-SDK-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="一、前因"><a href="#一、前因" class="headerlink" title="一、前因"></a>一、前因</h2><p>缘由：项目中使用 <code>Pod</code> 集成了一个三方的远端SDK，这个SDK中的某个类遵循了一个代理协议，这个代理中有很多方法实现。现在的需求是，我在使用这个SDK的类时，只想实现代理方法中的其中一个方法，而不想把所有方法都实现一遍，而且也没办法全部实现。但是，我如果在引用类中遵循代理，就得把所有方法都实现一遍，这显然不现实；如果只实现固定方法，其他方法就会失效，这也不行。</p>
+<span id="more"></span>
+
+<p>所以，我就有了一个想法：<strong>不遵循代理，只是对需要实现的方法进行监听，在其执行时，不执行原有方法流程，转而执行自定义方法。</strong></p>
+<p>这个思路显然是可行的，接下来就是如何把这个方法 <code>hook</code> 出来的问题。</p>
+<h2 id="二、后果"><a href="#二、后果" class="headerlink" title="二、后果"></a>二、后果</h2><p>有了思路，剩下的就是验证思路和解决问题，经过一段时间的思考和查阅资料，就有了如下结果和方案：</p>
+<h3 id="1、初版：对三方源码有入侵"><a href="#1、初版：对三方源码有入侵" class="headerlink" title="1、初版：对三方源码有入侵"></a>1、初版：对三方源码有入侵</h3><p>这个方案，对三方源码有一定的入侵，但是因为入侵较小，所以决定尝试一下。</p>
+<p>创建一个 <code>NSObject</code>的 <code>Category</code>，为什么会选择 <code>NSObject</code>，因为他是所有对象类的基类，注册监听方法时更为方便和通用。</p>
+<h4 id="NSObject-SRModuleAuthorization-h"><a href="#NSObject-SRModuleAuthorization-h" class="headerlink" title="NSObject+SRModuleAuthorization.h"></a>NSObject+SRModuleAuthorization.h</h4><p>在 <code>NSObject+SRModuleAuthorization.h</code> 实现代码如下:</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">NSObject</span> (<span class="type">SRModuleAuthorization</span>)</span><br><span class="line"></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel;</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<p><code>.h</code> 只对外暴露一个注册需要被监听方法的API。</p>
+<h4 id="NSObject-SRModuleAuthorization-m"><a href="#NSObject-SRModuleAuthorization-m" class="headerlink" title="NSObject+SRModuleAuthorization.m"></a>NSObject+SRModuleAuthorization.m</h4><p>在<code>NSObject+SRModuleAuthorization.m</code> 实现代码如下:</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注册需要被拦截的方法</span></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel&#123;</span><br><span class="line">    <span class="comment">// 获取方法的名称，根据该方法名称设置自定义的方法名称</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(sel);</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;sr_auth_%@&quot;</span>, methodName];</span><br><span class="line">    <span class="comment">// 获取自定义方法的实例</span></span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">Method</span> newMethod <span class="operator">=</span> class_getInstanceMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel);</span><br><span class="line">    <span class="comment">// 判断是否已经添加了自定义的方法，如果为空就添加自定义方法</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">!</span>newMethod)&#123;</span><br><span class="line">        <span class="comment">// 获取被拦截方法的结构体对象</span></span><br><span class="line">        <span class="type">Method</span> method <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, sel);</span><br><span class="line">        <span class="comment">// 获取被拦截方法的方法签名字符串</span></span><br><span class="line">        const char <span class="operator">*</span>functionType  <span class="operator">=</span> method_getTypeEncoding(method);</span><br><span class="line">        <span class="type">NSString</span> <span class="operator">*</span>functionTypeStr <span class="operator">=</span> [<span class="type">NSString</span> stringWithUTF8String:functionType];</span><br><span class="line">        <span class="comment">// 判断方法签名的字符串中，：8是否是最后两个字符</span></span><br><span class="line">        <span class="comment">// 如果是则代表无参方法，否则是有参方法</span></span><br><span class="line">        <span class="comment">// 针对这两种方法添加不同的自定义拦截方法</span></span><br><span class="line">        <span class="type">NSRange</span> range <span class="operator">=</span> [functionTypeStr rangeOfString:@<span class="string">&quot;:8&quot;</span>];</span><br><span class="line">        <span class="type">Method</span> intercetionMethod;</span><br><span class="line">        <span class="keyword">if</span> (range.location <span class="operator">+</span> range.length <span class="operator">&lt;</span> functionTypeStr.length)&#123;</span><br><span class="line">            <span class="comment">// 有参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion::));</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">// 无参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 获取自定义拦截方法的实例，</span></span><br><span class="line">        <span class="comment">// 并将自定义方法的selector与实例关联，动态的添加进当前类型</span></span><br><span class="line">        <span class="type">IMP</span> imp <span class="operator">=</span> method_getImplementation(intercetionMethod);</span><br><span class="line">        class_addMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel, imp, functionType);</span><br><span class="line">        <span class="comment">// 最后重新获取自定义方法的方法结构体</span></span><br><span class="line">        <span class="comment">// 并与被监听方法进行实例交换，交换后，</span></span><br><span class="line">        <span class="comment">// 被监听的方法被调用时，就会执行我们自定义的方法实例，即intercetion</span></span><br><span class="line">        <span class="type">Method</span> method2 <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, newSel);</span><br><span class="line">        method_exchangeImplementations(method, method2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是无参拦截方法的实现：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 执行自定义代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有参拦截方法是一个可变参数列表，我们可以遍历 <code>invocation</code> 对象的参数，以达到传参的目的。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">//有参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion: (id)param1 :(id)param2,<span class="operator">...</span>&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">NSMutableArray</span> *<span class="title class_">params</span> = [<span class="title class_">NSMutableArray</span> <span class="title class_">array</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 参数个数signature.numberOfArguments 默认有一个_cmd 一个target 所以要-2, 正常参数从第三个开始</span></span><br><span class="line">        <span class="keyword">if</span> (signature.numberOfArguments) &#123;</span><br><span class="line">            <span class="type">NSInteger</span> argCount <span class="operator">=</span> signature.numberOfArguments;</span><br><span class="line">            va_list args;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">2</span>)&#123;</span><br><span class="line">                [params addObject:param1];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">3</span>)&#123;</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_start(args, param2);</span><br><span class="line">            <span class="keyword">for</span> (int i <span class="operator">=</span> <span class="number">4</span>; i <span class="operator">&lt;</span> argCount; i<span class="operator">++</span>) &#123;</span><br><span class="line">                param2 <span class="operator">=</span> va_arg(args, id);</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_end(args);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (params.count <span class="operator">!=</span> argCount<span class="operator">-</span><span class="number">2</span>)&#123;</span><br><span class="line">               <span class="type">NSLog</span>(@<span class="string">&quot;proxy --- 传参有误! please check it! ---&quot;</span>);</span><br><span class="line">               <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 执行自定义代码</span></span><br><span class="line">       </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里有一个问题：因为参数遍历转化时， <code>va_arg(args, id)</code> 方法会把传递过来的参数转化成 <code>id</code> 类型，如果的不 <code>NSObject</code> 类型的参数无法完成转化。所以，如果被监听的方法的参数类型不是对象类型，会发生错误。</p>
+<p>实现起来很简单，只需要在被监听的类的初始化方法里，调用 <code>registerNeedMonitorSEL</code> 方法即可，如下:</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test)];</span><br><span class="line"><span class="comment">// 有参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:)];</span><br><span class="line"><span class="comment">// 多参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:test1:)];</span><br></pre></td></tr></table></figure>
+
+<p>分析：这个方法虽然解决了我的问题，但是缺点也是很明显的:</p>
+<p>问题1: 对参数类型不是<code>NSObject</code>的方法无法监听，可能发生崩溃的情况。</p>
+<p>问题2: 如何是监听三方SDK的方法，会对其造成代码入侵，SDK更新方法会失效。</p>
+<h3 id="2、进阶版：对三方源码无入侵"><a href="#2、进阶版：对三方源码无入侵" class="headerlink" title="2、进阶版：对三方源码无入侵"></a>2、进阶版：对三方源码无入侵</h3><p>初版的方案显然不尽如人意，所以，针对以上问题，我又开始了新一轮的思考。</p>
+<p>如何在不入侵三方源码的情况下，对方法进行 <code>hook</code> 呢？</p>
+<p>结果就有了下面的方案：</p>
+<p>实现思路：对需要的监听方法的类做一个category扩展，利用 <code>Method Swizzling</code> 对监听的方法进行转换，然后把它 <code>hook</code> 出来。</p>
+<p>下面说一下我的代码实现：</p>
+<p>首先，对监听方法的类做一个 <code>category</code> 扩展。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">TUIBaseChatViewController</span> (<span class="type">PHHookMethod</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，在category的 <code>.m</code> 文件里实现如下代码：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">+</span> (void)load&#123;</span><br><span class="line">    <span class="keyword">static</span> dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(<span class="operator">&amp;</span>onceToken, <span class="operator">^</span>&#123;</span><br><span class="line">        <span class="comment">// 假如要监听方法,则把下面这行代码打开</span></span><br><span class="line">        __gbh_tracer_swizzleMethod([<span class="keyword">self</span> <span class="keyword">class</span>], <span class="meta">@selector</span>(messageController:onSelectMessageAvatar:), <span class="meta">@selector</span>(__gbh_tracer_messageController:onSelectMessageAvatar:));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码很好理解，就是在程序启动时就注册方法监听，等到方法执行时，对其进行转换，转换方法看下面：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">void __gbh_tracer_swizzleMethod(<span class="type">Class</span> <span class="keyword">class</span>, <span class="type">SEL</span> originalSelector, <span class="type">SEL</span> swizzledSelector)&#123;</span><br><span class="line">    <span class="type">Method</span> originalMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, originalSelector);</span><br><span class="line">    <span class="type">Method</span> swizzledMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, swizzledSelector);</span><br><span class="line">    </span><br><span class="line">    <span class="type">BOOL</span> didAddMethod <span class="operator">=</span></span><br><span class="line">    class_addMethod(<span class="keyword">class</span>,</span><br><span class="line">                    originalSelector,</span><br><span class="line">                    method_getImplementation(swizzledMethod),</span><br><span class="line">                    method_getTypeEncoding(swizzledMethod));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (didAddMethod) &#123;</span><br><span class="line">        class_replaceMethod(<span class="keyword">class</span>,</span><br><span class="line">                            swizzledSelector,</span><br><span class="line">                            method_getImplementation(originalMethod),</span><br><span class="line">                            method_getTypeEncoding(originalMethod));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        method_exchangeImplementations(originalMethod, swizzledMethod);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个标准的 <code>swizzling</code> 写法，当然了  <code>github</code> 上面也有关于 <code>swizzling</code> 的开源库，用起来也顺手，这里就不多说了。</p>
+<p>然后就是 <code>swizzling</code> 转换到的方法：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">-</span> (void)__gbh_tracer_messageController:(<span class="type">TUIBaseMessageController</span> <span class="operator">*</span>)controller onSelectMessageAvatar:(<span class="type">TUIMessageCell</span> <span class="operator">*</span>)cell&#123;</span><br><span class="line"><span class="comment">//    [self __gbh_tracer_messageController:controller onSelectMessageAvatar:cell]; //由于方法已经被交换,这里调用的实际上是messageController:onSelectMessageAvatar:方法</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 执行自定义方法</span></span><br><span class="line">    [<span class="keyword">self</span> clickMessageAvatar:cell];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>转换后的方法我们既可以让其继续执行以前的方法流程，也可以执行自己定义的方法，简直不要太爽。</p>
+<p>这就是一整个 <code>hook</code> 流程，即简单又方便，以后，我只需要往工程里面添加这个 <code>Category</code> ，这个被监听的方法就会被 <code>hook</code> 出来，可以让我为所欲为，还不会出现之前的报错和源码入侵的问题。</p>
+<h2 id="三、参考资料"><a href="#三、参考资料" class="headerlink" title="三、参考资料"></a>三、参考资料</h2><blockquote>
+<p>膜拜大神！<br><a href="https://www.jianshu.com/p/57827c100a3f">https://www.jianshu.com/p/57827c100a3f</a><br><a href="https://www.cnblogs.com/n1ckyxu/p/6186850.html">https://www.cnblogs.com/n1ckyxu/p/6186850.html</a><br><a href="https://www.jianshu.com/p/99d06ad0fa51">https://www.jianshu.com/p/99d06ad0fa51</a><br><a href="https://blog.csdn.net/u014600626/article/details/119271920">https://blog.csdn.net/u014600626/article/details/119271920</a><br><a href="http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more">http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>iOS</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+        <tag>OC</tag>
       </tags>
   </entry>
   <entry>
