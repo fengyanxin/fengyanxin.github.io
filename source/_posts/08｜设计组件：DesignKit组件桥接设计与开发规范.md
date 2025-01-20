@@ -347,11 +347,11 @@ What is your class prefix?
 
 成功后会创建出一个pod_test工程，目录结构如下:
 
-![pod_test工程文件](assets/17373534365111.jpg)
+![](assets/17373534365111.jpg)
 
 4. 将编写好的一些文件拉入 `pod_test/classes`中，或者在`pod_test/classes` 目录下新建代码文件：
 
-![classes内部文件](assets/17373535574754.jpg)
+![](assets/17373535574754.jpg)
 
 5. 配置 `.podspec` 文件
 
