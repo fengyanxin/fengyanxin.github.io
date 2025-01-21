@@ -2,7 +2,7 @@ name: Sync-2-gitlab1
 
 on:
   push:
-    branches: [main, hugo]
+    branches: [main, hexo]
 
 jobs:
   sync-2-gitlab1:
