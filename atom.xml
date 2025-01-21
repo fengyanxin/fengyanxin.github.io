@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-01-21T03:08:30.100Z</updated>
+  <updated>2025-01-21T09:48:10.913Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【Hexo】Gitlab pages 的使用</title>
+    <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/</id>
+    <published>2025-01-21T07:32:12.000Z</published>
+    <updated>2025-01-21T09:48:10.913Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;因为自己的博客，有时候访问还是比较慢的，原因是我的代码是在 GitHub 上托管的，众所周知，GitHub 是国外的服务器，在国内访问就是特别慢，然后，我就想是否可以找到国内的既能实现代码托管，又能生成静态网页的平台，来实现 Hexo 双线部署。&lt;/p&gt;
+&lt;p&gt;于是，我找到了 Coding pages，但是它被腾讯从 Coding 下线了，放到了腾讯云上，开始收费了；然后，我又找到了 Gitee pages，但是它被阿里从 Gitee 下线了，放到了阿里云上，也开始收费了；那该怎么办呢？只能说功夫不负有心人，最后我找到了 Gitlab pages！&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="Hexo" scheme="https://fengyanxin.github.io/categories/Hexo/"/>
+    
+    
+    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
+    
+  </entry>
   
   <entry>
     <title>08 | 设计组件：DesignKit组件桥接设计与开发规范</title>
@@ -431,32 +453,6 @@
     <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【Hexo】如何将博客源码上传到GitHub</title>
-    <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/"/>
-    <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</id>
-    <published>2022-12-14T12:23:19.000Z</published>
-    <updated>2025-01-21T03:08:30.294Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;如何将博客源码上传到-GitHub&quot;&gt;&lt;a href=&quot;#如何将博客源码上传到-GitHub&quot; class=&quot;headerlink&quot; title=&quot;如何将博客源码上传到 GitHub&quot;&gt;&lt;/a&gt;如何将博客源码上传到 GitHub&lt;/h1&gt;&lt;h2 id=&quot;一、为什么要把博客源码上传到-GitHub-？&quot;&gt;&lt;a href=&quot;#一、为什么要把博客源码上传到-GitHub-？&quot; class=&quot;headerlink&quot; title=&quot;一、为什么要把博客源码上传到 GitHub ？&quot;&gt;&lt;/a&gt;一、为什么要把博客源码上传到 GitHub ？&lt;/h2&gt;&lt;p&gt;首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;多台电脑同时操作 hexo 源码&lt;/li&gt;
-&lt;li&gt;原先 hexo 源码所在电脑重装系统（丢失文件）&lt;/li&gt;
-&lt;li&gt;要将 hexo 源码移动到其他磁盘（更换电脑）&lt;/li&gt;
-&lt;/ul&gt;</summary>
-    
-    
-    
-    <category term="Hexo" scheme="https://fengyanxin.github.io/categories/Hexo/"/>
-    
-    
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
     
   </entry>
   
