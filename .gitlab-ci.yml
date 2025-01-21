@@ -1,4 +1,4 @@
-image: node:16-alpine
+image: node:19-alpine
 cache:
   paths:
     - node_modules/
@@ -15,3 +15,4 @@ pages:
       - public
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
