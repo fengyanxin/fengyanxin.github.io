@@ -2,6 +2,7 @@ pages:
   stage: deploy
   script:
     - mkdir .public
+    - cp .gitlab-ci.yml public/
     - cp -r ./* .public
     - rm -rf public
     - mv .public public
