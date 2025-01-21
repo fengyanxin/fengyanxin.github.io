@@ -129,187 +129,6 @@
       </tags>
   </entry>
   <entry>
-    <title>02｜依赖管理：如何使用CocoaPods统一依赖库的管理？</title>
-    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/</url>
-    <content><![CDATA[<h1 id="依赖管理：如何使用-CocoaPods-统一依赖库的管理？"><a href="#依赖管理：如何使用-CocoaPods-统一依赖库的管理？" class="headerlink" title="依赖管理：如何使用 CocoaPods 统一依赖库的管理？"></a>依赖管理：如何使用 CocoaPods 统一依赖库的管理？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788496868852.jpg"></p>
-<span id="more"></span>
-
-<p>在 iOS App 开发方面，几乎所有的 App 都需要使用到第三方依赖库。依赖库不仅能为我们提供丰富的功能，还能避免我们从头开发，在节省时间的同时也减少许多 Bug 。</p>
-<p>但伴随着软件功能越来越丰富，依赖库数量越来越多，由此也出现了“依赖地狱”，比如依赖库循环依赖，底层依赖库版本冲突等。为了解决此类问题，于是，依赖库管理工具也就出现了。</p>
-<p>目前流行的依赖库管理工具主要有：<strong>Git Submodules</strong>、<strong>Carthage</strong>、 <strong>Swift Package Manager</strong> 和 <strong>CocoaPods</strong>。在这里我们选择 CocoaPods。为什么呢？原因有三：</p>
-<ol>
-<li><p>CocoaPods 非常成熟，十分稳定，并且简单易用，学习成本低，效果明显；</p>
-</li>
-<li><p>CocoaPods 会自动整合 Xcode 项目，使得其他项目成员在使用第三方库时无须任何额外的手工操作；</p>
-</li>
-<li><p>CocoaPods 已经成为 iOS 业界标准，支持几乎所有的开源库和商业库，即便是 Objective-C 的依赖库以及二进制文件（binary）依赖库，CocoaPods 也提供支持。</p>
-</li>
-</ol>
-<p>那么，怎样使用 CocoaPods 来管理第三方依赖库呢？接下来我会从<strong>语义化版本管理</strong>、<strong>Pod 版本管理</strong>、<strong>Pod 版本更新</strong>三个方面展开介绍。</p>
-<h2 id="语义化版本管理"><a href="#语义化版本管理" class="headerlink" title="语义化版本管理"></a>语义化版本管理</h2><p>开发软件，免不了要更新迭代，所以每一次更新的版本号管理变得很重要。并且，一旦版本号混乱，就会导致一系列问题，比如很难查找和修改线上崩溃，没办法支持多团队并行开发，等等。为了避免此类问题，我们可以使用语义化版本管理（Semantic Versioning）来统一版本号的定义规范。</p>
-<p>语义化版本号是一种通用的版本号格式规范，目前绝大部分优秀的第三方依赖库都遵循这一规范来发布版本。</p>
-<p>具体来说，语义化版本号的版本号一般包括四部分：<code>MAJOR、MINOR、PATCH、BUILD</code>。每一部分都由递增的数值组成，例如 1.2.3.4，其中 1 是MAJOR， 2 是 MINOR。如果我们更新 MINOR 版本号，那么下一个版本就是 1.3.0.0。接下来我详细介绍下这四部分。</p>
-<ul>
-<li><p><strong>MAJOR 是指主版本号</strong>，通常在重大更新的时候才会需要更新主版本号。例如 iOS 每年都会更新一个主版本号。而对于第三方库来说，主版本号的更新，表示该库的 API 新增了重大功能，或者引入了不可兼容的更新 （breaking changes）。</p>
-</li>
-<li><p><strong>MINOR 是指副版本号</strong>，用于小功能的改善。例如 iOS 14 在发布主版本后，在一年内可能发布多个副版本如 14.1、 14.2 来完善其系统功能。一般对于第三方库来说，副版本的更新就是新增一些 API，但不包含不可兼容的更新。</p>
-</li>
-<li><p><strong>PATCH 是指补丁版本号</strong>，一般用于 bug fix 以及修复安全性问题等。对于第三方库来说，补丁版本号的更新也不应该有不可兼容的更新。虽然实际操作中这会有些困难，但我们可以通过把原有 API 标记为 deprecated，或者为新 API 参数提供默认值等办法来解决。</p>
-</li>
-<li><p><strong>BUILD 是指构建版本号</strong>，通常在内部测试时使用。一般当我们使用 CI 服务器进行自动构建时，构建版本号会自动更新。</p>
-</li>
-</ul>
-<h2 id="Pod-版本管理"><a href="#Pod-版本管理" class="headerlink" title="Pod 版本管理"></a>Pod 版本管理</h2><p>要使用 CocoaPods 管理第三方依赖库，首先要新建一个 Podfile 文件，然后执行 <code>bundle exec pod install</code> 命令来安装所有依赖库。这时候 CocoaPods 会自动帮我们建立一个 Podfile.lock 文件和一个 Workspace文档。</p>
-<p>注意，在第一讲我们说过，由于是通过 Bundler 来安装 CocoaPods，每次执行<code>pod</code>命令前，都需要加上<code>bundle exec</code>。不过为了简洁，后面涉及<code>pod</code>命令时，我会省略<code>bundle exec</code>部分。</p>
-<p>接下来，我详细介绍下 Podfile 文件、 Podfile.lock 和 Workspace 文档到底是什么，以及如何使用。</p>
-<h3 id="Podfile-文件"><a href="#Podfile-文件" class="headerlink" title="Podfile 文件"></a>Podfile 文件</h3><p><code>Podfile</code> 文件是一个配置文件，它主要是用来描述 Xcode 项目里各个 target 的依赖库。我们项目的 Podfile 文件可以在<a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile">仓库中</a>找到。在这里，我主要和你介绍一下 Podfile 文件中的几个重要配置。</p>
-<h3 id="source-配置"><a href="#source-配置" class="headerlink" title="source 配置"></a>source 配置</h3><p><code>source</code>用于指向 PodSpec（Pod 规范）文件的 Repo，从而使得 CocoaPods 能查询到相应的 PodSpec 文件。</p>
-<p>具体来说，当使用公共依赖库的时候，source需要指向 CocoaPods Master Repo，这个主仓库集中存放所有公共依赖库的 PodSpec 文件。 由于 CocoaPods 经常被开发者吐槽 Pod 下载很慢，因此 CocoaPods 使用了 CDN （Content Delivery Network，内容分发网络）来缓存整个 CocoaPods Master Repo， 方便开发者快速下载。具体的配置方法就是使source指向 CND 的地址，代码示例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source <span class="string">&#x27;https://cdn.cocoapods.org/&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>如果使用的是私有依赖库，我们也需要把source指向私有库的 PodSpec Repo，以使得 CocoaPods 能找到相应的 PodSpec 文件。 代码示例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source <span class="string">&#x27;https://my-git-server.com/internal-podspecs&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>注意，当我们使用私有库时，执行pod install命令的机器必须能访问到source所指向的 Repo。</p>
-<h3 id="project-和-workspace"><a href="#project-和-workspace" class="headerlink" title="project 和 workspace"></a>project 和 workspace</h3><p>project用于指定我们的主项目文档。该项目文档会使用到 CocoaPods 管理的所有第三方依赖库。</p>
-<p>workspace用于指定要生成和更新的 Workspace 文档。和其他依赖库管理工具不一样，CocoaPods 会自动生成一个 Workspace 文档，然后我们只能使用该文档而不是 Xcode 项目文档来进行后续开发。</p>
-<p>代码示例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">project <span class="string">&#x27;./Moments/Moments.xcodeproj&#x27;</span></span><br><span class="line">workspace <span class="string">&#x27;./Moments.xcworkspace&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>这其中 <code>Moments.xcodeproj</code> 就是我们的主项目文档，它一般放在和项目名字相同的下一层目录下。</p>
-<p>而 <code>Moments.xcworkspace</code> 是 CocoaPods 为我们生成的 Workspace文档，为了统一，我建议名字也是和主项目相同。</p>
-<h3 id="platform-和-use-frameworks"><a href="#platform-和-use-frameworks" class="headerlink" title="platform 和 use_frameworks"></a>platform 和 use_frameworks</h3><p>先看示例，它表示什么呢？</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">platform :ios, <span class="string">&#x27;14.0&#x27;</span></span><br><span class="line">use_frameworks!</span><br></pre></td></tr></table></figure>
-
-<p>为了保证所有依赖库与主项目在编译和运行时兼容，我们指定的系统版本号需要和主项目所支持的系统版本号保持一致。而<code>platform</code>就是用于指定操作系统以及所支持系统的最低版本号。比如，例子中的<code>platform :ios, &#39;14.0&#39;</code>就表示支持 iOS 14.0 以上的所有 iOS 版本。</p>
-<p>另外一行的<code>use_frameworks!</code>这一配置会让 CocoaPods 把所有第三方依赖库打包生成一个动态加载库，而不是静态库。因为动态库是我们经常用到的，它能有效地加快编译和链接的速度。</p>
-<h3 id="组织同类型的第三方依赖库"><a href="#组织同类型的第三方依赖库" class="headerlink" title="组织同类型的第三方依赖库"></a>组织同类型的第三方依赖库</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">def dev_pods</span><br><span class="line">  pod <span class="string">&#x27;SwiftLint&#x27;</span>, <span class="string">&#x27;0.40.3&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line">  pod <span class="string">&#x27;SwiftGen&#x27;</span>, <span class="string">&#x27;6.4.0&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>其中<code>configurations: [&#39;Debug&#39;]</code>用于指定该依赖库只是使用到<code>Debug</code>构建目标（target）里面，而不在其他（如<code>Release</code>）构建目标里面，这样做能有效减少 App Store 发布版本的体积。</p>
-<p><code>def dev_pods end</code>代码块是“复用同一类依赖库方式”的意思，我们可以把同类型的依赖库都放进这个代码块里面。比如，我们的 Moments 项目中就分别有<code>dev_pods</code>（开发相关的库）,<code>core_pods</code>（核心库）以及<code>thirdparty_pods</code>(第三方库)等代码块定义。</p>
-<h3 id="target-配置"><a href="#target-配置" class="headerlink" title="target 配置"></a>target 配置</h3><p>有了这些复用库定义以后，怎样使用到项目的构建目标（target）里面呢？下面就是一个例子。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">target <span class="string">&#x27;Moments&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  dev_pods</span><br><span class="line">  core_pods</span><br><span class="line">  # other pods...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>我们可以把构建目标所使用的所有依赖库放进<code>target</code>代码块中间，上面中的<code>Moments</code>就是我们的 App 构建目标。该构建目标依赖了<code>dev_pods</code>和<code>core_pods</code>等各组依赖库。执行<code>pod install</code>的时候，CocoaPods 会把<code>dev_pods</code>代码块自动展开为<code>SwiftLint</code>和<code>SwiftGen</code>，那么<code>Moments</code>构建目标能使用<code>SwiftLint</code>和<code>SwiftGen</code>依赖库了。</p>
-<h3 id="依赖库的版本"><a href="#依赖库的版本" class="headerlink" title="依赖库的版本"></a>依赖库的版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">pod <span class="string">&#x27;RxSwift&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br><span class="line">pod <span class="string">&#x27;RxRelay&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>在 CocoaPods 里面，每一个依赖库称为一个 Pod （注意这里首字母大写，Pod 指一个库），指定一个 Pod 的命令是<code>pod</code>（注意这里是小写，表示一条命令）。在 Podfile 里面我们可以通过这样的格式<code>pod &#39;RxSwift&#39;, &#39;= 5.1.1&#39;</code>来配置依赖库的版本号。其中，<code>RxSwift</code>或者<code>RxRelay</code>是依赖库的名字，<code>5.1.1</code>为版本号。这些库的名字以及版本号都可以在 CocoaPods 官网上找到。</p>
-<p><strong>为了统一管理第三方依赖库的版本，我建议统一使用 <code>= </code>来锁定该依赖库的版本，这样就能保证每次执行<code>pod install</code>的时候都可以为同一个库下载同一个版本。</strong></p>
-<p>除了 <code>=</code> 操作符以外，CocoaPods 还支持其他操作符来指定版本：</p>
-<ul>
-<li><p><code>&gt; 0.1</code>表示大于 0.1 的任何版本，这样可以包含 0.2 或者 1.0；</p>
-</li>
-<li><p><code>&gt;= 0.1</code>表示大于或等于 0.1 的任何版本；</p>
-</li>
-<li><p><code>&lt; 0.1</code>表示少于 0.1 的任何版本；</p>
-</li>
-<li><p><code>&lt;= 0.1</code>表示少于或等于 0.1 的任何版本；</p>
-</li>
-<li><p><code>~&gt; 0.1.2</code>表示大于 0.1.2 而且最高支持 0.1.* 的版本，但不包含 0.2 版本。</p>
-</li>
-</ul>
-<p>这几个操作符相里面，<code>~&gt;</code>（Squiggy arrow）操作符更为常用，它是以最后一个部分的版本号（例子中 0.1.2 的最后一个部分是补丁版本号 ..2）来计算可以支持的最高版本号。</p>
-<p>例如<code>~&gt; 0.1.2</code>表示 &gt;= 0.1.2 并且 &lt; 0.2.0，但不能等于 0.2.0， 因为 0.2.0 已经更新了副版本号而不仅仅是补丁版本号了。</p>
-<p>另外一个例子是<code>~&gt; 0.1</code>，表示  &gt;= 0.1  并且 &lt; 1.0，举例来说，我们可以更新到 0.9 但不能更新到 1.0。</p>
-<p>前面我介绍的是引用外部的第三方依赖库，如果我们的项目有自己的内部依赖库，要怎样在 CocoaPods 引用它呢？其实很简单，我们可以执行以下命令：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">pod <span class="string">&#x27;DesignKit&#x27;</span>, :<span class="function"><span class="params">path</span> =&gt;</span> <span class="string">&#x27;./Frameworks/DesignKit&#x27;</span>, :<span class="function"><span class="params">inhibit_warnings</span> =&gt;</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
-
-<p>和其他外部依赖库不一样，我们需要使用<code>:path</code>来指定该内部库的路径。</p>
-<h3 id="Podfile-lock-文件"><a href="#Podfile-lock-文件" class="headerlink" title="Podfile.lock 文件"></a>Podfile.lock 文件</h3><p><code>Podfile.lock</code> 文件是由 CocoaPods 自动生成和更新的，该文件会详细列举所有依赖库具体的版本号。比如，</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">DEPENDENCIES</span>:</span><br><span class="line">  - <span class="title class_">Alamofire</span> (= <span class="number">5.2</span><span class="number">.0</span>)</span><br><span class="line">  - <span class="title class_">Firebase</span>/<span class="title class_">Analytics</span> (= <span class="number">7.0</span><span class="number">.0</span>)</span><br><span class="line"><span class="variable constant_">PODFILE</span> <span class="attr">CHECKSUM</span>: 400d19dbc4f5050f438797c5c6459ca0ef74a777</span><br></pre></td></tr></table></figure>
-
-<p>当执行<code>pod install</code>后，CocoaPods 会根据 Podfile 文件解释出各依赖库的特定版本号，然后一一列举在 <code>DEPENDENCIES</code> 下面。在上述的例子中，我们的 App 在构建过程中使用了5.2.0 的 Alamofire 库以及 7.0.0 的 Firebase Analytics 库。</p>
-<p><code>PODFILE CHECKSUM</code> 用于记录 Podfile 的验证码，任何库的版本号的更改，都会改变该验证码。这样能帮助我们在不同的机器上，快速检测依赖库的版本号是否一致。</p>
-<p>我建议要把 <code>Podfile</code> 和 <code>Podfile.lock</code> 文件一同 commit 并 push 到 Git 代码管理服务器里面。特别是在团队开发的环境下，这样能帮助我们保证各个依赖库版本号的一致性。</p>
-<p>在实践操作中，无论我们在哪台机器上执行<code>pod install</code>， <code>PODFILE CHECKSUM</code> 都不应该发生任何改变。因为我们在 Git 保存了 <code>Podfile.lock</code>，一旦我们发现老版本 App 的 Bug ，就可以根据该文件为各个依赖库重新安装同一版本号，来重现和定位问题，从而帮助我们快速修改这些 Bug。</p>
-<h3 id="Workspace-文档"><a href="#Workspace-文档" class="headerlink" title="Workspace 文档"></a>Workspace 文档</h3><p><code>Workspace</code> 文档是 Xcode 管理子项目的方式。通过 Workspace，我们可以把相关联的多个 Xcode 子项目组合起来方便开发。</p>
-<p>前面说过，当我们执行<code>pod install</code>的时候，CocoaPods 会自动创建或者更新一个叫作 Pods 的项目文档（<code>Pods.xcodeproj</code> ）以及一个 Workspace 文档（在我们项目中叫作 <code>Moments.xcworkspace</code>）。</p>
-<p>其中，Pods 项目文档负责统一管理各个依赖库，当我们在 Podfile 里面指定构建成动态库的时候，该项目会自动生成一个名叫<code>Pods_&lt;项目名称&gt;.framework</code>的动态库供我们项目使用。</p>
-<p>而 Workspace 文档则统一管理了我们原有的主项目 （Moments.xcodeproj）以及那个 Pods 项目。</p>
-<p>与此同时，CocoaPods 还会修改 Xcode 项目中的 <code>Build Phases</code>  以此来检测 <code>Podfile.lock</code> 和 <code>Manifest.lock</code> 文件的一致性，并把<code>Pods_&lt;项目名称&gt;.framework</code>动态库嵌入我们的主项目中去。</p>
-<p>以上所有操作都是由 CocoaPods 自动帮我们完成。以后的开发，我们都可以打开 Workspace 文档而不是原有的 Xcode 项目文档来进行。</p>
-<h2 id="Pod-版本更新"><a href="#Pod-版本更新" class="headerlink" title="Pod 版本更新"></a>Pod 版本更新</h2><p>使用 CocoaPods 管理第三方依赖库的操作非常简单，可是一旦使用不当，特别是在 Pod 更新的时候，很容易引起依赖库版本不一致，从而出现各种问题。</p>
-<p>比如，在编译程序的时候，有些开发者可以顺利进行，而另外一些开发者编译时候就会出错；或者程序在本地编译时运行良好，一旦在 <code>CI</code> 上构建，就会出现 App 崩溃，等等。</p>
-<p>那么，怎么保证更新 Pod 的时候都能保证版本一致呢？</p>
-<p>下面结合我的实践经验，以第三方网络库 Alamofire 为例子和你介绍下。</p>
-<p><strong>第一步</strong>，CocoaPods 已经为我们提供了<code>pod outdated</code>命令，我们可以用它一次查看所有 Pod 的最新版本，而无须到 GitHub 上逐一寻找。下面是执行<code>pod outdated</code>命令的其中一条结果：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">The</span> following pod updates are <span class="attr">available</span>:</span><br><span class="line">- <span class="title class_">Alamofire</span> <span class="number">5.2</span><span class="number">.0</span> -&gt; <span class="number">5.2</span><span class="number">.0</span> (latest version <span class="number">5.4</span><span class="number">.0</span>)</span><br></pre></td></tr></table></figure>
-
-<p>这表示当前我们使用了版本为 5.2.0 的 Alamofire ，其最新版本为 5.4.0。如果我们决定更新到版本 5.4.0，那么可以继续下一步。</p>
-<p><strong>第二步</strong>，在更新依赖库版本之前，为了避免在新版本中不小心引入 Bug，我们需要了解新的版本到底提供了哪些新功能，修改了哪些 Bug，与老版本是否兼容等事项。具体我们可以到 CocoaPods 官网上查找需要更新的第三方依赖库，然后在 GitHub 等平台上找到，并仔细阅读该库的版本说明（<code>release note</code>）。</p>
-<p><code>请注意，我们要阅读当前使用版本到要更新的版本之间的所有版本说明</code>。 在这个例子中，我们要阅读 5.2.1，5.2.2，5.3.0 和 5.4.0 的所有版本说明。这些版本说明会列出新增功能，更新的 API，修改的 Bug，有没有不可兼容的更新 。</p>
-<p><strong>第三步</strong>，在 Podfile 文件里把要更新的 Pod 的版本号进行修改。例如把<code>pod &#39;Alamofire&#39;, &#39;= 5.2.0&#39;</code>改成<code>pod &#39;Alamofire&#39;, &#39;= 5.4.0&#39;</code>。 然后执行pod install来重新生成 Podfile.lock 文件。</p>
-<p>此时特别注意的是，我们要使用<code>pod install</code>而不是<code>pod update</code>。因为执行pod update会自动更新所有 Pod 的版本，这可能会更新了一些我们目前还不想更新的 Pod，从而会引入一些难以觉察的问题。</p>
-<p><strong>第四步</strong>，如果所更新的版本包含了不可兼容的更新，我们需要修改代码来保证代码能顺利完成编译。</p>
-<p><strong>第五步</strong>，很多第三方依赖库都是一些通用的基础组件，一旦发生问题会影响到整个 App 的功能，因此我们需要根据所更新的库进行回归测试。例如当更新了 Alamofire 库的时候，我们需要把每个网络请求都执行一遍，避免所更新的版本引入新的 Bug。</p>
-<p><strong>第六步</strong>，为了把更新的版本共享给所有开发者和 CI 服务器，我们需要把 Podfile 和 Podfile.lock 文件一同 commit 并 push 到 Git 代码管理服务器，并通过 Pull Request 流程并入主分支。</p>
-<p><strong>第七步</strong>，一旦更新的代码并入主分支后，要通过 Slack 等内部通信软件告诉所有开发者 pull 或者 rebase 主分支的代码，并执行pod install来更新他们开发环境的所有依赖库。</p>
-<p><code>特别注意，千万不要使用pod update，因为pod update会自动把开发者机器上所有 Pod 的版本自动更新了</code>。这种更新往往不是我们想要的结果，我们希望统一更新各个 Pod 的版本，并通过 Git 进行集中管理。</p>
-<p>如果开发者在编译新代码前没有执行pod install命令，会出现以下的错误。</p>
-<blockquote>
-<p>The sandbox is not in sync with the Podfile.lock. Run ‘pod install’ or update your CocoaPods installation.</p>
-</blockquote>
-<p>这错误可以有效提醒所有开发者，需要再次执行pod install来更新他们本地的依赖库，从而保证所有开发者使用的依赖库的版本都是一致的。</p>
-<p>另外，如果更新了基础组件的依赖库（如网络库），在测试阶段，我们还需要进行全面的回归测试。因为这些基础组件库的新版本如果有 Bug 很可能导致我们的 App 会发生大比例的崩溃，严重影响用户的体验。</p>
-<p>有了上面的一流程，我们就可以有效地保证每个开发者使用的依赖库版本都是一致的，同时也能保证 CI 在自动构建 App 的时候所使用的依赖库版本也是统一的。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲我介绍了如何使用 CocoaPods 来统一管理依赖库的版本。特别是根据我自己的经验总结了一套更新 Pod 版本的流程，希望你灵活使用这些步骤，从而少走弯路。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497199239.jpg"></p>
-<p><strong>这里我再特别强调一下，为了保证依赖库版本都能保持一致，尽量不要执行pod update，而是使用通过修改 Podfile 文件里的版本号并执行pod install来更新 Pod 的版本，然后把 Podfile 和 Podfile.lock 文件一同并入 Git 主分支中进行统一管理。</strong></p>
-<h3 id="源码地址："><a href="#源码地址：" class="headerlink" title="源码地址："></a>源码地址：</h3><blockquote>
-<p>Podfile 文件地址：<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile</a></p>
-</blockquote>
-<h1 id="学习笔记与扩展"><a href="#学习笔记与扩展" class="headerlink" title="学习笔记与扩展"></a>学习笔记与扩展</h1><h2 id="Carthage-的简单使用"><a href="#Carthage-的简单使用" class="headerlink" title="Carthage 的简单使用"></a>Carthage 的简单使用</h2><h3 id="一、安装-Carthage："><a href="#一、安装-Carthage：" class="headerlink" title="一、安装 Carthage："></a>一、安装 Carthage：</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 安装</span></span><br><span class="line">brew install carthage</span><br><span class="line"><span class="comment">// 查看版本</span></span><br><span class="line">carthage version</span><br><span class="line"><span class="comment">// 升级</span></span><br><span class="line">brew upgrade carthage</span><br><span class="line"><span class="comment">// 卸载</span></span><br><span class="line">brew uninstall carthage</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497339391.jpg"></p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497595924.jpg"></p>
-<h3 id="二、使用-Carthage-下载三方库"><a href="#二、使用-Carthage-下载三方库" class="headerlink" title="二、使用 Carthage 下载三方库"></a>二、使用 Carthage 下载三方库</h3><h4 id="1、在工程文件里创建-Cartfile-文件"><a href="#1、在工程文件里创建-Cartfile-文件" class="headerlink" title="1、在工程文件里创建 Cartfile 文件:"></a>1、在工程文件里创建 Cartfile 文件:</h4><p><code>cd</code> 到工程目录下，然后执行如下命令：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建 Cartfile 文件</span></span><br><span class="line">touch <span class="title class_">Cartfile</span></span><br><span class="line"><span class="comment">// 使用 Xcode 命令打开 Cartfile 文件</span></span><br><span class="line">open -a <span class="title class_">Xcode</span> <span class="title class_">Cartfile</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="2、在-Cartfile-文件添加依赖库"><a href="#2、在-Cartfile-文件添加依赖库" class="headerlink" title="2、在 Cartfile 文件添加依赖库"></a>2、在 Cartfile 文件添加依赖库</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">github <span class="string">&quot;SnapKit/SnapKit&quot;</span> ~&gt; <span class="number">5.6</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497742378.jpg"></p>
-<p>版本含义：如果没有指明版本号，则会自动使用最新的版本</p>
-<ul>
-<li><code>~&gt;5.0</code>：表示使用版本 <code>5.0</code> 以上但是低于 <code>6.0</code> 的最新版本，如 <code>5.1</code> ，<code>5.4</code></li>
-<li><code>==5.0</code>：表示使用 <code>5.0</code> 版本</li>
-<li><code>&gt;=5.0</code>：表示使用 <code>5.0</code> 或更高的版本</li>
-</ul>
-<h4 id="3、保存-Cartfile-文件，然后执行安装"><a href="#3、保存-Cartfile-文件，然后执行安装" class="headerlink" title="3、保存 Cartfile 文件，然后执行安装"></a>3、保存 Cartfile 文件，然后执行安装</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下载添加依赖库的第三方框架</span></span><br><span class="line">carthage update</span><br></pre></td></tr></table></figure>
-
-<p>执行成功之后，会在工程目录里生成一个 <code>Carthage</code> 的文件夹，里面有自动生成的 <code>framework</code>:</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497876744.jpg"></p>
-<ul>
-<li>有时候 Carthage 更新会出现 arm64 报错：</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">A shell task (<span class="regexp">/usr/</span>bin/xcrun lipo -create /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Intermediates</span>.<span class="property">noindex</span>/<span class="title class_">ArchiveIntermediates</span>/<span class="title class_">Alamofire</span>\ iOS/<span class="title class_">IntermediateBuildFilesPath</span>/<span class="title class_">UninstalledProducts</span>/iphoneos/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Products</span>/<span class="title class_">Release</span>-iphonesimulator/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> -output /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Desktop</span>/AY_Project/<span class="number">123456</span>/<span class="title class_">Carthage</span>/<span class="title class_">Build</span>/iOS/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span>) failed <span class="keyword">with</span> exit code <span class="number">1</span>:</span><br><span class="line">fatal <span class="attr">error</span>: <span class="regexp">/Applications/</span><span class="title class_">Xcode</span>.<span class="property">app</span>/<span class="title class_">Contents</span>/<span class="title class_">Developer</span>/<span class="title class_">Toolchains</span>/<span class="title class_">XcodeDefault</span>.<span class="property">xctoolchain</span>/usr/bin/<span class="attr">lipo</span>: <span class="regexp">/Users/</span>coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Intermediates</span>.<span class="property">noindex</span>/<span class="title class_">ArchiveIntermediates</span>/<span class="title class_">Alamofire</span> iOS/<span class="title class_">IntermediateBuildFilesPath</span>/<span class="title class_">UninstalledProducts</span>/iphoneos/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> and /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Products</span>/<span class="title class_">Release</span>-iphonesimulator/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> have the same architectures (arm64) and can<span class="string">&#x27;t be in the same fat output file</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Building universal frameworks with common architectures is not possible. The device and simulator slices for &quot;Alamofire&quot; both build for: arm64</span></span><br><span class="line"><span class="string">Rebuild with --use-xcframeworks to create an xcframework bundle instead.</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>根据提示终端重新输入：</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 不区分iOS、macOS</span></span><br><span class="line">carthage update --use-xcframeworks</span><br><span class="line"><span class="comment">// 只限iOS</span></span><br><span class="line">carthage update --platform iOS --use-xcframeworks</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498111841.jpg"></p>
-<h3 id="三、将下载三方框架集成到项目"><a href="#三、将下载三方框架集成到项目" class="headerlink" title="三、将下载三方框架集成到项目"></a>三、将下载三方框架集成到项目</h3><h4 id="1、添加-framework-文件："><a href="#1、添加-framework-文件：" class="headerlink" title="1、添加 framework 文件："></a>1、添加 framework 文件：</h4><p>打开工程文件中的iOS文件夹 -&gt; 将 framework 文件拖入到项目 General 中的 Frameworks，Libraries 中</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498234874.jpg"></p>
-<h4 id="2、添加编译脚本："><a href="#2、添加编译脚本：" class="headerlink" title="2、添加编译脚本："></a>2、添加编译脚本：</h4><p><strong>Target -&gt; Build Phases -&gt; 点击 + -&gt; New Run Script Phase</strong> -&gt; 添加如下脚本：</p>
-<p><code>/usr/local/bin/carthage copy-frameworks</code></p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498355244.jpg"></p>
-<h4 id="3、编译，导入头文件使用"><a href="#3、编译，导入头文件使用" class="headerlink" title="3、编译，导入头文件使用"></a>3、编译，导入头文件使用</h4><p>编译，然后导入头文件使用，但是可能会出现如下错误：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498494980.jpg"></p>
-<p>这是因为，我使用的是模拟器运行，但是导入的却是 iOS 真机的 framework，这时候我们需要将原来的 framework 删除，然后导入模拟器 framework。找到如下目录然后拖入：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498611867.jpg"></p>
-<p>然后，我们再次编译运行，就可以成功了，效果如下：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498763007.jpg"></p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>iOS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>03 | 配置准备：如何搭建多环境支持，为 App 开发作准备</title>
     <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/</url>
     <content><![CDATA[<h1 id="一、配置准备：如何搭建多环境支持，为-App-开发作准备"><a href="#一、配置准备：如何搭建多环境支持，为-App-开发作准备" class="headerlink" title="一、配置准备：如何搭建多环境支持，为 App 开发作准备"></a>一、配置准备：如何搭建多环境支持，为 App 开发作准备</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788668316765.jpg"></p>
@@ -552,6 +371,187 @@
       </tags>
   </entry>
   <entry>
+    <title>02｜依赖管理：如何使用CocoaPods统一依赖库的管理？</title>
+    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/</url>
+    <content><![CDATA[<h1 id="依赖管理：如何使用-CocoaPods-统一依赖库的管理？"><a href="#依赖管理：如何使用-CocoaPods-统一依赖库的管理？" class="headerlink" title="依赖管理：如何使用 CocoaPods 统一依赖库的管理？"></a>依赖管理：如何使用 CocoaPods 统一依赖库的管理？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788496868852.jpg"></p>
+<span id="more"></span>
+
+<p>在 iOS App 开发方面，几乎所有的 App 都需要使用到第三方依赖库。依赖库不仅能为我们提供丰富的功能，还能避免我们从头开发，在节省时间的同时也减少许多 Bug 。</p>
+<p>但伴随着软件功能越来越丰富，依赖库数量越来越多，由此也出现了“依赖地狱”，比如依赖库循环依赖，底层依赖库版本冲突等。为了解决此类问题，于是，依赖库管理工具也就出现了。</p>
+<p>目前流行的依赖库管理工具主要有：<strong>Git Submodules</strong>、<strong>Carthage</strong>、 <strong>Swift Package Manager</strong> 和 <strong>CocoaPods</strong>。在这里我们选择 CocoaPods。为什么呢？原因有三：</p>
+<ol>
+<li><p>CocoaPods 非常成熟，十分稳定，并且简单易用，学习成本低，效果明显；</p>
+</li>
+<li><p>CocoaPods 会自动整合 Xcode 项目，使得其他项目成员在使用第三方库时无须任何额外的手工操作；</p>
+</li>
+<li><p>CocoaPods 已经成为 iOS 业界标准，支持几乎所有的开源库和商业库，即便是 Objective-C 的依赖库以及二进制文件（binary）依赖库，CocoaPods 也提供支持。</p>
+</li>
+</ol>
+<p>那么，怎样使用 CocoaPods 来管理第三方依赖库呢？接下来我会从<strong>语义化版本管理</strong>、<strong>Pod 版本管理</strong>、<strong>Pod 版本更新</strong>三个方面展开介绍。</p>
+<h2 id="语义化版本管理"><a href="#语义化版本管理" class="headerlink" title="语义化版本管理"></a>语义化版本管理</h2><p>开发软件，免不了要更新迭代，所以每一次更新的版本号管理变得很重要。并且，一旦版本号混乱，就会导致一系列问题，比如很难查找和修改线上崩溃，没办法支持多团队并行开发，等等。为了避免此类问题，我们可以使用语义化版本管理（Semantic Versioning）来统一版本号的定义规范。</p>
+<p>语义化版本号是一种通用的版本号格式规范，目前绝大部分优秀的第三方依赖库都遵循这一规范来发布版本。</p>
+<p>具体来说，语义化版本号的版本号一般包括四部分：<code>MAJOR、MINOR、PATCH、BUILD</code>。每一部分都由递增的数值组成，例如 1.2.3.4，其中 1 是MAJOR， 2 是 MINOR。如果我们更新 MINOR 版本号，那么下一个版本就是 1.3.0.0。接下来我详细介绍下这四部分。</p>
+<ul>
+<li><p><strong>MAJOR 是指主版本号</strong>，通常在重大更新的时候才会需要更新主版本号。例如 iOS 每年都会更新一个主版本号。而对于第三方库来说，主版本号的更新，表示该库的 API 新增了重大功能，或者引入了不可兼容的更新 （breaking changes）。</p>
+</li>
+<li><p><strong>MINOR 是指副版本号</strong>，用于小功能的改善。例如 iOS 14 在发布主版本后，在一年内可能发布多个副版本如 14.1、 14.2 来完善其系统功能。一般对于第三方库来说，副版本的更新就是新增一些 API，但不包含不可兼容的更新。</p>
+</li>
+<li><p><strong>PATCH 是指补丁版本号</strong>，一般用于 bug fix 以及修复安全性问题等。对于第三方库来说，补丁版本号的更新也不应该有不可兼容的更新。虽然实际操作中这会有些困难，但我们可以通过把原有 API 标记为 deprecated，或者为新 API 参数提供默认值等办法来解决。</p>
+</li>
+<li><p><strong>BUILD 是指构建版本号</strong>，通常在内部测试时使用。一般当我们使用 CI 服务器进行自动构建时，构建版本号会自动更新。</p>
+</li>
+</ul>
+<h2 id="Pod-版本管理"><a href="#Pod-版本管理" class="headerlink" title="Pod 版本管理"></a>Pod 版本管理</h2><p>要使用 CocoaPods 管理第三方依赖库，首先要新建一个 Podfile 文件，然后执行 <code>bundle exec pod install</code> 命令来安装所有依赖库。这时候 CocoaPods 会自动帮我们建立一个 Podfile.lock 文件和一个 Workspace文档。</p>
+<p>注意，在第一讲我们说过，由于是通过 Bundler 来安装 CocoaPods，每次执行<code>pod</code>命令前，都需要加上<code>bundle exec</code>。不过为了简洁，后面涉及<code>pod</code>命令时，我会省略<code>bundle exec</code>部分。</p>
+<p>接下来，我详细介绍下 Podfile 文件、 Podfile.lock 和 Workspace 文档到底是什么，以及如何使用。</p>
+<h3 id="Podfile-文件"><a href="#Podfile-文件" class="headerlink" title="Podfile 文件"></a>Podfile 文件</h3><p><code>Podfile</code> 文件是一个配置文件，它主要是用来描述 Xcode 项目里各个 target 的依赖库。我们项目的 Podfile 文件可以在<a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile">仓库中</a>找到。在这里，我主要和你介绍一下 Podfile 文件中的几个重要配置。</p>
+<h3 id="source-配置"><a href="#source-配置" class="headerlink" title="source 配置"></a>source 配置</h3><p><code>source</code>用于指向 PodSpec（Pod 规范）文件的 Repo，从而使得 CocoaPods 能查询到相应的 PodSpec 文件。</p>
+<p>具体来说，当使用公共依赖库的时候，source需要指向 CocoaPods Master Repo，这个主仓库集中存放所有公共依赖库的 PodSpec 文件。 由于 CocoaPods 经常被开发者吐槽 Pod 下载很慢，因此 CocoaPods 使用了 CDN （Content Delivery Network，内容分发网络）来缓存整个 CocoaPods Master Repo， 方便开发者快速下载。具体的配置方法就是使source指向 CND 的地址，代码示例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source <span class="string">&#x27;https://cdn.cocoapods.org/&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果使用的是私有依赖库，我们也需要把source指向私有库的 PodSpec Repo，以使得 CocoaPods 能找到相应的 PodSpec 文件。 代码示例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source <span class="string">&#x27;https://my-git-server.com/internal-podspecs&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意，当我们使用私有库时，执行pod install命令的机器必须能访问到source所指向的 Repo。</p>
+<h3 id="project-和-workspace"><a href="#project-和-workspace" class="headerlink" title="project 和 workspace"></a>project 和 workspace</h3><p>project用于指定我们的主项目文档。该项目文档会使用到 CocoaPods 管理的所有第三方依赖库。</p>
+<p>workspace用于指定要生成和更新的 Workspace 文档。和其他依赖库管理工具不一样，CocoaPods 会自动生成一个 Workspace 文档，然后我们只能使用该文档而不是 Xcode 项目文档来进行后续开发。</p>
+<p>代码示例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">project <span class="string">&#x27;./Moments/Moments.xcodeproj&#x27;</span></span><br><span class="line">workspace <span class="string">&#x27;./Moments.xcworkspace&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这其中 <code>Moments.xcodeproj</code> 就是我们的主项目文档，它一般放在和项目名字相同的下一层目录下。</p>
+<p>而 <code>Moments.xcworkspace</code> 是 CocoaPods 为我们生成的 Workspace文档，为了统一，我建议名字也是和主项目相同。</p>
+<h3 id="platform-和-use-frameworks"><a href="#platform-和-use-frameworks" class="headerlink" title="platform 和 use_frameworks"></a>platform 和 use_frameworks</h3><p>先看示例，它表示什么呢？</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">platform :ios, <span class="string">&#x27;14.0&#x27;</span></span><br><span class="line">use_frameworks!</span><br></pre></td></tr></table></figure>
+
+<p>为了保证所有依赖库与主项目在编译和运行时兼容，我们指定的系统版本号需要和主项目所支持的系统版本号保持一致。而<code>platform</code>就是用于指定操作系统以及所支持系统的最低版本号。比如，例子中的<code>platform :ios, &#39;14.0&#39;</code>就表示支持 iOS 14.0 以上的所有 iOS 版本。</p>
+<p>另外一行的<code>use_frameworks!</code>这一配置会让 CocoaPods 把所有第三方依赖库打包生成一个动态加载库，而不是静态库。因为动态库是我们经常用到的，它能有效地加快编译和链接的速度。</p>
+<h3 id="组织同类型的第三方依赖库"><a href="#组织同类型的第三方依赖库" class="headerlink" title="组织同类型的第三方依赖库"></a>组织同类型的第三方依赖库</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">def dev_pods</span><br><span class="line">  pod <span class="string">&#x27;SwiftLint&#x27;</span>, <span class="string">&#x27;0.40.3&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line">  pod <span class="string">&#x27;SwiftGen&#x27;</span>, <span class="string">&#x27;6.4.0&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>configurations: [&#39;Debug&#39;]</code>用于指定该依赖库只是使用到<code>Debug</code>构建目标（target）里面，而不在其他（如<code>Release</code>）构建目标里面，这样做能有效减少 App Store 发布版本的体积。</p>
+<p><code>def dev_pods end</code>代码块是“复用同一类依赖库方式”的意思，我们可以把同类型的依赖库都放进这个代码块里面。比如，我们的 Moments 项目中就分别有<code>dev_pods</code>（开发相关的库）,<code>core_pods</code>（核心库）以及<code>thirdparty_pods</code>(第三方库)等代码块定义。</p>
+<h3 id="target-配置"><a href="#target-配置" class="headerlink" title="target 配置"></a>target 配置</h3><p>有了这些复用库定义以后，怎样使用到项目的构建目标（target）里面呢？下面就是一个例子。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">target <span class="string">&#x27;Moments&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  dev_pods</span><br><span class="line">  core_pods</span><br><span class="line">  # other pods...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>我们可以把构建目标所使用的所有依赖库放进<code>target</code>代码块中间，上面中的<code>Moments</code>就是我们的 App 构建目标。该构建目标依赖了<code>dev_pods</code>和<code>core_pods</code>等各组依赖库。执行<code>pod install</code>的时候，CocoaPods 会把<code>dev_pods</code>代码块自动展开为<code>SwiftLint</code>和<code>SwiftGen</code>，那么<code>Moments</code>构建目标能使用<code>SwiftLint</code>和<code>SwiftGen</code>依赖库了。</p>
+<h3 id="依赖库的版本"><a href="#依赖库的版本" class="headerlink" title="依赖库的版本"></a>依赖库的版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">pod <span class="string">&#x27;RxSwift&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br><span class="line">pod <span class="string">&#x27;RxRelay&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>在 CocoaPods 里面，每一个依赖库称为一个 Pod （注意这里首字母大写，Pod 指一个库），指定一个 Pod 的命令是<code>pod</code>（注意这里是小写，表示一条命令）。在 Podfile 里面我们可以通过这样的格式<code>pod &#39;RxSwift&#39;, &#39;= 5.1.1&#39;</code>来配置依赖库的版本号。其中，<code>RxSwift</code>或者<code>RxRelay</code>是依赖库的名字，<code>5.1.1</code>为版本号。这些库的名字以及版本号都可以在 CocoaPods 官网上找到。</p>
+<p><strong>为了统一管理第三方依赖库的版本，我建议统一使用 <code>= </code>来锁定该依赖库的版本，这样就能保证每次执行<code>pod install</code>的时候都可以为同一个库下载同一个版本。</strong></p>
+<p>除了 <code>=</code> 操作符以外，CocoaPods 还支持其他操作符来指定版本：</p>
+<ul>
+<li><p><code>&gt; 0.1</code>表示大于 0.1 的任何版本，这样可以包含 0.2 或者 1.0；</p>
+</li>
+<li><p><code>&gt;= 0.1</code>表示大于或等于 0.1 的任何版本；</p>
+</li>
+<li><p><code>&lt; 0.1</code>表示少于 0.1 的任何版本；</p>
+</li>
+<li><p><code>&lt;= 0.1</code>表示少于或等于 0.1 的任何版本；</p>
+</li>
+<li><p><code>~&gt; 0.1.2</code>表示大于 0.1.2 而且最高支持 0.1.* 的版本，但不包含 0.2 版本。</p>
+</li>
+</ul>
+<p>这几个操作符相里面，<code>~&gt;</code>（Squiggy arrow）操作符更为常用，它是以最后一个部分的版本号（例子中 0.1.2 的最后一个部分是补丁版本号 ..2）来计算可以支持的最高版本号。</p>
+<p>例如<code>~&gt; 0.1.2</code>表示 &gt;= 0.1.2 并且 &lt; 0.2.0，但不能等于 0.2.0， 因为 0.2.0 已经更新了副版本号而不仅仅是补丁版本号了。</p>
+<p>另外一个例子是<code>~&gt; 0.1</code>，表示  &gt;= 0.1  并且 &lt; 1.0，举例来说，我们可以更新到 0.9 但不能更新到 1.0。</p>
+<p>前面我介绍的是引用外部的第三方依赖库，如果我们的项目有自己的内部依赖库，要怎样在 CocoaPods 引用它呢？其实很简单，我们可以执行以下命令：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">pod <span class="string">&#x27;DesignKit&#x27;</span>, :<span class="function"><span class="params">path</span> =&gt;</span> <span class="string">&#x27;./Frameworks/DesignKit&#x27;</span>, :<span class="function"><span class="params">inhibit_warnings</span> =&gt;</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p>和其他外部依赖库不一样，我们需要使用<code>:path</code>来指定该内部库的路径。</p>
+<h3 id="Podfile-lock-文件"><a href="#Podfile-lock-文件" class="headerlink" title="Podfile.lock 文件"></a>Podfile.lock 文件</h3><p><code>Podfile.lock</code> 文件是由 CocoaPods 自动生成和更新的，该文件会详细列举所有依赖库具体的版本号。比如，</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">DEPENDENCIES</span>:</span><br><span class="line">  - <span class="title class_">Alamofire</span> (= <span class="number">5.2</span><span class="number">.0</span>)</span><br><span class="line">  - <span class="title class_">Firebase</span>/<span class="title class_">Analytics</span> (= <span class="number">7.0</span><span class="number">.0</span>)</span><br><span class="line"><span class="variable constant_">PODFILE</span> <span class="attr">CHECKSUM</span>: 400d19dbc4f5050f438797c5c6459ca0ef74a777</span><br></pre></td></tr></table></figure>
+
+<p>当执行<code>pod install</code>后，CocoaPods 会根据 Podfile 文件解释出各依赖库的特定版本号，然后一一列举在 <code>DEPENDENCIES</code> 下面。在上述的例子中，我们的 App 在构建过程中使用了5.2.0 的 Alamofire 库以及 7.0.0 的 Firebase Analytics 库。</p>
+<p><code>PODFILE CHECKSUM</code> 用于记录 Podfile 的验证码，任何库的版本号的更改，都会改变该验证码。这样能帮助我们在不同的机器上，快速检测依赖库的版本号是否一致。</p>
+<p>我建议要把 <code>Podfile</code> 和 <code>Podfile.lock</code> 文件一同 commit 并 push 到 Git 代码管理服务器里面。特别是在团队开发的环境下，这样能帮助我们保证各个依赖库版本号的一致性。</p>
+<p>在实践操作中，无论我们在哪台机器上执行<code>pod install</code>， <code>PODFILE CHECKSUM</code> 都不应该发生任何改变。因为我们在 Git 保存了 <code>Podfile.lock</code>，一旦我们发现老版本 App 的 Bug ，就可以根据该文件为各个依赖库重新安装同一版本号，来重现和定位问题，从而帮助我们快速修改这些 Bug。</p>
+<h3 id="Workspace-文档"><a href="#Workspace-文档" class="headerlink" title="Workspace 文档"></a>Workspace 文档</h3><p><code>Workspace</code> 文档是 Xcode 管理子项目的方式。通过 Workspace，我们可以把相关联的多个 Xcode 子项目组合起来方便开发。</p>
+<p>前面说过，当我们执行<code>pod install</code>的时候，CocoaPods 会自动创建或者更新一个叫作 Pods 的项目文档（<code>Pods.xcodeproj</code> ）以及一个 Workspace 文档（在我们项目中叫作 <code>Moments.xcworkspace</code>）。</p>
+<p>其中，Pods 项目文档负责统一管理各个依赖库，当我们在 Podfile 里面指定构建成动态库的时候，该项目会自动生成一个名叫<code>Pods_&lt;项目名称&gt;.framework</code>的动态库供我们项目使用。</p>
+<p>而 Workspace 文档则统一管理了我们原有的主项目 （Moments.xcodeproj）以及那个 Pods 项目。</p>
+<p>与此同时，CocoaPods 还会修改 Xcode 项目中的 <code>Build Phases</code>  以此来检测 <code>Podfile.lock</code> 和 <code>Manifest.lock</code> 文件的一致性，并把<code>Pods_&lt;项目名称&gt;.framework</code>动态库嵌入我们的主项目中去。</p>
+<p>以上所有操作都是由 CocoaPods 自动帮我们完成。以后的开发，我们都可以打开 Workspace 文档而不是原有的 Xcode 项目文档来进行。</p>
+<h2 id="Pod-版本更新"><a href="#Pod-版本更新" class="headerlink" title="Pod 版本更新"></a>Pod 版本更新</h2><p>使用 CocoaPods 管理第三方依赖库的操作非常简单，可是一旦使用不当，特别是在 Pod 更新的时候，很容易引起依赖库版本不一致，从而出现各种问题。</p>
+<p>比如，在编译程序的时候，有些开发者可以顺利进行，而另外一些开发者编译时候就会出错；或者程序在本地编译时运行良好，一旦在 <code>CI</code> 上构建，就会出现 App 崩溃，等等。</p>
+<p>那么，怎么保证更新 Pod 的时候都能保证版本一致呢？</p>
+<p>下面结合我的实践经验，以第三方网络库 Alamofire 为例子和你介绍下。</p>
+<p><strong>第一步</strong>，CocoaPods 已经为我们提供了<code>pod outdated</code>命令，我们可以用它一次查看所有 Pod 的最新版本，而无须到 GitHub 上逐一寻找。下面是执行<code>pod outdated</code>命令的其中一条结果：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">The</span> following pod updates are <span class="attr">available</span>:</span><br><span class="line">- <span class="title class_">Alamofire</span> <span class="number">5.2</span><span class="number">.0</span> -&gt; <span class="number">5.2</span><span class="number">.0</span> (latest version <span class="number">5.4</span><span class="number">.0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这表示当前我们使用了版本为 5.2.0 的 Alamofire ，其最新版本为 5.4.0。如果我们决定更新到版本 5.4.0，那么可以继续下一步。</p>
+<p><strong>第二步</strong>，在更新依赖库版本之前，为了避免在新版本中不小心引入 Bug，我们需要了解新的版本到底提供了哪些新功能，修改了哪些 Bug，与老版本是否兼容等事项。具体我们可以到 CocoaPods 官网上查找需要更新的第三方依赖库，然后在 GitHub 等平台上找到，并仔细阅读该库的版本说明（<code>release note</code>）。</p>
+<p><code>请注意，我们要阅读当前使用版本到要更新的版本之间的所有版本说明</code>。 在这个例子中，我们要阅读 5.2.1，5.2.2，5.3.0 和 5.4.0 的所有版本说明。这些版本说明会列出新增功能，更新的 API，修改的 Bug，有没有不可兼容的更新 。</p>
+<p><strong>第三步</strong>，在 Podfile 文件里把要更新的 Pod 的版本号进行修改。例如把<code>pod &#39;Alamofire&#39;, &#39;= 5.2.0&#39;</code>改成<code>pod &#39;Alamofire&#39;, &#39;= 5.4.0&#39;</code>。 然后执行pod install来重新生成 Podfile.lock 文件。</p>
+<p>此时特别注意的是，我们要使用<code>pod install</code>而不是<code>pod update</code>。因为执行pod update会自动更新所有 Pod 的版本，这可能会更新了一些我们目前还不想更新的 Pod，从而会引入一些难以觉察的问题。</p>
+<p><strong>第四步</strong>，如果所更新的版本包含了不可兼容的更新，我们需要修改代码来保证代码能顺利完成编译。</p>
+<p><strong>第五步</strong>，很多第三方依赖库都是一些通用的基础组件，一旦发生问题会影响到整个 App 的功能，因此我们需要根据所更新的库进行回归测试。例如当更新了 Alamofire 库的时候，我们需要把每个网络请求都执行一遍，避免所更新的版本引入新的 Bug。</p>
+<p><strong>第六步</strong>，为了把更新的版本共享给所有开发者和 CI 服务器，我们需要把 Podfile 和 Podfile.lock 文件一同 commit 并 push 到 Git 代码管理服务器，并通过 Pull Request 流程并入主分支。</p>
+<p><strong>第七步</strong>，一旦更新的代码并入主分支后，要通过 Slack 等内部通信软件告诉所有开发者 pull 或者 rebase 主分支的代码，并执行pod install来更新他们开发环境的所有依赖库。</p>
+<p><code>特别注意，千万不要使用pod update，因为pod update会自动把开发者机器上所有 Pod 的版本自动更新了</code>。这种更新往往不是我们想要的结果，我们希望统一更新各个 Pod 的版本，并通过 Git 进行集中管理。</p>
+<p>如果开发者在编译新代码前没有执行pod install命令，会出现以下的错误。</p>
+<blockquote>
+<p>The sandbox is not in sync with the Podfile.lock. Run ‘pod install’ or update your CocoaPods installation.</p>
+</blockquote>
+<p>这错误可以有效提醒所有开发者，需要再次执行pod install来更新他们本地的依赖库，从而保证所有开发者使用的依赖库的版本都是一致的。</p>
+<p>另外，如果更新了基础组件的依赖库（如网络库），在测试阶段，我们还需要进行全面的回归测试。因为这些基础组件库的新版本如果有 Bug 很可能导致我们的 App 会发生大比例的崩溃，严重影响用户的体验。</p>
+<p>有了上面的一流程，我们就可以有效地保证每个开发者使用的依赖库版本都是一致的，同时也能保证 CI 在自动构建 App 的时候所使用的依赖库版本也是统一的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲我介绍了如何使用 CocoaPods 来统一管理依赖库的版本。特别是根据我自己的经验总结了一套更新 Pod 版本的流程，希望你灵活使用这些步骤，从而少走弯路。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497199239.jpg"></p>
+<p><strong>这里我再特别强调一下，为了保证依赖库版本都能保持一致，尽量不要执行pod update，而是使用通过修改 Podfile 文件里的版本号并执行pod install来更新 Pod 的版本，然后把 Podfile 和 Podfile.lock 文件一同并入 Git 主分支中进行统一管理。</strong></p>
+<h3 id="源码地址："><a href="#源码地址：" class="headerlink" title="源码地址："></a>源码地址：</h3><blockquote>
+<p>Podfile 文件地址：<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile</a></p>
+</blockquote>
+<h1 id="学习笔记与扩展"><a href="#学习笔记与扩展" class="headerlink" title="学习笔记与扩展"></a>学习笔记与扩展</h1><h2 id="Carthage-的简单使用"><a href="#Carthage-的简单使用" class="headerlink" title="Carthage 的简单使用"></a>Carthage 的简单使用</h2><h3 id="一、安装-Carthage："><a href="#一、安装-Carthage：" class="headerlink" title="一、安装 Carthage："></a>一、安装 Carthage：</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 安装</span></span><br><span class="line">brew install carthage</span><br><span class="line"><span class="comment">// 查看版本</span></span><br><span class="line">carthage version</span><br><span class="line"><span class="comment">// 升级</span></span><br><span class="line">brew upgrade carthage</span><br><span class="line"><span class="comment">// 卸载</span></span><br><span class="line">brew uninstall carthage</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497339391.jpg"></p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497595924.jpg"></p>
+<h3 id="二、使用-Carthage-下载三方库"><a href="#二、使用-Carthage-下载三方库" class="headerlink" title="二、使用 Carthage 下载三方库"></a>二、使用 Carthage 下载三方库</h3><h4 id="1、在工程文件里创建-Cartfile-文件"><a href="#1、在工程文件里创建-Cartfile-文件" class="headerlink" title="1、在工程文件里创建 Cartfile 文件:"></a>1、在工程文件里创建 Cartfile 文件:</h4><p><code>cd</code> 到工程目录下，然后执行如下命令：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建 Cartfile 文件</span></span><br><span class="line">touch <span class="title class_">Cartfile</span></span><br><span class="line"><span class="comment">// 使用 Xcode 命令打开 Cartfile 文件</span></span><br><span class="line">open -a <span class="title class_">Xcode</span> <span class="title class_">Cartfile</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2、在-Cartfile-文件添加依赖库"><a href="#2、在-Cartfile-文件添加依赖库" class="headerlink" title="2、在 Cartfile 文件添加依赖库"></a>2、在 Cartfile 文件添加依赖库</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">github <span class="string">&quot;SnapKit/SnapKit&quot;</span> ~&gt; <span class="number">5.6</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497742378.jpg"></p>
+<p>版本含义：如果没有指明版本号，则会自动使用最新的版本</p>
+<ul>
+<li><code>~&gt;5.0</code>：表示使用版本 <code>5.0</code> 以上但是低于 <code>6.0</code> 的最新版本，如 <code>5.1</code> ，<code>5.4</code></li>
+<li><code>==5.0</code>：表示使用 <code>5.0</code> 版本</li>
+<li><code>&gt;=5.0</code>：表示使用 <code>5.0</code> 或更高的版本</li>
+</ul>
+<h4 id="3、保存-Cartfile-文件，然后执行安装"><a href="#3、保存-Cartfile-文件，然后执行安装" class="headerlink" title="3、保存 Cartfile 文件，然后执行安装"></a>3、保存 Cartfile 文件，然后执行安装</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下载添加依赖库的第三方框架</span></span><br><span class="line">carthage update</span><br></pre></td></tr></table></figure>
+
+<p>执行成功之后，会在工程目录里生成一个 <code>Carthage</code> 的文件夹，里面有自动生成的 <code>framework</code>:</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497876744.jpg"></p>
+<ul>
+<li>有时候 Carthage 更新会出现 arm64 报错：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">A shell task (<span class="regexp">/usr/</span>bin/xcrun lipo -create /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Intermediates</span>.<span class="property">noindex</span>/<span class="title class_">ArchiveIntermediates</span>/<span class="title class_">Alamofire</span>\ iOS/<span class="title class_">IntermediateBuildFilesPath</span>/<span class="title class_">UninstalledProducts</span>/iphoneos/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Products</span>/<span class="title class_">Release</span>-iphonesimulator/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> -output /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Desktop</span>/AY_Project/<span class="number">123456</span>/<span class="title class_">Carthage</span>/<span class="title class_">Build</span>/iOS/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span>) failed <span class="keyword">with</span> exit code <span class="number">1</span>:</span><br><span class="line">fatal <span class="attr">error</span>: <span class="regexp">/Applications/</span><span class="title class_">Xcode</span>.<span class="property">app</span>/<span class="title class_">Contents</span>/<span class="title class_">Developer</span>/<span class="title class_">Toolchains</span>/<span class="title class_">XcodeDefault</span>.<span class="property">xctoolchain</span>/usr/bin/<span class="attr">lipo</span>: <span class="regexp">/Users/</span>coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Intermediates</span>.<span class="property">noindex</span>/<span class="title class_">ArchiveIntermediates</span>/<span class="title class_">Alamofire</span> iOS/<span class="title class_">IntermediateBuildFilesPath</span>/<span class="title class_">UninstalledProducts</span>/iphoneos/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> and /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Products</span>/<span class="title class_">Release</span>-iphonesimulator/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> have the same architectures (arm64) and can<span class="string">&#x27;t be in the same fat output file</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Building universal frameworks with common architectures is not possible. The device and simulator slices for &quot;Alamofire&quot; both build for: arm64</span></span><br><span class="line"><span class="string">Rebuild with --use-xcframeworks to create an xcframework bundle instead.</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>根据提示终端重新输入：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 不区分iOS、macOS</span></span><br><span class="line">carthage update --use-xcframeworks</span><br><span class="line"><span class="comment">// 只限iOS</span></span><br><span class="line">carthage update --platform iOS --use-xcframeworks</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498111841.jpg"></p>
+<h3 id="三、将下载三方框架集成到项目"><a href="#三、将下载三方框架集成到项目" class="headerlink" title="三、将下载三方框架集成到项目"></a>三、将下载三方框架集成到项目</h3><h4 id="1、添加-framework-文件："><a href="#1、添加-framework-文件：" class="headerlink" title="1、添加 framework 文件："></a>1、添加 framework 文件：</h4><p>打开工程文件中的iOS文件夹 -&gt; 将 framework 文件拖入到项目 General 中的 Frameworks，Libraries 中</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498234874.jpg"></p>
+<h4 id="2、添加编译脚本："><a href="#2、添加编译脚本：" class="headerlink" title="2、添加编译脚本："></a>2、添加编译脚本：</h4><p><strong>Target -&gt; Build Phases -&gt; 点击 + -&gt; New Run Script Phase</strong> -&gt; 添加如下脚本：</p>
+<p><code>/usr/local/bin/carthage copy-frameworks</code></p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498355244.jpg"></p>
+<h4 id="3、编译，导入头文件使用"><a href="#3、编译，导入头文件使用" class="headerlink" title="3、编译，导入头文件使用"></a>3、编译，导入头文件使用</h4><p>编译，然后导入头文件使用，但是可能会出现如下错误：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498494980.jpg"></p>
+<p>这是因为，我使用的是模拟器运行，但是导入的却是 iOS 真机的 framework，这时候我们需要将原来的 framework 删除，然后导入模拟器 framework。找到如下目录然后拖入：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498611867.jpg"></p>
+<p>然后，我们再次编译运行，就可以成功了，效果如下：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498763007.jpg"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>04 | 编码规范：如何使用 SwiftLint 统一编码规范？</title>
     <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/04%EF%BD%9C%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-SwiftLint-%E7%BB%9F%E4%B8%80%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%9F/</url>
     <content><![CDATA[<h1 id="如何使用-SwiftLint-统一编码规范？"><a href="#如何使用-SwiftLint-统一编码规范？" class="headerlink" title="如何使用 SwiftLint 统一编码规范？"></a>如何使用 SwiftLint 统一编码规范？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/04%EF%BD%9C%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-SwiftLint-%E7%BB%9F%E4%B8%80%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%9F/16781731613340.jpg" alt="16781731613340"></p>
@@ -617,110 +617,6 @@
 </ul>
 <h3 id="源码地址："><a href="#源码地址：" class="headerlink" title="源码地址："></a>源码地址：</h3><blockquote>
 <p>swiftlint.yml 文件<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Moments/.swiftlint.yml">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Moments/.swiftlint.yml</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>iOS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>05 | 自动化准备：如何使用 Fastlane 管理自动化操作？</title>
-    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/</url>
-    <content><![CDATA[<h1 id="如何使用-Fastlane-管理自动化操作？"><a href="#如何使用-Fastlane-管理自动化操作？" class="headerlink" title="如何使用 Fastlane 管理自动化操作？"></a>如何使用 Fastlane 管理自动化操作？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/16784358918168.jpg" alt="16784358918168"></p>
-<span id="more"></span>
-
-<p>要成为一个优秀的 iOS 开发者，我们要做的事情远多于 <strong>“开发”</strong> ，例如我们要构建和打包 App，管理证书，为 App 进行签名，把 App 分发给测试组，上传 App 到 App Store，等等。这些操作不但繁琐费时，而且容易出错。那么，有没有更便利的方法呢？有，那就是使用 fastlane 来完成这些重复性的工作。接下来这一讲，我们主要聊的也就是这个主题。</p>
-<h2 id="fastlane-安装"><a href="#fastlane-安装" class="headerlink" title="fastlane 安装"></a>fastlane 安装</h2><p><strong>fastlane</strong> 是用 <code>Ruby</code> 语言编写的一个命令行工具，可以自动化几乎所有 iOS 开发所需要的操作，例如自动打包和签名 App，自动上传到 App Store 等等。有了 <code>fastlane</code>，我们就可以开发一套统一的、可靠的和可共享的配置，团队所有成员都可以通过这套配置实现自动化操作，减少重复性劳动。</p>
-<p>如何安装 <code>fastlane</code> 呢？我记得在第一讲就曾提到过，可以使用 <code>Bundler</code> 来安装，只需要在 <code>Gemfile</code> 文件里面添加以下一行即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">gem <span class="string">&quot;fastlane&quot;</span>, <span class="string">&quot;2.166.0&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p><font color="#CD5C5C">注意，由于是通过 Bundler 来安装 fastlane，每次执行 fastlane 命令前，都需要加上 <code>bundle exec</code>（<code>bundle exec fastlane</code>）。不过为了简洁，在这里后面凡涉及 fastlane 命令时，我会省略<code>bundle exec</code>部分。</font></p>
-<h2 id="Action-与-Lane"><a href="#Action-与-Lane" class="headerlink" title="Action 与 Lane"></a>Action 与 Lane</h2><p>fastlane 为我们提供了一百多个 <strong>Action</strong>，它们是 iOS 项目开发中所有自动化操作的基础。所谓的Action，你可以理解成是 fastlane 自动化流程中的最小执行单元。一般常用的 Action 有：</p>
-<ul>
-<li><p><strong>scan</strong>，用于自动测试 App；</p>
-</li>
-<li><p><strong>cert</strong>，用于自动生成和管理 iOS App 签名的证书；</p>
-</li>
-<li><p><strong>sigh</strong>，用于自动生成、更新、下载和修复 Provisioning Profile；</p>
-</li>
-<li><p><strong>match</strong>，为整个团队自动管理和同步证书和 <code>Provisioning Profile</code>；</p>
-</li>
-<li><p><strong>gym</strong>，用于自动构建和打包 App；</p>
-</li>
-<li><p><strong>snapshot</strong>，用于自动在不同设备上截屏；</p>
-</li>
-<li><p><strong>pilot</strong>，用于自动把 App 部署到 <code>TestFlight</code> 并管理测试用户；</p>
-</li>
-<li><p><strong>deliver</strong>，用于自动把 App 上传到 <code>App Store</code>；</p>
-</li>
-<li><p><strong>pem</strong>，用于自动生成和更新推送消息的 <code>Profile</code>。</p>
-</li>
-</ul>
-<p>这些 <code>Action</code> 怎么执行呢？我们可以通过<code>fastlane &lt;action&gt;</code>（例如<code>fastlane scan</code>）来执行。下面是执行效果，它提示我选择其中一个 Scheme 来继续执行。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/16784334923105.jpg" alt="16784334923105"></p>
-<p>从运行情况可知，尽管这些 <code>Action</code> 为我们提供了不少便利，但还是需要手工输入来继续。所以，我不推荐你直接使用这些 <code>Action</code>，而是根据项目需要，在开发自己的自动化操作时通过传入合适的参数来调用 fastlane 所提供的 Action。</p>
-<p>具体来说，我们可以把所需的 Action 组合在一起，开发出对应的自动化操作。在 fastlane 中，我们把这个自动化操作或者任务叫作 <code>Lane</code>。<strong>实际上， iOS 开发中的所有自动化操作，主要通过 Lane 来封装和配置的。</strong></p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/16784335778467.jpg" alt="16784335778467"></p>
-<p><code>Lane</code> 和 <code>Action</code> 的关系如上图所示， 一条 Lane 可以通过参数调用一个或几个 Action 。以 Moments app 为例，我们要自动打包和签名 App，那么我就建了一条名叫<code>archive_appstore</code>的 Lane。因为这条 Lane 用到的“更新签名”和“打包”在 fastalne 里已经提供了相关的 Action——<code>update_code_signing_settings</code>和<code>gym</code>，我们可以到 <a href="https://docs.fastlane.tools/">fastlane官网</a> 去寻找，从而减轻了开发工作量。</p>
-<p>一般，iOS 项目所需的自动化操作都配置为 <code>Lane</code> 并保存在 <code>Fastfile</code> 文件，由 <code>Git</code> 统一管理起来，共享给所有成员。然后，大家就可以使用统一的自动化配置了。</p>
-<p>这里的 <code>Fastfile</code> 文件是怎么出来的呢？</p>
-<p>它是由<code>fastlane init</code>命令自动生成。这条命令会建立一个 <code>fastlane</code> 文件夹，文件夹里除了 <code>Fastfile</code> ，还有 <code>Appfile</code>，以及执行过程中所生成的一些中间文件（如截图、日志与报告等）。因为我们之前已经在 <code>.gitignore</code> 文件里把这些中间文件忽略了，因此这些中间文件不再保存到 <code>Git</code> 里面。</p>
-<p>fastlane 文件夹里的 <code>Appfile</code>，用于保存 App 的唯一标识符和 <code>Apple ID</code> 等信息。当 fastlane 在执行一个 Action 的时候，首先会使用传递进来的参数，当参数没有传递进来时，fastlane 会从 Appfile 文件中查找并使用对应的信息。</p>
-<p>比如，我们在 Appfile 配置了<code>app_identifier &quot;com.ibanimatable.moments&quot;</code>以后，在调用<code>match</code> Action 时可以不传入<code>app_identifier</code>参数，fastlane 会自动把<code>&quot;com.ibanimatable.moments&quot;</code>作为<code>app_identifier</code>的值进行调用。</p>
-<p>但是为了方便管理所有的 Lane ，保证每次执行的效果都一样，我建议在每次调用 Action 的时候，都明确传递每一个所需的参数，而不是从 Appfile 文件读取。下面我就演示下如何明确传递每一个参数来执行<code>match</code> Action。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title function_">match</span>(</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;appstore&quot;</span>,</span><br><span class="line">      <span class="attr">force</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">storage_mode</span>: <span class="string">&quot;git&quot;</span>,</span><br><span class="line">      <span class="attr">git_url</span>: <span class="string">&quot;https://github.com/JakeLin/moments-codesign&quot;</span>,</span><br><span class="line">      <span class="attr">app_identifier</span>: <span class="string">&quot;com.ibanimatable.moments&quot;</span>, # pass  app_identifier explicitly</span><br><span class="line">      <span class="attr">team_id</span>: <span class="string">&quot;6HLFCRTYQU&quot;</span>,</span><br><span class="line">      <span class="attr">api_key</span>: api_key</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<h2 id="常用-Lane-定义"><a href="#常用-Lane-定义" class="headerlink" title="常用 Lane 定义"></a>常用 Lane 定义</h2><p>通过上面的介绍你已经知道，我们会使用 Lane 来封装项目所需的各个自动化操作。那么，这些 Lane 是如何开发定义的呢？接下来，我就为你介绍<strong>几种非常实用的 Lane</strong>，一起来看看怎么做。</p>
-<h3 id="扫描和检查代码"><a href="#扫描和检查代码" class="headerlink" title="扫描和检查代码"></a>扫描和检查代码</h3><p>每条 Lane 的定义都是放在一个<code>lane &lt;lane_name&gt; do &lt;lane_body&gt; end</code>的代码块里面。它以关键字<code>lane</code>开头，接着是这条 Lane 的名字。 下面是用于检查代码的 Lane 源码。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">lane :lint_code <span class="keyword">do</span></span><br><span class="line">  <span class="title function_">puts</span>(<span class="string">&quot;Lint code using SwfitLint&quot;</span>)</span><br><span class="line">  <span class="title function_">swiftlint</span>(</span><br><span class="line">    <span class="attr">mode</span>: :lint,</span><br><span class="line">    <span class="attr">executable</span>: <span class="string">&quot;./Pods/SwiftLint/swiftlint&quot;</span>,  # <span class="title class_">Important</span> <span class="keyword">if</span> you<span class="string">&#x27;ve installed it via CocoaPods</span></span><br><span class="line"><span class="string">    config_file: &#x27;</span>./<span class="title class_">Moments</span>/.<span class="property">swiftlint</span>.<span class="property">yml</span><span class="string">&#x27;,</span></span><br><span class="line"><span class="string">    raise_if_swiftlint_error: true)</span></span><br><span class="line"><span class="string">end</span></span><br></pre></td></tr></table></figure>
-
-<p>在上面的例子中，我们定义了一个叫作<code>lint_code</code>的 Lane。因为 fastlane 使用 Ruby 开发，所以在 <code>Fastfile</code> 里面，Lane 的名字也遵循它的编码规范，使用小写字母和下划线组合的<strong>蛇式命名法</strong>。</p>
-<p>Lane 的实现逻辑放在<code>do</code>和<code>end</code>中间，我们可以调用 fastlane 提供的任意 Action。在这个例子中我们就调用了<code>swiftlint</code> Action，并把<code>lint</code>传递给<code>mode</code>参数，以此来执行代码扫描和检查操作。</p>
-<p>特别需要注意的是，由于我们之前使用了 <code>CocoaPods</code> 来安装 <code>SwiftLint</code>，因此要为<code>executable</code>参数指定 SwiftLint 的安装路径<code>./Pods/SwiftLint/swiftlint</code>。同时要把 <code>.swiftlint.yml</code> 文件的所在路径也传递给<code>config_file</code>参数。这样就能保证 fastlane 使用了统一的 SwiftLint 版本和规则文件，方便团队所有人执行该 Lane 时得到统一的效果。</p>
-<p>当一条 Lane 开发配置完毕以后，我们就可以在项目的根目录执行 <code>fastlane &lt;lane_name&gt;</code>。比如扫描和检查代码的 Lane ，我们可以在终端输入<code>fastlane lint_code</code>看到它的执行效果。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Driving</span> the lane <span class="string">&#x27;ios lint_code&#x27;</span></span><br><span class="line"><span class="title class_">Lint</span> code using <span class="title class_">SwfitLint</span></span><br><span class="line">--- <span class="title class_">Step</span>: swiftlint ---</span><br><span class="line">$ ./<span class="title class_">Pods</span>/<span class="title class_">SwiftLint</span>/swiftlint lint --config ./<span class="title class_">Moments</span>/.<span class="property">swiftlint</span>.<span class="property">yml</span></span><br><span class="line"><span class="title class_">Linting</span> <span class="title class_">Swift</span> files <span class="keyword">in</span> current working directory</span><br><span class="line"><span class="title class_">Linting</span> <span class="string">&#x27;Strings.swift&#x27;</span> (<span class="number">1</span>/<span class="number">87</span>)</span><br><span class="line"><span class="title class_">Linting</span> <span class="string">&#x27;MomentListItemViewModel.swift&#x27;</span> (<span class="number">2</span>/<span class="number">87</span>)</span><br><span class="line"><span class="title class_">Linting</span> ......s</span><br><span class="line"></span><br><span class="line"><span class="title class_">UIButtonExtensions</span>.<span class="property">swift</span>:<span class="number">14</span>:<span class="number">46</span>: <span class="attr">warning</span>: no_hardcoded_strings <span class="title class_">Violation</span>: <span class="title class_">Please</span> <span class="keyword">do</span> not hardcode strings and add them to the appropriate <span class="title class_">Localizable</span>.<span class="property">strings</span> file; a build script compiles all strings into strongly typed resources available through <span class="title class_">Generated</span>/<span class="title class_">Strings</span>.<span class="property">swift</span>, e.<span class="property">g</span>. <span class="string">`L10n.accessCamera (no_hardcoded_strings)</span></span><br><span class="line"><span class="string">Done linting! Found 6 violations, 0 serious in 87 files.</span></span><br><span class="line"><span class="string">fastlane.tools finished successfully</span></span><br></pre></td></tr></table></figure>
-
-<p>在执行过程中，fastlane 先从 Fastfile 文件里名叫<code>lint_code</code>的 Lane 的定义，然后执行了该 Lane 里使用到的 <code>swiftlint</code> Action。<code>swiftlint</code> Action 会把项目下 87 个 Swift 源代码文件进行扫描和检查，并把所有不符合规范的代码提示给我们。</p>
-<h3 id="格式化代码"><a href="#格式化代码" class="headerlink" title="格式化代码"></a>格式化代码</h3><p>检查代码之后，接下来就是清理不符合规范的代码，比如删掉所有代码中不必要的空格或者空行，修正缩进的大小等等。我们可以定义一条叫作<code>format_code</code>的 Lane 来执行该功能。有了它以后，我们只需要执行<code>fastlane format_code</code>就能把整个项目所有的代码进行格式化。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">lane :format_code <span class="keyword">do</span></span><br><span class="line">  <span class="title function_">puts</span>(<span class="string">&quot;Lint and format code using SwfitLint&quot;</span>)</span><br><span class="line">  <span class="title function_">swiftlint</span>(</span><br><span class="line">    <span class="attr">mode</span>: :autocorrect,</span><br><span class="line">    <span class="attr">executable</span>: <span class="string">&quot;./Pods/SwiftLint/swiftlint&quot;</span>,  # <span class="title class_">Important</span> <span class="keyword">if</span> you<span class="string">&#x27;ve installed it via CocoaPods</span></span><br><span class="line"><span class="string">    config_file: &#x27;</span>./<span class="title class_">Moments</span>/.<span class="property">swiftlint</span>.<span class="property">yml</span><span class="string">&#x27;,</span></span><br><span class="line"><span class="string">    raise_if_swiftlint_error: true)</span></span><br><span class="line"><span class="string">end</span></span><br></pre></td></tr></table></figure>
-
-<p><code>format_code</code>和<code>lint_code</code>两条 Lane 都使用了<code>swiftlint</code> Action，唯一不同的地方是为<code>mode</code>参数传递了<code>autocorrect</code>。</p>
-<h3 id="排序-Xcode-项目文件列表"><a href="#排序-Xcode-项目文件列表" class="headerlink" title="排序 Xcode 项目文件列表"></a>排序 Xcode 项目文件列表</h3><p>在多人开发的项目下，我们经常会修改项目文件，这往往很容易引起合并冲突，而合并 xcodeproj 文件又是一件非常麻烦的事情。怎么办呢？</p>
-<p>一个有效办法就是在每次新建源代码和资源文件时，把 <code>xcodeproj</code> 里面的文件列表进行重新排序。这样能极大地减低合并冲突的发生。我们把这一个经常使用到的操作也配置到 Fastfile 里面，如下所示。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">lane :sort_files <span class="keyword">do</span></span><br><span class="line">  <span class="title function_">puts</span>(<span class="string">&quot;Sort the files for the Xcode project&quot;</span>)</span><br><span class="line">  sh <span class="string">&quot;../scripts/sort-Xcode-project-file.pl ../Moments/Moments.xcodeproj&quot;</span></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，fastlane 除了能调用其提供的 Action 以外，还可以通过<code>sh</code>来调用其他程序命令。<strong>在这里我们调用了由苹果公司提供的一个<code>Perl</code> 程序来为 xcodeproj 里面的文件列表进行排序</strong>。你也可以在此<a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/scripts/sort-Xcode-project-file.pl">代码仓库</a>找到这个<code>Perl</code> 程序。</p>
-<h3 id="调用其他-Lane-操作"><a href="#调用其他-Lane-操作" class="headerlink" title="调用其他 Lane 操作"></a>调用其他 Lane 操作</h3><p>除了调用一些程序命令（如<code>sh</code>）以外，一条 Lane 还可以调用 Fastfile 里面其他的 Lane。例如我们定义了一条叫作<code>prepare_pr</code>的 Lane ，它可以帮我们在提交 <code>Pull Request</code> 之前做一些必要的准备。下面这个代码表示的就是，这条 Lane 在内部调用了另外两条 Lane —— <code>format_code</code>和<code>sort_files</code>，以此来同时完成格式化代码和排序 Xcode 项目文件列表的操作。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">lane :prepare_pr <span class="keyword">do</span></span><br><span class="line">  format_code</span><br><span class="line">  sort_files</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<h3 id="定义私有-Lane-和返回值"><a href="#定义私有-Lane-和返回值" class="headerlink" title="定义私有 Lane 和返回值"></a>定义私有 Lane 和返回值</h3><p>类似于 Swift 语言能通过<code>private</code>来定义内部使用的方法，我们也能定义私有 Lane 给Fastfile 内的其他 Lane 所调用，提高代码的复用。其做法就是把原先的关键字<code>lane</code>替换成<code>private_lane</code>。例如我们定义一条叫作<code>get_pi</code>的私有 Lane，代码如下。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">private_lane :get_pi <span class="keyword">do</span></span><br><span class="line">  pi = <span class="number">3.1415</span></span><br><span class="line">  pi</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>该 Lane 的实现体有两行代码，第一行是给一个临时变量pi赋值。第二行表示把<code>pi</code>作为返回值传递给调用者。例如下面就演示了如何调用<code>get_pi</code>并取得返回值。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">lane :foo <span class="keyword">do</span></span><br><span class="line">  pi = get_pi</span><br><span class="line">  <span class="title function_">puts</span>(pi)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>这是执行<code>fastlane foo</code>的结果：</p>
-<blockquote>
-<p>Driving the lane ‘ios foo’<br>— Step: Switch to ios get_pi lane —<br>Cruising over to lane ‘ios get_pi’<br>Cruising back to lane ‘ios foo’<br>3.1415</p>
-</blockquote>
-<p>fastlane 首先调用<code>foo</code> Lane，然后进去<code>get_pi</code> Lane 并返回到<code>foo</code>，同时把返回结果打印出来。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲我介绍了如何从头开始搭建一个 fastlane 环境。在这里需要注意三点：</p>
-<ol>
-<li><p>不要单独手工执行 fastlane 所提供的 Action，而是使用 Fastfile 文件来统一开发、配置和管理日常中经常使用的所有自动化操作；</p>
-</li>
-<li><p>在开发我们的 Lane 时，要优先使用和调用 fastlane 提供的 Action，因为这些 Action 都是经过社区完善的，且会随着 Xcode 版本的升级而更新；</p>
-</li>
-<li><p>当我们调用 fastlane 所提供的 Action 时，要明确传递各个参数，在执行过程中就无须任何手工交互就能从头到尾执行整个操作。</p>
-</li>
-</ol>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/16784358918168.jpg" alt="16784358918168"></p>
-<p>有了项目需要的所有 Lane 以后，能有效减轻团队成员的重复劳动，并为项目的自动化和工程化打下坚实的基础。在后面的章节中，我会详细介绍如何使用 fastlane 来管理证书，打包 App 和上传到 App Store。</p>
-<h3 id="源码地址："><a href="#源码地址：" class="headerlink" title="源码地址："></a>源码地址：</h3><blockquote>
-<p>Fastfile 文件地址：<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/fastlane/Fastfile#L19-L50">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/fastlane/Fastfile#L19-L50</a></p>
 </blockquote>
 ]]></content>
       <categories>
@@ -1187,6 +1083,94 @@
       </tags>
   </entry>
   <entry>
+    <title>【Hexo】Gitlab pages 的使用</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>因为自己的博客，有时候访问还是比较慢的，原因是我的代码是在 GitHub 上托管的，众所周知，GitHub 是国外的服务器，在国内访问就是特别慢，然后，我就想是否可以找到国内的既能实现代码托管，又能生成静态网页的平台，来实现 Hexo 双线部署。</p>
+<p>于是，我找到了 Coding pages，但是它被腾讯从 Coding 下线了，放到了腾讯云上，开始收费了；然后，我又找到了 Gitee pages，但是它被阿里从 Gitee 下线了，放到了阿里云上，也开始收费了；那该怎么办呢？只能说功夫不负有心人，最后我找到了 Gitlab pages！</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="如何使用-Gitlab-pages"><a href="#如何使用-Gitlab-pages" class="headerlink" title="如何使用 Gitlab pages?"></a>如何使用 Gitlab pages?</h2><h3 id="Gitlab-创建项目"><a href="#Gitlab-创建项目" class="headerlink" title="Gitlab 创建项目"></a>Gitlab 创建项目</h3><p>首先打开 Gitlab 登录：<a href="https://gitlab.com/users/sign_in">GitLab</a> ，这里我没有注册直接使用的是 Github 账号登录。</p>
+<p>然后就是先创建一个 Gitlab 的项目了，这里与 github、gitee 都是大同小异，就不多说了。</p>
+<h3 id="生成-git-公钥（如果之前有配置，直接跳过）"><a href="#生成-git-公钥（如果之前有配置，直接跳过）" class="headerlink" title="生成 git 公钥（如果之前有配置，直接跳过）"></a>生成 git 公钥（如果之前有配置，直接跳过）</h3><h4 id="1、配置本地用户名及邮箱"><a href="#1、配置本地用户名及邮箱" class="headerlink" title="1、配置本地用户名及邮箱"></a>1、配置本地用户名及邮箱</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># 配置用户名</span><br><span class="line">git config <span class="operator">--</span>global user.name <span class="string">&quot;用户名&quot;</span></span><br><span class="line"># 配置邮箱</span><br><span class="line">git config <span class="operator">--</span>global user.email <span class="string">&quot;邮箱地址&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>以上命令执行结束后，可用 <code>git config --global --list</code> 命令查看配置是否成功</p>
+<h4 id="2、git生成公钥"><a href="#2、git生成公钥" class="headerlink" title="2、git生成公钥"></a>2、git生成公钥</h4><p>在 终端 窗口输入下面指令即可生成带注释的公钥：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">ssh<span class="operator">-</span>keygen <span class="operator">-</span>t rsa <span class="operator">-</span><span class="type">C</span> &#x27;邮箱地址&#x27;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>设置存放公钥的位置，默认的话直接回车键确认</p>
+</li>
+<li><p>输入密码和确认密码，不设置密码直接按回车键</p>
+</li>
+</ul>
+<h3 id="查看本地-git-公钥"><a href="#查看本地-git-公钥" class="headerlink" title="查看本地 git 公钥"></a>查看本地 git 公钥</h3><p>通过 终端 命令窗口：<br>查看公钥：<code>cat id_rsa.pub</code> 或者 <code>vim id_rsa.pub</code></p>
+<p>因为在之前我的电脑上是配置过的，所以直接输入 <code>cat ~/.ssh/id_rsa.pub</code> 即可查看，然后进行配置：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374471576779.jpg"></p>
+<h3 id="开启-GitLab-Pages"><a href="#开启-GitLab-Pages" class="headerlink" title="开启 GitLab Pages"></a>开启 GitLab Pages</h3><p>想要开启 GitLab Pages，首先需要将 Github 上的博客文件同步到 Gitlab 项目，然后通过 <code>gitLab ci</code> 触发自动部署，来开启 GitLab Pages。</p>
+<h4 id="1、使用-Github-actions-把-github-仓库代码同步到-gitlab-仓库"><a href="#1、使用-Github-actions-把-github-仓库代码同步到-gitlab-仓库" class="headerlink" title="1、使用 Github actions 把 github 仓库代码同步到 gitlab 仓库"></a>1、使用 Github actions 把 github 仓库代码同步到 gitlab 仓库</h4><ul>
+<li>gitlab 添加个人令牌（token）</li>
+</ul>
+<p>在设置中找到 访问令牌、然后添加</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374482702595.jpg"></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374484172632.jpg"></p>
+<ul>
+<li>在 Gitlab<br><code>设置-&gt;安全设置-&gt;SSH公钥</code>，标题可以随便起名，值为：上面生成SSH的公钥：</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374488054875.jpg"></p>
+<ul>
+<li>在 Github 项目<br><code>Settings-&gt;Secrets-&gt;Actions</code>，名称为：<code>GITLAB</code>，值为：上面生成的个人令牌</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374486339840.jpg"></p>
+<ul>
+<li>GitHub 创建 Github workflow</li>
+</ul>
+<p>在项目根目录下找到 <code>.github/workflows</code> 文件夹，如果没有就创建一个，新建一个 <code>sync-2-gitlab.yml</code>文件，填入下面的内容：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">name: <span class="type">Sync</span></span><br><span class="line"></span><br><span class="line">on:</span><br><span class="line">  push:</span><br><span class="line">    branches: [main, hexo]</span><br><span class="line"></span><br><span class="line">jobs:</span><br><span class="line">  sync<span class="operator">-</span><span class="number">2</span><span class="operator">-</span>gitlab:</span><br><span class="line">    runs<span class="operator">-</span>on: ubuntu<span class="operator">-</span>latest</span><br><span class="line">    steps:</span><br><span class="line">      <span class="operator">-</span> name: <span class="type">Sync</span> to <span class="type">Gitlab</span></span><br><span class="line">        uses: wearerequired<span class="operator">/</span>git<span class="operator">-</span>mirror<span class="operator">-</span>action<span class="meta">@master</span></span><br><span class="line">        env:</span><br><span class="line">          # 注意在 <span class="type">Github</span> <span class="type">Settings</span>-&gt;<span class="type">Secrets</span> 配置的 <span class="type">GITLAB</span></span><br><span class="line">          <span class="type">SSH_PRIVATE_KEY</span>: $&#123;&#123; secrets.<span class="type">GITLAB</span> &#125;&#125;</span><br><span class="line">        with:</span><br><span class="line">          # 注意替换为你的 <span class="type">GitHub</span> 源仓库地址</span><br><span class="line">          source<span class="operator">-</span>repo: git<span class="meta">@github</span>.com:fengyanxin<span class="operator">/</span>fengyanxin.github.io.git</span><br><span class="line">          # 注意替换为你的 <span class="type">Gitlab</span> 目标仓库地址</span><br><span class="line">          destination<span class="operator">-</span>repo: git<span class="meta">@gitlab</span>.com:fengyanxin<span class="operator">/</span>fengyanxin.git</span><br></pre></td></tr></table></figure>
+
+<p>保存，并把文件推送到 github 中，这时应该可以在 github action 看见刚刚的 workflow 在运行了。</p>
+<p>注意：如果同步到 Gitlab 的 action 运行报错时可以在项目中的 <code>Settings-&gt;Repository-&gt;Protected branches</code>右边的 <code>Expand</code>,把<code>Allowed to force push</code>按钮打开，或者点<code>Unprotect</code> :</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374499679706.jpg"></p>
+<h4 id="2、配置-Gitlab-的-ci-文件-gitlab-ci-yml-文件"><a href="#2、配置-Gitlab-的-ci-文件-gitlab-ci-yml-文件" class="headerlink" title="2、配置 Gitlab 的 ci 文件 .gitlab-ci.yml 文件"></a>2、配置 Gitlab 的 ci 文件 .gitlab-ci.yml 文件</h4><p>由于我的这个仓库源码是从 github 项目打包后产出 public 的纯 html 静态资源后，在通过 ci 脚本文件提交到 gitlab 仓库的，所以我这里的脚本内容就可以直接使用纯 html 的脚本</p>
+<p>根目录添加 <code>.gitlab-ci.yml</code> 文件（根据自己的实际需求配置对应脚本内容）：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">pages:</span><br><span class="line">  stage: deploy</span><br><span class="line">  script:</span><br><span class="line">    <span class="operator">-</span> mkdir .public</span><br><span class="line">    <span class="operator">-</span> cp <span class="operator">-</span>r <span class="operator">./*</span> .public</span><br><span class="line">    <span class="operator">-</span> rm <span class="operator">-</span>rf <span class="keyword">public</span></span><br><span class="line">    <span class="operator">-</span> mv .public <span class="keyword">public</span></span><br><span class="line">  artifacts:</span><br><span class="line">    paths:</span><br><span class="line">      <span class="operator">-</span> <span class="keyword">public</span></span><br><span class="line">  rules:</span><br><span class="line">    <span class="operator">-</span> <span class="keyword">if</span>: <span class="variable">$CI_COMMIT_BRANCH</span> <span class="operator">==</span> <span class="variable">$CI_DEFAULT_BRANCH</span></span><br></pre></td></tr></table></figure>
+
+<p>或者在 Gitlab 项目下添加 CI，文件内容如上，添加完成后会在项目目录下生成一个 <code>.gitlab-ci.yml</code>：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374503143964.jpg"></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374503426979.jpg"></p>
+<h4 id="3、配置-Gitlab-的-pages"><a href="#3、配置-Gitlab-的-pages" class="headerlink" title="3、配置 Gitlab 的 pages"></a>3、配置 Gitlab 的 pages</h4><ul>
+<li>上面的 Github 代码同步 和 Gitlab CI 执行完成之后，会在项目中生成一个 Gitlab pages， 如下图：</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374507141434.jpg"></p>
+<ul>
+<li>点开 <code>部署 - Pages</code>可以查看：</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374507888015.jpg"></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374509003727.jpg"></p>
+<ul>
+<li>此时，输入 Pages 的域名就可以查看自己的博客了：</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374511461885.jpg"></p>
+<p>至此，Gitlab pages 的部署就完成了！</p>
+<p>但是，当我还沉浸在成功的喜悦中的时候，就又 Get 到了一个非常坏的消息。</p>
+<h2 id="Gitlab-将不再为中国用户服务"><a href="#Gitlab-将不再为中国用户服务" class="headerlink" title="Gitlab 将不再为中国用户服务"></a>Gitlab 将不再为中国用户服务</h2><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374514542403.jpg"></p>
+<p>近日，GitLab 发布了一则重要通知 <strong>《Important Change to Your GitLab.com Account》</strong>，宣布将不再为位于 <strong>中国大陆、澳门和香港</strong> 的用户提供 <code>GitLab.com</code> 账户服务。该平台建议受影响的用户将账户迁移至 <code>极狐 GitLab（JiHu）</code>，这是由 GitLab 授权的独立公司，专门为这些地区提供本地化服务。</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374517390223.jpg"></p>
+<p>用户必须在 <strong>2025 年 2 月 18 日</strong> 之前完成迁移，之后 GitLab 将从系统中删除帐户。</p>
+<p>所以，以后 <code>GitLab.com</code> 就不能用了，只能使用 <code>极狐 GitLab（JiHu）</code>，遗憾的是 <code>极狐 GitLab（JiHu）</code> 也不再提供 Pages功能了！</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374520857005.jpg"></p>
+<p>这一顿操作真的是…!!!</p>
+<p>博主只能掩面叹息！</p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【Hexo】Mac 上使用Hexo + Github搭建个人博客</title>
     <url>/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h1 id="【Hexo】Mac-上使用Hexo-Github搭建个人博客"><a href="#【Hexo】Mac-上使用Hexo-Github搭建个人博客" class="headerlink" title="【Hexo】Mac 上使用Hexo + Github搭建个人博客"></a>【Hexo】Mac 上使用Hexo + Github搭建个人博客</h1><h2 id="为什么要用Hexo-Github？"><a href="#为什么要用Hexo-Github？" class="headerlink" title="为什么要用Hexo + Github？"></a>为什么要用Hexo + Github？</h2><h3 id="Hexo介绍"><a href="#Hexo介绍" class="headerlink" title="Hexo介绍"></a>Hexo介绍</h3><p>Hexo是一款基于Nodejs的，快速、简洁且高效的博客框架。它具有丰富的插件和主题，具有超快的速度，支持Makedown语法，可以方便快捷的编写博客文档。同时还支持node命令，可以一键部署到GitHub Pages, Heroku 或其他平台。更详细的信息可以看一下 <a href="https://hexo.io/zh-cn">Hexo官网</a> 。</p>
@@ -1314,90 +1298,75 @@
       </tags>
   </entry>
   <entry>
-    <title>【Hexo】Gitlab pages 的使用</title>
-    <url>/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>因为自己的博客，有时候访问还是比较慢的，原因是我的代码是在 GitHub 上托管的，众所周知，GitHub 是国外的服务器，在国内访问就是特别慢，然后，我就想是否可以找到国内的既能实现代码托管，又能生成静态网页的平台，来实现 Hexo 双线部署。</p>
-<p>于是，我找到了 Coding pages，但是它被腾讯从 Coding 下线了，放到了腾讯云上，开始收费了；然后，我又找到了 Gitee pages，但是它被阿里从 Gitee 下线了，放到了阿里云上，也开始收费了；那该怎么办呢？只能说功夫不负有心人，最后我找到了 Gitlab pages！</p>
-</blockquote>
+    <title>【Hexo】如何将博客源码上传到GitHub</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</url>
+    <content><![CDATA[<h1 id="如何将博客源码上传到-GitHub"><a href="#如何将博客源码上传到-GitHub" class="headerlink" title="如何将博客源码上传到 GitHub"></a>如何将博客源码上传到 GitHub</h1><h2 id="一、为什么要把博客源码上传到-GitHub-？"><a href="#一、为什么要把博客源码上传到-GitHub-？" class="headerlink" title="一、为什么要把博客源码上传到 GitHub ？"></a>一、为什么要把博客源码上传到 GitHub ？</h2><p>首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：</p>
+<ul>
+<li>多台电脑同时操作 hexo 源码</li>
+<li>原先 hexo 源码所在电脑重装系统（丢失文件）</li>
+<li>要将 hexo 源码移动到其他磁盘（更换电脑）</li>
+</ul>
 <span id="more"></span>
 
-<h2 id="如何使用-Gitlab-pages"><a href="#如何使用-Gitlab-pages" class="headerlink" title="如何使用 Gitlab pages?"></a>如何使用 Gitlab pages?</h2><h3 id="Gitlab-创建项目"><a href="#Gitlab-创建项目" class="headerlink" title="Gitlab 创建项目"></a>Gitlab 创建项目</h3><p>首先打开 Gitlab 登录：<a href="https://gitlab.com/users/sign_in">GitLab</a> ，这里我没有注册直接使用的是 Github 账号登录。</p>
-<p>然后就是先创建一个 Gitlab 的项目了，这里与 github、gitee 都是大同小异，就不多说了。</p>
-<h3 id="生成-git-公钥（如果之前有配置，直接跳过）"><a href="#生成-git-公钥（如果之前有配置，直接跳过）" class="headerlink" title="生成 git 公钥（如果之前有配置，直接跳过）"></a>生成 git 公钥（如果之前有配置，直接跳过）</h3><h4 id="1、配置本地用户名及邮箱"><a href="#1、配置本地用户名及邮箱" class="headerlink" title="1、配置本地用户名及邮箱"></a>1、配置本地用户名及邮箱</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># 配置用户名</span><br><span class="line">git config <span class="operator">--</span>global user.name <span class="string">&quot;用户名&quot;</span></span><br><span class="line"># 配置邮箱</span><br><span class="line">git config <span class="operator">--</span>global user.email <span class="string">&quot;邮箱地址&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>以上命令执行结束后，可用 <code>git config --global --list</code> 命令查看配置是否成功</p>
-<h4 id="2、git生成公钥"><a href="#2、git生成公钥" class="headerlink" title="2、git生成公钥"></a>2、git生成公钥</h4><p>在 终端 窗口输入下面指令即可生成带注释的公钥：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">ssh<span class="operator">-</span>keygen <span class="operator">-</span>t rsa <span class="operator">-</span><span class="type">C</span> &#x27;邮箱地址&#x27;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>设置存放公钥的位置，默认的话直接回车键确认</p>
+<p>将 hexo 源码上传到 GitHub，就是做了一个稳定、安全的远程备份，遇到上面的情况将不会再是什么问题。</p>
+<p>因为，之前在 GitHub 上的部署（使用 <code>hexo d</code> 上传部署到github）其实是 hexo 编译后的文件，是用来生成网页的，不包含所有 hexo 生成的网站原始文件。只有把源码也上传才能解决问题。</p>
+<h2 id="二、如何上传博客源码？"><a href="#二、如何上传博客源码？" class="headerlink" title="二、如何上传博客源码？"></a>二、如何上传博客源码？</h2><h3 id="1、思路分析"><a href="#1、思路分析" class="headerlink" title="1、思路分析"></a>1、思路分析</h3><ul>
+<li><p><code>main</code>（<code>master</code>） 分支：存放博客的静态网页。</p>
 </li>
-<li><p>输入密码和确认密码，不设置密码直接按回车键</p>
+<li><p><code>hexo</code>分支：存放 Hexo 博客的源码文件。</p>
 </li>
 </ul>
-<h3 id="查看本地-git-公钥"><a href="#查看本地-git-公钥" class="headerlink" title="查看本地 git 公钥"></a>查看本地 git 公钥</h3><p>通过 终端 命令窗口：<br>查看公钥：<code>cat id_rsa.pub</code> 或者 <code>vim id_rsa.pub</code></p>
-<p>因为在之前我的电脑上是配置过的，所以直接输入 <code>cat ~/.ssh/id_rsa.pub</code> 即可查看，然后进行配置：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374471576779.jpg"></p>
-<h3 id="开启-GitLab-Pages"><a href="#开启-GitLab-Pages" class="headerlink" title="开启 GitLab Pages"></a>开启 GitLab Pages</h3><p>想要开启 GitLab Pages，首先需要将 Github 上的博客文件同步到 Gitlab 项目，然后通过 <code>gitLab ci</code> 触发自动部署，来开启 GitLab Pages。</p>
-<h4 id="1、使用-Github-actions-把-github-仓库代码同步到-gitlab-仓库"><a href="#1、使用-Github-actions-把-github-仓库代码同步到-gitlab-仓库" class="headerlink" title="1、使用 Github actions 把 github 仓库代码同步到 gitlab 仓库"></a>1、使用 Github actions 把 github 仓库代码同步到 gitlab 仓库</h4><ul>
-<li>gitlab 添加个人令牌（token）</li>
-</ul>
-<p>在设置中找到 访问令牌、然后添加</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374482702595.jpg"></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374484172632.jpg"></p>
-<ul>
-<li>在 Gitlab<br><code>设置-&gt;安全设置-&gt;SSH公钥</code>，标题可以随便起名，值为：上面生成SSH的公钥：</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374488054875.jpg"></p>
-<ul>
-<li>在 Github 项目<br><code>Settings-&gt;Secrets-&gt;Actions</code>，名称为：<code>GITLAB</code>，值为：上面生成的个人令牌</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374486339840.jpg"></p>
-<ul>
-<li>GitHub 创建 Github workflow</li>
-</ul>
-<p>在项目根目录下找到 <code>.github/workflows</code> 文件夹，如果没有就创建一个，新建一个 <code>sync-2-gitlab.yml</code>文件，填入下面的内容：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">name: <span class="type">Sync</span></span><br><span class="line"></span><br><span class="line">on:</span><br><span class="line">  push:</span><br><span class="line">    branches: [main, hexo]</span><br><span class="line"></span><br><span class="line">jobs:</span><br><span class="line">  sync<span class="operator">-</span><span class="number">2</span><span class="operator">-</span>gitlab:</span><br><span class="line">    runs<span class="operator">-</span>on: ubuntu<span class="operator">-</span>latest</span><br><span class="line">    steps:</span><br><span class="line">      <span class="operator">-</span> name: <span class="type">Sync</span> to <span class="type">Gitlab</span></span><br><span class="line">        uses: wearerequired<span class="operator">/</span>git<span class="operator">-</span>mirror<span class="operator">-</span>action<span class="meta">@master</span></span><br><span class="line">        env:</span><br><span class="line">          # 注意在 <span class="type">Github</span> <span class="type">Settings</span>-&gt;<span class="type">Secrets</span> 配置的 <span class="type">GITLAB</span></span><br><span class="line">          <span class="type">SSH_PRIVATE_KEY</span>: $&#123;&#123; secrets.<span class="type">GITLAB</span> &#125;&#125;</span><br><span class="line">        with:</span><br><span class="line">          # 注意替换为你的 <span class="type">GitHub</span> 源仓库地址</span><br><span class="line">          source<span class="operator">-</span>repo: git<span class="meta">@github</span>.com:fengyanxin<span class="operator">/</span>fengyanxin.github.io.git</span><br><span class="line">          # 注意替换为你的 <span class="type">Gitlab</span> 目标仓库地址</span><br><span class="line">          destination<span class="operator">-</span>repo: git<span class="meta">@gitlab</span>.com:fengyanxin<span class="operator">/</span>fengyanxin.git</span><br></pre></td></tr></table></figure>
+<h3 id="2、hexo-分支创建及管理"><a href="#2、hexo-分支创建及管理" class="headerlink" title="2、hexo 分支创建及管理"></a>2、hexo 分支创建及管理</h3><h4 id="（1）github-准备"><a href="#（1）github-准备" class="headerlink" title="（1）github 准备"></a>（1）github 准备</h4><p>先在 GitHub 项目创建一个远程分支 <code>hexo</code></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787834628307.jpg"></p>
+<p>将其设置为默认分支</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787836604366.jpg"></p>
+<h4 id="2-打包将要推送到GitHub上的原始文件"><a href="#2-打包将要推送到GitHub上的原始文件" class="headerlink" title="(2) 打包将要推送到GitHub上的原始文件"></a>(2) 打包将要推送到GitHub上的原始文件</h4><ol>
+<li>clone该仓库到本地（clone的是hexo默认分支）</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
 
-<p>保存，并把文件推送到 github 中，这时应该可以在 github action 看见刚刚的 workflow 在运行了。</p>
-<p>注意：如果同步到 Gitlab 的 action 运行报错时可以在项目中的 <code>Settings-&gt;Repository-&gt;Protected branches</code>右边的 <code>Expand</code>,把<code>Allowed to force push</code>按钮打开，或者点<code>Unprotect</code> :</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374499679706.jpg"></p>
-<h4 id="2、配置-Gitlab-的-ci-文件-gitlab-ci-yml-文件"><a href="#2、配置-Gitlab-的-ci-文件-gitlab-ci-yml-文件" class="headerlink" title="2、配置 Gitlab 的 ci 文件 .gitlab-ci.yml 文件"></a>2、配置 Gitlab 的 ci 文件 .gitlab-ci.yml 文件</h4><p>由于我的这个仓库源码是从 github 项目打包后产出 public 的纯 html 静态资源后，在通过 ci 脚本文件提交到 gitlab 仓库的，所以我这里的脚本内容就可以直接使用纯 html 的脚本</p>
-<p>根目录添加 <code>.gitlab-ci.yml</code> 文件（根据自己的实际需求配置对应脚本内容）：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">pages:</span><br><span class="line">  stage: deploy</span><br><span class="line">  script:</span><br><span class="line">    <span class="operator">-</span> mkdir .public</span><br><span class="line">    <span class="operator">-</span> cp <span class="operator">-</span>r <span class="operator">./*</span> .public</span><br><span class="line">    <span class="operator">-</span> rm <span class="operator">-</span>rf <span class="keyword">public</span></span><br><span class="line">    <span class="operator">-</span> mv .public <span class="keyword">public</span></span><br><span class="line">  artifacts:</span><br><span class="line">    paths:</span><br><span class="line">      <span class="operator">-</span> <span class="keyword">public</span></span><br><span class="line">  rules:</span><br><span class="line">    <span class="operator">-</span> <span class="keyword">if</span>: <span class="variable">$CI_COMMIT_BRANCH</span> <span class="operator">==</span> <span class="variable">$CI_DEFAULT_BRANCH</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>下载的文件夹里仅留下 <code>.git</code> 文件夹，其他的文件都删除</p>
+</li>
+<li><p>找见我们 hexo 原位置，将 hexo 文件夹内除 <code>.deploy_git</code> 以外都复制到clone下来的文件夹中</p>
+</li>
+<li><p>修改 <code>.gitignore</code> 文件，将静态网页的目录及其他无需提交的源文件及目录排除掉。(没有即新建添加)</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">.<span class="property">DS_Store</span></span><br><span class="line"><span class="title class_">Thumbs</span>.<span class="property">db</span></span><br><span class="line">db.<span class="property">json</span></span><br><span class="line">*.<span class="property">log</span></span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.<span class="property">deploy</span>*/</span><br></pre></td></tr></table></figure>
 
-<p>或者在 Gitlab 项目下添加 CI，文件内容如上，添加完成后会在项目目录下生成一个 <code>.gitlab-ci.yml</code>：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374503143964.jpg"></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374503426979.jpg"></p>
-<h4 id="3、配置-Gitlab-的-pages"><a href="#3、配置-Gitlab-的-pages" class="headerlink" title="3、配置 Gitlab 的 pages"></a>3、配置 Gitlab 的 pages</h4><ul>
-<li>上面的 Github 代码同步 和 Gitlab CI 执行完成之后，会在项目中生成一个 Gitlab pages， 如下图：</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374507141434.jpg"></p>
-<ul>
-<li>点开 <code>部署 - Pages</code>可以查看：</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374507888015.jpg"></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374509003727.jpg"></p>
-<ul>
-<li>此时，输入 Pages 的域名就可以查看自己的博客了：</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374511461885.jpg"></p>
-<p>至此，Gitlab pages 的部署就完成了！</p>
-<p>但是，当我还沉浸在成功的喜悦中的时候，就又 Get 到了一个非常坏的消息。</p>
-<h2 id="Gitlab-将不再为中国用户服务"><a href="#Gitlab-将不再为中国用户服务" class="headerlink" title="Gitlab 将不再为中国用户服务"></a>Gitlab 将不再为中国用户服务</h2><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374514542403.jpg"></p>
-<p>近日，GitLab 发布了一则重要通知 <strong>《Important Change to Your GitLab.com Account》</strong>，宣布将不再为位于 <strong>中国大陆、澳门和香港</strong> 的用户提供 <code>GitLab.com</code> 账户服务。该平台建议受影响的用户将账户迁移至 <code>极狐 GitLab（JiHu）</code>，这是由 GitLab 授权的独立公司，专门为这些地区提供本地化服务。</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374517390223.jpg"></p>
-<p>用户必须在 <strong>2025 年 2 月 18 日</strong> 之前完成迁移，之后 GitLab 将从系统中删除帐户。</p>
-<p>所以，以后 <code>GitLab.com</code> 就不能用了，只能使用 <code>极狐 GitLab（JiHu）</code>，遗憾的是 <code>极狐 GitLab（JiHu）</code> 也不再提供 Pages功能了！</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374520857005.jpg"></p>
-<p>这一顿操作真的是…!!!</p>
-<p>博主只能掩面叹息！</p>
+<ol start="5">
+<li>如果已经 clone 过主题文件，最好把 theme 主题文件夹里的 <code>.git</code> 也删除</li>
+</ol>
+<h4 id="3-将-clone-并修改的文件夹推送到-GitHub"><a href="#3-将-clone-并修改的文件夹推送到-GitHub" class="headerlink" title="(3) 将 clone 并修改的文件夹推送到 GitHub"></a>(3) 将 clone 并修改的文件夹推送到 GitHub</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;Code update&#x27;</span></span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、main-master-分支管理"><a href="#3、main-master-分支管理" class="headerlink" title="3、main (master) 分支管理"></a>3、main (master) 分支管理</h3><p>进入<strong>站点配置文件</strong>，搜索 <code>deploy</code>关键词，修改如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy</span>:</span><br><span class="line">  <span class="attr">type</span>: git</span><br><span class="line">  <span class="attr">repo</span>: git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br><span class="line">  <span class="attr">branch</span>: main</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787847648363.jpg"></p>
+<p>修改完成，执行以下代码进行管理：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//清除本地旧代码。</span></span><br><span class="line">hexo clean</span><br><span class="line"><span class="comment">//生成静态网站</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="comment">//部署静态网站到 GitHub 的 main(master) 分支上</span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、统一分支管理和部署"><a href="#4、统一分支管理和部署" class="headerlink" title="4、统一分支管理和部署"></a>4、统一分支管理和部署</h3><p>利用我上一篇文章讲到的 <code>deploy.sh</code>脚本进行一键部署，可以极大提高部署效率和降低维护成本。</p>
+<p>在 <code>deploy.sh</code> 文件中添加如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line"><span class="variable constant_">DIR</span>=<span class="string">`dirname $0`</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Generate</span> blog</span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Deploy</span></span><br><span class="line">hexo deploy</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Push</span> hexo code</span><br><span class="line">git add .</span><br><span class="line">current_date=<span class="string">`date &quot;+%Y-%m-%d %H:%M:%S&quot;`</span></span><br><span class="line">git commit -m <span class="string">&quot;Blog updated: $current_date&quot;</span></span><br><span class="line"></span><br><span class="line">sleep <span class="number">2</span></span><br><span class="line"></span><br><span class="line">git push origin hexo</span><br><span class="line"></span><br><span class="line">echo <span class="string">&quot;=====&gt;Finish!&lt;=====&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后附加脚本执行权限:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>然后执行即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>如此，便可以一键部署博客及备份博客源码到 github 的分支 <code>hexo</code> 分支上。</p>
+<h3 id="5、其他电脑源码使用"><a href="#5、其他电脑源码使用" class="headerlink" title="5、其他电脑源码使用"></a>5、其他电脑源码使用</h3><p>换到不同电脑上时，只需clone github 上的 hexo 分支即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>Hexo</category>
       </categories>
       <tags>
+        <tag>学习笔记</tag>
         <tag>Hexo</tag>
       </tags>
   </entry>
@@ -1724,75 +1693,145 @@
       </tags>
   </entry>
   <entry>
-    <title>【Hexo】如何将博客源码上传到GitHub</title>
-    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</url>
-    <content><![CDATA[<h1 id="如何将博客源码上传到-GitHub"><a href="#如何将博客源码上传到-GitHub" class="headerlink" title="如何将博客源码上传到 GitHub"></a>如何将博客源码上传到 GitHub</h1><h2 id="一、为什么要把博客源码上传到-GitHub-？"><a href="#一、为什么要把博客源码上传到-GitHub-？" class="headerlink" title="一、为什么要把博客源码上传到 GitHub ？"></a>一、为什么要把博客源码上传到 GitHub ？</h2><p>首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：</p>
-<ul>
-<li>多台电脑同时操作 hexo 源码</li>
-<li>原先 hexo 源码所在电脑重装系统（丢失文件）</li>
-<li>要将 hexo 源码移动到其他磁盘（更换电脑）</li>
-</ul>
+    <title>05 | 自动化准备：如何使用 Fastlane 管理自动化操作？</title>
+    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/</url>
+    <content><![CDATA[<h1 id="如何使用-Fastlane-管理自动化操作？"><a href="#如何使用-Fastlane-管理自动化操作？" class="headerlink" title="如何使用 Fastlane 管理自动化操作？"></a>如何使用 Fastlane 管理自动化操作？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/16784358918168.jpg" alt="16784358918168"></p>
 <span id="more"></span>
 
-<p>将 hexo 源码上传到 GitHub，就是做了一个稳定、安全的远程备份，遇到上面的情况将不会再是什么问题。</p>
-<p>因为，之前在 GitHub 上的部署（使用 <code>hexo d</code> 上传部署到github）其实是 hexo 编译后的文件，是用来生成网页的，不包含所有 hexo 生成的网站原始文件。只有把源码也上传才能解决问题。</p>
-<h2 id="二、如何上传博客源码？"><a href="#二、如何上传博客源码？" class="headerlink" title="二、如何上传博客源码？"></a>二、如何上传博客源码？</h2><h3 id="1、思路分析"><a href="#1、思路分析" class="headerlink" title="1、思路分析"></a>1、思路分析</h3><ul>
-<li><p><code>main</code>（<code>master</code>） 分支：存放博客的静态网页。</p>
+<p>要成为一个优秀的 iOS 开发者，我们要做的事情远多于 <strong>“开发”</strong> ，例如我们要构建和打包 App，管理证书，为 App 进行签名，把 App 分发给测试组，上传 App 到 App Store，等等。这些操作不但繁琐费时，而且容易出错。那么，有没有更便利的方法呢？有，那就是使用 fastlane 来完成这些重复性的工作。接下来这一讲，我们主要聊的也就是这个主题。</p>
+<h2 id="fastlane-安装"><a href="#fastlane-安装" class="headerlink" title="fastlane 安装"></a>fastlane 安装</h2><p><strong>fastlane</strong> 是用 <code>Ruby</code> 语言编写的一个命令行工具，可以自动化几乎所有 iOS 开发所需要的操作，例如自动打包和签名 App，自动上传到 App Store 等等。有了 <code>fastlane</code>，我们就可以开发一套统一的、可靠的和可共享的配置，团队所有成员都可以通过这套配置实现自动化操作，减少重复性劳动。</p>
+<p>如何安装 <code>fastlane</code> 呢？我记得在第一讲就曾提到过，可以使用 <code>Bundler</code> 来安装，只需要在 <code>Gemfile</code> 文件里面添加以下一行即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">gem <span class="string">&quot;fastlane&quot;</span>, <span class="string">&quot;2.166.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><font color="#CD5C5C">注意，由于是通过 Bundler 来安装 fastlane，每次执行 fastlane 命令前，都需要加上 <code>bundle exec</code>（<code>bundle exec fastlane</code>）。不过为了简洁，在这里后面凡涉及 fastlane 命令时，我会省略<code>bundle exec</code>部分。</font></p>
+<h2 id="Action-与-Lane"><a href="#Action-与-Lane" class="headerlink" title="Action 与 Lane"></a>Action 与 Lane</h2><p>fastlane 为我们提供了一百多个 <strong>Action</strong>，它们是 iOS 项目开发中所有自动化操作的基础。所谓的Action，你可以理解成是 fastlane 自动化流程中的最小执行单元。一般常用的 Action 有：</p>
+<ul>
+<li><p><strong>scan</strong>，用于自动测试 App；</p>
 </li>
-<li><p><code>hexo</code>分支：存放 Hexo 博客的源码文件。</p>
+<li><p><strong>cert</strong>，用于自动生成和管理 iOS App 签名的证书；</p>
+</li>
+<li><p><strong>sigh</strong>，用于自动生成、更新、下载和修复 Provisioning Profile；</p>
+</li>
+<li><p><strong>match</strong>，为整个团队自动管理和同步证书和 <code>Provisioning Profile</code>；</p>
+</li>
+<li><p><strong>gym</strong>，用于自动构建和打包 App；</p>
+</li>
+<li><p><strong>snapshot</strong>，用于自动在不同设备上截屏；</p>
+</li>
+<li><p><strong>pilot</strong>，用于自动把 App 部署到 <code>TestFlight</code> 并管理测试用户；</p>
+</li>
+<li><p><strong>deliver</strong>，用于自动把 App 上传到 <code>App Store</code>；</p>
+</li>
+<li><p><strong>pem</strong>，用于自动生成和更新推送消息的 <code>Profile</code>。</p>
 </li>
 </ul>
-<h3 id="2、hexo-分支创建及管理"><a href="#2、hexo-分支创建及管理" class="headerlink" title="2、hexo 分支创建及管理"></a>2、hexo 分支创建及管理</h3><h4 id="（1）github-准备"><a href="#（1）github-准备" class="headerlink" title="（1）github 准备"></a>（1）github 准备</h4><p>先在 GitHub 项目创建一个远程分支 <code>hexo</code></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787834628307.jpg"></p>
-<p>将其设置为默认分支</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787836604366.jpg"></p>
-<h4 id="2-打包将要推送到GitHub上的原始文件"><a href="#2-打包将要推送到GitHub上的原始文件" class="headerlink" title="(2) 打包将要推送到GitHub上的原始文件"></a>(2) 打包将要推送到GitHub上的原始文件</h4><ol>
-<li>clone该仓库到本地（clone的是hexo默认分支）</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
+<p>这些 <code>Action</code> 怎么执行呢？我们可以通过<code>fastlane &lt;action&gt;</code>（例如<code>fastlane scan</code>）来执行。下面是执行效果，它提示我选择其中一个 Scheme 来继续执行。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/16784334923105.jpg" alt="16784334923105"></p>
+<p>从运行情况可知，尽管这些 <code>Action</code> 为我们提供了不少便利，但还是需要手工输入来继续。所以，我不推荐你直接使用这些 <code>Action</code>，而是根据项目需要，在开发自己的自动化操作时通过传入合适的参数来调用 fastlane 所提供的 Action。</p>
+<p>具体来说，我们可以把所需的 Action 组合在一起，开发出对应的自动化操作。在 fastlane 中，我们把这个自动化操作或者任务叫作 <code>Lane</code>。<strong>实际上， iOS 开发中的所有自动化操作，主要通过 Lane 来封装和配置的。</strong></p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/16784335778467.jpg" alt="16784335778467"></p>
+<p><code>Lane</code> 和 <code>Action</code> 的关系如上图所示， 一条 Lane 可以通过参数调用一个或几个 Action 。以 Moments app 为例，我们要自动打包和签名 App，那么我就建了一条名叫<code>archive_appstore</code>的 Lane。因为这条 Lane 用到的“更新签名”和“打包”在 fastalne 里已经提供了相关的 Action——<code>update_code_signing_settings</code>和<code>gym</code>，我们可以到 <a href="https://docs.fastlane.tools/">fastlane官网</a> 去寻找，从而减轻了开发工作量。</p>
+<p>一般，iOS 项目所需的自动化操作都配置为 <code>Lane</code> 并保存在 <code>Fastfile</code> 文件，由 <code>Git</code> 统一管理起来，共享给所有成员。然后，大家就可以使用统一的自动化配置了。</p>
+<p>这里的 <code>Fastfile</code> 文件是怎么出来的呢？</p>
+<p>它是由<code>fastlane init</code>命令自动生成。这条命令会建立一个 <code>fastlane</code> 文件夹，文件夹里除了 <code>Fastfile</code> ，还有 <code>Appfile</code>，以及执行过程中所生成的一些中间文件（如截图、日志与报告等）。因为我们之前已经在 <code>.gitignore</code> 文件里把这些中间文件忽略了，因此这些中间文件不再保存到 <code>Git</code> 里面。</p>
+<p>fastlane 文件夹里的 <code>Appfile</code>，用于保存 App 的唯一标识符和 <code>Apple ID</code> 等信息。当 fastlane 在执行一个 Action 的时候，首先会使用传递进来的参数，当参数没有传递进来时，fastlane 会从 Appfile 文件中查找并使用对应的信息。</p>
+<p>比如，我们在 Appfile 配置了<code>app_identifier &quot;com.ibanimatable.moments&quot;</code>以后，在调用<code>match</code> Action 时可以不传入<code>app_identifier</code>参数，fastlane 会自动把<code>&quot;com.ibanimatable.moments&quot;</code>作为<code>app_identifier</code>的值进行调用。</p>
+<p>但是为了方便管理所有的 Lane ，保证每次执行的效果都一样，我建议在每次调用 Action 的时候，都明确传递每一个所需的参数，而不是从 Appfile 文件读取。下面我就演示下如何明确传递每一个参数来执行<code>match</code> Action。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title function_">match</span>(</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;appstore&quot;</span>,</span><br><span class="line">      <span class="attr">force</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">storage_mode</span>: <span class="string">&quot;git&quot;</span>,</span><br><span class="line">      <span class="attr">git_url</span>: <span class="string">&quot;https://github.com/JakeLin/moments-codesign&quot;</span>,</span><br><span class="line">      <span class="attr">app_identifier</span>: <span class="string">&quot;com.ibanimatable.moments&quot;</span>, # pass  app_identifier explicitly</span><br><span class="line">      <span class="attr">team_id</span>: <span class="string">&quot;6HLFCRTYQU&quot;</span>,</span><br><span class="line">      <span class="attr">api_key</span>: api_key</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
-<ol start="2">
-<li><p>下载的文件夹里仅留下 <code>.git</code> 文件夹，其他的文件都删除</p>
+<h2 id="常用-Lane-定义"><a href="#常用-Lane-定义" class="headerlink" title="常用 Lane 定义"></a>常用 Lane 定义</h2><p>通过上面的介绍你已经知道，我们会使用 Lane 来封装项目所需的各个自动化操作。那么，这些 Lane 是如何开发定义的呢？接下来，我就为你介绍<strong>几种非常实用的 Lane</strong>，一起来看看怎么做。</p>
+<h3 id="扫描和检查代码"><a href="#扫描和检查代码" class="headerlink" title="扫描和检查代码"></a>扫描和检查代码</h3><p>每条 Lane 的定义都是放在一个<code>lane &lt;lane_name&gt; do &lt;lane_body&gt; end</code>的代码块里面。它以关键字<code>lane</code>开头，接着是这条 Lane 的名字。 下面是用于检查代码的 Lane 源码。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">lane :lint_code <span class="keyword">do</span></span><br><span class="line">  <span class="title function_">puts</span>(<span class="string">&quot;Lint code using SwfitLint&quot;</span>)</span><br><span class="line">  <span class="title function_">swiftlint</span>(</span><br><span class="line">    <span class="attr">mode</span>: :lint,</span><br><span class="line">    <span class="attr">executable</span>: <span class="string">&quot;./Pods/SwiftLint/swiftlint&quot;</span>,  # <span class="title class_">Important</span> <span class="keyword">if</span> you<span class="string">&#x27;ve installed it via CocoaPods</span></span><br><span class="line"><span class="string">    config_file: &#x27;</span>./<span class="title class_">Moments</span>/.<span class="property">swiftlint</span>.<span class="property">yml</span><span class="string">&#x27;,</span></span><br><span class="line"><span class="string">    raise_if_swiftlint_error: true)</span></span><br><span class="line"><span class="string">end</span></span><br></pre></td></tr></table></figure>
+
+<p>在上面的例子中，我们定义了一个叫作<code>lint_code</code>的 Lane。因为 fastlane 使用 Ruby 开发，所以在 <code>Fastfile</code> 里面，Lane 的名字也遵循它的编码规范，使用小写字母和下划线组合的<strong>蛇式命名法</strong>。</p>
+<p>Lane 的实现逻辑放在<code>do</code>和<code>end</code>中间，我们可以调用 fastlane 提供的任意 Action。在这个例子中我们就调用了<code>swiftlint</code> Action，并把<code>lint</code>传递给<code>mode</code>参数，以此来执行代码扫描和检查操作。</p>
+<p>特别需要注意的是，由于我们之前使用了 <code>CocoaPods</code> 来安装 <code>SwiftLint</code>，因此要为<code>executable</code>参数指定 SwiftLint 的安装路径<code>./Pods/SwiftLint/swiftlint</code>。同时要把 <code>.swiftlint.yml</code> 文件的所在路径也传递给<code>config_file</code>参数。这样就能保证 fastlane 使用了统一的 SwiftLint 版本和规则文件，方便团队所有人执行该 Lane 时得到统一的效果。</p>
+<p>当一条 Lane 开发配置完毕以后，我们就可以在项目的根目录执行 <code>fastlane &lt;lane_name&gt;</code>。比如扫描和检查代码的 Lane ，我们可以在终端输入<code>fastlane lint_code</code>看到它的执行效果。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Driving</span> the lane <span class="string">&#x27;ios lint_code&#x27;</span></span><br><span class="line"><span class="title class_">Lint</span> code using <span class="title class_">SwfitLint</span></span><br><span class="line">--- <span class="title class_">Step</span>: swiftlint ---</span><br><span class="line">$ ./<span class="title class_">Pods</span>/<span class="title class_">SwiftLint</span>/swiftlint lint --config ./<span class="title class_">Moments</span>/.<span class="property">swiftlint</span>.<span class="property">yml</span></span><br><span class="line"><span class="title class_">Linting</span> <span class="title class_">Swift</span> files <span class="keyword">in</span> current working directory</span><br><span class="line"><span class="title class_">Linting</span> <span class="string">&#x27;Strings.swift&#x27;</span> (<span class="number">1</span>/<span class="number">87</span>)</span><br><span class="line"><span class="title class_">Linting</span> <span class="string">&#x27;MomentListItemViewModel.swift&#x27;</span> (<span class="number">2</span>/<span class="number">87</span>)</span><br><span class="line"><span class="title class_">Linting</span> ......s</span><br><span class="line"></span><br><span class="line"><span class="title class_">UIButtonExtensions</span>.<span class="property">swift</span>:<span class="number">14</span>:<span class="number">46</span>: <span class="attr">warning</span>: no_hardcoded_strings <span class="title class_">Violation</span>: <span class="title class_">Please</span> <span class="keyword">do</span> not hardcode strings and add them to the appropriate <span class="title class_">Localizable</span>.<span class="property">strings</span> file; a build script compiles all strings into strongly typed resources available through <span class="title class_">Generated</span>/<span class="title class_">Strings</span>.<span class="property">swift</span>, e.<span class="property">g</span>. <span class="string">`L10n.accessCamera (no_hardcoded_strings)</span></span><br><span class="line"><span class="string">Done linting! Found 6 violations, 0 serious in 87 files.</span></span><br><span class="line"><span class="string">fastlane.tools finished successfully</span></span><br></pre></td></tr></table></figure>
+
+<p>在执行过程中，fastlane 先从 Fastfile 文件里名叫<code>lint_code</code>的 Lane 的定义，然后执行了该 Lane 里使用到的 <code>swiftlint</code> Action。<code>swiftlint</code> Action 会把项目下 87 个 Swift 源代码文件进行扫描和检查，并把所有不符合规范的代码提示给我们。</p>
+<h3 id="格式化代码"><a href="#格式化代码" class="headerlink" title="格式化代码"></a>格式化代码</h3><p>检查代码之后，接下来就是清理不符合规范的代码，比如删掉所有代码中不必要的空格或者空行，修正缩进的大小等等。我们可以定义一条叫作<code>format_code</code>的 Lane 来执行该功能。有了它以后，我们只需要执行<code>fastlane format_code</code>就能把整个项目所有的代码进行格式化。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">lane :format_code <span class="keyword">do</span></span><br><span class="line">  <span class="title function_">puts</span>(<span class="string">&quot;Lint and format code using SwfitLint&quot;</span>)</span><br><span class="line">  <span class="title function_">swiftlint</span>(</span><br><span class="line">    <span class="attr">mode</span>: :autocorrect,</span><br><span class="line">    <span class="attr">executable</span>: <span class="string">&quot;./Pods/SwiftLint/swiftlint&quot;</span>,  # <span class="title class_">Important</span> <span class="keyword">if</span> you<span class="string">&#x27;ve installed it via CocoaPods</span></span><br><span class="line"><span class="string">    config_file: &#x27;</span>./<span class="title class_">Moments</span>/.<span class="property">swiftlint</span>.<span class="property">yml</span><span class="string">&#x27;,</span></span><br><span class="line"><span class="string">    raise_if_swiftlint_error: true)</span></span><br><span class="line"><span class="string">end</span></span><br></pre></td></tr></table></figure>
+
+<p><code>format_code</code>和<code>lint_code</code>两条 Lane 都使用了<code>swiftlint</code> Action，唯一不同的地方是为<code>mode</code>参数传递了<code>autocorrect</code>。</p>
+<h3 id="排序-Xcode-项目文件列表"><a href="#排序-Xcode-项目文件列表" class="headerlink" title="排序 Xcode 项目文件列表"></a>排序 Xcode 项目文件列表</h3><p>在多人开发的项目下，我们经常会修改项目文件，这往往很容易引起合并冲突，而合并 xcodeproj 文件又是一件非常麻烦的事情。怎么办呢？</p>
+<p>一个有效办法就是在每次新建源代码和资源文件时，把 <code>xcodeproj</code> 里面的文件列表进行重新排序。这样能极大地减低合并冲突的发生。我们把这一个经常使用到的操作也配置到 Fastfile 里面，如下所示。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">lane :sort_files <span class="keyword">do</span></span><br><span class="line">  <span class="title function_">puts</span>(<span class="string">&quot;Sort the files for the Xcode project&quot;</span>)</span><br><span class="line">  sh <span class="string">&quot;../scripts/sort-Xcode-project-file.pl ../Moments/Moments.xcodeproj&quot;</span></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，fastlane 除了能调用其提供的 Action 以外，还可以通过<code>sh</code>来调用其他程序命令。<strong>在这里我们调用了由苹果公司提供的一个<code>Perl</code> 程序来为 xcodeproj 里面的文件列表进行排序</strong>。你也可以在此<a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/scripts/sort-Xcode-project-file.pl">代码仓库</a>找到这个<code>Perl</code> 程序。</p>
+<h3 id="调用其他-Lane-操作"><a href="#调用其他-Lane-操作" class="headerlink" title="调用其他 Lane 操作"></a>调用其他 Lane 操作</h3><p>除了调用一些程序命令（如<code>sh</code>）以外，一条 Lane 还可以调用 Fastfile 里面其他的 Lane。例如我们定义了一条叫作<code>prepare_pr</code>的 Lane ，它可以帮我们在提交 <code>Pull Request</code> 之前做一些必要的准备。下面这个代码表示的就是，这条 Lane 在内部调用了另外两条 Lane —— <code>format_code</code>和<code>sort_files</code>，以此来同时完成格式化代码和排序 Xcode 项目文件列表的操作。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">lane :prepare_pr <span class="keyword">do</span></span><br><span class="line">  format_code</span><br><span class="line">  sort_files</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h3 id="定义私有-Lane-和返回值"><a href="#定义私有-Lane-和返回值" class="headerlink" title="定义私有 Lane 和返回值"></a>定义私有 Lane 和返回值</h3><p>类似于 Swift 语言能通过<code>private</code>来定义内部使用的方法，我们也能定义私有 Lane 给Fastfile 内的其他 Lane 所调用，提高代码的复用。其做法就是把原先的关键字<code>lane</code>替换成<code>private_lane</code>。例如我们定义一条叫作<code>get_pi</code>的私有 Lane，代码如下。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">private_lane :get_pi <span class="keyword">do</span></span><br><span class="line">  pi = <span class="number">3.1415</span></span><br><span class="line">  pi</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>该 Lane 的实现体有两行代码，第一行是给一个临时变量pi赋值。第二行表示把<code>pi</code>作为返回值传递给调用者。例如下面就演示了如何调用<code>get_pi</code>并取得返回值。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">lane :foo <span class="keyword">do</span></span><br><span class="line">  pi = get_pi</span><br><span class="line">  <span class="title function_">puts</span>(pi)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>这是执行<code>fastlane foo</code>的结果：</p>
+<blockquote>
+<p>Driving the lane ‘ios foo’<br>— Step: Switch to ios get_pi lane —<br>Cruising over to lane ‘ios get_pi’<br>Cruising back to lane ‘ios foo’<br>3.1415</p>
+</blockquote>
+<p>fastlane 首先调用<code>foo</code> Lane，然后进去<code>get_pi</code> Lane 并返回到<code>foo</code>，同时把返回结果打印出来。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲我介绍了如何从头开始搭建一个 fastlane 环境。在这里需要注意三点：</p>
+<ol>
+<li><p>不要单独手工执行 fastlane 所提供的 Action，而是使用 Fastfile 文件来统一开发、配置和管理日常中经常使用的所有自动化操作；</p>
 </li>
-<li><p>找见我们 hexo 原位置，将 hexo 文件夹内除 <code>.deploy_git</code> 以外都复制到clone下来的文件夹中</p>
+<li><p>在开发我们的 Lane 时，要优先使用和调用 fastlane 提供的 Action，因为这些 Action 都是经过社区完善的，且会随着 Xcode 版本的升级而更新；</p>
 </li>
-<li><p>修改 <code>.gitignore</code> 文件，将静态网页的目录及其他无需提交的源文件及目录排除掉。(没有即新建添加)</p>
+<li><p>当我们调用 fastlane 所提供的 Action 时，要明确传递各个参数，在执行过程中就无须任何手工交互就能从头到尾执行整个操作。</p>
 </li>
 </ol>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">.<span class="property">DS_Store</span></span><br><span class="line"><span class="title class_">Thumbs</span>.<span class="property">db</span></span><br><span class="line">db.<span class="property">json</span></span><br><span class="line">*.<span class="property">log</span></span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.<span class="property">deploy</span>*/</span><br></pre></td></tr></table></figure>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/16784358918168.jpg" alt="16784358918168"></p>
+<p>有了项目需要的所有 Lane 以后，能有效减轻团队成员的重复劳动，并为项目的自动化和工程化打下坚实的基础。在后面的章节中，我会详细介绍如何使用 fastlane 来管理证书，打包 App 和上传到 App Store。</p>
+<h3 id="源码地址："><a href="#源码地址：" class="headerlink" title="源码地址："></a>源码地址：</h3><blockquote>
+<p>Fastfile 文件地址：<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/fastlane/Fastfile#L19-L50">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/fastlane/Fastfile#L19-L50</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Hexo】踩坑记录</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h2 id="一、控制台打印-no-src-attr-skipped…"><a href="#一、控制台打印-no-src-attr-skipped…" class="headerlink" title="一、控制台打印 no src attr, skipped…"></a>一、控制台打印 no src attr, skipped…</h2><p>原因：这是因为 <code>hexo-asset-image</code>插件没有捕捉到图片<code>src</code></p>
+<p>解决：打开 <code>hexo/node_modules/hexo-asset-image/index.js</code>，定位到相应代码:</p>
+<span id="more"></span>
 
-<ol start="5">
-<li>如果已经 clone 过主题文件，最好把 theme 主题文件夹里的 <code>.git</code> 也删除</li>
-</ol>
-<h4 id="3-将-clone-并修改的文件夹推送到-GitHub"><a href="#3-将-clone-并修改的文件夹推送到-GitHub" class="headerlink" title="(3) 将 clone 并修改的文件夹推送到 GitHub"></a>(3) 将 clone 并修改的文件夹推送到 GitHub</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;Code update&#x27;</span></span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">$(&#x27;img&#x27;).each(function()&#123;</span><br><span class="line">        <span class="keyword">if</span> ($(this).attr(&#x27;src&#x27;))&#123;</span><br><span class="line">            <span class="comment">// For windows style path, we replace &#x27;\&#x27; to &#x27;/&#x27;.</span></span><br><span class="line">            <span class="keyword">var</span> src <span class="operator">=</span> $(this).attr(&#x27;src&#x27;).replace(&#x27;\\&#x27;, &#x27;<span class="operator">/</span>&#x27;);</span><br><span class="line">            <span class="keyword">if</span>(<span class="operator">!/</span>http[s]<span class="operator">*</span><span class="operator">.*|</span>\<span class="operator">/</span>\<span class="operator">/</span><span class="operator">.*/.</span>test(src) <span class="operator">&amp;&amp;</span></span><br><span class="line">               <span class="operator">!/^</span>\s<span class="operator">*</span>\<span class="comment">//.test(src)) &#123;</span></span><br><span class="line">              <span class="comment">// For &quot;about&quot; page, the first part of &quot;src&quot; can&#x27;t be removed.</span></span><br><span class="line">              <span class="comment">// In addition, to support multi-level local directory.</span></span><br><span class="line">              <span class="keyword">var</span> linkArray <span class="operator">=</span> link.split(&#x27;<span class="operator">/</span>&#x27;).filter(function(elem)&#123;</span><br><span class="line">                <span class="keyword">return</span> elem <span class="operator">!=</span> &#x27;&#x27;;</span><br><span class="line">              &#125;);</span><br><span class="line">              <span class="keyword">var</span> srcArray <span class="operator">=</span> src.split(&#x27;<span class="operator">/</span>&#x27;).filter(function(elem)&#123;</span><br><span class="line">                <span class="keyword">return</span> elem <span class="operator">!=</span> &#x27;&#x27; <span class="operator">&amp;&amp;</span> elem <span class="operator">!=</span> &#x27;.&#x27;;</span><br><span class="line">              &#125;);</span><br><span class="line">              <span class="keyword">if</span>(srcArray.length <span class="operator">&gt;</span> <span class="number">1</span>)</span><br><span class="line">                srcArray.shift();</span><br><span class="line">              src <span class="operator">=</span> srcArray.join(&#x27;<span class="operator">/</span>&#x27;);</span><br><span class="line">              $(this).attr(&#x27;src&#x27;, config.root <span class="operator">+</span> link <span class="operator">+</span> src);</span><br><span class="line">              console.info<span class="operator">&amp;&amp;</span>console.info(<span class="string">&quot;update link as:--&gt;&quot;</span><span class="operator">+</span>config.root <span class="operator">+</span> link <span class="operator">+</span> src);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            console.info<span class="operator">&amp;&amp;</span>console.info(<span class="string">&quot;no src attr, skipped...&quot;</span>);</span><br><span class="line">            console.info<span class="operator">&amp;&amp;</span>console.info($(this));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br></pre></td></tr></table></figure>
 
-<h3 id="3、main-master-分支管理"><a href="#3、main-master-分支管理" class="headerlink" title="3、main (master) 分支管理"></a>3、main (master) 分支管理</h3><p>进入<strong>站点配置文件</strong>，搜索 <code>deploy</code>关键词，修改如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy</span>:</span><br><span class="line">  <span class="attr">type</span>: git</span><br><span class="line">  <span class="attr">repo</span>: git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br><span class="line">  <span class="attr">branch</span>: main</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787847648363.jpg"></p>
-<p>修改完成，执行以下代码进行管理：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//清除本地旧代码。</span></span><br><span class="line">hexo clean</span><br><span class="line"><span class="comment">//生成静态网站</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="comment">//部署静态网站到 GitHub 的 main(master) 分支上</span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<h3 id="4、统一分支管理和部署"><a href="#4、统一分支管理和部署" class="headerlink" title="4、统一分支管理和部署"></a>4、统一分支管理和部署</h3><p>利用我上一篇文章讲到的 <code>deploy.sh</code>脚本进行一键部署，可以极大提高部署效率和降低维护成本。</p>
-<p>在 <code>deploy.sh</code> 文件中添加如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line"><span class="variable constant_">DIR</span>=<span class="string">`dirname $0`</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Generate</span> blog</span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Deploy</span></span><br><span class="line">hexo deploy</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Push</span> hexo code</span><br><span class="line">git add .</span><br><span class="line">current_date=<span class="string">`date &quot;+%Y-%m-%d %H:%M:%S&quot;`</span></span><br><span class="line">git commit -m <span class="string">&quot;Blog updated: $current_date&quot;</span></span><br><span class="line"></span><br><span class="line">sleep <span class="number">2</span></span><br><span class="line"></span><br><span class="line">git push origin hexo</span><br><span class="line"></span><br><span class="line">echo <span class="string">&quot;=====&gt;Finish!&lt;=====&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>然后附加脚本执行权限:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<p>然后执行即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<p>如此，便可以一键部署博客及备份博客源码到 github 的分支 <code>hexo</code> 分支上。</p>
-<h3 id="5、其他电脑源码使用"><a href="#5、其他电脑源码使用" class="headerlink" title="5、其他电脑源码使用"></a>5、其他电脑源码使用</h3><p>换到不同电脑上时，只需clone github 上的 hexo 分支即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
-
+<p>可以看到 <code>if ($(this).attr(&#39;src&#39;))&#123;&#125;</code>，</p>
+<p>再看控制台输出的 <code>this</code>:</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/17370984380125.jpg"></p>
+<p>可以看到这里的路径是 <code>data-src</code>，所以，</p>
+<p>所以，把上面代码块的 <code>src</code>全都替换成<code>data-src</code>即可。</p>
+<h2 id="二、Coding-中的-Pages-不见了！"><a href="#二、Coding-中的-Pages-不见了！" class="headerlink" title="二、Coding 中的 Pages 不见了！"></a>二、Coding 中的 Pages 不见了！</h2><h3 id="起因："><a href="#起因：" class="headerlink" title="起因："></a>起因：</h3><blockquote>
+<p>因为自己的这个博客，有时候访问还是比较慢的，原因是我的代码是在 GitHub 上托管的，GitHub 是国外的网站，服务器都在国外，所以访问速度就特别慢，我就想找国内的既能实现代码托管，又能生成静态网页的平台，可以实现 Hexo 的双线部署，即本地提交代码可以分别上传到不同的平台，当然肯定要支持 git</p>
+</blockquote>
+<blockquote>
+<p>为了实现这个功能，所以就在网上找相关的文章，然后发现说的比较多的是 Hexo 双线部署到 Coding Pages 和 GitHub Pages 从而实现网站加速，也就是说从国内访问的话，是走 Coding ，从国外访问的话是走 GitHub ，从而可以提高网站的访问速率</p>
+</blockquote>
+<h3 id="过程："><a href="#过程：" class="headerlink" title="过程："></a>过程：</h3><blockquote>
+<p>于是我就开始动手实验，开始注册 Coding 账号，登录，进去之后和 GitHub 的流程一样，创建一个项目，绑定我的 ssh，把项目地址的 ssh 地址复制到我的博客里面，经过实验发现可以通过 git，一次性分别上传到 GitHub 和 Coding 上。等我去 Coding 上准备打开 Coding pages 时，却发现我根本找不到 Coding 的静态网页服务功能了，前前后后找了好几遍，在百度上跟着他们说的找，找了半天也没找到，他们的文章都是19，20年的，Coding经过更新界面都变得不太一样了，这让我不得不怀疑是不是没有这个功能了。</p>
+</blockquote>
+<h3 id="找到的原因是（官方说法）"><a href="#找到的原因是（官方说法）" class="headerlink" title="找到的原因是（官方说法）"></a>找到的原因是（官方说法）</h3><h4 id="旧版直接关服"><a href="#旧版直接关服" class="headerlink" title="旧版直接关服"></a>旧版直接关服</h4><blockquote>
+<p>因 CODING 产品战略调整，您的 Mercury233 的团队 团队正在使用的 CODING 网站托管服务（旧版），将于 2021 年 12 月 30 日停止服务，届时您项目下的网站将无法访问。项目源码依然保留在您的 CODING 代码仓库中，可部署于其他第三方服务，请尽快迁移您的网站以免受到影响。</p>
+</blockquote>
+<h4 id="新版移到腾讯云-Serverless"><a href="#新版移到腾讯云-Serverless" class="headerlink" title="新版移到腾讯云 Serverless"></a>新版移到腾讯云 Serverless</h4><blockquote>
+<p>因 CODING 产品战略调整，CODING 将于即日起，停止提供网站托管服务中的「新建站点」服务； 2021 年 12 月 23 日后将停止已有站点的编辑、部署功能，并于 2021 年 12 月 30 日停止提供「网站托管」服务的使用入口。此后，您的 Mercury233 的团队 团队下的 xxx 项目托管的网站，需在腾讯云 Serverless 控制台进行域名配置、部署等操作及管理，详情请参考——</p>
+</blockquote>
+<p>也就是说免费的 Coding 静态页面不见了，想用的话得花钱，这真是一个腾讯的巨坑！</p>
+<p>此刻，笔者只想说：腾讯，我劝你善良！</p>
 ]]></content>
       <categories>
         <category>Hexo</category>
       </categories>
       <tags>
-        <tag>学习笔记</tag>
         <tag>Hexo</tag>
       </tags>
   </entry>
@@ -1858,45 +1897,6 @@
       <tags>
         <tag>iOS</tag>
         <tag>OC</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【Hexo】踩坑记录</title>
-    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="一、控制台打印-no-src-attr-skipped…"><a href="#一、控制台打印-no-src-attr-skipped…" class="headerlink" title="一、控制台打印 no src attr, skipped…"></a>一、控制台打印 no src attr, skipped…</h2><p>原因：这是因为 <code>hexo-asset-image</code>插件没有捕捉到图片<code>src</code></p>
-<p>解决：打开 <code>hexo/node_modules/hexo-asset-image/index.js</code>，定位到相应代码:</p>
-<span id="more"></span>
-
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">$(&#x27;img&#x27;).each(function()&#123;</span><br><span class="line">        <span class="keyword">if</span> ($(this).attr(&#x27;src&#x27;))&#123;</span><br><span class="line">            <span class="comment">// For windows style path, we replace &#x27;\&#x27; to &#x27;/&#x27;.</span></span><br><span class="line">            <span class="keyword">var</span> src <span class="operator">=</span> $(this).attr(&#x27;src&#x27;).replace(&#x27;\\&#x27;, &#x27;<span class="operator">/</span>&#x27;);</span><br><span class="line">            <span class="keyword">if</span>(<span class="operator">!/</span>http[s]<span class="operator">*</span><span class="operator">.*|</span>\<span class="operator">/</span>\<span class="operator">/</span><span class="operator">.*/.</span>test(src) <span class="operator">&amp;&amp;</span></span><br><span class="line">               <span class="operator">!/^</span>\s<span class="operator">*</span>\<span class="comment">//.test(src)) &#123;</span></span><br><span class="line">              <span class="comment">// For &quot;about&quot; page, the first part of &quot;src&quot; can&#x27;t be removed.</span></span><br><span class="line">              <span class="comment">// In addition, to support multi-level local directory.</span></span><br><span class="line">              <span class="keyword">var</span> linkArray <span class="operator">=</span> link.split(&#x27;<span class="operator">/</span>&#x27;).filter(function(elem)&#123;</span><br><span class="line">                <span class="keyword">return</span> elem <span class="operator">!=</span> &#x27;&#x27;;</span><br><span class="line">              &#125;);</span><br><span class="line">              <span class="keyword">var</span> srcArray <span class="operator">=</span> src.split(&#x27;<span class="operator">/</span>&#x27;).filter(function(elem)&#123;</span><br><span class="line">                <span class="keyword">return</span> elem <span class="operator">!=</span> &#x27;&#x27; <span class="operator">&amp;&amp;</span> elem <span class="operator">!=</span> &#x27;.&#x27;;</span><br><span class="line">              &#125;);</span><br><span class="line">              <span class="keyword">if</span>(srcArray.length <span class="operator">&gt;</span> <span class="number">1</span>)</span><br><span class="line">                srcArray.shift();</span><br><span class="line">              src <span class="operator">=</span> srcArray.join(&#x27;<span class="operator">/</span>&#x27;);</span><br><span class="line">              $(this).attr(&#x27;src&#x27;, config.root <span class="operator">+</span> link <span class="operator">+</span> src);</span><br><span class="line">              console.info<span class="operator">&amp;&amp;</span>console.info(<span class="string">&quot;update link as:--&gt;&quot;</span><span class="operator">+</span>config.root <span class="operator">+</span> link <span class="operator">+</span> src);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            console.info<span class="operator">&amp;&amp;</span>console.info(<span class="string">&quot;no src attr, skipped...&quot;</span>);</span><br><span class="line">            console.info<span class="operator">&amp;&amp;</span>console.info($(this));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br></pre></td></tr></table></figure>
-
-<p>可以看到 <code>if ($(this).attr(&#39;src&#39;))&#123;&#125;</code>，</p>
-<p>再看控制台输出的 <code>this</code>:</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/17370984380125.jpg"></p>
-<p>可以看到这里的路径是 <code>data-src</code>，所以，</p>
-<p>所以，把上面代码块的 <code>src</code>全都替换成<code>data-src</code>即可。</p>
-<h2 id="二、Coding-中的-Pages-不见了！"><a href="#二、Coding-中的-Pages-不见了！" class="headerlink" title="二、Coding 中的 Pages 不见了！"></a>二、Coding 中的 Pages 不见了！</h2><h3 id="起因："><a href="#起因：" class="headerlink" title="起因："></a>起因：</h3><blockquote>
-<p>因为自己的这个博客，有时候访问还是比较慢的，原因是我的代码是在 GitHub 上托管的，GitHub 是国外的网站，服务器都在国外，所以访问速度就特别慢，我就想找国内的既能实现代码托管，又能生成静态网页的平台，可以实现 Hexo 的双线部署，即本地提交代码可以分别上传到不同的平台，当然肯定要支持 git</p>
-</blockquote>
-<blockquote>
-<p>为了实现这个功能，所以就在网上找相关的文章，然后发现说的比较多的是 Hexo 双线部署到 Coding Pages 和 GitHub Pages 从而实现网站加速，也就是说从国内访问的话，是走 Coding ，从国外访问的话是走 GitHub ，从而可以提高网站的访问速率</p>
-</blockquote>
-<h3 id="过程："><a href="#过程：" class="headerlink" title="过程："></a>过程：</h3><blockquote>
-<p>于是我就开始动手实验，开始注册 Coding 账号，登录，进去之后和 GitHub 的流程一样，创建一个项目，绑定我的 ssh，把项目地址的 ssh 地址复制到我的博客里面，经过实验发现可以通过 git，一次性分别上传到 GitHub 和 Coding 上。等我去 Coding 上准备打开 Coding pages 时，却发现我根本找不到 Coding 的静态网页服务功能了，前前后后找了好几遍，在百度上跟着他们说的找，找了半天也没找到，他们的文章都是19，20年的，Coding经过更新界面都变得不太一样了，这让我不得不怀疑是不是没有这个功能了。</p>
-</blockquote>
-<h3 id="找到的原因是（官方说法）"><a href="#找到的原因是（官方说法）" class="headerlink" title="找到的原因是（官方说法）"></a>找到的原因是（官方说法）</h3><h4 id="旧版直接关服"><a href="#旧版直接关服" class="headerlink" title="旧版直接关服"></a>旧版直接关服</h4><blockquote>
-<p>因 CODING 产品战略调整，您的 Mercury233 的团队 团队正在使用的 CODING 网站托管服务（旧版），将于 2021 年 12 月 30 日停止服务，届时您项目下的网站将无法访问。项目源码依然保留在您的 CODING 代码仓库中，可部署于其他第三方服务，请尽快迁移您的网站以免受到影响。</p>
-</blockquote>
-<h4 id="新版移到腾讯云-Serverless"><a href="#新版移到腾讯云-Serverless" class="headerlink" title="新版移到腾讯云 Serverless"></a>新版移到腾讯云 Serverless</h4><blockquote>
-<p>因 CODING 产品战略调整，CODING 将于即日起，停止提供网站托管服务中的「新建站点」服务； 2021 年 12 月 23 日后将停止已有站点的编辑、部署功能，并于 2021 年 12 月 30 日停止提供「网站托管」服务的使用入口。此后，您的 Mercury233 的团队 团队下的 xxx 项目托管的网站，需在腾讯云 Serverless 控制台进行域名配置、部署等操作及管理，详情请参考——</p>
-</blockquote>
-<p>也就是说免费的 Coding 静态页面不见了，想用的话得花钱，这真是一个腾讯的巨坑！</p>
-<p>此刻，笔者只想说：腾讯，我劝你善良！</p>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -2831,6 +2831,55 @@
 
 <p>效果如下：</p>
 <p><img data-src="/Tips/%E3%80%90Tips%E3%80%91Markdown-%E8%AF%AD%E6%B3%95/16781754751832.jpg"></p>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Tips】解决 ping github.com 超时问题</title>
+    <url>/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="解决-ping-github-com-超时问题"><a href="#解决-ping-github-com-超时问题" class="headerlink" title="解决 ping github.com 超时问题"></a>解决 ping github.com 超时问题</h1><p>1、尝试 <code>ping github.com</code>，结果发现Ping不通，但是 <code>ping baidu.com</code> 却是正常的。</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg"></p>
+<span id="more"></span>
+
+<p>2、初步分心应该是本地的DNS无法解析导致的，需要修改Hosts文件，添加 github 的ip地址项</p>
+<h2 id="如何修改Hosts文件？"><a href="#如何修改Hosts文件？" class="headerlink" title="如何修改Hosts文件？"></a>如何修改Hosts文件？</h2><h3 id="1、通过终端命令修改"><a href="#1、通过终端命令修改" class="headerlink" title="1、通过终端命令修改"></a>1、通过终端命令修改</h3><p>（1）打开终端，输入命令行：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># sudo 以管理员权限执行</span><br><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>（2）输入本机密码后，会自动打开hosts文件 。</p>
+<ul>
+<li>键盘输入<code>i</code>（插入），修改完成后，按 <code>esc</code> 键退出插入页面</li>
+<li>保存退出：输入  <code>:wq</code> 或者<code>:wq!</code>，再<code>enter</code>键 </li>
+<li>不保存退出：输入<code>q</code>和<code>！</code>键，再<code>enter</code>键</li>
+</ul>
+<h3 id="2、在-Finder-中修改"><a href="#2、在-Finder-中修改" class="headerlink" title="2、在 Finder 中修改"></a>2、在 Finder 中修改</h3><p>方法一：</p>
+<p>（1）打开 <code>Finder</code> ，快捷键 <code>Command+Shift+G</code> 查找文件，输入 <code>/etc/hosts</code>，点击前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg"></p>
+<p>（2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg"></p>
+<p>方法二：</p>
+<p>（1）打开Finder，快捷键 <code>Shift+Command+G</code> 查找文件，输入 <code>/private</code> 前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg"></p>
+<p>（2）找到 <code>etc</code> 文件之后，选择显示简介</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg"></p>
+<p>（3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg"></p>
+<h2 id="如何在-Hosts-文件中配置-github-com-映射"><a href="#如何在-Hosts-文件中配置-github-com-映射" class="headerlink" title="如何在 Hosts 文件中配置 github.com 映射"></a>如何在 Hosts 文件中配置 github.com 映射</h2><p>host文件打开之后可以看到：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg"></p>
+<p>在文件下面添加如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="title class_">GitHub</span>地址</span><br><span class="line"><span class="number">140.82</span><span class="number">.114</span><span class="number">.3</span> github.<span class="property">com</span> git</span><br><span class="line"><span class="number">151.101</span><span class="number">.129</span><span class="number">.194</span> github.<span class="property">global</span>.<span class="property">ssl</span>.<span class="property">fastly</span>.<span class="property">net</span></span><br></pre></td></tr></table></figure>
+
+<p>上图中的 IP 可以通过， <a href="https://www.ipaddress.com/">ipaddress</a> 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg"></p>
+<p><code>140.82.114.3</code>：这个IP地址修改为 <code>github.com</code>搜索到的IP地址</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg"></p>
+<p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
+<p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
 ]]></content>
       <categories>
         <category>Tips</category>
@@ -5147,90 +5196,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【Tips】解决 ping github.com 超时问题</title>
-    <url>/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="解决-ping-github-com-超时问题"><a href="#解决-ping-github-com-超时问题" class="headerlink" title="解决 ping github.com 超时问题"></a>解决 ping github.com 超时问题</h1><p>1、尝试 <code>ping github.com</code>，结果发现Ping不通，但是 <code>ping baidu.com</code> 却是正常的。</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg"></p>
-<span id="more"></span>
-
-<p>2、初步分心应该是本地的DNS无法解析导致的，需要修改Hosts文件，添加 github 的ip地址项</p>
-<h2 id="如何修改Hosts文件？"><a href="#如何修改Hosts文件？" class="headerlink" title="如何修改Hosts文件？"></a>如何修改Hosts文件？</h2><h3 id="1、通过终端命令修改"><a href="#1、通过终端命令修改" class="headerlink" title="1、通过终端命令修改"></a>1、通过终端命令修改</h3><p>（1）打开终端，输入命令行：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># sudo 以管理员权限执行</span><br><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
-
-<p>（2）输入本机密码后，会自动打开hosts文件 。</p>
-<ul>
-<li>键盘输入<code>i</code>（插入），修改完成后，按 <code>esc</code> 键退出插入页面</li>
-<li>保存退出：输入  <code>:wq</code> 或者<code>:wq!</code>，再<code>enter</code>键 </li>
-<li>不保存退出：输入<code>q</code>和<code>！</code>键，再<code>enter</code>键</li>
-</ul>
-<h3 id="2、在-Finder-中修改"><a href="#2、在-Finder-中修改" class="headerlink" title="2、在 Finder 中修改"></a>2、在 Finder 中修改</h3><p>方法一：</p>
-<p>（1）打开 <code>Finder</code> ，快捷键 <code>Command+Shift+G</code> 查找文件，输入 <code>/etc/hosts</code>，点击前往</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg"></p>
-<p>（2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg"></p>
-<p>方法二：</p>
-<p>（1）打开Finder，快捷键 <code>Shift+Command+G</code> 查找文件，输入 <code>/private</code> 前往</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg"></p>
-<p>（2）找到 <code>etc</code> 文件之后，选择显示简介</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg"></p>
-<p>（3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg"></p>
-<h2 id="如何在-Hosts-文件中配置-github-com-映射"><a href="#如何在-Hosts-文件中配置-github-com-映射" class="headerlink" title="如何在 Hosts 文件中配置 github.com 映射"></a>如何在 Hosts 文件中配置 github.com 映射</h2><p>host文件打开之后可以看到：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg"></p>
-<p>在文件下面添加如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="title class_">GitHub</span>地址</span><br><span class="line"><span class="number">140.82</span><span class="number">.114</span><span class="number">.3</span> github.<span class="property">com</span> git</span><br><span class="line"><span class="number">151.101</span><span class="number">.129</span><span class="number">.194</span> github.<span class="property">global</span>.<span class="property">ssl</span>.<span class="property">fastly</span>.<span class="property">net</span></span><br></pre></td></tr></table></figure>
-
-<p>上图中的 IP 可以通过， <a href="https://www.ipaddress.com/">ipaddress</a> 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg"></p>
-<p><code>140.82.114.3</code>：这个IP地址修改为 <code>github.com</code>搜索到的IP地址</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg"></p>
-<p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
-<p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
-]]></content>
-      <categories>
-        <category>Tips</category>
-      </categories>
-      <tags>
-        <tag>Tips</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第一次与ChatGPT闲聊</title>
-    <url>/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/</url>
-    <content><![CDATA[<h1 id="第一次与ChatGPT闲聊"><a href="#第一次与ChatGPT闲聊" class="headerlink" title="第一次与ChatGPT闲聊"></a>第一次与ChatGPT闲聊</h1><p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994415736.jpg"></p>
-<span id="more"></span>
-
-<p>开局来一个盲猜，哈哈！</p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994578027.jpg"></p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994726246.jpg"></p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994851225.jpg"></p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994960092.jpg"></p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995226589.jpg"></p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995362169.jpg"></p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995475238.jpg"></p>
-<p>以上回答都比较中规中矩，而且流于表面，没有什么深刻的理解。</p>
-<p>怎么说呢，就好比小学生囫囵吞枣读了一遍红楼，来参加知识竞赛一样，虽然知道一点，但是理解不深，有知识架构，但是没有个人观点的沉淀，甚至还有可能出错和闹笑话，下面错误和笑话就来了。</p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792999646971.jpg"></p>
-<p>薛蟠这个回答是我万万没有想到的！</p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995731944.jpg"></p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995866936.jpg"></p>
-<p>更有甚者，当我问及秦可卿的死因时，它的回答竟是这样的：</p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792996066039.jpg"></p>
-<p>这个回答纯属瞎编乱造！</p>
-<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792996214610.jpg"></p>
-<p>这个结局确实是一个方向，但是，相信绝不是大多数红迷想要的。</p>
-<p>第一次和ChatGPT闲聊，竟然问了很多和《红楼梦》相关的问题，估计ChatGPT都没想到吧，差点被我给整晕了…</p>
-<p>未完待续…期待后续的发掘</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【iOS】集成阿里云消息推送</title>
     <url>/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/</url>
     <content><![CDATA[<h1 id="集成阿里云消息推送"><a href="#集成阿里云消息推送" class="headerlink" title="集成阿里云消息推送"></a>集成阿里云消息推送</h1><h2 id="基本的业务流程："><a href="#基本的业务流程：" class="headerlink" title="基本的业务流程："></a>基本的业务流程：</h2><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782576576028.jpg"></p>
@@ -5353,6 +5318,41 @@
       </categories>
       <tags>
         <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第一次与ChatGPT闲聊</title>
+    <url>/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/</url>
+    <content><![CDATA[<h1 id="第一次与ChatGPT闲聊"><a href="#第一次与ChatGPT闲聊" class="headerlink" title="第一次与ChatGPT闲聊"></a>第一次与ChatGPT闲聊</h1><p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994415736.jpg"></p>
+<span id="more"></span>
+
+<p>开局来一个盲猜，哈哈！</p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994578027.jpg"></p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994726246.jpg"></p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994851225.jpg"></p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994960092.jpg"></p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995226589.jpg"></p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995362169.jpg"></p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995475238.jpg"></p>
+<p>以上回答都比较中规中矩，而且流于表面，没有什么深刻的理解。</p>
+<p>怎么说呢，就好比小学生囫囵吞枣读了一遍红楼，来参加知识竞赛一样，虽然知道一点，但是理解不深，有知识架构，但是没有个人观点的沉淀，甚至还有可能出错和闹笑话，下面错误和笑话就来了。</p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792999646971.jpg"></p>
+<p>薛蟠这个回答是我万万没有想到的！</p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995731944.jpg"></p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792995866936.jpg"></p>
+<p>更有甚者，当我问及秦可卿的死因时，它的回答竟是这样的：</p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792996066039.jpg"></p>
+<p>这个回答纯属瞎编乱造！</p>
+<p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792996214610.jpg"></p>
+<p>这个结局确实是一个方向，但是，相信绝不是大多数红迷想要的。</p>
+<p>第一次和ChatGPT闲聊，竟然问了很多和《红楼梦》相关的问题，估计ChatGPT都没想到吧，差点被我给整晕了…</p>
+<p>未完待续…期待后续的发掘</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
       </tags>
   </entry>
 </search>
