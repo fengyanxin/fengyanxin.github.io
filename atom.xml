@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-01-21T09:48:10.913Z</updated>
+  <updated>2025-01-22T03:04:14.605Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
     <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/</id>
     <published>2025-01-21T07:32:12.000Z</published>
-    <updated>2025-01-21T09:48:10.913Z</updated>
+    <updated>2025-01-22T03:04:14.605Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;blockquote&gt;
@@ -85,7 +85,7 @@
     <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/"/>
     <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</id>
     <published>2025-01-17T05:54:45.000Z</published>
-    <updated>2025-01-21T03:08:30.298Z</updated>
+    <updated>2025-01-22T03:13:33.637Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;一、控制台打印-no-src-attr-skipped…&quot;&gt;&lt;a href=&quot;#一、控制台打印-no-src-attr-skipped…&quot; class=&quot;headerlink&quot; title=&quot;一、控制台打印 no src attr, skipped…&quot;&gt;&lt;/a&gt;一、控制台打印 no src attr, skipped…&lt;/h2&gt;&lt;p&gt;原因：这是因为 &lt;code&gt;hexo-asset-image&lt;/code&gt;插件没有捕捉到图片&lt;code&gt;src&lt;/code&gt;&lt;/p&gt;
