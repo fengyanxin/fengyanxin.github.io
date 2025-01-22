@@ -1187,133 +1187,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【Hexo】Mac 上使用Hexo + Github搭建个人博客</title>
-    <url>/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h1 id="【Hexo】Mac-上使用Hexo-Github搭建个人博客"><a href="#【Hexo】Mac-上使用Hexo-Github搭建个人博客" class="headerlink" title="【Hexo】Mac 上使用Hexo + Github搭建个人博客"></a>【Hexo】Mac 上使用Hexo + Github搭建个人博客</h1><h2 id="为什么要用Hexo-Github？"><a href="#为什么要用Hexo-Github？" class="headerlink" title="为什么要用Hexo + Github？"></a>为什么要用Hexo + Github？</h2><h3 id="Hexo介绍"><a href="#Hexo介绍" class="headerlink" title="Hexo介绍"></a>Hexo介绍</h3><p>Hexo是一款基于Nodejs的，快速、简洁且高效的博客框架。它具有丰富的插件和主题，具有超快的速度，支持Makedown语法，可以方便快捷的编写博客文档。同时还支持node命令，可以一键部署到GitHub Pages, Heroku 或其他平台。更详细的信息可以看一下 <a href="https://hexo.io/zh-cn">Hexo官网</a> 。</p>
-<p>值得一提的是，它在github上的<em>star</em>现在已经达到了<a href="https://github.com/hexojs/hexo">36.3k</a>，优不优秀可见一斑。</p>
-<span id="more"></span>
-
-<p>Hexo主要有以下特点：</p>
-<ol>
-<li><p>超快速度：<em>Node.js</em>所带来的超快生成速度，可以让上百个页面在几秒内完成渲染。</p>
-</li>
-<li><p>支持 <em>Markdown</em>：Hexo 支持 GitHub Flavored Markdown 的所有功能，甚至可以整合 Octopress 的大多数插件。</p>
-</li>
-<li><p>一键部署：只需一条指令即可部署到 <em>GitHub Pages, Heroku</em> 或其他平台。</p>
-</li>
-<li><p>插件或可扩展性：强大的 API 带来无限的可能，与数种模板引擎（<em>EJS，Pug，Nunjucks</em>）和工具（<em>Babel，PostCSS，Less/Sass</em>）轻易集成。</p>
-</li>
-</ol>
-<h3 id="Guthub"><a href="#Guthub" class="headerlink" title="Guthub"></a>Guthub</h3><p>GitHub 那就更不用说了，做程序员的都知道，它是多nice的一个东西。</p>
-<p>今天我们要说的主要是它提供的一个功能：<em>GitHub Pages</em> ，GitHub Pages 允许每个账户创建一个名为 {username}.<a href="http://github.io/">http://github.io</a> 的仓库，另外它还会自动为这个仓库分配一个 <a href="http://github.io/">http://github.io</a> 的二级域名，这就为我们搭建个人博客提供了很大的方便，既为我们解决了域名、服务器的问题，又为我们提供了一个稳定且免费的静态站点。</p>
-<h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><ol>
-<li>官网下载<br>下载地址：<a href="https://nodejs.org/en/">https://nodejs.org/en/</a></li>
-</ol>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778370777438.jpg" alt="16778370777438"></p>
-<ol start="2">
-<li>使用homebrew安装</li>
-</ol>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">## 搜索现有node版本</span><br><span class="line">brew search node</span><br><span class="line">## 安装指定版本</span><br><span class="line">brew install node@x</span><br></pre></td></tr></table></figure>
-<p>安装完成之后，可以用 <em>npm -v</em> 查询验证，如果不指定版本安装为最新版本</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778374510393.jpg" alt="16778374510393"></p>
-<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><ol>
-<li>使用外网下载（相对比较慢）</li>
-</ol>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用命令去安装Hexo</span></span><br><span class="line">npm install -g hexo-cli </span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>更换国内镜像后下载</li>
-</ol>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用命令安装淘宝镜像：</span></span><br><span class="line">npm install -g cnpm --registry=<span class="attr">https</span>:<span class="comment">//registry.npm.taobao.org</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用淘宝源安装Hexo</span></span><br><span class="line">cnpm install -g hexo-cli </span><br></pre></td></tr></table></figure>
-<p>安装成功后，可以使用 <em>hexo -v</em> 命令查看一下hexo版本：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778379318597.jpg" alt="16778379318597"></p>
-<h2 id="初始化Hexo-Blog"><a href="#初始化Hexo-Blog" class="headerlink" title="初始化Hexo Blog"></a>初始化Hexo Blog</h2><h3 id="新建一个文件夹"><a href="#新建一个文件夹" class="headerlink" title="新建一个文件夹"></a>新建一个文件夹</h3><p>我这里创建一个名为Blogs的文件夹，并进入该文件夹内：</p>
-<h3 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 初始化hexo</span></span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure>
-<p>初始化成功如下：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778382111564.jpg" alt="16778382111564"></p>
-<p>这时候Blogs下的目录结构如下：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778382603905.jpg" alt="16778382603905"></p>
-<h3 id="本地启动Hexo"><a href="#本地启动Hexo" class="headerlink" title="本地启动Hexo"></a>本地启动Hexo</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 启动Hexo</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778384529301.jpg" alt="16778384529301"></p>
-<h3 id="浏览器打开博客网站"><a href="#浏览器打开博客网站" class="headerlink" title="浏览器打开博客网站"></a>浏览器打开博客网站</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778384888543.jpg" alt="16778384888543"></p>
-<h2 id="创建博客文章"><a href="#创建博客文章" class="headerlink" title="创建博客文章"></a>创建博客文章</h2><h3 id="创建博客"><a href="#创建博客" class="headerlink" title="创建博客"></a>创建博客</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建一篇博客</span></span><br><span class="line">hexo n <span class="string">&quot;first blog&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>文章在Blogs目录下的结构如下：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778386968316.jpg" alt="16778386968316"></p>
-<h3 id="清理项目缓存"><a href="#清理项目缓存" class="headerlink" title="清理项目缓存"></a>清理项目缓存</h3><p>新增博客文章或者修改博客文章内容，需要执行此命令:</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 清理之前生成的网站</span></span><br><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
-
-<h3 id="重新生成博客"><a href="#重新生成博客" class="headerlink" title="重新生成博客"></a>重新生成博客</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 重新生成博客</span></span><br><span class="line">hexo g</span><br></pre></td></tr></table></figure>
-
-<h3 id="再次启动项目"><a href="#再次启动项目" class="headerlink" title="再次启动项目"></a>再次启动项目</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 再次启动博客网站</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-<p>浏览器页面展示如下：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778388704782.jpg" alt="16778388704782"></p>
-<h2 id="修改网站主题"><a href="#修改网站主题" class="headerlink" title="修改网站主题"></a>修改网站主题</h2><p>Hexo框架默认的是landscape主题，Hexo上有三百多种主题，大家可以上Hexo官网选择自己喜欢的<a href="https://hexo.io/themes/">主题</a>，我这里以next为例：</p>
-<h3 id="下载next主题"><a href="#下载next主题" class="headerlink" title="下载next主题"></a>下载next主题</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下载next</span></span><br><span class="line">git clone <span class="attr">https</span>:<span class="comment">//github.com/theme-next/hexo-theme-next themes/next</span></span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778391682864.jpg" alt="16778391682864"></p>
-<p>我们下载的主题都存放在Blogs/themes文件夹下：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778392610610.jpg" alt="16778392610610"></p>
-<h3 id="修改项目配置文件"><a href="#修改项目配置文件" class="headerlink" title="修改项目配置文件"></a>修改项目配置文件</h3><p>主题下载下来之后，我们需要在项目配置文件_config.yml里面修改我们的主题：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778393394648.jpg" alt="16778393394648"></p>
-<p>把默认的landscape修改为我们下载好的主题 next</p>
-<h3 id="重新生成项目"><a href="#重新生成项目" class="headerlink" title="重新生成项目"></a>重新生成项目</h3><p>这时候再执行我们Hexo三连：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 清理项目缓存</span></span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重新生成项目</span></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment">// 本地启动项目</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
-<p>Tips：重新生成项目和本地启动项目可以合并： <em>hexo g &amp; hexo s</em><br>再次打开项目，效果图如下：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778394696679.jpg" alt="16778394696679"></p>
-<p>到这里，我们的主题修改就完成了，后期我们可以根据自己的需要去修改next的配置文件，让我们的博客网站更加个性化。</p>
-<p>下一篇文章我将说说如何修改主题让我们的博客网站更具个性化。</p>
-<p>关于Hexo搭建博客到这里就讲得差不多了，下面我们就想怎么把博客部署到Github上。</p>
-<h2 id="部署博客到Github"><a href="#部署博客到Github" class="headerlink" title="部署博客到Github"></a>部署博客到Github</h2><p>首先，你得要有一个自己的Github账号吧，我相信99.99%的开发者都是有Github账号的，如果你是那0.01%，请前往<a href="https://github.com/">Github</a>自行注册。</p>
-<h3 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h3><p>在Github里创建一个存放博客项目的仓库，操作如下：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778397130902.jpg" alt="16778397130902"></p>
-<p>这里有几个注意点：</p>
-<ol>
-<li>仓库的名称必须与你Github账号名相同</li>
-<li>仓库必须以gitHub.io结尾（这里我已经创建过了，所以报错）</li>
-<li>使用GitHub Pages最好选 <em>Public</em> repo（Private需要付费）</li>
-</ol>
-<p>比如你Github账号名叫：zhangsan，那你新建的这个仓库名就叫：zhangsan.github.io</p>
-<p>创建之后，我们就有了一个存放博客项目仓库：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778399347942.jpg" alt="16778399347942"></p>
-<h3 id="安装Hexo部署插件"><a href="#安装Hexo部署插件" class="headerlink" title="安装Hexo部署插件"></a>安装Hexo部署插件</h3><p>进入到Blogs目录下，安装部署插件：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">#使用淘宝镜像安装</span><br><span class="line">cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
-
-<h3 id="修改项目配置文件-1"><a href="#修改项目配置文件-1" class="headerlink" title="修改项目配置文件"></a>修改项目配置文件</h3><p>好了，万事俱备，只欠修改 <em>_config.yml</em> 文件了，打开_config.yml文件，拖拽到最后，修改文件：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778401117276.jpg" alt="16778401117276"></p>
-<p>修改为：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778401892146.jpg" alt="16778401892146"></p>
-<p>注意：<em>repo</em> 为你刚创建的Github项目的地址，如果你是使用的 <em>vim</em> 打开的 <em>_config.yml</em>，记得修改了要 <em>:wq</em> 保存退出</p>
-<h3 id="重新生成项目-1"><a href="#重新生成项目-1" class="headerlink" title="重新生成项目"></a>重新生成项目</h3><p>清理项目缓存：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
-
-<p>重新生成博客：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
-
-<p>部署到云端（Github）:</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<p>注意：这里每次使用 <em>hexo d</em> 部署到Github为了安全都要求输入账号密码，如果你不希望每次都输入账号密码，可以跟博主一样设置Github的 <em>SSH Keys</em>，以后每次发布到Github就不需要输入账号密码了。</p>
-<p>访问云端博客主页</p>
-<p>访问地址：https://博客仓库名.github.io<br>比如我的博客地址：<a href="https://fengyanxin.github.io/">https://fengyanxin.github.io</a></p>
-<p>可以在以下路径查看：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778403847380.jpg" alt="16778403847380"></p>
-<p>最后</p>
-<p>基本上到这里，属于我们自己的博客就搭建完成啦，整个搭建流程如果不出错半个小时之内其实是可以搞定的，但是这路哪里那么好走呢，每个人去搭建的过程中或多或少都会遇到一些问题，我自己在搭建的过程中也碰到了一些问题，我会抽空把遇到的问题详细整理出来，希望能够帮助大家如果要搭建博客的时候少踩点坑。</p>
-<p>大兄弟，都看到这里了，就不要吝啬你的小星星了，为博主点个赞再走吧～</p>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【Hexo】Gitlab pages 的使用</title>
     <url>/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
@@ -1690,6 +1563,133 @@
         <category>Hexo</category>
       </categories>
       <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Hexo】Mac 上使用Hexo + Github搭建个人博客</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="【Hexo】Mac-上使用Hexo-Github搭建个人博客"><a href="#【Hexo】Mac-上使用Hexo-Github搭建个人博客" class="headerlink" title="【Hexo】Mac 上使用Hexo + Github搭建个人博客"></a>【Hexo】Mac 上使用Hexo + Github搭建个人博客</h1><h2 id="为什么要用Hexo-Github？"><a href="#为什么要用Hexo-Github？" class="headerlink" title="为什么要用Hexo + Github？"></a>为什么要用Hexo + Github？</h2><h3 id="Hexo介绍"><a href="#Hexo介绍" class="headerlink" title="Hexo介绍"></a>Hexo介绍</h3><p>Hexo是一款基于Nodejs的，快速、简洁且高效的博客框架。它具有丰富的插件和主题，具有超快的速度，支持Makedown语法，可以方便快捷的编写博客文档。同时还支持node命令，可以一键部署到GitHub Pages, Heroku 或其他平台。更详细的信息可以看一下 <a href="https://hexo.io/zh-cn">Hexo官网</a> 。</p>
+<p>值得一提的是，它在github上的<em>star</em>现在已经达到了<a href="https://github.com/hexojs/hexo">36.3k</a>，优不优秀可见一斑。</p>
+<span id="more"></span>
+
+<p>Hexo主要有以下特点：</p>
+<ol>
+<li><p>超快速度：<em>Node.js</em>所带来的超快生成速度，可以让上百个页面在几秒内完成渲染。</p>
+</li>
+<li><p>支持 <em>Markdown</em>：Hexo 支持 GitHub Flavored Markdown 的所有功能，甚至可以整合 Octopress 的大多数插件。</p>
+</li>
+<li><p>一键部署：只需一条指令即可部署到 <em>GitHub Pages, Heroku</em> 或其他平台。</p>
+</li>
+<li><p>插件或可扩展性：强大的 API 带来无限的可能，与数种模板引擎（<em>EJS，Pug，Nunjucks</em>）和工具（<em>Babel，PostCSS，Less/Sass</em>）轻易集成。</p>
+</li>
+</ol>
+<h3 id="Guthub"><a href="#Guthub" class="headerlink" title="Guthub"></a>Guthub</h3><p>GitHub 那就更不用说了，做程序员的都知道，它是多nice的一个东西。</p>
+<p>今天我们要说的主要是它提供的一个功能：<em>GitHub Pages</em> ，GitHub Pages 允许每个账户创建一个名为 {username}.<a href="http://github.io/">http://github.io</a> 的仓库，另外它还会自动为这个仓库分配一个 <a href="http://github.io/">http://github.io</a> 的二级域名，这就为我们搭建个人博客提供了很大的方便，既为我们解决了域名、服务器的问题，又为我们提供了一个稳定且免费的静态站点。</p>
+<h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><ol>
+<li>官网下载<br>下载地址：<a href="https://nodejs.org/en/">https://nodejs.org/en/</a></li>
+</ol>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778370777438.jpg" alt="16778370777438"></p>
+<ol start="2">
+<li>使用homebrew安装</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">## 搜索现有node版本</span><br><span class="line">brew search node</span><br><span class="line">## 安装指定版本</span><br><span class="line">brew install node@x</span><br></pre></td></tr></table></figure>
+<p>安装完成之后，可以用 <em>npm -v</em> 查询验证，如果不指定版本安装为最新版本</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778374510393.jpg" alt="16778374510393"></p>
+<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><ol>
+<li>使用外网下载（相对比较慢）</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用命令去安装Hexo</span></span><br><span class="line">npm install -g hexo-cli </span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>更换国内镜像后下载</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用命令安装淘宝镜像：</span></span><br><span class="line">npm install -g cnpm --registry=<span class="attr">https</span>:<span class="comment">//registry.npm.taobao.org</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用淘宝源安装Hexo</span></span><br><span class="line">cnpm install -g hexo-cli </span><br></pre></td></tr></table></figure>
+<p>安装成功后，可以使用 <em>hexo -v</em> 命令查看一下hexo版本：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778379318597.jpg" alt="16778379318597"></p>
+<h2 id="初始化Hexo-Blog"><a href="#初始化Hexo-Blog" class="headerlink" title="初始化Hexo Blog"></a>初始化Hexo Blog</h2><h3 id="新建一个文件夹"><a href="#新建一个文件夹" class="headerlink" title="新建一个文件夹"></a>新建一个文件夹</h3><p>我这里创建一个名为Blogs的文件夹，并进入该文件夹内：</p>
+<h3 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 初始化hexo</span></span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+<p>初始化成功如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778382111564.jpg" alt="16778382111564"></p>
+<p>这时候Blogs下的目录结构如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778382603905.jpg" alt="16778382603905"></p>
+<h3 id="本地启动Hexo"><a href="#本地启动Hexo" class="headerlink" title="本地启动Hexo"></a>本地启动Hexo</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 启动Hexo</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778384529301.jpg" alt="16778384529301"></p>
+<h3 id="浏览器打开博客网站"><a href="#浏览器打开博客网站" class="headerlink" title="浏览器打开博客网站"></a>浏览器打开博客网站</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778384888543.jpg" alt="16778384888543"></p>
+<h2 id="创建博客文章"><a href="#创建博客文章" class="headerlink" title="创建博客文章"></a>创建博客文章</h2><h3 id="创建博客"><a href="#创建博客" class="headerlink" title="创建博客"></a>创建博客</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建一篇博客</span></span><br><span class="line">hexo n <span class="string">&quot;first blog&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>文章在Blogs目录下的结构如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778386968316.jpg" alt="16778386968316"></p>
+<h3 id="清理项目缓存"><a href="#清理项目缓存" class="headerlink" title="清理项目缓存"></a>清理项目缓存</h3><p>新增博客文章或者修改博客文章内容，需要执行此命令:</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 清理之前生成的网站</span></span><br><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
+
+<h3 id="重新生成博客"><a href="#重新生成博客" class="headerlink" title="重新生成博客"></a>重新生成博客</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 重新生成博客</span></span><br><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<h3 id="再次启动项目"><a href="#再次启动项目" class="headerlink" title="再次启动项目"></a>再次启动项目</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 再次启动博客网站</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>浏览器页面展示如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778388704782.jpg" alt="16778388704782"></p>
+<h2 id="修改网站主题"><a href="#修改网站主题" class="headerlink" title="修改网站主题"></a>修改网站主题</h2><p>Hexo框架默认的是landscape主题，Hexo上有三百多种主题，大家可以上Hexo官网选择自己喜欢的<a href="https://hexo.io/themes/">主题</a>，我这里以next为例：</p>
+<h3 id="下载next主题"><a href="#下载next主题" class="headerlink" title="下载next主题"></a>下载next主题</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下载next</span></span><br><span class="line">git clone <span class="attr">https</span>:<span class="comment">//github.com/theme-next/hexo-theme-next themes/next</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778391682864.jpg" alt="16778391682864"></p>
+<p>我们下载的主题都存放在Blogs/themes文件夹下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778392610610.jpg" alt="16778392610610"></p>
+<h3 id="修改项目配置文件"><a href="#修改项目配置文件" class="headerlink" title="修改项目配置文件"></a>修改项目配置文件</h3><p>主题下载下来之后，我们需要在项目配置文件_config.yml里面修改我们的主题：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778393394648.jpg" alt="16778393394648"></p>
+<p>把默认的landscape修改为我们下载好的主题 next</p>
+<h3 id="重新生成项目"><a href="#重新生成项目" class="headerlink" title="重新生成项目"></a>重新生成项目</h3><p>这时候再执行我们Hexo三连：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 清理项目缓存</span></span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重新生成项目</span></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment">// 本地启动项目</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>Tips：重新生成项目和本地启动项目可以合并： <em>hexo g &amp; hexo s</em><br>再次打开项目，效果图如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778394696679.jpg" alt="16778394696679"></p>
+<p>到这里，我们的主题修改就完成了，后期我们可以根据自己的需要去修改next的配置文件，让我们的博客网站更加个性化。</p>
+<p>下一篇文章我将说说如何修改主题让我们的博客网站更具个性化。</p>
+<p>关于Hexo搭建博客到这里就讲得差不多了，下面我们就想怎么把博客部署到Github上。</p>
+<h2 id="部署博客到Github"><a href="#部署博客到Github" class="headerlink" title="部署博客到Github"></a>部署博客到Github</h2><p>首先，你得要有一个自己的Github账号吧，我相信99.99%的开发者都是有Github账号的，如果你是那0.01%，请前往<a href="https://github.com/">Github</a>自行注册。</p>
+<h3 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h3><p>在Github里创建一个存放博客项目的仓库，操作如下：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778397130902.jpg" alt="16778397130902"></p>
+<p>这里有几个注意点：</p>
+<ol>
+<li>仓库的名称必须与你Github账号名相同</li>
+<li>仓库必须以gitHub.io结尾（这里我已经创建过了，所以报错）</li>
+<li>使用GitHub Pages最好选 <em>Public</em> repo（Private需要付费）</li>
+</ol>
+<p>比如你Github账号名叫：zhangsan，那你新建的这个仓库名就叫：zhangsan.github.io</p>
+<p>创建之后，我们就有了一个存放博客项目仓库：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778399347942.jpg" alt="16778399347942"></p>
+<h3 id="安装Hexo部署插件"><a href="#安装Hexo部署插件" class="headerlink" title="安装Hexo部署插件"></a>安装Hexo部署插件</h3><p>进入到Blogs目录下，安装部署插件：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">#使用淘宝镜像安装</span><br><span class="line">cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改项目配置文件-1"><a href="#修改项目配置文件-1" class="headerlink" title="修改项目配置文件"></a>修改项目配置文件</h3><p>好了，万事俱备，只欠修改 <em>_config.yml</em> 文件了，打开_config.yml文件，拖拽到最后，修改文件：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778401117276.jpg" alt="16778401117276"></p>
+<p>修改为：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778401892146.jpg" alt="16778401892146"></p>
+<p>注意：<em>repo</em> 为你刚创建的Github项目的地址，如果你是使用的 <em>vim</em> 打开的 <em>_config.yml</em>，记得修改了要 <em>:wq</em> 保存退出</p>
+<h3 id="重新生成项目-1"><a href="#重新生成项目-1" class="headerlink" title="重新生成项目"></a>重新生成项目</h3><p>清理项目缓存：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
+
+<p>重新生成博客：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<p>部署到云端（Github）:</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>注意：这里每次使用 <em>hexo d</em> 部署到Github为了安全都要求输入账号密码，如果你不希望每次都输入账号密码，可以跟博主一样设置Github的 <em>SSH Keys</em>，以后每次发布到Github就不需要输入账号密码了。</p>
+<p>访问云端博客主页</p>
+<p>访问地址：https://博客仓库名.github.io<br>比如我的博客地址：<a href="https://fengyanxin.github.io/">https://fengyanxin.github.io</a></p>
+<p>可以在以下路径查看：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/16778403847380.jpg" alt="16778403847380"></p>
+<p>最后</p>
+<p>基本上到这里，属于我们自己的博客就搭建完成啦，整个搭建流程如果不出错半个小时之内其实是可以搞定的，但是这路哪里那么好走呢，每个人去搭建的过程中或多或少都会遇到一些问题，我自己在搭建的过程中也碰到了一些问题，我会抽空把遇到的问题详细整理出来，希望能够帮助大家如果要搭建博客的时候少踩点坑。</p>
+<p>大兄弟，都看到这里了，就不要吝啬你的小星星了，为博主点个赞再走吧～</p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
         <tag>Hexo</tag>
       </tags>
   </entry>
@@ -5147,55 +5147,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【Tips】解决 ping github.com 超时问题</title>
-    <url>/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="解决-ping-github-com-超时问题"><a href="#解决-ping-github-com-超时问题" class="headerlink" title="解决 ping github.com 超时问题"></a>解决 ping github.com 超时问题</h1><p>1、尝试 <code>ping github.com</code>，结果发现Ping不通，但是 <code>ping baidu.com</code> 却是正常的。</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg"></p>
-<span id="more"></span>
-
-<p>2、初步分心应该是本地的DNS无法解析导致的，需要修改Hosts文件，添加 github 的ip地址项</p>
-<h2 id="如何修改Hosts文件？"><a href="#如何修改Hosts文件？" class="headerlink" title="如何修改Hosts文件？"></a>如何修改Hosts文件？</h2><h3 id="1、通过终端命令修改"><a href="#1、通过终端命令修改" class="headerlink" title="1、通过终端命令修改"></a>1、通过终端命令修改</h3><p>（1）打开终端，输入命令行：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># sudo 以管理员权限执行</span><br><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
-
-<p>（2）输入本机密码后，会自动打开hosts文件 。</p>
-<ul>
-<li>键盘输入<code>i</code>（插入），修改完成后，按 <code>esc</code> 键退出插入页面</li>
-<li>保存退出：输入  <code>:wq</code> 或者<code>:wq!</code>，再<code>enter</code>键 </li>
-<li>不保存退出：输入<code>q</code>和<code>！</code>键，再<code>enter</code>键</li>
-</ul>
-<h3 id="2、在-Finder-中修改"><a href="#2、在-Finder-中修改" class="headerlink" title="2、在 Finder 中修改"></a>2、在 Finder 中修改</h3><p>方法一：</p>
-<p>（1）打开 <code>Finder</code> ，快捷键 <code>Command+Shift+G</code> 查找文件，输入 <code>/etc/hosts</code>，点击前往</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg"></p>
-<p>（2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg"></p>
-<p>方法二：</p>
-<p>（1）打开Finder，快捷键 <code>Shift+Command+G</code> 查找文件，输入 <code>/private</code> 前往</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg"></p>
-<p>（2）找到 <code>etc</code> 文件之后，选择显示简介</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg"></p>
-<p>（3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg"></p>
-<h2 id="如何在-Hosts-文件中配置-github-com-映射"><a href="#如何在-Hosts-文件中配置-github-com-映射" class="headerlink" title="如何在 Hosts 文件中配置 github.com 映射"></a>如何在 Hosts 文件中配置 github.com 映射</h2><p>host文件打开之后可以看到：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg"></p>
-<p>在文件下面添加如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="title class_">GitHub</span>地址</span><br><span class="line"><span class="number">140.82</span><span class="number">.114</span><span class="number">.3</span> github.<span class="property">com</span> git</span><br><span class="line"><span class="number">151.101</span><span class="number">.129</span><span class="number">.194</span> github.<span class="property">global</span>.<span class="property">ssl</span>.<span class="property">fastly</span>.<span class="property">net</span></span><br></pre></td></tr></table></figure>
-
-<p>上图中的 IP 可以通过， <a href="https://www.ipaddress.com/">ipaddress</a> 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg"></p>
-<p><code>140.82.114.3</code>：这个IP地址修改为 <code>github.com</code>搜索到的IP地址</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg"></p>
-<p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
-<p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
-]]></content>
-      <categories>
-        <category>Tips</category>
-      </categories>
-      <tags>
-        <tag>Tips</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【iOS】集成阿里云消息推送</title>
     <url>/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/</url>
     <content><![CDATA[<h1 id="集成阿里云消息推送"><a href="#集成阿里云消息推送" class="headerlink" title="集成阿里云消息推送"></a>集成阿里云消息推送</h1><h2 id="基本的业务流程："><a href="#基本的业务流程：" class="headerlink" title="基本的业务流程："></a>基本的业务流程：</h2><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782576576028.jpg"></p>
@@ -5318,6 +5269,55 @@
       </categories>
       <tags>
         <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Tips】解决 ping github.com 超时问题</title>
+    <url>/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="解决-ping-github-com-超时问题"><a href="#解决-ping-github-com-超时问题" class="headerlink" title="解决 ping github.com 超时问题"></a>解决 ping github.com 超时问题</h1><p>1、尝试 <code>ping github.com</code>，结果发现Ping不通，但是 <code>ping baidu.com</code> 却是正常的。</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg"></p>
+<span id="more"></span>
+
+<p>2、初步分心应该是本地的DNS无法解析导致的，需要修改Hosts文件，添加 github 的ip地址项</p>
+<h2 id="如何修改Hosts文件？"><a href="#如何修改Hosts文件？" class="headerlink" title="如何修改Hosts文件？"></a>如何修改Hosts文件？</h2><h3 id="1、通过终端命令修改"><a href="#1、通过终端命令修改" class="headerlink" title="1、通过终端命令修改"></a>1、通过终端命令修改</h3><p>（1）打开终端，输入命令行：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># sudo 以管理员权限执行</span><br><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>（2）输入本机密码后，会自动打开hosts文件 。</p>
+<ul>
+<li>键盘输入<code>i</code>（插入），修改完成后，按 <code>esc</code> 键退出插入页面</li>
+<li>保存退出：输入  <code>:wq</code> 或者<code>:wq!</code>，再<code>enter</code>键 </li>
+<li>不保存退出：输入<code>q</code>和<code>！</code>键，再<code>enter</code>键</li>
+</ul>
+<h3 id="2、在-Finder-中修改"><a href="#2、在-Finder-中修改" class="headerlink" title="2、在 Finder 中修改"></a>2、在 Finder 中修改</h3><p>方法一：</p>
+<p>（1）打开 <code>Finder</code> ，快捷键 <code>Command+Shift+G</code> 查找文件，输入 <code>/etc/hosts</code>，点击前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg"></p>
+<p>（2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg"></p>
+<p>方法二：</p>
+<p>（1）打开Finder，快捷键 <code>Shift+Command+G</code> 查找文件，输入 <code>/private</code> 前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg"></p>
+<p>（2）找到 <code>etc</code> 文件之后，选择显示简介</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg"></p>
+<p>（3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg"></p>
+<h2 id="如何在-Hosts-文件中配置-github-com-映射"><a href="#如何在-Hosts-文件中配置-github-com-映射" class="headerlink" title="如何在 Hosts 文件中配置 github.com 映射"></a>如何在 Hosts 文件中配置 github.com 映射</h2><p>host文件打开之后可以看到：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg"></p>
+<p>在文件下面添加如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="title class_">GitHub</span>地址</span><br><span class="line"><span class="number">140.82</span><span class="number">.114</span><span class="number">.3</span> github.<span class="property">com</span> git</span><br><span class="line"><span class="number">151.101</span><span class="number">.129</span><span class="number">.194</span> github.<span class="property">global</span>.<span class="property">ssl</span>.<span class="property">fastly</span>.<span class="property">net</span></span><br></pre></td></tr></table></figure>
+
+<p>上图中的 IP 可以通过， <a href="https://www.ipaddress.com/">ipaddress</a> 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg"></p>
+<p><code>140.82.114.3</code>：这个IP地址修改为 <code>github.com</code>搜索到的IP地址</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg"></p>
+<p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
+<p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>Tips</tag>
       </tags>
   </entry>
   <entry>
