@@ -80,3 +80,32 @@ $('img').each(function(){
 
 此刻，笔者只想说：腾讯，我劝你善良！
 
+## 三、Github 同步仓库代码到 Gitlab 的 Action 报错
+
+![](assets/17375152368458.jpg)
+
+`sync-2-gitlab.yml` Action 脚本报错：
+
+``` swift
+WARNING: StrictHostKeyChecking disabled
+SOURCE=ssh://git@github.com:fengyanxin/fengyanxin.github.io.git
+DESTINATION=git@gitlab.com:fengyanxin/fengyanxin.git
+DRY RUN=false
+Cloning into bare repository 'fengyanxin.github.io.git'...
+ssh: Could not resolve hostname github.com:fengyanxin: Name does not resolve
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+fatal: not a git repository (or any parent up to mount point /github)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+```
+
+原因：SSH 校验出错，在 Github 项目
+`Settings->Secrets->Actions`，设置的 `Repository secrets`错了
+
+解决：这里的值是 `~/.ssh/` 目录下 `id_rsa` 文件内容，而不是 `id_rsa.pub`，我之前用的是 `id_rsa.pub`内容，所以报错了
+
+成功结果如下：
+
+![](assets/17375156102164.jpg)

@@ -73,12 +73,12 @@ ssh-keygen -t rsa -C '邮箱地址'
 ![](assets/17374484172632.jpg)
 
 * 在 Gitlab
-`设置->安全设置->SSH公钥`，标题可以随便起名，值为：上面生成SSH的公钥：
+`设置->安全设置->SSH公钥`，标题可以随便起名，值为：`id_rsa.pub`文件内容：
 
 ![](assets/17374488054875.jpg)
 
 * 在 Github 项目
-`Settings->Secrets->Actions`，名称为：`GITLAB`，值为：上面生成的个人令牌
+`Settings->Secrets->Actions`，名称为：`GITLAB`，值为：`~/.ssh/`目录下`id_rsa` 文件内容，⚠️注意不是 `id_rsa.pub`：
 
 ![](assets/17374486339840.jpg)
 
