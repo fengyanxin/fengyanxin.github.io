@@ -20,7 +20,7 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/categories/index.html</loc>
+    <loc>https://fengyanxin.github.io/tags/index.html</loc>
     
     <lastmod>2025-01-21</lastmod>
     
@@ -29,7 +29,7 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/tags/index.html</loc>
+    <loc>https://fengyanxin.github.io/categories/index.html</loc>
     
     <lastmod>2025-01-21</lastmod>
     
@@ -74,15 +74,6 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91%E6%96%B9%E6%B3%95%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%9A%E5%A6%82%E4%BD%95-hook-%E4%B8%89%E6%96%B9-SDK-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95/</loc>
-    
-    <lastmod>2025-01-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91ASCII%E7%A0%81%E5%AF%B9%E5%BA%94%E8%A1%A8/</loc>
     
     <lastmod>2025-01-21</lastmod>
@@ -93,6 +84,15 @@
   
   <url>
     <loc>https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/</loc>
+    
+    <lastmod>2025-01-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91%E6%96%B9%E6%B3%95%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%9A%E5%A6%82%E4%BD%95-hook-%E4%B8%89%E6%96%B9-SDK-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95/</loc>
     
     <lastmod>2025-01-21</lastmod>
     
