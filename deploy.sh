@@ -17,9 +17,6 @@ sleep 5
 
 echo "=====> Deploy finish! <====="
 
-# 拷贝 gitlab-ci 文件到 public下
-cp .gitlab-ci.yml public/
-
 # Push hexo code
 git add .
 current_date=`date "+%Y-%m-%d %H:%M:%S"`
