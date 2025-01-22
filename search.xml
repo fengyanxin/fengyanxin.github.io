@@ -1,6 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>01 | 开发环境：如何使用 Ruby 工具链统一开发环境？</title>
+    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/</url>
+    <content><![CDATA[<h1 id="01-开发环境：如何使用-Ruby-工具链统一开发环境？"><a href="#01-开发环境：如何使用-Ruby-工具链统一开发环境？" class="headerlink" title="01 | 开发环境：如何使用 Ruby 工具链统一开发环境？"></a>01 | 开发环境：如何使用 Ruby 工具链统一开发环境？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.25.34.png" alt="2021-03-17_10.25.34"></p>
+<span id="more"></span>
+
+<p>在 iOS 开发过程中，你是不是会经常遇到这些情况：</p>
+<p>每次打开一个新项目，都需要手动搭建开发环境；有时候在安装第三方工具时使用到 <code>sudo 权限</code>，导致以后安装工具都需要手工输入密码而无法实施自动化。还有，每当启动一台新 <code>CI</code> 时，就需要手工登录并配置一遍，更可怕的是，原先搭建好的 CI 会随着 Xcode 版本更新需要重新配置。</p>
+<p>为什么会这么麻烦呢？就是因为你在项目开始之初没有做好统一配置。</p>
+<p>所谓统一配置，就是所有的配置信息都以文本的格式存放在 Git 里面，我们可以随时查看修改记录，以此来帮助我们比较不同配置之间的差异性，然后在这个基础上不断更新迭代。</p>
+<p>可以说，有了统一配置，任何工程师都可以搭建出一模一样的开发环境，构建出功能一致的 App；有了统一配置，还可以让我们按需延展 CI 服务，而不用任何手工操作。更重要的是，它还可以应用到各个类似的 iOS 项目中，极大地减轻了项目前期的搭建成本。</p>
+<p>既然统一的配置那么重要，那么我们怎样搭建统一配置的开发环境呢？</p>
+<h2 id="Ruby-工具链"><a href="#Ruby-工具链" class="headerlink" title="Ruby 工具链"></a>Ruby 工具链</h2><p>我们可以通过 Ruby 工具链为整个项目搭建一致的开发和构建环境。为什么选择 <code>Ruby</code> 而不是其他语言环境呢？因为在 iOS 开发方面，目前流行的第三方工具 <code>CocoaPods</code> 和 <code>fastlane</code> 都是使用 Ruby 来开发的。特别是 Ruby 有非常成熟的依赖库管理工具 <code>RubyGems</code> 和 <code>Bundler</code>，其中 Bundler 可以帮我们有效地管理 CocoaPods 和 fastlane 的版本。</p>
+<p>下面一起来看看怎样搭建一个统一的开发环境吧。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.02.14.png" alt="2021-03-17_10.02.14"></p>
+<p>通常，统一的开发环境应该从操作系统开始。对于 iOS 开发来说，<strong>MacOS</strong> 是目前 iOS 开发唯一支持的操作系统。在公司，MacOS 的版本一般由 IT 部门统一管理和更新。要注意，当公司统一更新了我们开发环境的 MacOS 版本以后，需要同时更新 CI 上 MacOS 的版本，以保持一致。</p>
+<h2 id="Xcode"><a href="#Xcode" class="headerlink" title="Xcode"></a>Xcode</h2><p>位于 MacOS 上层的是 Xcode 和 rbenv。其中，<strong>Xcode</strong> 是 iOS 开发和构建工具，在同一个项目里，最好使用同一个版本的 Xcode 进行开发和构建，我们可以在项目的 README.md 文件标注 Xcode 的版本。</p>
+<p>像我们将要开发的这款类似朋友圈的 Moments App 项目，我就在对应的 README.md 文件里标明了需要使用 <code>Xcode Version 12.2 (12B45b)</code>。具体内容你也可以在代码仓库找到。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.12.38.png" alt="2021-03-17_10.12.38"></p>
+<p>那我们怎样才能保证每个人都安装同一个版本号的 Xcode 呢？技巧就是我们不要到有自动更新功能的 Mac App Store 中下载 Xcode，而是到苹果的开发者网站搜索并下载。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.14.30.png" alt="2021-03-17_10.14.30"></p>
+<p>有时候我们会同时开发多个项目，这样有可能要安装多个不同版本的 Xcode。如果你的机器有多于一个版本的 Xcode，此时需要特别注意，为了保证所使用的编译器版本一致，在每次执行自动化命令之前（如执行<code>bundle exec fastlane test</code>），要先使用<code>xcode-select -s</code>来选择该项目所对应版本的 Xcode。</p>
+<p>比如说我的电脑上有多个 Xcode 版本，在开发 Moments App 时，每次执行自动化命令之前都会执行这样一条命令<code>xcode-select -s /Applications/Xcode12.2.app/Contents/Developer</code>来选择 Moments App 项目所使用的 Xcode。这里的<code>Xcode12.2.app</code>就是我安装的 Xcode 12.2 版所在的位置。</p>
+<h2 id="rbenv"><a href="#rbenv" class="headerlink" title="rbenv"></a>rbenv</h2><p>有了版本一致的 Xcode 以后，因为后期我们会用到 CocoaPods 等第三方 Ruby 工具，为了自动化安装和管理这些工具，整个项目团队所使用的 Ruby 版本也必须保持一致。为此，我们就需要用到 Ruby 环境管理工具。</p>
+<p>目前流行的 Ruby 环境管理工具有 RVM 和 rbenv。我推荐使用的是 rbenv，因为它使用 shims 文件夹来分离各个 Ruby 版本，相对于 RVM 更加轻装而方便使用。千万注意，团队内部不要同时使用不同的 Ruby 环境管理工具，否则项目编译会出错。</p>
+<p><strong>rbenv</strong> 是 Ruby 环境管理工具，能够安装、管理、隔离以及在多个 Ruby 版本之间切换。要使用 rbenv，我们可以通过 Homebrew 来安装它，下面是安装 Homebrew 和 rbenv 的脚本。</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">$ /bin/bash -c <span class="string">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)&quot;</span></span><br><span class="line">brew install rbenv ruby-build rbenv-vars</span><br></pre></td></tr></table></figure>
+
+<p>一旦安装 rbenv 完毕，我们需要把以下的设置信息放到你的 Shell 配置文件里面，例如 <code>~/.bash_profile</code> 或者 <code>~/.zshrc</code> 等文件，这样能保证每次打开终端的时候都会初始化 rbenv。</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="variable constant_">PATH</span>=<span class="string">&quot;$HOME/.rbenv/bin:$PATH&quot;</span> </span><br><span class="line"><span class="built_in">eval</span> <span class="string">&quot;$(rbenv init -)&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>接着我们就可以安装和设置项目的 Ruby 环境了。</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">$ cd $(<span class="variable constant_">PROJECT_DIR</span>)</span><br><span class="line">$ rbenv install <span class="number">2.7</span><span class="number">.1</span></span><br><span class="line">$ rbenv local <span class="number">2.7</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+
+<p>此处是把项目的 Ruby 环境配置为 2.7.1 版本。rbenv 会帮我们建立 一个叫作<code>.ruby-version</code> 的文件，该文件里面只保存一个版本号（例如<code>2.7.1</code>）的字符串。这个包含了版本号的文件可以用 Git 进行管理。如果要更新版本，可以通过<code>rbenv local</code>命令进行，每次更新也由 Git 统一管理，这样就能让其他开发者使用同一版本的 Ruby 开发环境了。</p>
+<h2 id="RubyGems-和-Bundler"><a href="#RubyGems-和-Bundler" class="headerlink" title="RubyGems 和 Bundler"></a>RubyGems 和 Bundler</h2><p>RubyGems 和 Bundler 主要是用来安装和管理 CocoaPods 和 fastlane 等第三方工具。</p>
+<p>具体来说，RubyGems 是 Ruby 依赖包管理工具。在 Ruby 的世界，包叫作 Gem，我们可以通过<code>gem install</code>命令来安装。但是 RubyGems 在管理 Gem 版本的时候有些缺陷，就有人开发了 Bundler，用它来检查和安装 Gem 的特定版本，以此为 Ruby 项目提供一致性的环境。</p>
+<p>要安装 Bundler，我们可执行<code>gem install bundler</code>命令进行，之后，再执行<code>bundle init</code>就可以生成一个 Gemfile 文件，像 CocoaPods 和 fastlane 等依赖包，我们就可以添加到这个文件里面。</p>
+<p>具体代码如下：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">source <span class="string">&quot;https://rubygems.org&quot;</span></span><br><span class="line">gem <span class="string">&quot;cocoapods&quot;</span>, <span class="string">&quot;1.10.0&quot;</span></span><br><span class="line">gem <span class="string">&quot;fastlane&quot;</span>, <span class="string">&quot;2.166.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意我们在<code>gem</code>命令里面都指定了依赖包的特定版本号。例如，在我们的 Moment App 就使用了<code>1.10.0</code>版的 CocoaPods，然后执行<code>bundle install</code>来安装各个 Gem。 Bundler 会自动生成一个 <code>Gemfile.lock</code> 文件来锁定所安装的 Gem 的版本，例如：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">DEPENDENCIES</span></span><br><span class="line">  cocoapods (= <span class="number">1.10</span><span class="number">.0</span>)</span><br><span class="line">  fastlane (= <span class="number">2.166</span><span class="number">.0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>为了保证团队其他成员都可以使用版本号一致的 Gem，我们需要把 <code>Gemfile</code> 和 <code>Gemfile.lock</code> 一同保存到 Git 里面统一管理起来。</p>
+<p>到此为止，我们已经知道怎样使用 Ruby 工具链配置一个统一的开发环境。但在真实的开发环境中，搭建环境只需要一个人来完成即可，其他成员执行以下脚本就能完成整套开发环境的搭建。</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">$ ./scripts/setup.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>我们一起看看这个脚本做了些什么？</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"># <span class="title class_">Install</span> ruby using rbenv</span><br><span class="line">ruby_version=<span class="string">`cat .ruby-version`</span></span><br><span class="line"><span class="keyword">if</span> [[ ! -d <span class="string">&quot;$HOME/.rbenv/versions/$ruby_version&quot;</span> ]]; then</span><br><span class="line">  rbenv install $ruby_version;</span><br><span class="line">fi</span><br><span class="line"># <span class="title class_">Install</span> bunlder</span><br><span class="line">gem install bundler</span><br><span class="line"># <span class="title class_">Install</span> all gems</span><br><span class="line">bundle install</span><br><span class="line"># <span class="title class_">Install</span> all pods</span><br><span class="line">bundle exec pod install</span><br></pre></td></tr></table></figure>
+
+<p>该脚本主要做了四件事情，第一步是在 rbenv 下安装特定版本的 Ruby 开发环境，然后通过 RubyGems 安装 Bunlder，接着使用 Bundler 安装 CocoaPods 和 fastlane 等依赖包，最后安装各个 Pod。这样，一个统一的项目环境就搭建完成了，接下来开发者就可以打开 <strong>Moments.xcworkspace</strong>进行开发了。</p>
+<p>说完 Ruby 环境搭建以后，最后我们一起聊聊保证项目文件一致性的 .gitignore 文件。</p>
+<h2 id="gitignore-文件"><a href="#gitignore-文件" class="headerlink" title=".gitignore 文件"></a>.gitignore 文件</h2><p>.gitignore 文件是一个配置文件，用来指定让 Git 需要忽略的文件或者目录。如果没有 .gitignore 文件，项目成员可能会不小心把一些自动生成等无关重要的文件或者具有个人信息(例如 <code>xcuserdata</code>)的文件保存到 Git 里面。这就大大增加了查看 Git 修改历史的难度。因此，在项目初期就配置一个合适的 .gitignore 文件，能减轻后续的管理工作。</p>
+<p>如何创建 .gitignore 文件呢？</p>
+<p>我一般会在 <code>gitignore.io</code> 里面输入关键字，例如 Xcode，Swift 等，然后该网站会帮我们生成一个默认的 .gitignore 文件。咱们项目 Moments App 的.gitignore 文件你可以到<a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/.gitignore">拉勾教育的仓库中</a>查看。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.24.47.png" alt="2021-03-17_10.24.47"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h2><p>以上，我们通过 Xcode、rbenv、RubyGems 和 Bundler 搭建一个统一的 iOS 开发和构建环境。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.25.34.png" alt="2021-03-17_10.25.34"></p>
+<p>再次强调下，为了让各个开发和构建环境能保持一致，我们要把 .ruby-version、 Gemfile 和 Gemfile.lock 文件通过 Git 统一管理起来，并共享给整个项目团队使用。</p>
+<p>而且，由于我们的开发环境已经通过 Bundler 管理起来，今后，当使用各个 Gem 工具的时候，也需要使用 Bundler。例如在使用 CocoaPods 时要执行<code>bundle exec pod</code>，以保证我们使用的是项目级别而不是操作系统级别的 Gem 工具。</p>
+<p><strong>源码地址：</strong></p>
+<blockquote>
+<p>README.md<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/README.md">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/README.md</a><br>Moments App 的.gitignore 文件<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/.gitignore">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/.gitignore</a></p>
+</blockquote>
+<h1 id="学习笔记与扩展"><a href="#学习笔记与扩展" class="headerlink" title="学习笔记与扩展"></a>学习笔记与扩展</h1><p>上文有提到过，目前流行的 Ruby 环境管理工具有 <code>RVM</code> 和 <code>rbenv</code>，文章中推荐使用的是 <code>rbenv</code>，但是，如果我们的团队已经有人使用 <code>RVM</code> 来管理ruby，因为 <strong>团队内部不能同时使用不同的 Ruby 环境管理工具，否则项目编译会出错</strong> ，所以，我们可能也需要使用 <code>RVM</code> 来管理ruby了。</p>
+<p>下面我们就来了解一下 <code>RVM</code>。</p>
+<p><a href="https://rvm.io/">RVM</a> 是一个命令行工具，它允许我们轻松安装、管理和使用从解释器到 gem 集的多个 ruby 环境。 </p>
+<h2 id="RVM-安装"><a href="#RVM-安装" class="headerlink" title="RVM 安装"></a>RVM 安装</h2><p>首先，安装 <code>RVM</code> 需要使用 <code>gpg</code> 或者 <code>gpg2</code>，如果没有需要使用 <code>Homebrew</code> 进行安装：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">brew install gpg</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">brew install gpg2</span><br></pre></td></tr></table></figure>
+
+<p>如果没有 <code>Homebrew</code> 可以用以下方法安装：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">/bin/bash -c <span class="string">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完 <code>gpg</code> 、<code>gpg2</code>之后，需要安装 GPG keys：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</span><br></pre></td></tr></table></figure>
+
+<p>安装完 <code>GPG keys</code> ，就可以愉快地安装rvm了：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">curl -sSL <span class="attr">https</span>:<span class="comment">//get.rvm.io | bash -s stable</span></span><br></pre></td></tr></table></figure>
+
+<p>安装成功之后，需要配置 <code>RVM</code> 开发环境，打开<code>~/.bash_profile</code> 或者 <code>~/.zshrc </code> 文件，在文件最后一行增加下面的内容：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">[[ -s<span class="string">&quot;$HOME/.rvm/scripts/rvm&quot;</span>]] &amp;&amp; source<span class="string">&quot;$HOME/.rvm/scripts/rvm&quot;</span># <span class="title class_">Load</span> <span class="variable constant_">RVM</span> into a shell session *<span class="keyword">as</span> afunction*</span><br></pre></td></tr></table></figure>
+
+<p>至此，<code>RVM</code> 就算安装完成了，我们可以通过 <code>rvm -v</code> 代码验证安装</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/16786723453552.jpg"></p>
+<h2 id="RVM-使用"><a href="#RVM-使用" class="headerlink" title="RVM 使用"></a>RVM 使用</h2><h3 id="查看可安装的Ruby版本"><a href="#查看可安装的Ruby版本" class="headerlink" title="查看可安装的Ruby版本"></a>查看可安装的Ruby版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm list known</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/16786726089796.jpg"></p>
+<h3 id="安装一个-Ruby-版本"><a href="#安装一个-Ruby-版本" class="headerlink" title="安装一个 Ruby 版本"></a>安装一个 Ruby 版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm install <span class="number">3.0</span><span class="number">.0</span> </span><br></pre></td></tr></table></figure>
+
+<h3 id="查询已经安装的-Ruby-版本"><a href="#查询已经安装的-Ruby-版本" class="headerlink" title="查询已经安装的 Ruby 版本"></a>查询已经安装的 Ruby 版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm list</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/16786729194881.jpg"></p>
+<blockquote>
+<p>=&gt; 指向的是当前使用ruby版本<br>=* 指向的是当前和默认ruby版本</p>
+<ul>
+<li>指向的是默认ruby版本</li>
+</ul>
+</blockquote>
+<p>我们可以通过以下命令来进行切换：</p>
+<h3 id="切换-Ruby-版本"><a href="#切换-Ruby-版本" class="headerlink" title="切换 Ruby 版本"></a>切换 Ruby 版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm use <span class="number">3.0</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="设置默认-Ruby-版本"><a href="#设置默认-Ruby-版本" class="headerlink" title="设置默认 Ruby 版本"></a>设置默认 Ruby 版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm use <span class="number">3.0</span><span class="number">.0</span> --<span class="keyword">default</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="切换-Ruby-版本并设置为默认"><a href="#切换-Ruby-版本并设置为默认" class="headerlink" title="切换 Ruby 版本并设置为默认"></a>切换 Ruby 版本并设置为默认</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm use ext-ruby-<span class="number">3.0</span><span class="number">.0</span> --<span class="keyword">default</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="卸载已安装-Ruby-版本"><a href="#卸载已安装-Ruby-版本" class="headerlink" title="卸载已安装 Ruby 版本"></a>卸载已安装 Ruby 版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm remove <span class="number">3.0</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看-Ruby-的安装目录"><a href="#查看-Ruby-的安装目录" class="headerlink" title="查看 Ruby 的安装目录"></a>查看 Ruby 的安装目录</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//查看安装的 Ruby 目录</span></span><br><span class="line"><span class="comment">// -a：打印每个匹配文件名的所有匹配路径名</span></span><br><span class="line"><span class="comment">// which：通过搜索 PATH 环境变量中的路径来搜索与参数名称匹配的可执行文件</span></span><br><span class="line">which -a ruby</span><br><span class="line"></span><br><span class="line"><span class="comment">//或者</span></span><br><span class="line">which ruby</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/16786736350427.jpg"></p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/16786739572124.jpg"></p>
+<h3 id="查看-rvm-命令帮助"><a href="#查看-rvm-命令帮助" class="headerlink" title="查看 rvm 命令帮助"></a>查看 rvm 命令帮助</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm help </span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/16786740460740.jpg"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>02｜依赖管理：如何使用CocoaPods统一依赖库的管理？</title>
     <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/</url>
     <content><![CDATA[<h1 id="依赖管理：如何使用-CocoaPods-统一依赖库的管理？"><a href="#依赖管理：如何使用-CocoaPods-统一依赖库的管理？" class="headerlink" title="依赖管理：如何使用 CocoaPods 统一依赖库的管理？"></a>依赖管理：如何使用 CocoaPods 统一依赖库的管理？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788496868852.jpg"></p>
@@ -414,134 +542,6 @@
 
 
 
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>iOS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>01 | 开发环境：如何使用 Ruby 工具链统一开发环境？</title>
-    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/</url>
-    <content><![CDATA[<h1 id="01-开发环境：如何使用-Ruby-工具链统一开发环境？"><a href="#01-开发环境：如何使用-Ruby-工具链统一开发环境？" class="headerlink" title="01 | 开发环境：如何使用 Ruby 工具链统一开发环境？"></a>01 | 开发环境：如何使用 Ruby 工具链统一开发环境？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.25.34.png" alt="2021-03-17_10.25.34"></p>
-<span id="more"></span>
-
-<p>在 iOS 开发过程中，你是不是会经常遇到这些情况：</p>
-<p>每次打开一个新项目，都需要手动搭建开发环境；有时候在安装第三方工具时使用到 <code>sudo 权限</code>，导致以后安装工具都需要手工输入密码而无法实施自动化。还有，每当启动一台新 <code>CI</code> 时，就需要手工登录并配置一遍，更可怕的是，原先搭建好的 CI 会随着 Xcode 版本更新需要重新配置。</p>
-<p>为什么会这么麻烦呢？就是因为你在项目开始之初没有做好统一配置。</p>
-<p>所谓统一配置，就是所有的配置信息都以文本的格式存放在 Git 里面，我们可以随时查看修改记录，以此来帮助我们比较不同配置之间的差异性，然后在这个基础上不断更新迭代。</p>
-<p>可以说，有了统一配置，任何工程师都可以搭建出一模一样的开发环境，构建出功能一致的 App；有了统一配置，还可以让我们按需延展 CI 服务，而不用任何手工操作。更重要的是，它还可以应用到各个类似的 iOS 项目中，极大地减轻了项目前期的搭建成本。</p>
-<p>既然统一的配置那么重要，那么我们怎样搭建统一配置的开发环境呢？</p>
-<h2 id="Ruby-工具链"><a href="#Ruby-工具链" class="headerlink" title="Ruby 工具链"></a>Ruby 工具链</h2><p>我们可以通过 Ruby 工具链为整个项目搭建一致的开发和构建环境。为什么选择 <code>Ruby</code> 而不是其他语言环境呢？因为在 iOS 开发方面，目前流行的第三方工具 <code>CocoaPods</code> 和 <code>fastlane</code> 都是使用 Ruby 来开发的。特别是 Ruby 有非常成熟的依赖库管理工具 <code>RubyGems</code> 和 <code>Bundler</code>，其中 Bundler 可以帮我们有效地管理 CocoaPods 和 fastlane 的版本。</p>
-<p>下面一起来看看怎样搭建一个统一的开发环境吧。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.02.14.png" alt="2021-03-17_10.02.14"></p>
-<p>通常，统一的开发环境应该从操作系统开始。对于 iOS 开发来说，<strong>MacOS</strong> 是目前 iOS 开发唯一支持的操作系统。在公司，MacOS 的版本一般由 IT 部门统一管理和更新。要注意，当公司统一更新了我们开发环境的 MacOS 版本以后，需要同时更新 CI 上 MacOS 的版本，以保持一致。</p>
-<h2 id="Xcode"><a href="#Xcode" class="headerlink" title="Xcode"></a>Xcode</h2><p>位于 MacOS 上层的是 Xcode 和 rbenv。其中，<strong>Xcode</strong> 是 iOS 开发和构建工具，在同一个项目里，最好使用同一个版本的 Xcode 进行开发和构建，我们可以在项目的 README.md 文件标注 Xcode 的版本。</p>
-<p>像我们将要开发的这款类似朋友圈的 Moments App 项目，我就在对应的 README.md 文件里标明了需要使用 <code>Xcode Version 12.2 (12B45b)</code>。具体内容你也可以在代码仓库找到。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.12.38.png" alt="2021-03-17_10.12.38"></p>
-<p>那我们怎样才能保证每个人都安装同一个版本号的 Xcode 呢？技巧就是我们不要到有自动更新功能的 Mac App Store 中下载 Xcode，而是到苹果的开发者网站搜索并下载。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.14.30.png" alt="2021-03-17_10.14.30"></p>
-<p>有时候我们会同时开发多个项目，这样有可能要安装多个不同版本的 Xcode。如果你的机器有多于一个版本的 Xcode，此时需要特别注意，为了保证所使用的编译器版本一致，在每次执行自动化命令之前（如执行<code>bundle exec fastlane test</code>），要先使用<code>xcode-select -s</code>来选择该项目所对应版本的 Xcode。</p>
-<p>比如说我的电脑上有多个 Xcode 版本，在开发 Moments App 时，每次执行自动化命令之前都会执行这样一条命令<code>xcode-select -s /Applications/Xcode12.2.app/Contents/Developer</code>来选择 Moments App 项目所使用的 Xcode。这里的<code>Xcode12.2.app</code>就是我安装的 Xcode 12.2 版所在的位置。</p>
-<h2 id="rbenv"><a href="#rbenv" class="headerlink" title="rbenv"></a>rbenv</h2><p>有了版本一致的 Xcode 以后，因为后期我们会用到 CocoaPods 等第三方 Ruby 工具，为了自动化安装和管理这些工具，整个项目团队所使用的 Ruby 版本也必须保持一致。为此，我们就需要用到 Ruby 环境管理工具。</p>
-<p>目前流行的 Ruby 环境管理工具有 RVM 和 rbenv。我推荐使用的是 rbenv，因为它使用 shims 文件夹来分离各个 Ruby 版本，相对于 RVM 更加轻装而方便使用。千万注意，团队内部不要同时使用不同的 Ruby 环境管理工具，否则项目编译会出错。</p>
-<p><strong>rbenv</strong> 是 Ruby 环境管理工具，能够安装、管理、隔离以及在多个 Ruby 版本之间切换。要使用 rbenv，我们可以通过 Homebrew 来安装它，下面是安装 Homebrew 和 rbenv 的脚本。</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">$ /bin/bash -c <span class="string">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)&quot;</span></span><br><span class="line">brew install rbenv ruby-build rbenv-vars</span><br></pre></td></tr></table></figure>
-
-<p>一旦安装 rbenv 完毕，我们需要把以下的设置信息放到你的 Shell 配置文件里面，例如 <code>~/.bash_profile</code> 或者 <code>~/.zshrc</code> 等文件，这样能保证每次打开终端的时候都会初始化 rbenv。</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="variable constant_">PATH</span>=<span class="string">&quot;$HOME/.rbenv/bin:$PATH&quot;</span> </span><br><span class="line"><span class="built_in">eval</span> <span class="string">&quot;$(rbenv init -)&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>接着我们就可以安装和设置项目的 Ruby 环境了。</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">$ cd $(<span class="variable constant_">PROJECT_DIR</span>)</span><br><span class="line">$ rbenv install <span class="number">2.7</span><span class="number">.1</span></span><br><span class="line">$ rbenv local <span class="number">2.7</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
-
-<p>此处是把项目的 Ruby 环境配置为 2.7.1 版本。rbenv 会帮我们建立 一个叫作<code>.ruby-version</code> 的文件，该文件里面只保存一个版本号（例如<code>2.7.1</code>）的字符串。这个包含了版本号的文件可以用 Git 进行管理。如果要更新版本，可以通过<code>rbenv local</code>命令进行，每次更新也由 Git 统一管理，这样就能让其他开发者使用同一版本的 Ruby 开发环境了。</p>
-<h2 id="RubyGems-和-Bundler"><a href="#RubyGems-和-Bundler" class="headerlink" title="RubyGems 和 Bundler"></a>RubyGems 和 Bundler</h2><p>RubyGems 和 Bundler 主要是用来安装和管理 CocoaPods 和 fastlane 等第三方工具。</p>
-<p>具体来说，RubyGems 是 Ruby 依赖包管理工具。在 Ruby 的世界，包叫作 Gem，我们可以通过<code>gem install</code>命令来安装。但是 RubyGems 在管理 Gem 版本的时候有些缺陷，就有人开发了 Bundler，用它来检查和安装 Gem 的特定版本，以此为 Ruby 项目提供一致性的环境。</p>
-<p>要安装 Bundler，我们可执行<code>gem install bundler</code>命令进行，之后，再执行<code>bundle init</code>就可以生成一个 Gemfile 文件，像 CocoaPods 和 fastlane 等依赖包，我们就可以添加到这个文件里面。</p>
-<p>具体代码如下：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">source <span class="string">&quot;https://rubygems.org&quot;</span></span><br><span class="line">gem <span class="string">&quot;cocoapods&quot;</span>, <span class="string">&quot;1.10.0&quot;</span></span><br><span class="line">gem <span class="string">&quot;fastlane&quot;</span>, <span class="string">&quot;2.166.0&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>注意我们在<code>gem</code>命令里面都指定了依赖包的特定版本号。例如，在我们的 Moment App 就使用了<code>1.10.0</code>版的 CocoaPods，然后执行<code>bundle install</code>来安装各个 Gem。 Bundler 会自动生成一个 <code>Gemfile.lock</code> 文件来锁定所安装的 Gem 的版本，例如：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">DEPENDENCIES</span></span><br><span class="line">  cocoapods (= <span class="number">1.10</span><span class="number">.0</span>)</span><br><span class="line">  fastlane (= <span class="number">2.166</span><span class="number">.0</span>)</span><br></pre></td></tr></table></figure>
-
-<p>为了保证团队其他成员都可以使用版本号一致的 Gem，我们需要把 <code>Gemfile</code> 和 <code>Gemfile.lock</code> 一同保存到 Git 里面统一管理起来。</p>
-<p>到此为止，我们已经知道怎样使用 Ruby 工具链配置一个统一的开发环境。但在真实的开发环境中，搭建环境只需要一个人来完成即可，其他成员执行以下脚本就能完成整套开发环境的搭建。</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">$ ./scripts/setup.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<p>我们一起看看这个脚本做了些什么？</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"># <span class="title class_">Install</span> ruby using rbenv</span><br><span class="line">ruby_version=<span class="string">`cat .ruby-version`</span></span><br><span class="line"><span class="keyword">if</span> [[ ! -d <span class="string">&quot;$HOME/.rbenv/versions/$ruby_version&quot;</span> ]]; then</span><br><span class="line">  rbenv install $ruby_version;</span><br><span class="line">fi</span><br><span class="line"># <span class="title class_">Install</span> bunlder</span><br><span class="line">gem install bundler</span><br><span class="line"># <span class="title class_">Install</span> all gems</span><br><span class="line">bundle install</span><br><span class="line"># <span class="title class_">Install</span> all pods</span><br><span class="line">bundle exec pod install</span><br></pre></td></tr></table></figure>
-
-<p>该脚本主要做了四件事情，第一步是在 rbenv 下安装特定版本的 Ruby 开发环境，然后通过 RubyGems 安装 Bunlder，接着使用 Bundler 安装 CocoaPods 和 fastlane 等依赖包，最后安装各个 Pod。这样，一个统一的项目环境就搭建完成了，接下来开发者就可以打开 <strong>Moments.xcworkspace</strong>进行开发了。</p>
-<p>说完 Ruby 环境搭建以后，最后我们一起聊聊保证项目文件一致性的 .gitignore 文件。</p>
-<h2 id="gitignore-文件"><a href="#gitignore-文件" class="headerlink" title=".gitignore 文件"></a>.gitignore 文件</h2><p>.gitignore 文件是一个配置文件，用来指定让 Git 需要忽略的文件或者目录。如果没有 .gitignore 文件，项目成员可能会不小心把一些自动生成等无关重要的文件或者具有个人信息(例如 <code>xcuserdata</code>)的文件保存到 Git 里面。这就大大增加了查看 Git 修改历史的难度。因此，在项目初期就配置一个合适的 .gitignore 文件，能减轻后续的管理工作。</p>
-<p>如何创建 .gitignore 文件呢？</p>
-<p>我一般会在 <code>gitignore.io</code> 里面输入关键字，例如 Xcode，Swift 等，然后该网站会帮我们生成一个默认的 .gitignore 文件。咱们项目 Moments App 的.gitignore 文件你可以到<a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/.gitignore">拉勾教育的仓库中</a>查看。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.24.47.png" alt="2021-03-17_10.24.47"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h2><p>以上，我们通过 Xcode、rbenv、RubyGems 和 Bundler 搭建一个统一的 iOS 开发和构建环境。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/2021-03-17_10.25.34.png" alt="2021-03-17_10.25.34"></p>
-<p>再次强调下，为了让各个开发和构建环境能保持一致，我们要把 .ruby-version、 Gemfile 和 Gemfile.lock 文件通过 Git 统一管理起来，并共享给整个项目团队使用。</p>
-<p>而且，由于我们的开发环境已经通过 Bundler 管理起来，今后，当使用各个 Gem 工具的时候，也需要使用 Bundler。例如在使用 CocoaPods 时要执行<code>bundle exec pod</code>，以保证我们使用的是项目级别而不是操作系统级别的 Gem 工具。</p>
-<p><strong>源码地址：</strong></p>
-<blockquote>
-<p>README.md<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/README.md">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/README.md</a><br>Moments App 的.gitignore 文件<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/.gitignore">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/.gitignore</a></p>
-</blockquote>
-<h1 id="学习笔记与扩展"><a href="#学习笔记与扩展" class="headerlink" title="学习笔记与扩展"></a>学习笔记与扩展</h1><p>上文有提到过，目前流行的 Ruby 环境管理工具有 <code>RVM</code> 和 <code>rbenv</code>，文章中推荐使用的是 <code>rbenv</code>，但是，如果我们的团队已经有人使用 <code>RVM</code> 来管理ruby，因为 <strong>团队内部不能同时使用不同的 Ruby 环境管理工具，否则项目编译会出错</strong> ，所以，我们可能也需要使用 <code>RVM</code> 来管理ruby了。</p>
-<p>下面我们就来了解一下 <code>RVM</code>。</p>
-<p><a href="https://rvm.io/">RVM</a> 是一个命令行工具，它允许我们轻松安装、管理和使用从解释器到 gem 集的多个 ruby 环境。 </p>
-<h2 id="RVM-安装"><a href="#RVM-安装" class="headerlink" title="RVM 安装"></a>RVM 安装</h2><p>首先，安装 <code>RVM</code> 需要使用 <code>gpg</code> 或者 <code>gpg2</code>，如果没有需要使用 <code>Homebrew</code> 进行安装：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">brew install gpg</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">brew install gpg2</span><br></pre></td></tr></table></figure>
-
-<p>如果没有 <code>Homebrew</code> 可以用以下方法安装：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">/bin/bash -c <span class="string">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>安装完 <code>gpg</code> 、<code>gpg2</code>之后，需要安装 GPG keys：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</span><br></pre></td></tr></table></figure>
-
-<p>安装完 <code>GPG keys</code> ，就可以愉快地安装rvm了：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">curl -sSL <span class="attr">https</span>:<span class="comment">//get.rvm.io | bash -s stable</span></span><br></pre></td></tr></table></figure>
-
-<p>安装成功之后，需要配置 <code>RVM</code> 开发环境，打开<code>~/.bash_profile</code> 或者 <code>~/.zshrc </code> 文件，在文件最后一行增加下面的内容：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">[[ -s<span class="string">&quot;$HOME/.rvm/scripts/rvm&quot;</span>]] &amp;&amp; source<span class="string">&quot;$HOME/.rvm/scripts/rvm&quot;</span># <span class="title class_">Load</span> <span class="variable constant_">RVM</span> into a shell session *<span class="keyword">as</span> afunction*</span><br></pre></td></tr></table></figure>
-
-<p>至此，<code>RVM</code> 就算安装完成了，我们可以通过 <code>rvm -v</code> 代码验证安装</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/16786723453552.jpg"></p>
-<h2 id="RVM-使用"><a href="#RVM-使用" class="headerlink" title="RVM 使用"></a>RVM 使用</h2><h3 id="查看可安装的Ruby版本"><a href="#查看可安装的Ruby版本" class="headerlink" title="查看可安装的Ruby版本"></a>查看可安装的Ruby版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm list known</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/16786726089796.jpg"></p>
-<h3 id="安装一个-Ruby-版本"><a href="#安装一个-Ruby-版本" class="headerlink" title="安装一个 Ruby 版本"></a>安装一个 Ruby 版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm install <span class="number">3.0</span><span class="number">.0</span> </span><br></pre></td></tr></table></figure>
-
-<h3 id="查询已经安装的-Ruby-版本"><a href="#查询已经安装的-Ruby-版本" class="headerlink" title="查询已经安装的 Ruby 版本"></a>查询已经安装的 Ruby 版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm list</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/16786729194881.jpg"></p>
-<blockquote>
-<p>=&gt; 指向的是当前使用ruby版本<br>=* 指向的是当前和默认ruby版本</p>
-<ul>
-<li>指向的是默认ruby版本</li>
-</ul>
-</blockquote>
-<p>我们可以通过以下命令来进行切换：</p>
-<h3 id="切换-Ruby-版本"><a href="#切换-Ruby-版本" class="headerlink" title="切换 Ruby 版本"></a>切换 Ruby 版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm use <span class="number">3.0</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="设置默认-Ruby-版本"><a href="#设置默认-Ruby-版本" class="headerlink" title="设置默认 Ruby 版本"></a>设置默认 Ruby 版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm use <span class="number">3.0</span><span class="number">.0</span> --<span class="keyword">default</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="切换-Ruby-版本并设置为默认"><a href="#切换-Ruby-版本并设置为默认" class="headerlink" title="切换 Ruby 版本并设置为默认"></a>切换 Ruby 版本并设置为默认</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm use ext-ruby-<span class="number">3.0</span><span class="number">.0</span> --<span class="keyword">default</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="卸载已安装-Ruby-版本"><a href="#卸载已安装-Ruby-版本" class="headerlink" title="卸载已安装 Ruby 版本"></a>卸载已安装 Ruby 版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm remove <span class="number">3.0</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="查看-Ruby-的安装目录"><a href="#查看-Ruby-的安装目录" class="headerlink" title="查看 Ruby 的安装目录"></a>查看 Ruby 的安装目录</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//查看安装的 Ruby 目录</span></span><br><span class="line"><span class="comment">// -a：打印每个匹配文件名的所有匹配路径名</span></span><br><span class="line"><span class="comment">// which：通过搜索 PATH 环境变量中的路径来搜索与参数名称匹配的可执行文件</span></span><br><span class="line">which -a ruby</span><br><span class="line"></span><br><span class="line"><span class="comment">//或者</span></span><br><span class="line">which ruby</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/16786736350427.jpg"></p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/16786739572124.jpg"></p>
-<h3 id="查看-rvm-命令帮助"><a href="#查看-rvm-命令帮助" class="headerlink" title="查看 rvm 命令帮助"></a>查看 rvm 命令帮助</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rvm help </span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/01%EF%BD%9C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Ruby%20%E5%B7%A5%E5%85%B7%E9%93%BE%E7%BB%9F%E4%B8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9F/16786740460740.jpg"></p>
 ]]></content>
       <categories>
         <category>学习笔记</category>
@@ -1187,6 +1187,94 @@
       </tags>
   </entry>
   <entry>
+    <title>【Hexo】Gitlab pages 的使用</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>因为自己的博客，有时候访问还是比较慢的，原因是我的代码是在 GitHub 上托管的，众所周知，GitHub 是国外的服务器，在国内访问就是特别慢，然后，我就想是否可以找到国内的既能实现代码托管，又能生成静态网页的平台，来实现 Hexo 双线部署。</p>
+<p>于是，我找到了 Coding pages，但是它被腾讯从 Coding 下线了，放到了腾讯云上，开始收费了；然后，我又找到了 Gitee pages，但是它被阿里从 Gitee 下线了，放到了阿里云上，也开始收费了；那该怎么办呢？只能说功夫不负有心人，最后我找到了 Gitlab pages！</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="如何使用-Gitlab-pages"><a href="#如何使用-Gitlab-pages" class="headerlink" title="如何使用 Gitlab pages?"></a>如何使用 Gitlab pages?</h2><h3 id="Gitlab-创建项目"><a href="#Gitlab-创建项目" class="headerlink" title="Gitlab 创建项目"></a>Gitlab 创建项目</h3><p>首先打开 Gitlab 登录：<a href="https://gitlab.com/users/sign_in">GitLab</a> ，这里我没有注册直接使用的是 Github 账号登录。</p>
+<p>然后就是先创建一个 Gitlab 的项目了，这里与 github、gitee 都是大同小异，就不多说了。</p>
+<h3 id="生成-git-公钥（如果之前有配置，直接跳过）"><a href="#生成-git-公钥（如果之前有配置，直接跳过）" class="headerlink" title="生成 git 公钥（如果之前有配置，直接跳过）"></a>生成 git 公钥（如果之前有配置，直接跳过）</h3><h4 id="1、配置本地用户名及邮箱"><a href="#1、配置本地用户名及邮箱" class="headerlink" title="1、配置本地用户名及邮箱"></a>1、配置本地用户名及邮箱</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># 配置用户名</span><br><span class="line">git config <span class="operator">--</span>global user.name <span class="string">&quot;用户名&quot;</span></span><br><span class="line"># 配置邮箱</span><br><span class="line">git config <span class="operator">--</span>global user.email <span class="string">&quot;邮箱地址&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>以上命令执行结束后，可用 <code>git config --global --list</code> 命令查看配置是否成功</p>
+<h4 id="2、git生成公钥"><a href="#2、git生成公钥" class="headerlink" title="2、git生成公钥"></a>2、git生成公钥</h4><p>在 终端 窗口输入下面指令即可生成带注释的公钥：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">ssh<span class="operator">-</span>keygen <span class="operator">-</span>t rsa <span class="operator">-</span><span class="type">C</span> &#x27;邮箱地址&#x27;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>设置存放公钥的位置，默认的话直接回车键确认</p>
+</li>
+<li><p>输入密码和确认密码，不设置密码直接按回车键</p>
+</li>
+</ul>
+<h3 id="查看本地-git-公钥"><a href="#查看本地-git-公钥" class="headerlink" title="查看本地 git 公钥"></a>查看本地 git 公钥</h3><p>通过 终端 命令窗口：<br>查看公钥：<code>cat id_rsa.pub</code> 或者 <code>vim id_rsa.pub</code></p>
+<p>因为在之前我的电脑上是配置过的，所以直接输入 <code>cat ~/.ssh/id_rsa.pub</code> 即可查看，然后进行配置：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374471576779.jpg"></p>
+<h3 id="开启-GitLab-Pages"><a href="#开启-GitLab-Pages" class="headerlink" title="开启 GitLab Pages"></a>开启 GitLab Pages</h3><p>想要开启 GitLab Pages，首先需要将 Github 上的博客文件同步到 Gitlab 项目，然后通过 <code>gitLab ci</code> 触发自动部署，来开启 GitLab Pages。</p>
+<h4 id="1、使用-Github-actions-把-github-仓库代码同步到-gitlab-仓库"><a href="#1、使用-Github-actions-把-github-仓库代码同步到-gitlab-仓库" class="headerlink" title="1、使用 Github actions 把 github 仓库代码同步到 gitlab 仓库"></a>1、使用 Github actions 把 github 仓库代码同步到 gitlab 仓库</h4><ul>
+<li>gitlab 添加个人令牌（token）</li>
+</ul>
+<p>在设置中找到 访问令牌、然后添加</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374482702595.jpg"></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374484172632.jpg"></p>
+<ul>
+<li>在 Gitlab<br><code>设置-&gt;安全设置-&gt;SSH公钥</code>，标题可以随便起名，值为：上面生成SSH的公钥：</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374488054875.jpg"></p>
+<ul>
+<li>在 Github 项目<br><code>Settings-&gt;Secrets-&gt;Actions</code>，名称为：<code>GITLAB</code>，值为：上面生成的个人令牌</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374486339840.jpg"></p>
+<ul>
+<li>GitHub 创建 Github workflow</li>
+</ul>
+<p>在项目根目录下找到 <code>.github/workflows</code> 文件夹，如果没有就创建一个，新建一个 <code>sync-2-gitlab.yml</code>文件，填入下面的内容：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">name: <span class="type">Sync</span></span><br><span class="line"></span><br><span class="line">on:</span><br><span class="line">  push:</span><br><span class="line">    branches: [main, hexo]</span><br><span class="line"></span><br><span class="line">jobs:</span><br><span class="line">  sync<span class="operator">-</span><span class="number">2</span><span class="operator">-</span>gitlab:</span><br><span class="line">    runs<span class="operator">-</span>on: ubuntu<span class="operator">-</span>latest</span><br><span class="line">    steps:</span><br><span class="line">      <span class="operator">-</span> name: <span class="type">Sync</span> to <span class="type">Gitlab</span></span><br><span class="line">        uses: wearerequired<span class="operator">/</span>git<span class="operator">-</span>mirror<span class="operator">-</span>action<span class="meta">@master</span></span><br><span class="line">        env:</span><br><span class="line">          # 注意在 <span class="type">Github</span> <span class="type">Settings</span>-&gt;<span class="type">Secrets</span> 配置的 <span class="type">GITLAB</span></span><br><span class="line">          <span class="type">SSH_PRIVATE_KEY</span>: $&#123;&#123; secrets.<span class="type">GITLAB</span> &#125;&#125;</span><br><span class="line">        with:</span><br><span class="line">          # 注意替换为你的 <span class="type">GitHub</span> 源仓库地址</span><br><span class="line">          source<span class="operator">-</span>repo: git<span class="meta">@github</span>.com:fengyanxin<span class="operator">/</span>fengyanxin.github.io.git</span><br><span class="line">          # 注意替换为你的 <span class="type">Gitlab</span> 目标仓库地址</span><br><span class="line">          destination<span class="operator">-</span>repo: git<span class="meta">@gitlab</span>.com:fengyanxin<span class="operator">/</span>fengyanxin.git</span><br></pre></td></tr></table></figure>
+
+<p>保存，并把文件推送到 github 中，这时应该可以在 github action 看见刚刚的 workflow 在运行了。</p>
+<p>注意：如果同步到 Gitlab 的 action 运行报错时可以在项目中的 <code>Settings-&gt;Repository-&gt;Protected branches</code>右边的 <code>Expand</code>,把<code>Allowed to force push</code>按钮打开，或者点<code>Unprotect</code> :</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374499679706.jpg"></p>
+<h4 id="2、配置-Gitlab-的-ci-文件-gitlab-ci-yml-文件"><a href="#2、配置-Gitlab-的-ci-文件-gitlab-ci-yml-文件" class="headerlink" title="2、配置 Gitlab 的 ci 文件 .gitlab-ci.yml 文件"></a>2、配置 Gitlab 的 ci 文件 .gitlab-ci.yml 文件</h4><p>由于我的这个仓库源码是从 github 项目打包后产出 public 的纯 html 静态资源后，在通过 ci 脚本文件提交到 gitlab 仓库的，所以我这里的脚本内容就可以直接使用纯 html 的脚本</p>
+<p>根目录添加 <code>.gitlab-ci.yml</code> 文件（根据自己的实际需求配置对应脚本内容）：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">pages:</span><br><span class="line">  stage: deploy</span><br><span class="line">  script:</span><br><span class="line">    <span class="operator">-</span> mkdir .public</span><br><span class="line">    <span class="operator">-</span> cp <span class="operator">-</span>r <span class="operator">./*</span> .public</span><br><span class="line">    <span class="operator">-</span> rm <span class="operator">-</span>rf <span class="keyword">public</span></span><br><span class="line">    <span class="operator">-</span> mv .public <span class="keyword">public</span></span><br><span class="line">  artifacts:</span><br><span class="line">    paths:</span><br><span class="line">      <span class="operator">-</span> <span class="keyword">public</span></span><br><span class="line">  rules:</span><br><span class="line">    <span class="operator">-</span> <span class="keyword">if</span>: <span class="variable">$CI_COMMIT_BRANCH</span> <span class="operator">==</span> <span class="variable">$CI_DEFAULT_BRANCH</span></span><br></pre></td></tr></table></figure>
+
+<p>或者在 Gitlab 项目下添加 CI，文件内容如上，添加完成后会在项目目录下生成一个 <code>.gitlab-ci.yml</code>：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374503143964.jpg"></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374503426979.jpg"></p>
+<h4 id="3、配置-Gitlab-的-pages"><a href="#3、配置-Gitlab-的-pages" class="headerlink" title="3、配置 Gitlab 的 pages"></a>3、配置 Gitlab 的 pages</h4><ul>
+<li>上面的 Github 代码同步 和 Gitlab CI 执行完成之后，会在项目中生成一个 Gitlab pages， 如下图：</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374507141434.jpg"></p>
+<ul>
+<li>点开 <code>部署 - Pages</code>可以查看：</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374507888015.jpg"></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374509003727.jpg"></p>
+<ul>
+<li>此时，输入 Pages 的域名就可以查看自己的博客了：</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374511461885.jpg"></p>
+<p>至此，Gitlab pages 的部署就完成了！</p>
+<p>但是，当我还沉浸在成功的喜悦中的时候，就又 Get 到了一个非常坏的消息。</p>
+<h2 id="Gitlab-将不再为中国用户服务"><a href="#Gitlab-将不再为中国用户服务" class="headerlink" title="Gitlab 将不再为中国用户服务"></a>Gitlab 将不再为中国用户服务</h2><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374514542403.jpg"></p>
+<p>近日，GitLab 发布了一则重要通知 <strong>《Important Change to Your GitLab.com Account》</strong>，宣布将不再为位于 <strong>中国大陆、澳门和香港</strong> 的用户提供 <code>GitLab.com</code> 账户服务。该平台建议受影响的用户将账户迁移至 <code>极狐 GitLab（JiHu）</code>，这是由 GitLab 授权的独立公司，专门为这些地区提供本地化服务。</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374517390223.jpg"></p>
+<p>用户必须在 <strong>2025 年 2 月 18 日</strong> 之前完成迁移，之后 GitLab 将从系统中删除帐户。</p>
+<p>所以，以后 <code>GitLab.com</code> 就不能用了，只能使用 <code>极狐 GitLab（JiHu）</code>，遗憾的是 <code>极狐 GitLab（JiHu）</code> 也不再提供 Pages功能了！</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374520857005.jpg"></p>
+<p>这一顿操作真的是…!!!</p>
+<p>博主只能掩面叹息！</p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【Hexo】Mac 上使用Hexo + Github搭建个人博客</title>
     <url>/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h1 id="【Hexo】Mac-上使用Hexo-Github搭建个人博客"><a href="#【Hexo】Mac-上使用Hexo-Github搭建个人博客" class="headerlink" title="【Hexo】Mac 上使用Hexo + Github搭建个人博客"></a>【Hexo】Mac 上使用Hexo + Github搭建个人博客</h1><h2 id="为什么要用Hexo-Github？"><a href="#为什么要用Hexo-Github？" class="headerlink" title="为什么要用Hexo + Github？"></a>为什么要用Hexo + Github？</h2><h3 id="Hexo介绍"><a href="#Hexo介绍" class="headerlink" title="Hexo介绍"></a>Hexo介绍</h3><p>Hexo是一款基于Nodejs的，快速、简洁且高效的博客框架。它具有丰富的插件和主题，具有超快的速度，支持Makedown语法，可以方便快捷的编写博客文档。同时还支持node命令，可以一键部署到GitHub Pages, Heroku 或其他平台。更详细的信息可以看一下 <a href="https://hexo.io/zh-cn">Hexo官网</a> 。</p>
@@ -1606,94 +1694,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【Hexo】Gitlab pages 的使用</title>
-    <url>/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>因为自己的博客，有时候访问还是比较慢的，原因是我的代码是在 GitHub 上托管的，众所周知，GitHub 是国外的服务器，在国内访问就是特别慢，然后，我就想是否可以找到国内的既能实现代码托管，又能生成静态网页的平台，来实现 Hexo 双线部署。</p>
-<p>于是，我找到了 Coding pages，但是它被腾讯从 Coding 下线了，放到了腾讯云上，开始收费了；然后，我又找到了 Gitee pages，但是它被阿里从 Gitee 下线了，放到了阿里云上，也开始收费了；那该怎么办呢？只能说功夫不负有心人，最后我找到了 Gitlab pages！</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="如何使用-Gitlab-pages"><a href="#如何使用-Gitlab-pages" class="headerlink" title="如何使用 Gitlab pages?"></a>如何使用 Gitlab pages?</h2><h3 id="Gitlab-创建项目"><a href="#Gitlab-创建项目" class="headerlink" title="Gitlab 创建项目"></a>Gitlab 创建项目</h3><p>首先打开 Gitlab 登录：<a href="https://gitlab.com/users/sign_in">GitLab</a> ，这里我没有注册直接使用的是 Github 账号登录。</p>
-<p>然后就是先创建一个 Gitlab 的项目了，这里与 github、gitee 都是大同小异，就不多说了。</p>
-<h3 id="生成-git-公钥（如果之前有配置，直接跳过）"><a href="#生成-git-公钥（如果之前有配置，直接跳过）" class="headerlink" title="生成 git 公钥（如果之前有配置，直接跳过）"></a>生成 git 公钥（如果之前有配置，直接跳过）</h3><h4 id="1、配置本地用户名及邮箱"><a href="#1、配置本地用户名及邮箱" class="headerlink" title="1、配置本地用户名及邮箱"></a>1、配置本地用户名及邮箱</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># 配置用户名</span><br><span class="line">git config <span class="operator">--</span>global user.name <span class="string">&quot;用户名&quot;</span></span><br><span class="line"># 配置邮箱</span><br><span class="line">git config <span class="operator">--</span>global user.email <span class="string">&quot;邮箱地址&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>以上命令执行结束后，可用 <code>git config --global --list</code> 命令查看配置是否成功</p>
-<h4 id="2、git生成公钥"><a href="#2、git生成公钥" class="headerlink" title="2、git生成公钥"></a>2、git生成公钥</h4><p>在 终端 窗口输入下面指令即可生成带注释的公钥：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">ssh<span class="operator">-</span>keygen <span class="operator">-</span>t rsa <span class="operator">-</span><span class="type">C</span> &#x27;邮箱地址&#x27;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>设置存放公钥的位置，默认的话直接回车键确认</p>
-</li>
-<li><p>输入密码和确认密码，不设置密码直接按回车键</p>
-</li>
-</ul>
-<h3 id="查看本地-git-公钥"><a href="#查看本地-git-公钥" class="headerlink" title="查看本地 git 公钥"></a>查看本地 git 公钥</h3><p>通过 终端 命令窗口：<br>查看公钥：<code>cat id_rsa.pub</code> 或者 <code>vim id_rsa.pub</code></p>
-<p>因为在之前我的电脑上是配置过的，所以直接输入 <code>cat ~/.ssh/id_rsa.pub</code> 即可查看，然后进行配置：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374471576779.jpg"></p>
-<h3 id="开启-GitLab-Pages"><a href="#开启-GitLab-Pages" class="headerlink" title="开启 GitLab Pages"></a>开启 GitLab Pages</h3><p>想要开启 GitLab Pages，首先需要将 Github 上的博客文件同步到 Gitlab 项目，然后通过 <code>gitLab ci</code> 触发自动部署，来开启 GitLab Pages。</p>
-<h4 id="1、使用-Github-actions-把-github-仓库代码同步到-gitlab-仓库"><a href="#1、使用-Github-actions-把-github-仓库代码同步到-gitlab-仓库" class="headerlink" title="1、使用 Github actions 把 github 仓库代码同步到 gitlab 仓库"></a>1、使用 Github actions 把 github 仓库代码同步到 gitlab 仓库</h4><ul>
-<li>gitlab 添加个人令牌（token）</li>
-</ul>
-<p>在设置中找到 访问令牌、然后添加</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374482702595.jpg"></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374484172632.jpg"></p>
-<ul>
-<li>在 Gitlab<br><code>设置-&gt;安全设置-&gt;SSH公钥</code>，标题可以随便起名，值为：上面生成SSH的公钥：</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374488054875.jpg"></p>
-<ul>
-<li>在 Github 项目<br><code>Settings-&gt;Secrets-&gt;Actions</code>，名称为：<code>GITLAB</code>，值为：上面生成的个人令牌</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374486339840.jpg"></p>
-<ul>
-<li>GitHub 创建 Github workflow</li>
-</ul>
-<p>在项目根目录下找到 <code>.github/workflows</code> 文件夹，如果没有就创建一个，新建一个 <code>sync-2-gitlab.yml</code>文件，填入下面的内容：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">name: <span class="type">Sync</span></span><br><span class="line"></span><br><span class="line">on:</span><br><span class="line">  push:</span><br><span class="line">    branches: [main, hexo]</span><br><span class="line"></span><br><span class="line">jobs:</span><br><span class="line">  sync<span class="operator">-</span><span class="number">2</span><span class="operator">-</span>gitlab:</span><br><span class="line">    runs<span class="operator">-</span>on: ubuntu<span class="operator">-</span>latest</span><br><span class="line">    steps:</span><br><span class="line">      <span class="operator">-</span> name: <span class="type">Sync</span> to <span class="type">Gitlab</span></span><br><span class="line">        uses: wearerequired<span class="operator">/</span>git<span class="operator">-</span>mirror<span class="operator">-</span>action<span class="meta">@master</span></span><br><span class="line">        env:</span><br><span class="line">          # 注意在 <span class="type">Github</span> <span class="type">Settings</span>-&gt;<span class="type">Secrets</span> 配置的 <span class="type">GITLAB</span></span><br><span class="line">          <span class="type">SSH_PRIVATE_KEY</span>: $&#123;&#123; secrets.<span class="type">GITLAB</span> &#125;&#125;</span><br><span class="line">        with:</span><br><span class="line">          # 注意替换为你的 <span class="type">GitHub</span> 源仓库地址</span><br><span class="line">          source<span class="operator">-</span>repo: git<span class="meta">@github</span>.com:fengyanxin<span class="operator">/</span>fengyanxin.github.io.git</span><br><span class="line">          # 注意替换为你的 <span class="type">Gitlab</span> 目标仓库地址</span><br><span class="line">          destination<span class="operator">-</span>repo: git<span class="meta">@gitlab</span>.com:fengyanxin<span class="operator">/</span>fengyanxin.git</span><br></pre></td></tr></table></figure>
-
-<p>保存，并把文件推送到 github 中，这时应该可以在 github action 看见刚刚的 workflow 在运行了。</p>
-<p>注意：如果同步到 Gitlab 的 action 运行报错时可以在项目中的 <code>Settings-&gt;Repository-&gt;Protected branches</code>右边的 <code>Expand</code>,把<code>Allowed to force push</code>按钮打开，或者点<code>Unprotect</code> :</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374499679706.jpg"></p>
-<h4 id="2、配置-Gitlab-的-ci-文件-gitlab-ci-yml-文件"><a href="#2、配置-Gitlab-的-ci-文件-gitlab-ci-yml-文件" class="headerlink" title="2、配置 Gitlab 的 ci 文件 .gitlab-ci.yml 文件"></a>2、配置 Gitlab 的 ci 文件 .gitlab-ci.yml 文件</h4><p>由于我的这个仓库源码是从 github 项目打包后产出 public 的纯 html 静态资源后，在通过 ci 脚本文件提交到 gitlab 仓库的，所以我这里的脚本内容就可以直接使用纯 html 的脚本</p>
-<p>根目录添加 <code>.gitlab-ci.yml</code> 文件（根据自己的实际需求配置对应脚本内容）：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">pages:</span><br><span class="line">  stage: deploy</span><br><span class="line">  script:</span><br><span class="line">    <span class="operator">-</span> mkdir .public</span><br><span class="line">    <span class="operator">-</span> cp <span class="operator">-</span>r <span class="operator">./*</span> .public</span><br><span class="line">    <span class="operator">-</span> rm <span class="operator">-</span>rf <span class="keyword">public</span></span><br><span class="line">    <span class="operator">-</span> mv .public <span class="keyword">public</span></span><br><span class="line">  artifacts:</span><br><span class="line">    paths:</span><br><span class="line">      <span class="operator">-</span> <span class="keyword">public</span></span><br><span class="line">  rules:</span><br><span class="line">    <span class="operator">-</span> <span class="keyword">if</span>: <span class="variable">$CI_COMMIT_BRANCH</span> <span class="operator">==</span> <span class="variable">$CI_DEFAULT_BRANCH</span></span><br></pre></td></tr></table></figure>
-
-<p>或者在 Gitlab 项目下添加 CI，文件内容如上，添加完成后会在项目目录下生成一个 <code>.gitlab-ci.yml</code>：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374503143964.jpg"></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374503426979.jpg"></p>
-<h4 id="3、配置-Gitlab-的-pages"><a href="#3、配置-Gitlab-的-pages" class="headerlink" title="3、配置 Gitlab 的 pages"></a>3、配置 Gitlab 的 pages</h4><ul>
-<li>上面的 Github 代码同步 和 Gitlab CI 执行完成之后，会在项目中生成一个 Gitlab pages， 如下图：</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374507141434.jpg"></p>
-<ul>
-<li>点开 <code>部署 - Pages</code>可以查看：</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374507888015.jpg"></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374509003727.jpg"></p>
-<ul>
-<li>此时，输入 Pages 的域名就可以查看自己的博客了：</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374511461885.jpg"></p>
-<p>至此，Gitlab pages 的部署就完成了！</p>
-<p>但是，当我还沉浸在成功的喜悦中的时候，就又 Get 到了一个非常坏的消息。</p>
-<h2 id="Gitlab-将不再为中国用户服务"><a href="#Gitlab-将不再为中国用户服务" class="headerlink" title="Gitlab 将不再为中国用户服务"></a>Gitlab 将不再为中国用户服务</h2><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374514542403.jpg"></p>
-<p>近日，GitLab 发布了一则重要通知 <strong>《Important Change to Your GitLab.com Account》</strong>，宣布将不再为位于 <strong>中国大陆、澳门和香港</strong> 的用户提供 <code>GitLab.com</code> 账户服务。该平台建议受影响的用户将账户迁移至 <code>极狐 GitLab（JiHu）</code>，这是由 GitLab 授权的独立公司，专门为这些地区提供本地化服务。</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374517390223.jpg"></p>
-<p>用户必须在 <strong>2025 年 2 月 18 日</strong> 之前完成迁移，之后 GitLab 将从系统中删除帐户。</p>
-<p>所以，以后 <code>GitLab.com</code> 就不能用了，只能使用 <code>极狐 GitLab（JiHu）</code>，遗憾的是 <code>极狐 GitLab（JiHu）</code> 也不再提供 Pages功能了！</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374520857005.jpg"></p>
-<p>这一顿操作真的是…!!!</p>
-<p>博主只能掩面叹息！</p>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【Hexo】如何将博客源码上传到GitHub</title>
     <url>/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</url>
     <content><![CDATA[<h1 id="如何将博客源码上传到-GitHub"><a href="#如何将博客源码上传到-GitHub" class="headerlink" title="如何将博客源码上传到 GitHub"></a>如何将博客源码上传到 GitHub</h1><h2 id="一、为什么要把博客源码上传到-GitHub-？"><a href="#一、为什么要把博客源码上传到-GitHub-？" class="headerlink" title="一、为什么要把博客源码上传到 GitHub ？"></a>一、为什么要把博客源码上传到 GitHub ？</h2><p>首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：</p>
@@ -1797,6 +1797,45 @@
       </tags>
   </entry>
   <entry>
+    <title>【Hexo】踩坑记录</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h2 id="一、控制台打印-no-src-attr-skipped…"><a href="#一、控制台打印-no-src-attr-skipped…" class="headerlink" title="一、控制台打印 no src attr, skipped…"></a>一、控制台打印 no src attr, skipped…</h2><p>原因：这是因为 <code>hexo-asset-image</code>插件没有捕捉到图片<code>src</code></p>
+<p>解决：打开 <code>hexo/node_modules/hexo-asset-image/index.js</code>，定位到相应代码:</p>
+<span id="more"></span>
+
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">$(&#x27;img&#x27;).each(function()&#123;</span><br><span class="line">        <span class="keyword">if</span> ($(this).attr(&#x27;src&#x27;))&#123;</span><br><span class="line">            <span class="comment">// For windows style path, we replace &#x27;\&#x27; to &#x27;/&#x27;.</span></span><br><span class="line">            <span class="keyword">var</span> src <span class="operator">=</span> $(this).attr(&#x27;src&#x27;).replace(&#x27;\\&#x27;, &#x27;<span class="operator">/</span>&#x27;);</span><br><span class="line">            <span class="keyword">if</span>(<span class="operator">!/</span>http[s]<span class="operator">*</span><span class="operator">.*|</span>\<span class="operator">/</span>\<span class="operator">/</span><span class="operator">.*/.</span>test(src) <span class="operator">&amp;&amp;</span></span><br><span class="line">               <span class="operator">!/^</span>\s<span class="operator">*</span>\<span class="comment">//.test(src)) &#123;</span></span><br><span class="line">              <span class="comment">// For &quot;about&quot; page, the first part of &quot;src&quot; can&#x27;t be removed.</span></span><br><span class="line">              <span class="comment">// In addition, to support multi-level local directory.</span></span><br><span class="line">              <span class="keyword">var</span> linkArray <span class="operator">=</span> link.split(&#x27;<span class="operator">/</span>&#x27;).filter(function(elem)&#123;</span><br><span class="line">                <span class="keyword">return</span> elem <span class="operator">!=</span> &#x27;&#x27;;</span><br><span class="line">              &#125;);</span><br><span class="line">              <span class="keyword">var</span> srcArray <span class="operator">=</span> src.split(&#x27;<span class="operator">/</span>&#x27;).filter(function(elem)&#123;</span><br><span class="line">                <span class="keyword">return</span> elem <span class="operator">!=</span> &#x27;&#x27; <span class="operator">&amp;&amp;</span> elem <span class="operator">!=</span> &#x27;.&#x27;;</span><br><span class="line">              &#125;);</span><br><span class="line">              <span class="keyword">if</span>(srcArray.length <span class="operator">&gt;</span> <span class="number">1</span>)</span><br><span class="line">                srcArray.shift();</span><br><span class="line">              src <span class="operator">=</span> srcArray.join(&#x27;<span class="operator">/</span>&#x27;);</span><br><span class="line">              $(this).attr(&#x27;src&#x27;, config.root <span class="operator">+</span> link <span class="operator">+</span> src);</span><br><span class="line">              console.info<span class="operator">&amp;&amp;</span>console.info(<span class="string">&quot;update link as:--&gt;&quot;</span><span class="operator">+</span>config.root <span class="operator">+</span> link <span class="operator">+</span> src);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            console.info<span class="operator">&amp;&amp;</span>console.info(<span class="string">&quot;no src attr, skipped...&quot;</span>);</span><br><span class="line">            console.info<span class="operator">&amp;&amp;</span>console.info($(this));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>if ($(this).attr(&#39;src&#39;))&#123;&#125;</code>，</p>
+<p>再看控制台输出的 <code>this</code>:</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/17370984380125.jpg"></p>
+<p>可以看到这里的路径是 <code>data-src</code>，所以，</p>
+<p>所以，把上面代码块的 <code>src</code>全都替换成<code>data-src</code>即可。</p>
+<h2 id="二、Coding-中的-Pages-不见了！"><a href="#二、Coding-中的-Pages-不见了！" class="headerlink" title="二、Coding 中的 Pages 不见了！"></a>二、Coding 中的 Pages 不见了！</h2><h3 id="起因："><a href="#起因：" class="headerlink" title="起因："></a>起因：</h3><blockquote>
+<p>因为自己的这个博客，有时候访问还是比较慢的，原因是我的代码是在 GitHub 上托管的，GitHub 是国外的网站，服务器都在国外，所以访问速度就特别慢，我就想找国内的既能实现代码托管，又能生成静态网页的平台，可以实现 Hexo 的双线部署，即本地提交代码可以分别上传到不同的平台，当然肯定要支持 git</p>
+</blockquote>
+<blockquote>
+<p>为了实现这个功能，所以就在网上找相关的文章，然后发现说的比较多的是 Hexo 双线部署到 Coding Pages 和 GitHub Pages 从而实现网站加速，也就是说从国内访问的话，是走 Coding ，从国外访问的话是走 GitHub ，从而可以提高网站的访问速率</p>
+</blockquote>
+<h3 id="过程："><a href="#过程：" class="headerlink" title="过程："></a>过程：</h3><blockquote>
+<p>于是我就开始动手实验，开始注册 Coding 账号，登录，进去之后和 GitHub 的流程一样，创建一个项目，绑定我的 ssh，把项目地址的 ssh 地址复制到我的博客里面，经过实验发现可以通过 git，一次性分别上传到 GitHub 和 Coding 上。等我去 Coding 上准备打开 Coding pages 时，却发现我根本找不到 Coding 的静态网页服务功能了，前前后后找了好几遍，在百度上跟着他们说的找，找了半天也没找到，他们的文章都是19，20年的，Coding经过更新界面都变得不太一样了，这让我不得不怀疑是不是没有这个功能了。</p>
+</blockquote>
+<h3 id="找到的原因是（官方说法）"><a href="#找到的原因是（官方说法）" class="headerlink" title="找到的原因是（官方说法）"></a>找到的原因是（官方说法）</h3><h4 id="旧版直接关服"><a href="#旧版直接关服" class="headerlink" title="旧版直接关服"></a>旧版直接关服</h4><blockquote>
+<p>因 CODING 产品战略调整，您的 Mercury233 的团队 团队正在使用的 CODING 网站托管服务（旧版），将于 2021 年 12 月 30 日停止服务，届时您项目下的网站将无法访问。项目源码依然保留在您的 CODING 代码仓库中，可部署于其他第三方服务，请尽快迁移您的网站以免受到影响。</p>
+</blockquote>
+<h4 id="新版移到腾讯云-Serverless"><a href="#新版移到腾讯云-Serverless" class="headerlink" title="新版移到腾讯云 Serverless"></a>新版移到腾讯云 Serverless</h4><blockquote>
+<p>因 CODING 产品战略调整，CODING 将于即日起，停止提供网站托管服务中的「新建站点」服务； 2021 年 12 月 23 日后将停止已有站点的编辑、部署功能，并于 2021 年 12 月 30 日停止提供「网站托管」服务的使用入口。此后，您的 Mercury233 的团队 团队下的 xxx 项目托管的网站，需在腾讯云 Serverless 控制台进行域名配置、部署等操作及管理，详情请参考——</p>
+</blockquote>
+<p>也就是说免费的 Coding 静态页面不见了，想用的话得花钱，这真是一个腾讯的巨坑！</p>
+<p>此刻，笔者只想说：腾讯，我劝你善良！</p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【OC】UIButton 防止重复点击的3种方法</title>
     <url>/iOS/%E3%80%90OC%E3%80%91UIButton%E9%98%B2%E6%AD%A2%E9%87%8D%E5%A4%8D%E7%82%B9%E5%87%BB%E7%9A%843%E7%A7%8D%E6%96%B9%E6%B3%95/</url>
     <content><![CDATA[<h2 id="一、使用场景"><a href="#一、使用场景" class="headerlink" title="一、使用场景"></a>一、使用场景</h2><p>在实际应用过程中，有一些业务场景可能需要我们对 UIButton 响应事件的时间间隔进行控制，比如：</p>
@@ -1861,42 +1900,66 @@
       </tags>
   </entry>
   <entry>
-    <title>【Hexo】踩坑记录</title>
-    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="一、控制台打印-no-src-attr-skipped…"><a href="#一、控制台打印-no-src-attr-skipped…" class="headerlink" title="一、控制台打印 no src attr, skipped…"></a>一、控制台打印 no src attr, skipped…</h2><p>原因：这是因为 <code>hexo-asset-image</code>插件没有捕捉到图片<code>src</code></p>
-<p>解决：打开 <code>hexo/node_modules/hexo-asset-image/index.js</code>，定位到相应代码:</p>
+    <title>【OC】方法拦截器：如何 hook 三方 SDK 中的方法?</title>
+    <url>/iOS/%E3%80%90OC%E3%80%91%E6%96%B9%E6%B3%95%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%9A%E5%A6%82%E4%BD%95-hook-%E4%B8%89%E6%96%B9-SDK-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="一、前因"><a href="#一、前因" class="headerlink" title="一、前因"></a>一、前因</h2><p>缘由：项目中使用 <code>Pod</code> 集成了一个三方的远端SDK，这个SDK中的某个类遵循了一个代理协议，这个代理中有很多方法实现。现在的需求是，我在使用这个SDK的类时，只想实现代理方法中的其中一个方法，而不想把所有方法都实现一遍，而且也没办法全部实现。但是，我如果在引用类中遵循代理，就得把所有方法都实现一遍，这显然不现实；如果只实现固定方法，其他方法就会失效，这也不行。</p>
 <span id="more"></span>
 
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">$(&#x27;img&#x27;).each(function()&#123;</span><br><span class="line">        <span class="keyword">if</span> ($(this).attr(&#x27;src&#x27;))&#123;</span><br><span class="line">            <span class="comment">// For windows style path, we replace &#x27;\&#x27; to &#x27;/&#x27;.</span></span><br><span class="line">            <span class="keyword">var</span> src <span class="operator">=</span> $(this).attr(&#x27;src&#x27;).replace(&#x27;\\&#x27;, &#x27;<span class="operator">/</span>&#x27;);</span><br><span class="line">            <span class="keyword">if</span>(<span class="operator">!/</span>http[s]<span class="operator">*</span><span class="operator">.*|</span>\<span class="operator">/</span>\<span class="operator">/</span><span class="operator">.*/.</span>test(src) <span class="operator">&amp;&amp;</span></span><br><span class="line">               <span class="operator">!/^</span>\s<span class="operator">*</span>\<span class="comment">//.test(src)) &#123;</span></span><br><span class="line">              <span class="comment">// For &quot;about&quot; page, the first part of &quot;src&quot; can&#x27;t be removed.</span></span><br><span class="line">              <span class="comment">// In addition, to support multi-level local directory.</span></span><br><span class="line">              <span class="keyword">var</span> linkArray <span class="operator">=</span> link.split(&#x27;<span class="operator">/</span>&#x27;).filter(function(elem)&#123;</span><br><span class="line">                <span class="keyword">return</span> elem <span class="operator">!=</span> &#x27;&#x27;;</span><br><span class="line">              &#125;);</span><br><span class="line">              <span class="keyword">var</span> srcArray <span class="operator">=</span> src.split(&#x27;<span class="operator">/</span>&#x27;).filter(function(elem)&#123;</span><br><span class="line">                <span class="keyword">return</span> elem <span class="operator">!=</span> &#x27;&#x27; <span class="operator">&amp;&amp;</span> elem <span class="operator">!=</span> &#x27;.&#x27;;</span><br><span class="line">              &#125;);</span><br><span class="line">              <span class="keyword">if</span>(srcArray.length <span class="operator">&gt;</span> <span class="number">1</span>)</span><br><span class="line">                srcArray.shift();</span><br><span class="line">              src <span class="operator">=</span> srcArray.join(&#x27;<span class="operator">/</span>&#x27;);</span><br><span class="line">              $(this).attr(&#x27;src&#x27;, config.root <span class="operator">+</span> link <span class="operator">+</span> src);</span><br><span class="line">              console.info<span class="operator">&amp;&amp;</span>console.info(<span class="string">&quot;update link as:--&gt;&quot;</span><span class="operator">+</span>config.root <span class="operator">+</span> link <span class="operator">+</span> src);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            console.info<span class="operator">&amp;&amp;</span>console.info(<span class="string">&quot;no src attr, skipped...&quot;</span>);</span><br><span class="line">            console.info<span class="operator">&amp;&amp;</span>console.info($(this));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br></pre></td></tr></table></figure>
+<p>所以，我就有了一个想法：<strong>不遵循代理，只是对需要实现的方法进行监听，在其执行时，不执行原有方法流程，转而执行自定义方法。</strong></p>
+<p>这个思路显然是可行的，接下来就是如何把这个方法 <code>hook</code> 出来的问题。</p>
+<h2 id="二、后果"><a href="#二、后果" class="headerlink" title="二、后果"></a>二、后果</h2><p>有了思路，剩下的就是验证思路和解决问题，经过一段时间的思考和查阅资料，就有了如下结果和方案：</p>
+<h3 id="1、初版：对三方源码有入侵"><a href="#1、初版：对三方源码有入侵" class="headerlink" title="1、初版：对三方源码有入侵"></a>1、初版：对三方源码有入侵</h3><p>这个方案，对三方源码有一定的入侵，但是因为入侵较小，所以决定尝试一下。</p>
+<p>创建一个 <code>NSObject</code>的 <code>Category</code>，为什么会选择 <code>NSObject</code>，因为他是所有对象类的基类，注册监听方法时更为方便和通用。</p>
+<h4 id="NSObject-SRModuleAuthorization-h"><a href="#NSObject-SRModuleAuthorization-h" class="headerlink" title="NSObject+SRModuleAuthorization.h"></a>NSObject+SRModuleAuthorization.h</h4><p>在 <code>NSObject+SRModuleAuthorization.h</code> 实现代码如下:</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">NSObject</span> (<span class="type">SRModuleAuthorization</span>)</span><br><span class="line"></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel;</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
 
-<p>可以看到 <code>if ($(this).attr(&#39;src&#39;))&#123;&#125;</code>，</p>
-<p>再看控制台输出的 <code>this</code>:</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/17370984380125.jpg"></p>
-<p>可以看到这里的路径是 <code>data-src</code>，所以，</p>
-<p>所以，把上面代码块的 <code>src</code>全都替换成<code>data-src</code>即可。</p>
-<h2 id="二、Coding-中的-Pages-不见了！"><a href="#二、Coding-中的-Pages-不见了！" class="headerlink" title="二、Coding 中的 Pages 不见了！"></a>二、Coding 中的 Pages 不见了！</h2><h3 id="起因："><a href="#起因：" class="headerlink" title="起因："></a>起因：</h3><blockquote>
-<p>因为自己的这个博客，有时候访问还是比较慢的，原因是我的代码是在 GitHub 上托管的，GitHub 是国外的网站，服务器都在国外，所以访问速度就特别慢，我就想找国内的既能实现代码托管，又能生成静态网页的平台，可以实现 Hexo 的双线部署，即本地提交代码可以分别上传到不同的平台，当然肯定要支持 git</p>
+<p><code>.h</code> 只对外暴露一个注册需要被监听方法的API。</p>
+<h4 id="NSObject-SRModuleAuthorization-m"><a href="#NSObject-SRModuleAuthorization-m" class="headerlink" title="NSObject+SRModuleAuthorization.m"></a>NSObject+SRModuleAuthorization.m</h4><p>在<code>NSObject+SRModuleAuthorization.m</code> 实现代码如下:</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注册需要被拦截的方法</span></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel&#123;</span><br><span class="line">    <span class="comment">// 获取方法的名称，根据该方法名称设置自定义的方法名称</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(sel);</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;sr_auth_%@&quot;</span>, methodName];</span><br><span class="line">    <span class="comment">// 获取自定义方法的实例</span></span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">Method</span> newMethod <span class="operator">=</span> class_getInstanceMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel);</span><br><span class="line">    <span class="comment">// 判断是否已经添加了自定义的方法，如果为空就添加自定义方法</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">!</span>newMethod)&#123;</span><br><span class="line">        <span class="comment">// 获取被拦截方法的结构体对象</span></span><br><span class="line">        <span class="type">Method</span> method <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, sel);</span><br><span class="line">        <span class="comment">// 获取被拦截方法的方法签名字符串</span></span><br><span class="line">        const char <span class="operator">*</span>functionType  <span class="operator">=</span> method_getTypeEncoding(method);</span><br><span class="line">        <span class="type">NSString</span> <span class="operator">*</span>functionTypeStr <span class="operator">=</span> [<span class="type">NSString</span> stringWithUTF8String:functionType];</span><br><span class="line">        <span class="comment">// 判断方法签名的字符串中，：8是否是最后两个字符</span></span><br><span class="line">        <span class="comment">// 如果是则代表无参方法，否则是有参方法</span></span><br><span class="line">        <span class="comment">// 针对这两种方法添加不同的自定义拦截方法</span></span><br><span class="line">        <span class="type">NSRange</span> range <span class="operator">=</span> [functionTypeStr rangeOfString:@<span class="string">&quot;:8&quot;</span>];</span><br><span class="line">        <span class="type">Method</span> intercetionMethod;</span><br><span class="line">        <span class="keyword">if</span> (range.location <span class="operator">+</span> range.length <span class="operator">&lt;</span> functionTypeStr.length)&#123;</span><br><span class="line">            <span class="comment">// 有参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion::));</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">// 无参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 获取自定义拦截方法的实例，</span></span><br><span class="line">        <span class="comment">// 并将自定义方法的selector与实例关联，动态的添加进当前类型</span></span><br><span class="line">        <span class="type">IMP</span> imp <span class="operator">=</span> method_getImplementation(intercetionMethod);</span><br><span class="line">        class_addMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel, imp, functionType);</span><br><span class="line">        <span class="comment">// 最后重新获取自定义方法的方法结构体</span></span><br><span class="line">        <span class="comment">// 并与被监听方法进行实例交换，交换后，</span></span><br><span class="line">        <span class="comment">// 被监听的方法被调用时，就会执行我们自定义的方法实例，即intercetion</span></span><br><span class="line">        <span class="type">Method</span> method2 <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, newSel);</span><br><span class="line">        method_exchangeImplementations(method, method2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是无参拦截方法的实现：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 执行自定义代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有参拦截方法是一个可变参数列表，我们可以遍历 <code>invocation</code> 对象的参数，以达到传参的目的。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">//有参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion: (id)param1 :(id)param2,<span class="operator">...</span>&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">NSMutableArray</span> *<span class="title class_">params</span> = [<span class="title class_">NSMutableArray</span> <span class="title class_">array</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 参数个数signature.numberOfArguments 默认有一个_cmd 一个target 所以要-2, 正常参数从第三个开始</span></span><br><span class="line">        <span class="keyword">if</span> (signature.numberOfArguments) &#123;</span><br><span class="line">            <span class="type">NSInteger</span> argCount <span class="operator">=</span> signature.numberOfArguments;</span><br><span class="line">            va_list args;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">2</span>)&#123;</span><br><span class="line">                [params addObject:param1];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">3</span>)&#123;</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_start(args, param2);</span><br><span class="line">            <span class="keyword">for</span> (int i <span class="operator">=</span> <span class="number">4</span>; i <span class="operator">&lt;</span> argCount; i<span class="operator">++</span>) &#123;</span><br><span class="line">                param2 <span class="operator">=</span> va_arg(args, id);</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_end(args);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (params.count <span class="operator">!=</span> argCount<span class="operator">-</span><span class="number">2</span>)&#123;</span><br><span class="line">               <span class="type">NSLog</span>(@<span class="string">&quot;proxy --- 传参有误! please check it! ---&quot;</span>);</span><br><span class="line">               <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 执行自定义代码</span></span><br><span class="line">       </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里有一个问题：因为参数遍历转化时， <code>va_arg(args, id)</code> 方法会把传递过来的参数转化成 <code>id</code> 类型，如果的不 <code>NSObject</code> 类型的参数无法完成转化。所以，如果被监听的方法的参数类型不是对象类型，会发生错误。</p>
+<p>实现起来很简单，只需要在被监听的类的初始化方法里，调用 <code>registerNeedMonitorSEL</code> 方法即可，如下:</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test)];</span><br><span class="line"><span class="comment">// 有参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:)];</span><br><span class="line"><span class="comment">// 多参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:test1:)];</span><br></pre></td></tr></table></figure>
+
+<p>分析：这个方法虽然解决了我的问题，但是缺点也是很明显的:</p>
+<p>问题1: 对参数类型不是<code>NSObject</code>的方法无法监听，可能发生崩溃的情况。</p>
+<p>问题2: 如何是监听三方SDK的方法，会对其造成代码入侵，SDK更新方法会失效。</p>
+<h3 id="2、进阶版：对三方源码无入侵"><a href="#2、进阶版：对三方源码无入侵" class="headerlink" title="2、进阶版：对三方源码无入侵"></a>2、进阶版：对三方源码无入侵</h3><p>初版的方案显然不尽如人意，所以，针对以上问题，我又开始了新一轮的思考。</p>
+<p>如何在不入侵三方源码的情况下，对方法进行 <code>hook</code> 呢？</p>
+<p>结果就有了下面的方案：</p>
+<p>实现思路：对需要的监听方法的类做一个category扩展，利用 <code>Method Swizzling</code> 对监听的方法进行转换，然后把它 <code>hook</code> 出来。</p>
+<p>下面说一下我的代码实现：</p>
+<p>首先，对监听方法的类做一个 <code>category</code> 扩展。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">TUIBaseChatViewController</span> (<span class="type">PHHookMethod</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，在category的 <code>.m</code> 文件里实现如下代码：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">+</span> (void)load&#123;</span><br><span class="line">    <span class="keyword">static</span> dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(<span class="operator">&amp;</span>onceToken, <span class="operator">^</span>&#123;</span><br><span class="line">        <span class="comment">// 假如要监听方法,则把下面这行代码打开</span></span><br><span class="line">        __gbh_tracer_swizzleMethod([<span class="keyword">self</span> <span class="keyword">class</span>], <span class="meta">@selector</span>(messageController:onSelectMessageAvatar:), <span class="meta">@selector</span>(__gbh_tracer_messageController:onSelectMessageAvatar:));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码很好理解，就是在程序启动时就注册方法监听，等到方法执行时，对其进行转换，转换方法看下面：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">void __gbh_tracer_swizzleMethod(<span class="type">Class</span> <span class="keyword">class</span>, <span class="type">SEL</span> originalSelector, <span class="type">SEL</span> swizzledSelector)&#123;</span><br><span class="line">    <span class="type">Method</span> originalMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, originalSelector);</span><br><span class="line">    <span class="type">Method</span> swizzledMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, swizzledSelector);</span><br><span class="line">    </span><br><span class="line">    <span class="type">BOOL</span> didAddMethod <span class="operator">=</span></span><br><span class="line">    class_addMethod(<span class="keyword">class</span>,</span><br><span class="line">                    originalSelector,</span><br><span class="line">                    method_getImplementation(swizzledMethod),</span><br><span class="line">                    method_getTypeEncoding(swizzledMethod));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (didAddMethod) &#123;</span><br><span class="line">        class_replaceMethod(<span class="keyword">class</span>,</span><br><span class="line">                            swizzledSelector,</span><br><span class="line">                            method_getImplementation(originalMethod),</span><br><span class="line">                            method_getTypeEncoding(originalMethod));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        method_exchangeImplementations(originalMethod, swizzledMethod);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个标准的 <code>swizzling</code> 写法，当然了  <code>github</code> 上面也有关于 <code>swizzling</code> 的开源库，用起来也顺手，这里就不多说了。</p>
+<p>然后就是 <code>swizzling</code> 转换到的方法：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">-</span> (void)__gbh_tracer_messageController:(<span class="type">TUIBaseMessageController</span> <span class="operator">*</span>)controller onSelectMessageAvatar:(<span class="type">TUIMessageCell</span> <span class="operator">*</span>)cell&#123;</span><br><span class="line"><span class="comment">//    [self __gbh_tracer_messageController:controller onSelectMessageAvatar:cell]; //由于方法已经被交换,这里调用的实际上是messageController:onSelectMessageAvatar:方法</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 执行自定义方法</span></span><br><span class="line">    [<span class="keyword">self</span> clickMessageAvatar:cell];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>转换后的方法我们既可以让其继续执行以前的方法流程，也可以执行自己定义的方法，简直不要太爽。</p>
+<p>这就是一整个 <code>hook</code> 流程，即简单又方便，以后，我只需要往工程里面添加这个 <code>Category</code> ，这个被监听的方法就会被 <code>hook</code> 出来，可以让我为所欲为，还不会出现之前的报错和源码入侵的问题。</p>
+<h2 id="三、参考资料"><a href="#三、参考资料" class="headerlink" title="三、参考资料"></a>三、参考资料</h2><blockquote>
+<p>膜拜大神！<br><a href="https://www.jianshu.com/p/57827c100a3f">https://www.jianshu.com/p/57827c100a3f</a><br><a href="https://www.cnblogs.com/n1ckyxu/p/6186850.html">https://www.cnblogs.com/n1ckyxu/p/6186850.html</a><br><a href="https://www.jianshu.com/p/99d06ad0fa51">https://www.jianshu.com/p/99d06ad0fa51</a><br><a href="https://blog.csdn.net/u014600626/article/details/119271920">https://blog.csdn.net/u014600626/article/details/119271920</a><br><a href="http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more">http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more</a></p>
 </blockquote>
-<blockquote>
-<p>为了实现这个功能，所以就在网上找相关的文章，然后发现说的比较多的是 Hexo 双线部署到 Coding Pages 和 GitHub Pages 从而实现网站加速，也就是说从国内访问的话，是走 Coding ，从国外访问的话是走 GitHub ，从而可以提高网站的访问速率</p>
-</blockquote>
-<h3 id="过程："><a href="#过程：" class="headerlink" title="过程："></a>过程：</h3><blockquote>
-<p>于是我就开始动手实验，开始注册 Coding 账号，登录，进去之后和 GitHub 的流程一样，创建一个项目，绑定我的 ssh，把项目地址的 ssh 地址复制到我的博客里面，经过实验发现可以通过 git，一次性分别上传到 GitHub 和 Coding 上。等我去 Coding 上准备打开 Coding pages 时，却发现我根本找不到 Coding 的静态网页服务功能了，前前后后找了好几遍，在百度上跟着他们说的找，找了半天也没找到，他们的文章都是19，20年的，Coding经过更新界面都变得不太一样了，这让我不得不怀疑是不是没有这个功能了。</p>
-</blockquote>
-<h3 id="找到的原因是（官方说法）"><a href="#找到的原因是（官方说法）" class="headerlink" title="找到的原因是（官方说法）"></a>找到的原因是（官方说法）</h3><h4 id="旧版直接关服"><a href="#旧版直接关服" class="headerlink" title="旧版直接关服"></a>旧版直接关服</h4><blockquote>
-<p>因 CODING 产品战略调整，您的 Mercury233 的团队 团队正在使用的 CODING 网站托管服务（旧版），将于 2021 年 12 月 30 日停止服务，届时您项目下的网站将无法访问。项目源码依然保留在您的 CODING 代码仓库中，可部署于其他第三方服务，请尽快迁移您的网站以免受到影响。</p>
-</blockquote>
-<h4 id="新版移到腾讯云-Serverless"><a href="#新版移到腾讯云-Serverless" class="headerlink" title="新版移到腾讯云 Serverless"></a>新版移到腾讯云 Serverless</h4><blockquote>
-<p>因 CODING 产品战略调整，CODING 将于即日起，停止提供网站托管服务中的「新建站点」服务； 2021 年 12 月 23 日后将停止已有站点的编辑、部署功能，并于 2021 年 12 月 30 日停止提供「网站托管」服务的使用入口。此后，您的 Mercury233 的团队 团队下的 xxx 项目托管的网站，需在腾讯云 Serverless 控制台进行域名配置、部署等操作及管理，详情请参考——</p>
-</blockquote>
-<p>也就是说免费的 Coding 静态页面不见了，想用的话得花钱，这真是一个腾讯的巨坑！</p>
-<p>此刻，笔者只想说：腾讯，我劝你善良！</p>
 ]]></content>
       <categories>
-        <category>Hexo</category>
+        <category>iOS</category>
       </categories>
       <tags>
-        <tag>Hexo</tag>
+        <tag>iOS</tag>
+        <tag>OC</tag>
       </tags>
   </entry>
   <entry>
@@ -2513,253 +2576,6 @@
       </categories>
       <tags>
         <tag>Tips</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【Tips】Markdown 语法</title>
-    <url>/Tips/%E3%80%90Tips%E3%80%91Markdown-%E8%AF%AD%E6%B3%95/</url>
-    <content><![CDATA[<h1 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h1><h2 id="一、Markdown纯文本基本语法"><a href="#一、Markdown纯文本基本语法" class="headerlink" title="一、Markdown纯文本基本语法"></a>一、Markdown纯文本基本语法</h2><h3 id="1-标题"><a href="#1-标题" class="headerlink" title="1. 标题"></a>1. 标题</h3><p>Markdown 支持两种标题的语法，类 Setext 和类 atx 形式。 类 Setext 形式是用底线的形式，利用 = （最高阶标题）和 - （第二阶标题），例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">This is an H1</span><br><span class="line">=======</span><br><span class="line"></span><br><span class="line">This is an H2</span><br><span class="line">----------</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-
-<p>效果如下：</p>
-<h1 id="This-is-an-H1"><a href="#This-is-an-H1" class="headerlink" title="This is an H1"></a>This is an H1</h1><h2 id="This-is-an-H2"><a href="#This-is-an-H2" class="headerlink" title="This is an H2"></a>This is an H2</h2><p>任何数量的 = 和 - 都可以有效果。</p>
-<p>这里需要注意一点，由于分割线也是 “—-”， 因此在使用分割线时，一定要空一行，不然会把上方的文字识别为第二阶标题。原因会在后面的段落和换行中说到。<br>类 Atx 形式则是在行首插入 1 到 6 个 # ，对应到标题 1 到 6 阶，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># this is H1</span><br><span class="line">## this is H2</span><br><span class="line">###### this is H6</span><br></pre></td></tr></table></figure>
-
-<p>效果不再展示，但要注意的是，标准语法一般在 # 后跟个空格再写文字，不然可能会无法识别。</p>
-<h3 id="2-字体"><a href="#2-字体" class="headerlink" title="2. 字体"></a>2. 字体</h3><h4 id="粗-斜-删除线-下划线"><a href="#粗-斜-删除线-下划线" class="headerlink" title="粗/斜/删除线/下划线"></a>粗/斜/删除线/下划线</h4><p>Markdown 使用星号（*）和底线（_）作为标记强调字词的符号，你可以随便用你喜欢的样式，唯一的限制是，你用什么符号开启标签，就要用什么符号结束。但个人感觉写中文时还是（*）比较好用，因为它不区分全角半角，不用切换输入法。 示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">**这是加粗**</span><br><span class="line">__这也是加粗__</span><br><span class="line">*这是倾斜*</span><br><span class="line">_这也是倾斜_</span><br><span class="line">***这是加粗倾斜***</span><br><span class="line">~~这是加删除线~~</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：<br><strong>这是加粗</strong><br><strong>这也是加粗</strong><br><em>这是倾斜</em><br><em>这也是倾斜</em><br><em><strong>这是加粗倾斜</strong></em><br><del>这是加删除线</del></p>
-<p>注意：强调也可以直接插在文字中间，但是如果你的 * 和 _ 两边都有空白的话，它们就只会被当成普通的符号。 如果要在文字前后直接插入普通的星号或底线，你可以用反斜线 \ 。</p>
-<h4 id="字体、字号、颜色"><a href="#字体、字号、颜色" class="headerlink" title="字体、字号、颜色"></a>字体、字号、颜色</h4><p>如果想要指定字体大小、颜色和类型可以通过<code>&lt;font&gt;&lt;/font&gt;</code>语法来完成。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">指定字体类型： &lt;font face=<span class="string">&quot;黑体&quot;</span>&gt;我是黑体字&lt;/font&gt;</span><br><span class="line">指定字体大小： &lt;font size=<span class="number">12</span>&gt;我是<span class="number">12</span>号字&lt;/font&gt;</span><br><span class="line">指定字体颜色：&lt;font color=#0099ff&gt;我是蓝色字&lt;/font&gt; #0099ff 为颜色的<span class="number">16</span>进制代码</span><br><span class="line">指定字体颜色、字号、字体类型&lt;font color=#0099ff size=<span class="number">12</span> face=<span class="string">&quot;黑体&quot;</span>&gt;黑体&lt;/font&gt;</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<p>指定字体类型： <font face="黑体">我是黑体字</font><br>指定字体大小： <font size="12">我是12号字</font><br>指定字体颜色：<font color="#0099ff">我是蓝色字</font> #0099ff 为颜色的16进制代码<br>指定字体颜色、字号、字体类型<font color="#0099ff" size="12" face="黑体">黑体</font></p>
-<h3 id="3-分割线"><a href="#3-分割线" class="headerlink" title="3. 分割线"></a>3. 分割线</h3><p>你可以在一行中用三个以上的星号、减号、底线来建立一个分隔线，行内不能有其他东西。你也可以在星号或是减号中间插入空格。下面每种写法都可以建立分隔线：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* * *</span><br><span class="line">***</span><br><span class="line">**********</span><br><span class="line">- - -</span><br><span class="line">_________________</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<hr>
-<hr>
-<hr>
-<h3 id="4-引用"><a href="#4-引用" class="headerlink" title="4. 引用"></a>4. 引用</h3><p>在引用的文字前加 &gt; 即可。 在 Markdown 文件中建立一个区块引用，那会看起来像是你自己先断好行，然后在每行的最前面加上 &gt; ：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">&gt; consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">&gt; Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">&gt; </span><br><span class="line">&gt; Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse</span><br><span class="line">&gt; id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<blockquote>
-<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,<br>consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.<br>Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
-</blockquote>
-<p>Markdown 也允许你偷懒只在整个段落的第一行最前面加上 &gt; ：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<blockquote>
-<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
-</blockquote>
-<p>区块引用可以嵌套（例如：引用内的引用），只要根据层次加上不同数量的 &gt; ：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is the first level of quoting.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; This is nested blockquote.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; &gt; &gt; Back to the first level.</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<blockquote>
-<p>This is the first level of quoting.</p>
-<blockquote>
-<p>This is nested blockquote.</p>
-</blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>Back to the first level.</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>引用的区块内也可以使用其他的 Markdown 语法，包括标题、列表、代码区块等。</p>
-<h3 id="5-列表"><a href="#5-列表" class="headerlink" title="5. 列表"></a>5. 列表</h3><p>Markdown 支持有序列表和无序列表。 无序列表使用星号、加号或是减号作为列表标记。 示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 列表内容</span><br><span class="line">+ 列表内容</span><br><span class="line">* 列表内容</span><br><span class="line">注意：- + * 跟内容之间都要有一个空格</span><br></pre></td></tr></table></figure>
-
-<p>效果如下： </p>
-<ul>
-<li>列表内容</li>
-</ul>
-<ul>
-<li>列表内容</li>
-</ul>
-<ul>
-<li>列表内容</li>
-</ul>
-<p>有序列表则使用数字接着一个英文句点作为标记。 示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. 列表内容</span><br><span class="line">2. 列表内容</span><br><span class="line">3. 列表内容</span><br><span class="line">注意：序号跟内容之间要有空格 </span><br></pre></td></tr></table></figure>
-<p>效果如下： </p>
-<ol>
-<li>列表内容</li>
-<li>列表内容</li>
-<li>列表内容</li>
-</ol>
-<p>列表可以嵌套，上一级和下一级之间敲三个空格即可。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* 一级无序列表内容</span><br><span class="line"></span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br></pre></td></tr></table></figure>
-
-<p>效果如下： </p>
-<ul>
-<li><p>一级无序列表内容</p>
-<ul>
-<li>二级无序列表内容</li>
-<li>二级无序列表内容</li>
-<li>二级无序列表内容</li>
-</ul>
-</li>
-</ul>
-<p>要让列表看起来更漂亮，你可以把内容用固定的缩进整理好：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span><br><span class="line">    Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,</span><br><span class="line">    viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.</span><br><span class="line">    Suspendisse id sem consectetuer libero luctus adipiscing</span><br></pre></td></tr></table></figure>
-
-<p>效果如下： </p>
-<ul>
-<li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.<br>  Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,<br>  viverra nec, fringilla in, laoreet vitae, risus.</li>
-<li>Donec sit amet nisl. Aliquam semper ipsum sit amet velit.<br>  Suspendisse id sem consectetuer libero luctus adipiscing</li>
-</ul>
-<p>列表项目可以包含多个段落，每个项目下的段落都必须缩进 4 个空格或是 1 个制表符：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1.  This is a list item with two paragraphs. Lorem ipsum dolor</span><br><span class="line">    sit amet, consectetuer adipiscing elit. Aliquam hendrerit</span><br><span class="line">    mi posuere lectus.</span><br><span class="line"></span><br><span class="line">    Vestibulum enim wisi, viverra nec, fringilla in, laoreet</span><br><span class="line">    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum</span><br><span class="line">    sit amet velit.</span><br><span class="line"></span><br><span class="line">2.  Suspendisse id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
-<p>效果如下： </p>
-<ol>
-<li><p>This is a list item with two paragraphs. Lorem ipsum dolor<br> sit amet, consectetuer adipiscing elit. Aliquam hendrerit<br> mi posuere lectus.</p>
-<p> Vestibulum enim wisi, viverra nec, fringilla in, laoreet<br> vitae, risus. Donec sit amet nisl. Aliquam semper ipsum<br> sit amet velit.</p>
-</li>
-<li><p> Suspendisse id sem consectetuer libero luctus adipiscing.</p>
-</li>
-</ol>
-<p>如果你每行都有缩进，看起来会看好很多，当然，再次地，如果你很懒惰，Markdown 也允许：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*   This is a list item with two paragraphs.</span><br><span class="line"></span><br><span class="line">    This is the second paragraph in the list item. You&#x27;re</span><br><span class="line">only required to indent the first line. Lorem ipsum dolor</span><br><span class="line">sit amet, consectetuer adipiscing elit.</span><br><span class="line"></span><br><span class="line">*   Another item in the same list.</span><br></pre></td></tr></table></figure>
-
-<p>效果不再展示。 此外： 如果要在列表项目内放进引用，那 &gt; 就需要缩进， 如果要放代码区块的话，该区块就需要缩进两次，也就是 8 个空格或是 2 个制表符。</p>
-<h3 id="6-表格"><a href="#6-表格" class="headerlink" title="6. 表格"></a>6. 表格</h3><p>示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">表头|表头|表头</span><br><span class="line">---|:--:|---:</span><br><span class="line">内容|内容|内容</span><br><span class="line">内容|内容|内容</span><br><span class="line"></span><br><span class="line">第二行分割表头和内容。</span><br><span class="line">- 有一个就行，为了对齐，多加了几个</span><br><span class="line">文字默认居左</span><br><span class="line">-两边加：表示文字居中</span><br><span class="line">-右边加：表示文字居右</span><br><span class="line">注：原生的语法两边都要用 | 包起来。此处省略</span><br></pre></td></tr></table></figure>
-
-<p>效果如下： </p>
-<table>
-<thead>
-<tr>
-<th>表头</th>
-<th align="center">表头</th>
-<th align="right">表头</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>内容</td>
-<td align="center">内容</td>
-<td align="right">内容</td>
-</tr>
-<tr>
-<td>内容</td>
-<td align="center">内容</td>
-<td align="right">内容</td>
-</tr>
-</tbody></table>
-<h3 id="7-代码"><a href="#7-代码" class="headerlink" title="7. 代码"></a>7. 代码</h3><p>在Markdown中加入代码块有两种方式： 第一种，只要简单地缩进 4 个空格或是 1 个制表符就可以:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这是一个普通段落：</span><br><span class="line"></span><br><span class="line">    这是一个代码区块。</span><br><span class="line"></span><br><span class="line">(当然，前面要有一个空行和前面的文字分隔开)</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<p>这是一个普通段落：</p>
-<pre><code>这是一个代码区块。
-</code></pre>
-<p>第二种方法似乎是更为常用， 单行代码：代码之间分别用一个反引号包起来即可；</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这里有一句代码`代码内容`。</span><br></pre></td></tr></table></figure>
-<p>效果如下：<br>这里有一句代码<code>代码内容</code>。</p>
-<p>代码块：代码之间分别用三个反引号包起来，且两边的反引号单独占一行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\```</span><br><span class="line">  代码...</span><br><span class="line">  代码...</span><br><span class="line">  代码...</span><br><span class="line">\```</span><br><span class="line">\ 是为了防止转译，实际是没有的。</span><br></pre></td></tr></table></figure>
-<p>效果如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">代码...</span><br><span class="line">代码...</span><br><span class="line">代码...</span><br></pre></td></tr></table></figure>
-<p>还可以在上面的 ``` 后面注明你的代码类型，可以产生相应的代码高亮。</p>
-<h3 id="8-段落和换行"><a href="#8-段落和换行" class="headerlink" title="8. 段落和换行"></a>8. 段落和换行</h3><p>一个 Markdown 段落是由一个或多个连续的文本行组成，它的前后要有一个以上的空行（空行的定义是显示上看起来像是空的，便会被视为空行。比方说，若某一行只包含空格和制表符，则该行也会被视为空行）。普通段落不该用空格或制表符来缩进。 我们在两个不同的文字块之间，一定要空行以示区分，不然就会被归入同一文字块中。 </p>
-<h4 id="换行"><a href="#换行" class="headerlink" title="换行"></a>换行</h4><p>Markdown 允许段落内的强迫换行（插入换行符）。 如果想要空一行，在插入处先按入两个以上的空格然后回车，即可。</p>
-<ul>
-<li>方法1：连敲2个以上空格+enter键；</li>
-<li>方法2：利用html语法，<code>&lt;br&gt;</code>。</li>
-</ul>
-<h4 id="缩进-空格"><a href="#缩进-空格" class="headerlink" title="缩进/空格"></a>缩进/空格</h4><p>但有时也可以使用标记来强制空行和空格，比如需要首行缩进的时候： 一个空格大小的表示：\  或 \  两个空格的大小表示：\ 或 \ 不换行空格：\ 或 \ 强制空行： \</p>
-<blockquote>
-<p>由于平时中文的排版习惯，首行通常缩进两字符什么的，所以顺便也了解以下操作,在markdown里这个还稍微有点麻烦，不是敲两下空格键就搞定的。这里需要借用html方面的空格实体。<br>首先明确1个汉字=2个空格大小<br>1、一个空格大小的表示&ensp; &#8194;两种用法显示效果一致。<br>2、两个空格大小的表示&emsp; &#8195;两种用法显示效果一致。<br>3、不换行空格的表示&nbsp; &#160;也是占一个空格的宽度大小。</p>
-</blockquote>
-<h3 id="9-插入超链接"><a href="#9-插入超链接" class="headerlink" title="9. 插入超链接"></a>9. 插入超链接</h3><p>链接分两种。一种是链接到其他网上地址的，还有一种是链接到本文中的某个位置的。<br>两种的基本格式一样<code>[]()</code>。需要添加链接的文字内容用<code>[方括号]</code>来括起来，后面紧跟着带有网址的<code>(圆括号)</code>，如果要加上连接的title文字，在网址后面，把 title文字放到双引号里面。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[超链接名](超链接地址 &quot;超链接title&quot;)</span><br><span class="line">title可加可不加</span><br><span class="line">文字链接 [链接名称](http://链接网址)</span><br><span class="line">网址链接 &lt;http://链接网址&gt;</span><br><span class="line">实例：</span><br><span class="line">[Github](https://github.com/fengyanxin) &amp;emsp;&lt;https://github.com/fengyanxin&gt;</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<p><a href="https://github.com/fengyanxin">Github</a>：<a href="https://github.com/fengyanxin">https://github.com/fengyanxin</a></p>
-<h3 id="10-插入图片"><a href="#10-插入图片" class="headerlink" title="10. 插入图片"></a>10. 插入图片</h3><p>添加图片形式和链接相似，只需要在链接的基础上前方加一个<code>！</code> 感叹号。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">![图片alt](图片地址  &quot;optional title&quot;)</span><br><span class="line">图片alt就是显示在图片下面的文字，相当于对图片内容的解释，可以不写。</span><br><span class="line">图片地址链接可以是图片的本地地址或网址。</span><br><span class="line">图片optional title是图片的标题，当鼠标悬置于图片上时显示的内容。title可加可不加。</span><br></pre></td></tr></table></figure>
-
-<p>效果如下：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91Markdown-%E8%AF%AD%E6%B3%95/16781754751832.jpg"></p>
-]]></content>
-      <categories>
-        <category>Tips</category>
-      </categories>
-      <tags>
-        <tag>Tips</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【OC】方法拦截器：如何 hook 三方 SDK 中的方法?</title>
-    <url>/iOS/%E3%80%90OC%E3%80%91%E6%96%B9%E6%B3%95%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%9A%E5%A6%82%E4%BD%95-hook-%E4%B8%89%E6%96%B9-SDK-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="一、前因"><a href="#一、前因" class="headerlink" title="一、前因"></a>一、前因</h2><p>缘由：项目中使用 <code>Pod</code> 集成了一个三方的远端SDK，这个SDK中的某个类遵循了一个代理协议，这个代理中有很多方法实现。现在的需求是，我在使用这个SDK的类时，只想实现代理方法中的其中一个方法，而不想把所有方法都实现一遍，而且也没办法全部实现。但是，我如果在引用类中遵循代理，就得把所有方法都实现一遍，这显然不现实；如果只实现固定方法，其他方法就会失效，这也不行。</p>
-<span id="more"></span>
-
-<p>所以，我就有了一个想法：<strong>不遵循代理，只是对需要实现的方法进行监听，在其执行时，不执行原有方法流程，转而执行自定义方法。</strong></p>
-<p>这个思路显然是可行的，接下来就是如何把这个方法 <code>hook</code> 出来的问题。</p>
-<h2 id="二、后果"><a href="#二、后果" class="headerlink" title="二、后果"></a>二、后果</h2><p>有了思路，剩下的就是验证思路和解决问题，经过一段时间的思考和查阅资料，就有了如下结果和方案：</p>
-<h3 id="1、初版：对三方源码有入侵"><a href="#1、初版：对三方源码有入侵" class="headerlink" title="1、初版：对三方源码有入侵"></a>1、初版：对三方源码有入侵</h3><p>这个方案，对三方源码有一定的入侵，但是因为入侵较小，所以决定尝试一下。</p>
-<p>创建一个 <code>NSObject</code>的 <code>Category</code>，为什么会选择 <code>NSObject</code>，因为他是所有对象类的基类，注册监听方法时更为方便和通用。</p>
-<h4 id="NSObject-SRModuleAuthorization-h"><a href="#NSObject-SRModuleAuthorization-h" class="headerlink" title="NSObject+SRModuleAuthorization.h"></a>NSObject+SRModuleAuthorization.h</h4><p>在 <code>NSObject+SRModuleAuthorization.h</code> 实现代码如下:</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">NSObject</span> (<span class="type">SRModuleAuthorization</span>)</span><br><span class="line"></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel;</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
-
-<p><code>.h</code> 只对外暴露一个注册需要被监听方法的API。</p>
-<h4 id="NSObject-SRModuleAuthorization-m"><a href="#NSObject-SRModuleAuthorization-m" class="headerlink" title="NSObject+SRModuleAuthorization.m"></a>NSObject+SRModuleAuthorization.m</h4><p>在<code>NSObject+SRModuleAuthorization.m</code> 实现代码如下:</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注册需要被拦截的方法</span></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel&#123;</span><br><span class="line">    <span class="comment">// 获取方法的名称，根据该方法名称设置自定义的方法名称</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(sel);</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;sr_auth_%@&quot;</span>, methodName];</span><br><span class="line">    <span class="comment">// 获取自定义方法的实例</span></span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">Method</span> newMethod <span class="operator">=</span> class_getInstanceMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel);</span><br><span class="line">    <span class="comment">// 判断是否已经添加了自定义的方法，如果为空就添加自定义方法</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">!</span>newMethod)&#123;</span><br><span class="line">        <span class="comment">// 获取被拦截方法的结构体对象</span></span><br><span class="line">        <span class="type">Method</span> method <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, sel);</span><br><span class="line">        <span class="comment">// 获取被拦截方法的方法签名字符串</span></span><br><span class="line">        const char <span class="operator">*</span>functionType  <span class="operator">=</span> method_getTypeEncoding(method);</span><br><span class="line">        <span class="type">NSString</span> <span class="operator">*</span>functionTypeStr <span class="operator">=</span> [<span class="type">NSString</span> stringWithUTF8String:functionType];</span><br><span class="line">        <span class="comment">// 判断方法签名的字符串中，：8是否是最后两个字符</span></span><br><span class="line">        <span class="comment">// 如果是则代表无参方法，否则是有参方法</span></span><br><span class="line">        <span class="comment">// 针对这两种方法添加不同的自定义拦截方法</span></span><br><span class="line">        <span class="type">NSRange</span> range <span class="operator">=</span> [functionTypeStr rangeOfString:@<span class="string">&quot;:8&quot;</span>];</span><br><span class="line">        <span class="type">Method</span> intercetionMethod;</span><br><span class="line">        <span class="keyword">if</span> (range.location <span class="operator">+</span> range.length <span class="operator">&lt;</span> functionTypeStr.length)&#123;</span><br><span class="line">            <span class="comment">// 有参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion::));</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">// 无参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 获取自定义拦截方法的实例，</span></span><br><span class="line">        <span class="comment">// 并将自定义方法的selector与实例关联，动态的添加进当前类型</span></span><br><span class="line">        <span class="type">IMP</span> imp <span class="operator">=</span> method_getImplementation(intercetionMethod);</span><br><span class="line">        class_addMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel, imp, functionType);</span><br><span class="line">        <span class="comment">// 最后重新获取自定义方法的方法结构体</span></span><br><span class="line">        <span class="comment">// 并与被监听方法进行实例交换，交换后，</span></span><br><span class="line">        <span class="comment">// 被监听的方法被调用时，就会执行我们自定义的方法实例，即intercetion</span></span><br><span class="line">        <span class="type">Method</span> method2 <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, newSel);</span><br><span class="line">        method_exchangeImplementations(method, method2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>下面是无参拦截方法的实现：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 执行自定义代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>有参拦截方法是一个可变参数列表，我们可以遍历 <code>invocation</code> 对象的参数，以达到传参的目的。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">//有参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion: (id)param1 :(id)param2,<span class="operator">...</span>&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">NSMutableArray</span> *<span class="title class_">params</span> = [<span class="title class_">NSMutableArray</span> <span class="title class_">array</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 参数个数signature.numberOfArguments 默认有一个_cmd 一个target 所以要-2, 正常参数从第三个开始</span></span><br><span class="line">        <span class="keyword">if</span> (signature.numberOfArguments) &#123;</span><br><span class="line">            <span class="type">NSInteger</span> argCount <span class="operator">=</span> signature.numberOfArguments;</span><br><span class="line">            va_list args;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">2</span>)&#123;</span><br><span class="line">                [params addObject:param1];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">3</span>)&#123;</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_start(args, param2);</span><br><span class="line">            <span class="keyword">for</span> (int i <span class="operator">=</span> <span class="number">4</span>; i <span class="operator">&lt;</span> argCount; i<span class="operator">++</span>) &#123;</span><br><span class="line">                param2 <span class="operator">=</span> va_arg(args, id);</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_end(args);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (params.count <span class="operator">!=</span> argCount<span class="operator">-</span><span class="number">2</span>)&#123;</span><br><span class="line">               <span class="type">NSLog</span>(@<span class="string">&quot;proxy --- 传参有误! please check it! ---&quot;</span>);</span><br><span class="line">               <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 执行自定义代码</span></span><br><span class="line">       </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里有一个问题：因为参数遍历转化时， <code>va_arg(args, id)</code> 方法会把传递过来的参数转化成 <code>id</code> 类型，如果的不 <code>NSObject</code> 类型的参数无法完成转化。所以，如果被监听的方法的参数类型不是对象类型，会发生错误。</p>
-<p>实现起来很简单，只需要在被监听的类的初始化方法里，调用 <code>registerNeedMonitorSEL</code> 方法即可，如下:</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test)];</span><br><span class="line"><span class="comment">// 有参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:)];</span><br><span class="line"><span class="comment">// 多参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:test1:)];</span><br></pre></td></tr></table></figure>
-
-<p>分析：这个方法虽然解决了我的问题，但是缺点也是很明显的:</p>
-<p>问题1: 对参数类型不是<code>NSObject</code>的方法无法监听，可能发生崩溃的情况。</p>
-<p>问题2: 如何是监听三方SDK的方法，会对其造成代码入侵，SDK更新方法会失效。</p>
-<h3 id="2、进阶版：对三方源码无入侵"><a href="#2、进阶版：对三方源码无入侵" class="headerlink" title="2、进阶版：对三方源码无入侵"></a>2、进阶版：对三方源码无入侵</h3><p>初版的方案显然不尽如人意，所以，针对以上问题，我又开始了新一轮的思考。</p>
-<p>如何在不入侵三方源码的情况下，对方法进行 <code>hook</code> 呢？</p>
-<p>结果就有了下面的方案：</p>
-<p>实现思路：对需要的监听方法的类做一个category扩展，利用 <code>Method Swizzling</code> 对监听的方法进行转换，然后把它 <code>hook</code> 出来。</p>
-<p>下面说一下我的代码实现：</p>
-<p>首先，对监听方法的类做一个 <code>category</code> 扩展。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">TUIBaseChatViewController</span> (<span class="type">PHHookMethod</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
-
-<p>然后，在category的 <code>.m</code> 文件里实现如下代码：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">+</span> (void)load&#123;</span><br><span class="line">    <span class="keyword">static</span> dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(<span class="operator">&amp;</span>onceToken, <span class="operator">^</span>&#123;</span><br><span class="line">        <span class="comment">// 假如要监听方法,则把下面这行代码打开</span></span><br><span class="line">        __gbh_tracer_swizzleMethod([<span class="keyword">self</span> <span class="keyword">class</span>], <span class="meta">@selector</span>(messageController:onSelectMessageAvatar:), <span class="meta">@selector</span>(__gbh_tracer_messageController:onSelectMessageAvatar:));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这段代码很好理解，就是在程序启动时就注册方法监听，等到方法执行时，对其进行转换，转换方法看下面：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">void __gbh_tracer_swizzleMethod(<span class="type">Class</span> <span class="keyword">class</span>, <span class="type">SEL</span> originalSelector, <span class="type">SEL</span> swizzledSelector)&#123;</span><br><span class="line">    <span class="type">Method</span> originalMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, originalSelector);</span><br><span class="line">    <span class="type">Method</span> swizzledMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, swizzledSelector);</span><br><span class="line">    </span><br><span class="line">    <span class="type">BOOL</span> didAddMethod <span class="operator">=</span></span><br><span class="line">    class_addMethod(<span class="keyword">class</span>,</span><br><span class="line">                    originalSelector,</span><br><span class="line">                    method_getImplementation(swizzledMethod),</span><br><span class="line">                    method_getTypeEncoding(swizzledMethod));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (didAddMethod) &#123;</span><br><span class="line">        class_replaceMethod(<span class="keyword">class</span>,</span><br><span class="line">                            swizzledSelector,</span><br><span class="line">                            method_getImplementation(originalMethod),</span><br><span class="line">                            method_getTypeEncoding(originalMethod));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        method_exchangeImplementations(originalMethod, swizzledMethod);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这是一个标准的 <code>swizzling</code> 写法，当然了  <code>github</code> 上面也有关于 <code>swizzling</code> 的开源库，用起来也顺手，这里就不多说了。</p>
-<p>然后就是 <code>swizzling</code> 转换到的方法：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">-</span> (void)__gbh_tracer_messageController:(<span class="type">TUIBaseMessageController</span> <span class="operator">*</span>)controller onSelectMessageAvatar:(<span class="type">TUIMessageCell</span> <span class="operator">*</span>)cell&#123;</span><br><span class="line"><span class="comment">//    [self __gbh_tracer_messageController:controller onSelectMessageAvatar:cell]; //由于方法已经被交换,这里调用的实际上是messageController:onSelectMessageAvatar:方法</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 执行自定义方法</span></span><br><span class="line">    [<span class="keyword">self</span> clickMessageAvatar:cell];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>转换后的方法我们既可以让其继续执行以前的方法流程，也可以执行自己定义的方法，简直不要太爽。</p>
-<p>这就是一整个 <code>hook</code> 流程，即简单又方便，以后，我只需要往工程里面添加这个 <code>Category</code> ，这个被监听的方法就会被 <code>hook</code> 出来，可以让我为所欲为，还不会出现之前的报错和源码入侵的问题。</p>
-<h2 id="三、参考资料"><a href="#三、参考资料" class="headerlink" title="三、参考资料"></a>三、参考资料</h2><blockquote>
-<p>膜拜大神！<br><a href="https://www.jianshu.com/p/57827c100a3f">https://www.jianshu.com/p/57827c100a3f</a><br><a href="https://www.cnblogs.com/n1ckyxu/p/6186850.html">https://www.cnblogs.com/n1ckyxu/p/6186850.html</a><br><a href="https://www.jianshu.com/p/99d06ad0fa51">https://www.jianshu.com/p/99d06ad0fa51</a><br><a href="https://blog.csdn.net/u014600626/article/details/119271920">https://blog.csdn.net/u014600626/article/details/119271920</a><br><a href="http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more">http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>iOS</category>
-      </categories>
-      <tags>
-        <tag>iOS</tag>
-        <tag>OC</tag>
       </tags>
   </entry>
   <entry>
@@ -5147,6 +4963,55 @@
       </tags>
   </entry>
   <entry>
+    <title>【Tips】解决 ping github.com 超时问题</title>
+    <url>/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="解决-ping-github-com-超时问题"><a href="#解决-ping-github-com-超时问题" class="headerlink" title="解决 ping github.com 超时问题"></a>解决 ping github.com 超时问题</h1><p>1、尝试 <code>ping github.com</code>，结果发现Ping不通，但是 <code>ping baidu.com</code> 却是正常的。</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg"></p>
+<span id="more"></span>
+
+<p>2、初步分心应该是本地的DNS无法解析导致的，需要修改Hosts文件，添加 github 的ip地址项</p>
+<h2 id="如何修改Hosts文件？"><a href="#如何修改Hosts文件？" class="headerlink" title="如何修改Hosts文件？"></a>如何修改Hosts文件？</h2><h3 id="1、通过终端命令修改"><a href="#1、通过终端命令修改" class="headerlink" title="1、通过终端命令修改"></a>1、通过终端命令修改</h3><p>（1）打开终端，输入命令行：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># sudo 以管理员权限执行</span><br><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>（2）输入本机密码后，会自动打开hosts文件 。</p>
+<ul>
+<li>键盘输入<code>i</code>（插入），修改完成后，按 <code>esc</code> 键退出插入页面</li>
+<li>保存退出：输入  <code>:wq</code> 或者<code>:wq!</code>，再<code>enter</code>键 </li>
+<li>不保存退出：输入<code>q</code>和<code>！</code>键，再<code>enter</code>键</li>
+</ul>
+<h3 id="2、在-Finder-中修改"><a href="#2、在-Finder-中修改" class="headerlink" title="2、在 Finder 中修改"></a>2、在 Finder 中修改</h3><p>方法一：</p>
+<p>（1）打开 <code>Finder</code> ，快捷键 <code>Command+Shift+G</code> 查找文件，输入 <code>/etc/hosts</code>，点击前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg"></p>
+<p>（2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg"></p>
+<p>方法二：</p>
+<p>（1）打开Finder，快捷键 <code>Shift+Command+G</code> 查找文件，输入 <code>/private</code> 前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg"></p>
+<p>（2）找到 <code>etc</code> 文件之后，选择显示简介</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg"></p>
+<p>（3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg"></p>
+<h2 id="如何在-Hosts-文件中配置-github-com-映射"><a href="#如何在-Hosts-文件中配置-github-com-映射" class="headerlink" title="如何在 Hosts 文件中配置 github.com 映射"></a>如何在 Hosts 文件中配置 github.com 映射</h2><p>host文件打开之后可以看到：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg"></p>
+<p>在文件下面添加如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="title class_">GitHub</span>地址</span><br><span class="line"><span class="number">140.82</span><span class="number">.114</span><span class="number">.3</span> github.<span class="property">com</span> git</span><br><span class="line"><span class="number">151.101</span><span class="number">.129</span><span class="number">.194</span> github.<span class="property">global</span>.<span class="property">ssl</span>.<span class="property">fastly</span>.<span class="property">net</span></span><br></pre></td></tr></table></figure>
+
+<p>上图中的 IP 可以通过， <a href="https://www.ipaddress.com/">ipaddress</a> 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg"></p>
+<p><code>140.82.114.3</code>：这个IP地址修改为 <code>github.com</code>搜索到的IP地址</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg"></p>
+<p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
+<p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【iOS】集成阿里云消息推送</title>
     <url>/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/</url>
     <content><![CDATA[<h1 id="集成阿里云消息推送"><a href="#集成阿里云消息推送" class="headerlink" title="集成阿里云消息推送"></a>集成阿里云消息推送</h1><h2 id="基本的业务流程："><a href="#基本的业务流程：" class="headerlink" title="基本的业务流程："></a>基本的业务流程：</h2><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782576576028.jpg"></p>
@@ -5272,55 +5137,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【Tips】解决 ping github.com 超时问题</title>
-    <url>/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="解决-ping-github-com-超时问题"><a href="#解决-ping-github-com-超时问题" class="headerlink" title="解决 ping github.com 超时问题"></a>解决 ping github.com 超时问题</h1><p>1、尝试 <code>ping github.com</code>，结果发现Ping不通，但是 <code>ping baidu.com</code> 却是正常的。</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg"></p>
-<span id="more"></span>
-
-<p>2、初步分心应该是本地的DNS无法解析导致的，需要修改Hosts文件，添加 github 的ip地址项</p>
-<h2 id="如何修改Hosts文件？"><a href="#如何修改Hosts文件？" class="headerlink" title="如何修改Hosts文件？"></a>如何修改Hosts文件？</h2><h3 id="1、通过终端命令修改"><a href="#1、通过终端命令修改" class="headerlink" title="1、通过终端命令修改"></a>1、通过终端命令修改</h3><p>（1）打开终端，输入命令行：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># sudo 以管理员权限执行</span><br><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
-
-<p>（2）输入本机密码后，会自动打开hosts文件 。</p>
-<ul>
-<li>键盘输入<code>i</code>（插入），修改完成后，按 <code>esc</code> 键退出插入页面</li>
-<li>保存退出：输入  <code>:wq</code> 或者<code>:wq!</code>，再<code>enter</code>键 </li>
-<li>不保存退出：输入<code>q</code>和<code>！</code>键，再<code>enter</code>键</li>
-</ul>
-<h3 id="2、在-Finder-中修改"><a href="#2、在-Finder-中修改" class="headerlink" title="2、在 Finder 中修改"></a>2、在 Finder 中修改</h3><p>方法一：</p>
-<p>（1）打开 <code>Finder</code> ，快捷键 <code>Command+Shift+G</code> 查找文件，输入 <code>/etc/hosts</code>，点击前往</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg"></p>
-<p>（2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg"></p>
-<p>方法二：</p>
-<p>（1）打开Finder，快捷键 <code>Shift+Command+G</code> 查找文件，输入 <code>/private</code> 前往</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg"></p>
-<p>（2）找到 <code>etc</code> 文件之后，选择显示简介</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg"></p>
-<p>（3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg"></p>
-<h2 id="如何在-Hosts-文件中配置-github-com-映射"><a href="#如何在-Hosts-文件中配置-github-com-映射" class="headerlink" title="如何在 Hosts 文件中配置 github.com 映射"></a>如何在 Hosts 文件中配置 github.com 映射</h2><p>host文件打开之后可以看到：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg"></p>
-<p>在文件下面添加如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="title class_">GitHub</span>地址</span><br><span class="line"><span class="number">140.82</span><span class="number">.114</span><span class="number">.3</span> github.<span class="property">com</span> git</span><br><span class="line"><span class="number">151.101</span><span class="number">.129</span><span class="number">.194</span> github.<span class="property">global</span>.<span class="property">ssl</span>.<span class="property">fastly</span>.<span class="property">net</span></span><br></pre></td></tr></table></figure>
-
-<p>上图中的 IP 可以通过， <a href="https://www.ipaddress.com/">ipaddress</a> 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg"></p>
-<p><code>140.82.114.3</code>：这个IP地址修改为 <code>github.com</code>搜索到的IP地址</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg"></p>
-<p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
-<p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
-]]></content>
-      <categories>
-        <category>Tips</category>
-      </categories>
-      <tags>
-        <tag>Tips</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>第一次与ChatGPT闲聊</title>
     <url>/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/</url>
     <content><![CDATA[<h1 id="第一次与ChatGPT闲聊"><a href="#第一次与ChatGPT闲聊" class="headerlink" title="第一次与ChatGPT闲聊"></a>第一次与ChatGPT闲聊</h1><p><img data-src="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994415736.jpg"></p>
@@ -5353,6 +5169,190 @@
       </categories>
       <tags>
         <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Tips】Markdown 语法</title>
+    <url>/Tips/%E3%80%90Tips%E3%80%91Markdown-%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[<h1 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h1><h2 id="一、Markdown纯文本基本语法"><a href="#一、Markdown纯文本基本语法" class="headerlink" title="一、Markdown纯文本基本语法"></a>一、Markdown纯文本基本语法</h2><h3 id="1-标题"><a href="#1-标题" class="headerlink" title="1. 标题"></a>1. 标题</h3><p>Markdown 支持两种标题的语法，类 Setext 和类 atx 形式。 类 Setext 形式是用底线的形式，利用 = （最高阶标题）和 - （第二阶标题），例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">This is an H1</span><br><span class="line">=======</span><br><span class="line"></span><br><span class="line">This is an H2</span><br><span class="line">----------</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<p>效果如下：</p>
+<h1 id="This-is-an-H1"><a href="#This-is-an-H1" class="headerlink" title="This is an H1"></a>This is an H1</h1><h2 id="This-is-an-H2"><a href="#This-is-an-H2" class="headerlink" title="This is an H2"></a>This is an H2</h2><p>任何数量的 = 和 - 都可以有效果。</p>
+<p>这里需要注意一点，由于分割线也是 “—-”， 因此在使用分割线时，一定要空一行，不然会把上方的文字识别为第二阶标题。原因会在后面的段落和换行中说到。<br>类 Atx 形式则是在行首插入 1 到 6 个 # ，对应到标题 1 到 6 阶，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># this is H1</span><br><span class="line">## this is H2</span><br><span class="line">###### this is H6</span><br></pre></td></tr></table></figure>
+
+<p>效果不再展示，但要注意的是，标准语法一般在 # 后跟个空格再写文字，不然可能会无法识别。</p>
+<h3 id="2-字体"><a href="#2-字体" class="headerlink" title="2. 字体"></a>2. 字体</h3><h4 id="粗-斜-删除线-下划线"><a href="#粗-斜-删除线-下划线" class="headerlink" title="粗/斜/删除线/下划线"></a>粗/斜/删除线/下划线</h4><p>Markdown 使用星号（*）和底线（_）作为标记强调字词的符号，你可以随便用你喜欢的样式，唯一的限制是，你用什么符号开启标签，就要用什么符号结束。但个人感觉写中文时还是（*）比较好用，因为它不区分全角半角，不用切换输入法。 示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">**这是加粗**</span><br><span class="line">__这也是加粗__</span><br><span class="line">*这是倾斜*</span><br><span class="line">_这也是倾斜_</span><br><span class="line">***这是加粗倾斜***</span><br><span class="line">~~这是加删除线~~</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：<br><strong>这是加粗</strong><br><strong>这也是加粗</strong><br><em>这是倾斜</em><br><em>这也是倾斜</em><br><em><strong>这是加粗倾斜</strong></em><br><del>这是加删除线</del></p>
+<p>注意：强调也可以直接插在文字中间，但是如果你的 * 和 _ 两边都有空白的话，它们就只会被当成普通的符号。 如果要在文字前后直接插入普通的星号或底线，你可以用反斜线 \ 。</p>
+<h4 id="字体、字号、颜色"><a href="#字体、字号、颜色" class="headerlink" title="字体、字号、颜色"></a>字体、字号、颜色</h4><p>如果想要指定字体大小、颜色和类型可以通过<code>&lt;font&gt;&lt;/font&gt;</code>语法来完成。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">指定字体类型： &lt;font face=<span class="string">&quot;黑体&quot;</span>&gt;我是黑体字&lt;/font&gt;</span><br><span class="line">指定字体大小： &lt;font size=<span class="number">12</span>&gt;我是<span class="number">12</span>号字&lt;/font&gt;</span><br><span class="line">指定字体颜色：&lt;font color=#0099ff&gt;我是蓝色字&lt;/font&gt; #0099ff 为颜色的<span class="number">16</span>进制代码</span><br><span class="line">指定字体颜色、字号、字体类型&lt;font color=#0099ff size=<span class="number">12</span> face=<span class="string">&quot;黑体&quot;</span>&gt;黑体&lt;/font&gt;</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p>指定字体类型： <font face="黑体">我是黑体字</font><br>指定字体大小： <font size="12">我是12号字</font><br>指定字体颜色：<font color="#0099ff">我是蓝色字</font> #0099ff 为颜色的16进制代码<br>指定字体颜色、字号、字体类型<font color="#0099ff" size="12" face="黑体">黑体</font></p>
+<h3 id="3-分割线"><a href="#3-分割线" class="headerlink" title="3. 分割线"></a>3. 分割线</h3><p>你可以在一行中用三个以上的星号、减号、底线来建立一个分隔线，行内不能有其他东西。你也可以在星号或是减号中间插入空格。下面每种写法都可以建立分隔线：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* * *</span><br><span class="line">***</span><br><span class="line">**********</span><br><span class="line">- - -</span><br><span class="line">_________________</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<hr>
+<hr>
+<hr>
+<h3 id="4-引用"><a href="#4-引用" class="headerlink" title="4. 引用"></a>4. 引用</h3><p>在引用的文字前加 &gt; 即可。 在 Markdown 文件中建立一个区块引用，那会看起来像是你自己先断好行，然后在每行的最前面加上 &gt; ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">&gt; consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">&gt; Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">&gt; </span><br><span class="line">&gt; Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse</span><br><span class="line">&gt; id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,<br>consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.<br>Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
+</blockquote>
+<p>Markdown 也允许你偷懒只在整个段落的第一行最前面加上 &gt; ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,</span><br><span class="line">consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.</span><br><span class="line">Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
+</blockquote>
+<p>区块引用可以嵌套（例如：引用内的引用），只要根据层次加上不同数量的 &gt; ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; This is the first level of quoting.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; This is nested blockquote.</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; &gt; &gt; Back to the first level.</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>This is the first level of quoting.</p>
+<blockquote>
+<p>This is nested blockquote.</p>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Back to the first level.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>引用的区块内也可以使用其他的 Markdown 语法，包括标题、列表、代码区块等。</p>
+<h3 id="5-列表"><a href="#5-列表" class="headerlink" title="5. 列表"></a>5. 列表</h3><p>Markdown 支持有序列表和无序列表。 无序列表使用星号、加号或是减号作为列表标记。 示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 列表内容</span><br><span class="line">+ 列表内容</span><br><span class="line">* 列表内容</span><br><span class="line">注意：- + * 跟内容之间都要有一个空格</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<ul>
+<li>列表内容</li>
+</ul>
+<ul>
+<li>列表内容</li>
+</ul>
+<ul>
+<li>列表内容</li>
+</ul>
+<p>有序列表则使用数字接着一个英文句点作为标记。 示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. 列表内容</span><br><span class="line">2. 列表内容</span><br><span class="line">3. 列表内容</span><br><span class="line">注意：序号跟内容之间要有空格 </span><br></pre></td></tr></table></figure>
+<p>效果如下： </p>
+<ol>
+<li>列表内容</li>
+<li>列表内容</li>
+<li>列表内容</li>
+</ol>
+<p>列表可以嵌套，上一级和下一级之间敲三个空格即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* 一级无序列表内容</span><br><span class="line"></span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br><span class="line">   * 二级无序列表内容</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<ul>
+<li><p>一级无序列表内容</p>
+<ul>
+<li>二级无序列表内容</li>
+<li>二级无序列表内容</li>
+<li>二级无序列表内容</li>
+</ul>
+</li>
+</ul>
+<p>要让列表看起来更漂亮，你可以把内容用固定的缩进整理好：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span><br><span class="line">    Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,</span><br><span class="line">    viverra nec, fringilla in, laoreet vitae, risus.</span><br><span class="line">*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.</span><br><span class="line">    Suspendisse id sem consectetuer libero luctus adipiscing</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<ul>
+<li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.<br>  Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,<br>  viverra nec, fringilla in, laoreet vitae, risus.</li>
+<li>Donec sit amet nisl. Aliquam semper ipsum sit amet velit.<br>  Suspendisse id sem consectetuer libero luctus adipiscing</li>
+</ul>
+<p>列表项目可以包含多个段落，每个项目下的段落都必须缩进 4 个空格或是 1 个制表符：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1.  This is a list item with two paragraphs. Lorem ipsum dolor</span><br><span class="line">    sit amet, consectetuer adipiscing elit. Aliquam hendrerit</span><br><span class="line">    mi posuere lectus.</span><br><span class="line"></span><br><span class="line">    Vestibulum enim wisi, viverra nec, fringilla in, laoreet</span><br><span class="line">    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum</span><br><span class="line">    sit amet velit.</span><br><span class="line"></span><br><span class="line">2.  Suspendisse id sem consectetuer libero luctus adipiscing.</span><br></pre></td></tr></table></figure>
+<p>效果如下： </p>
+<ol>
+<li><p>This is a list item with two paragraphs. Lorem ipsum dolor<br> sit amet, consectetuer adipiscing elit. Aliquam hendrerit<br> mi posuere lectus.</p>
+<p> Vestibulum enim wisi, viverra nec, fringilla in, laoreet<br> vitae, risus. Donec sit amet nisl. Aliquam semper ipsum<br> sit amet velit.</p>
+</li>
+<li><p> Suspendisse id sem consectetuer libero luctus adipiscing.</p>
+</li>
+</ol>
+<p>如果你每行都有缩进，看起来会看好很多，当然，再次地，如果你很懒惰，Markdown 也允许：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*   This is a list item with two paragraphs.</span><br><span class="line"></span><br><span class="line">    This is the second paragraph in the list item. You&#x27;re</span><br><span class="line">only required to indent the first line. Lorem ipsum dolor</span><br><span class="line">sit amet, consectetuer adipiscing elit.</span><br><span class="line"></span><br><span class="line">*   Another item in the same list.</span><br></pre></td></tr></table></figure>
+
+<p>效果不再展示。 此外： 如果要在列表项目内放进引用，那 &gt; 就需要缩进， 如果要放代码区块的话，该区块就需要缩进两次，也就是 8 个空格或是 2 个制表符。</p>
+<h3 id="6-表格"><a href="#6-表格" class="headerlink" title="6. 表格"></a>6. 表格</h3><p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">表头|表头|表头</span><br><span class="line">---|:--:|---:</span><br><span class="line">内容|内容|内容</span><br><span class="line">内容|内容|内容</span><br><span class="line"></span><br><span class="line">第二行分割表头和内容。</span><br><span class="line">- 有一个就行，为了对齐，多加了几个</span><br><span class="line">文字默认居左</span><br><span class="line">-两边加：表示文字居中</span><br><span class="line">-右边加：表示文字居右</span><br><span class="line">注：原生的语法两边都要用 | 包起来。此处省略</span><br></pre></td></tr></table></figure>
+
+<p>效果如下： </p>
+<table>
+<thead>
+<tr>
+<th>表头</th>
+<th align="center">表头</th>
+<th align="right">表头</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>内容</td>
+<td align="center">内容</td>
+<td align="right">内容</td>
+</tr>
+<tr>
+<td>内容</td>
+<td align="center">内容</td>
+<td align="right">内容</td>
+</tr>
+</tbody></table>
+<h3 id="7-代码"><a href="#7-代码" class="headerlink" title="7. 代码"></a>7. 代码</h3><p>在Markdown中加入代码块有两种方式： 第一种，只要简单地缩进 4 个空格或是 1 个制表符就可以:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这是一个普通段落：</span><br><span class="line"></span><br><span class="line">    这是一个代码区块。</span><br><span class="line"></span><br><span class="line">(当然，前面要有一个空行和前面的文字分隔开)</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p>这是一个普通段落：</p>
+<pre><code>这是一个代码区块。
+</code></pre>
+<p>第二种方法似乎是更为常用， 单行代码：代码之间分别用一个反引号包起来即可；</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这里有一句代码`代码内容`。</span><br></pre></td></tr></table></figure>
+<p>效果如下：<br>这里有一句代码<code>代码内容</code>。</p>
+<p>代码块：代码之间分别用三个反引号包起来，且两边的反引号单独占一行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\```</span><br><span class="line">  代码...</span><br><span class="line">  代码...</span><br><span class="line">  代码...</span><br><span class="line">\```</span><br><span class="line">\ 是为了防止转译，实际是没有的。</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">代码...</span><br><span class="line">代码...</span><br><span class="line">代码...</span><br></pre></td></tr></table></figure>
+<p>还可以在上面的 ``` 后面注明你的代码类型，可以产生相应的代码高亮。</p>
+<h3 id="8-段落和换行"><a href="#8-段落和换行" class="headerlink" title="8. 段落和换行"></a>8. 段落和换行</h3><p>一个 Markdown 段落是由一个或多个连续的文本行组成，它的前后要有一个以上的空行（空行的定义是显示上看起来像是空的，便会被视为空行。比方说，若某一行只包含空格和制表符，则该行也会被视为空行）。普通段落不该用空格或制表符来缩进。 我们在两个不同的文字块之间，一定要空行以示区分，不然就会被归入同一文字块中。 </p>
+<h4 id="换行"><a href="#换行" class="headerlink" title="换行"></a>换行</h4><p>Markdown 允许段落内的强迫换行（插入换行符）。 如果想要空一行，在插入处先按入两个以上的空格然后回车，即可。</p>
+<ul>
+<li>方法1：连敲2个以上空格+enter键；</li>
+<li>方法2：利用html语法，<code>&lt;br&gt;</code>。</li>
+</ul>
+<h4 id="缩进-空格"><a href="#缩进-空格" class="headerlink" title="缩进/空格"></a>缩进/空格</h4><p>但有时也可以使用标记来强制空行和空格，比如需要首行缩进的时候： 一个空格大小的表示：\  或 \  两个空格的大小表示：\ 或 \ 不换行空格：\ 或 \ 强制空行： \</p>
+<blockquote>
+<p>由于平时中文的排版习惯，首行通常缩进两字符什么的，所以顺便也了解以下操作,在markdown里这个还稍微有点麻烦，不是敲两下空格键就搞定的。这里需要借用html方面的空格实体。<br>首先明确1个汉字=2个空格大小<br>1、一个空格大小的表示&ensp; &#8194;两种用法显示效果一致。<br>2、两个空格大小的表示&emsp; &#8195;两种用法显示效果一致。<br>3、不换行空格的表示&nbsp; &#160;也是占一个空格的宽度大小。</p>
+</blockquote>
+<h3 id="9-插入超链接"><a href="#9-插入超链接" class="headerlink" title="9. 插入超链接"></a>9. 插入超链接</h3><p>链接分两种。一种是链接到其他网上地址的，还有一种是链接到本文中的某个位置的。<br>两种的基本格式一样<code>[]()</code>。需要添加链接的文字内容用<code>[方括号]</code>来括起来，后面紧跟着带有网址的<code>(圆括号)</code>，如果要加上连接的title文字，在网址后面，把 title文字放到双引号里面。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[超链接名](超链接地址 &quot;超链接title&quot;)</span><br><span class="line">title可加可不加</span><br><span class="line">文字链接 [链接名称](http://链接网址)</span><br><span class="line">网址链接 &lt;http://链接网址&gt;</span><br><span class="line">实例：</span><br><span class="line">[Github](https://github.com/fengyanxin) &amp;emsp;&lt;https://github.com/fengyanxin&gt;</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p><a href="https://github.com/fengyanxin">Github</a>：<a href="https://github.com/fengyanxin">https://github.com/fengyanxin</a></p>
+<h3 id="10-插入图片"><a href="#10-插入图片" class="headerlink" title="10. 插入图片"></a>10. 插入图片</h3><p>添加图片形式和链接相似，只需要在链接的基础上前方加一个<code>！</code> 感叹号。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">![图片alt](图片地址  &quot;optional title&quot;)</span><br><span class="line">图片alt就是显示在图片下面的文字，相当于对图片内容的解释，可以不写。</span><br><span class="line">图片地址链接可以是图片的本地地址或网址。</span><br><span class="line">图片optional title是图片的标题，当鼠标悬置于图片上时显示的内容。title可加可不加。</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91Markdown-%E8%AF%AD%E6%B3%95/16781754751832.jpg"></p>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>Tips</tag>
       </tags>
   </entry>
 </search>
