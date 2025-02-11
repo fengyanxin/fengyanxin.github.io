@@ -3,6 +3,7 @@ title: 【Tips】解决 ping github.com 超时问题
 date: 2023-03-14 22:23:43
 tags:
 - Tips
+- GitHub
 categories:
 - Tips
 ---
@@ -97,4 +98,26 @@ IP地址，其中可能会有多个，挑选其中一个即可。
 
 ![](assets/16787752693740.jpg)
 
+## 使用三方工具自动修改（最新推荐）
 
+推荐 [SwitchHosts](https://github.com/oldj/SwitchHosts) 工具管理 hosts
+
+以 SwitchHosts 为例，看一下怎么使用的，配置参考下面：
+
+* **Hosts 类型**: `Remote`
+
+* **Hosts 标题**: 随意
+
+* **URL**: `https://raw.hellogithub.com/hosts`
+
+* **自动刷新**: 最好选 1 小时
+
+如图：
+
+![](assets/17392449105283.jpg)
+
+这样每次 hosts 有更新都能及时进行更新，免去手动更新。
+
+# 参考资料
+
+1. [GitHub 520](https://www.github-zh.com/projects/263556058-github520)
