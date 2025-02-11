@@ -381,7 +381,7 @@
     <link href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/"/>
     <id>https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</id>
     <published>2023-03-14T14:23:43.000Z</published>
-    <updated>2025-01-21T03:08:30.301Z</updated>
+    <updated>2025-02-11T03:42:05.050Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;解决-ping-github-com-超时问题&quot;&gt;&lt;a href=&quot;#解决-ping-github-com-超时问题&quot; class=&quot;headerlink&quot; title=&quot;解决 ping github.com 超时问题&quot;&gt;&lt;/a&gt;解决 ping github.com 超时问题&lt;/h1&gt;&lt;p&gt;1、尝试 &lt;code&gt;ping github.com&lt;/code&gt;，结果发现Ping不通，但是 &lt;code&gt;ping baidu.com&lt;/code&gt; 却是正常的。&lt;/p&gt;
@@ -391,6 +391,8 @@
     
     <category term="Tips" scheme="https://fengyanxin.github.io/categories/Tips/"/>
     
+    
+    <category term="GitHub" scheme="https://fengyanxin.github.io/tags/GitHub/"/>
     
     <category term="Tips" scheme="https://fengyanxin.github.io/tags/Tips/"/>
     
