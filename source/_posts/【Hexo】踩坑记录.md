@@ -109,3 +109,15 @@ Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
 成功结果如下：
 
 ![](assets/17375156102164.jpg)
+
+## 四、GitLab Pages 页面阅读次数不显示
+
+![](assets/17392522637673.jpg)
+
+现象：将博客在 GitLab Pages 上发布，阅读次数不显示了，GitHub Pages 正常显示
+
+原因：GitLab Pages 是新发布的，[Leancloud](https://www.leancloud.cn) 上没有添加相应域名
+
+解决：在 Leancloud 的应用设置中，添加 GitLab Pages 域名即可，如下图：
+
+![](assets/17392527665652.jpg)
