@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-02-13T09:48:59.294Z</updated>
+  <updated>2025-02-17T01:45:24.412Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【Tips】Mac 如何取消 sudo 时输入密码的提示</title>
+    <link href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Mac-%E5%A6%82%E4%BD%95%E5%8F%96%E6%B6%88-sudo-%E6%97%B6%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81/"/>
+    <id>https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Mac-%E5%A6%82%E4%BD%95%E5%8F%96%E6%B6%88-sudo-%E6%97%B6%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81/</id>
+    <published>2025-02-17T01:29:15.000Z</published>
+    <updated>2025-02-17T01:45:24.412Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h2&gt;&lt;p&gt;由于我想访问 GitHub 速度更快一些，使用了 SwitchHosts 对系统 Hosts 文件进行实时读写，在每一次同步远端文件进行写入时都提示要输入 Sudo 密码。&lt;/p&gt;
+&lt;p&gt;然后，我就想如何才能不每次都提示。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Tips" scheme="https://fengyanxin.github.io/categories/Tips/"/>
+    
+    
+    <category term="Tips" scheme="https://fengyanxin.github.io/tags/Tips/"/>
+    
+  </entry>
   
   <entry>
     <title>第一次与 DeepSeek 闲聊</title>
@@ -436,28 +456,6 @@
     
     
     <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【Flutter】导出iOS包时，如何自动与手动更改版本号？</title>
-    <link href="https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/"/>
-    <id>https://fengyanxin.github.io/Flutter/%E3%80%90Flutter%E3%80%91%E5%AF%BC%E5%87%BAiOS%E5%8C%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%B8%8E%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7%EF%BC%9F/</id>
-    <published>2023-03-07T13:58:55.000Z</published>
-    <updated>2025-01-21T03:08:30.269Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;【Flutter】导出iOS包时，如何自动与手动更改版本号？&quot;&gt;&lt;a href=&quot;#【Flutter】导出iOS包时，如何自动与手动更改版本号？&quot; class=&quot;headerlink&quot; title=&quot;【Flutter】导出iOS包时，如何自动与手动更改版本号？&quot;&gt;&lt;/a&gt;【Flutter】导出iOS包时，如何自动与手动更改版本号？&lt;/h1&gt;&lt;h2 id=&quot;1、通过flutter工程更改版本号&quot;&gt;&lt;a href=&quot;#1、通过flutter工程更改版本号&quot; class=&quot;headerlink&quot; title=&quot;1、通过flutter工程更改版本号&quot;&gt;&lt;/a&gt;1、通过flutter工程更改版本号&lt;/h2&gt;&lt;p&gt;1）首先，打开项目下的iOS工程，找到&lt;code&gt;info.plist&lt;/code&gt;文件，右键以&lt;code&gt;Source Code&lt;/code&gt;方式打开，找到版本号配置参数 &lt;code&gt;CFBundleShortVersionString&lt;/code&gt;和&lt;code&gt;CFBundleVersion&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;一般未做改动之前的效果如下，&lt;code&gt;$(FLUTTER_BUILD_NAME)&lt;/code&gt;表示跟随flutter工程创建。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Flutter" scheme="https://fengyanxin.github.io/categories/Flutter/"/>
-    
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-    <category term="Flutter" scheme="https://fengyanxin.github.io/tags/Flutter/"/>
     
   </entry>
   
