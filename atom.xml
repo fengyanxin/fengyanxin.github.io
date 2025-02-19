@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-02-18T09:54:23.446Z</updated>
+  <updated>2025-02-19T09:28:53.695Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91HTTP-%E5%93%8D%E5%BA%94%E7%8A%B6%E6%80%81%E7%A0%81/"/>
     <id>https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91HTTP-%E5%93%8D%E5%BA%94%E7%8A%B6%E6%80%81%E7%A0%81/</id>
     <published>2025-02-18T08:40:34.000Z</published>
-    <updated>2025-02-18T09:54:23.446Z</updated>
+    <updated>2025-02-19T09:28:53.695Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;HTTP-响应状态码&quot;&gt;&lt;a href=&quot;#HTTP-响应状态码&quot; class=&quot;headerlink&quot; title=&quot;HTTP 响应状态码&quot;&gt;&lt;/a&gt;HTTP 响应状态码&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;HTTP&lt;/strong&gt; 响应状态码用来表明特定 &lt;a href=&quot;https://developer.mozilla.org/zh-CN/docs/Web/HTTP&quot;&gt;HTTP&lt;/a&gt; 请求是否成功完成。 响应被归为以下五大类：&lt;/p&gt;
