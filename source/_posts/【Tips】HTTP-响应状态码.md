@@ -111,11 +111,11 @@ categories:
 
 这是用于缓存的目的。它告诉客户端响应还没有被修改，因此客户端可以继续使用相同的缓存版本的响应。
 
-### 305 Use Proxy
+### ~~305 Use Proxy~~
 
 在 HTTP 规范中定义，以指示请求的响应必须被代理访问。由于对代理的带内配置的安全考虑，它已被弃用。
 
-### 306 unused
+### ~~306 unused~~
 
 此响应代码不再使用；它只是保留。它曾在 HTTP/1.1 规范的早期版本中使用过。
 
@@ -297,5 +297,5 @@ categories:
 # 参考资料
 
 * [MDN 文档](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status)
-* [维基百科上的 HTTP 状态码](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status#305_use_proxy)
+* [维基百科上的 HTTP 状态码](https://zh.wikipedia.org/wiki/HTTP状态码)
 * [IANA official registry of HTTP status codes](https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml)
