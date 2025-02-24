@@ -168,9 +168,9 @@ pages:
 
 近日，GitLab 发布了一则重要通知 **《Important Change to Your GitLab.com Account》**，宣布将不再为位于 **中国大陆、澳门和香港** 的用户提供 `GitLab.com` 账户服务。该平台建议受影响的用户将账户迁移至 `极狐 GitLab（JiHu）`，这是由 GitLab 授权的独立公司，专门为这些地区提供本地化服务。
 
-![](assets/17374517390223.jpg)
+![](assets/17403610587765.jpg)
 
-用户必须在 **2025 年 2 月 18 日** 之前完成迁移，之后 GitLab 将从系统中删除帐户。
+用户必须在 **2025 年 5 月 8 日** 之前完成迁移，之后 GitLab 将从系统中删除帐户。
 
 所以，以后 `GitLab.com` 就不能用了，只能使用 `极狐 GitLab（JiHu）`，遗憾的是 `极狐 GitLab（JiHu）` 也不再提供 Pages功能了！
 
