@@ -3,6 +3,7 @@ title: 第一次与ChatGPT闲聊
 date: 2023-03-20 21:02:56
 tags:
 - 随笔
+- AI
 categories:
 - 随笔
 ---
