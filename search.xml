@@ -1234,6 +1234,118 @@
 <p>不知道在工作当中，你有没有为了测试和验证开发中的功能，特意为测试和产品经理打包一个特殊版本的 App？或者当多个团队并行开发的时候，为了测试，每个团队都单独打包出不同版本的 App？还有当你想添加某些供内部使用的功能（如清理 Cache），但又不想让 App Store 的用户使用，你是不是又专门打包了一个特殊版本的 App？</p>
 <p>每次遇到这些情况，你是不是觉得特麻烦？</p>
 <p>其实，这些都可以通过一个内部隐藏功能菜单来解决。在这一讲我就结合我们的 Moments App 来和你介绍下，如何开发了一个隐藏功能菜单，快速实现功能测试和验证。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409650905492.jpg"></p>
+<p>下面是隐藏菜单模块使用到的所有源代码文件。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409653948167.jpg"></p>
+<p>我把这些模块中使用到的类型分成两大类：</p>
+<ul>
+<li><p>用于呈现的 <strong>View</strong>，主要分为 ViewController + Tableview 以及 TableViewCell 两层；</p>
+</li>
+<li><p>用于存储配置数据的 <strong>ViewModel</strong>，它分为用于 TableView 的 ViewModel，用于 TableView Section 的 ViewModel 以及用于 TableView Cell 的 ViewModel。</p>
+</li>
+</ul>
+<p>下面是所有类型的分类总揽图，你可以简单看一下，我会在后面进行一一介绍。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409657080517.jpg"></p>
+<h2 id="View"><a href="#View" class="headerlink" title="View"></a>View</h2><p>下面是 View 部分的所有类型的关系图。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409657702632.jpg"></p>
+<p>隐藏菜单的 UI 使用了 <code>UIKit</code> 的 <code>UITableView</code> 来实现，其包含了四大部分：<strong>通用信息、DesignKit 范例、功能开关和工具箱</strong>，每一部分都是一个 <code>TableView Section</code>。</p>
+<p>为了提高可重用性，以便于快速开发新的隐藏功能，我们把 <code>UITableView</code> 嵌入到 <code>UIViewController</code> 的子类 <code>InternalMenuViewController</code> 里面。然后通过 <code>RxDataSources</code> 把 <code>tableView</code> 和 <code>viewModel</code> 绑定到一起。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> dataSource <span class="operator">=</span> <span class="type">RxTableViewSectionedReloadDataSource</span>&lt;<span class="type">InternalMenuSection</span>&gt;(</span><br><span class="line">    configureCell: &#123; <span class="keyword">_</span>, tableView, indexPath, item <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">let</span> cell <span class="operator">=</span> tableView.dequeueReusableCell(withIdentifier: item.type.rawValue, for: indexPath)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> cell <span class="operator">=</span> cell <span class="keyword">as?</span> <span class="type">InternalMenuCellType</span> &#123;</span><br><span class="line">            cell.update(with: item)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cell</span><br><span class="line">    &#125;, titleForHeaderInSection: &#123; dataSource, section <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> dataSource.sectionModels[section].title</span><br><span class="line">    &#125;, titleForFooterInSection: &#123; dataSource, section <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> dataSource.sectionModels[section].footer</span><br><span class="line">    &#125;)</span><br><span class="line">viewModel.sections</span><br><span class="line">    .bind(to: tableView.rx.items(dataSource: dataSource))</span><br><span class="line">    .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>你可以看到，<code>RxDataSources</code> 帮我们把 <code>UIKit</code> 里面恼人的 <code>DataSource</code> 和 <code>Delegate</code> 通过封包封装起来。当生成 <code>Cell</code> 的时候，统一调用 <code>InternalMenuCellType</code> 协议的 <code>update(with item: InternalMenuItemViewModel)</code> 方法来更新 <code>Cell</code> 的 UI。因此所有的 <code>Cell</code> 都必须遵循 <code>InternalMenuCellType</code> 协议。</p>
+<p>根据 <code>Cell</code> 的不同作用，我们把它分成三类：</p>
+<ul>
+<li><p>用于显示描述信息的 <code>InternalMenuDescriptionCell</code></p>
+</li>
+<li><p>用于响应点击事件的 <code>InternalMenuActionTriggerCell</code></p>
+</li>
+<li><p>用于功能开关的 <code>InternalMenuFeatureToggleCell</code></p>
+</li>
+</ul>
+<p>它们都必须实现 <code>InternalMenuCellType</code> 协议里面的 <code>update(with item: InternalMenuItemViewModel)</code> 方法。下面以 <code>InternalMenuDescriptionCell</code> 为例子来看看具体代码是怎样实现的。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">InternalMenuDescriptionCell</span>: <span class="title class_">UITableViewCell</span>, <span class="title class_">InternalMenuCellType</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">update</span>(<span class="params">with</span> <span class="params">item</span>: <span class="type">InternalMenuItemViewModel</span>) &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> item <span class="operator">=</span> item <span class="keyword">as?</span> <span class="type">InternalMenuDescriptionItemViewModel</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        selectionStyle <span class="operator">=</span> .none</span><br><span class="line">        textLabel<span class="operator">?</span>.text <span class="operator">=</span> item.title</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>update</code> 的方法里，我们通过 <code>guard</code> 语句检查并把 <code>item</code> 的类型从 <code>InternalMenuItemViewModel</code> 向下转型（downcast）为 <code>InternalMenuDescriptionItemViewModel</code>。因为只有在类型转换成功的时候，才能更新当前 <code>Cell</code> 的 UI。 <code>InternalMenuActionTriggerCell</code> 和 <code>InternalMenuFeatureToggleCell</code> 的实现方法也和 <code>InternalMenuDescriptionCell</code> 一样。<br>到此为止， <code>View</code> 部分的实现以及完成了。你可能会问 <code>InternalMenuItemViewModel</code> 和 <code>InternalMenuDescriptionItemViewModel</code> 那些类型是哪里来的？我们一起来看看 <code>ViewModel</code> 部分吧。</p>
+<h2 id="ViewModel"><a href="#ViewModel" class="headerlink" title="ViewModel"></a>ViewModel</h2><p><code>ViewModel</code> 的作用是为 <code>View</code> 准备需要呈现的数据，因此 <code>ViewModel</code> 的类型层级关系也与 <code>View</code> 类型层级关系一一对应起来，分成三大类。</p>
+<ul>
+<li><p>用于准备 TableView 数据的 <code>InternalMenuViewModel</code></p>
+</li>
+<li><p>用于准备 TableView Section 数据的 <code>InternalMenuSection</code></p>
+</li>
+<li><p>用于准备 TableView Cell 数据的 <code>InternalMenuItemViewModel</code></p>
+</li>
+</ul>
+<p>由于位于上层的类型会引用到下层的类型，为了更好地理解它们的依赖关系，我准备从下往上为你介绍各层类型的实现。</p>
+<h3 id="用于-TableView-Cell-的-ViewModel"><a href="#用于-TableView-Cell-的-ViewModel" class="headerlink" title="用于 TableView Cell 的 ViewModel"></a>用于 TableView Cell 的 ViewModel</h3><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409662428722.jpg"></p>
+<p>前面提到过，我把 <code>Cell</code> 分成了三类，与之对应的 <code>ViewModel</code> 也分成三类。我定义了一个名叫 <code>InternalMenuItemType</code> 的枚举类型（enum）来存放这些分类信息，假如以后要在隐藏菜单里开发新功能的 <code>Cell</code>，我们可以在该类型里面增加一个 <code>case</code>。下面是当前 <code>InternalMenuItemType</code> 的代码。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">InternalMenuItemType</span>: <span class="title class_">String</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> description</span><br><span class="line">    <span class="keyword">case</span> featureToggle</span><br><span class="line">    <span class="keyword">case</span> actionTrigger</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为我们在为 <code>InternalMenuViewController</code> 的 <code>tableView</code> 注册 <code>Cell</code> 的时候使用了这个枚举作为 <code>ReuseIdentifier</code>，因此把这个枚举的原始值（Raw value）定义为 <code>String</code> 类型。下面是注册 <code>Cell</code> 时的代码。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="variable">$tableView</span>.register(<span class="type">InternalMenuDescriptionCell</span>.<span class="keyword">self</span>, forCellReuseIdentifier: <span class="type">InternalMenuItemType</span>.description.rawValue)</span><br></pre></td></tr></table></figure>
+
+<p>为了提高代码的可扩展性，我们在架构和开发 Moments App 时都遵守面向协议编程（Protocol Oriented Programming）的原则。落实到这个地方，我们为三个 ViewModel 抽象出一个共同的协议 <code>InternalMenuItemViewModel</code>，其代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protocol</span> <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> type: <span class="type">InternalMenuItemType</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> title: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">select</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>InternalMenuItemViewModel</code> 定义了两个属性分别用于表示 <code>Cell</code> 类型以及显示的标题，同时也定义了一个名叫 <code>select()</code> 方法来处理 <code>Cell</code> 的点击事件。我们在 <code>InternalMenuViewController</code> 里通过 <code>RxDataSources</code> 把 <code>tableView和InternalMenuItemViewModel</code> 绑定起来，使得 <code>InternalMenuItemViewModel</code> 可以处理 <code>Cell</code> 的点击事件。代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">tableView.rx</span><br><span class="line">    .modelSelected(<span class="type">InternalMenuItemViewModel</span>.<span class="keyword">self</span>)</span><br><span class="line">    .subscribe(onNext: &#123; item <span class="keyword">in</span></span><br><span class="line">        item.select()</span><br><span class="line">    &#125;)</span><br><span class="line">    .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>当用户点击 <code>TableView</code> 上某个 <code>Cell</code> 的时候，就会调用对应的 <code>ViewModel</code> 的 <code>select()</code> 方法。 但并不是所有的 <code>Cell</code> 都需要响应点击的事件，例如用于描述 App 版本号的 <code>Cell</code>，就不需要处理点击事件。</p>
+<p>为了简化开发的工作量，我们为 <code>InternalMenuItemViewModel</code> 定义了一个名叫 <code>select()</code> 的协议扩展方法，并且为该协议提供了一个默认的实现，即当遵循 <code>InternalMenuItemViewModel</code> 协议的类型未实现 <code>select()</code> 方法时，程序就会执行协议扩展所定义的 <code>select()</code> 方法 。代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">select</span>() &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面一起看看不同类型 <code>Cell</code> 所对应的 <code>ViewModel</code> 实现方法。</p>
+<h3 id="InternalMenuDescriptionItemViewModel"><a href="#InternalMenuDescriptionItemViewModel" class="headerlink" title="InternalMenuDescriptionItemViewModel"></a>InternalMenuDescriptionItemViewModel</h3><p><code>InternalMenuDescriptionItemViewModel</code> 用于显示描述类型的 <code>Cell</code>，其功能非常简单，就是显示一句描述信息，例如 App 的版本号。其代码实现也十分容易，首先它需要实现来自 <code>InternalMenuItemViewModel</code> 的 <code>type</code> 属性并返回 <code>.description</code>，然后实现 <code>title</code> 属性来存储描述信息的字符串。 其具体代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">InternalMenuDescriptionItemViewModel</span>: <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> type: <span class="type">InternalMenuItemType</span> <span class="operator">=</span> .description</span><br><span class="line">    <span class="keyword">let</span> title: <span class="type">String</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="InternalMenuFeatureToggleItemViewModel"><a href="#InternalMenuFeatureToggleItemViewModel" class="headerlink" title="InternalMenuFeatureToggleItemViewModel"></a>InternalMenuFeatureToggleItemViewModel</h3><p><code>InternalMenuFeatureToggleItemViewModel</code> 用于存放本地功能开关的配置数据，因此它引用了上一讲提到过的 <code>InternalTogglesDataStore</code> 来存储和读取本地开关的信息。</p>
+<p>除了实现 <code>type</code> 和 <code>title</code> 属性以外，它提供了两个关键的接口供外部使用：</p>
+<ol>
+<li><p>命名为 <code>isOn</code> 的计算属性（Computed property），供外部读取开关的状态；</p>
+</li>
+<li><p><code>toggle(isOn: Bool)</code> 方法，给外部更新开关的状态。</p>
+</li>
+</ol>
+<p>具体代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">InternalMenuFeatureToggleItemViewModel</span>: <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">let</span> toggle: <span class="type">ToggleType</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">let</span> togglesDataStore: <span class="type">TogglesDataStoreType</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">title</span>: <span class="type">String</span>, <span class="params">toggle</span>: <span class="type">ToggleType</span>, <span class="params">togglesDataStore</span>: <span class="type">TogglesDataStoreType</span> <span class="operator">=</span> <span class="type">InternalTogglesDataStore</span>.shared) &#123;</span><br><span class="line">        <span class="keyword">self</span>.title <span class="operator">=</span> title</span><br><span class="line">        <span class="keyword">self</span>.toggle <span class="operator">=</span> toggle</span><br><span class="line">        <span class="keyword">self</span>.togglesDataStore <span class="operator">=</span> togglesDataStore</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> type: <span class="type">InternalMenuItemType</span> <span class="operator">=</span> .featureToggle</span><br><span class="line">    <span class="keyword">let</span> title: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> isOn: <span class="type">Bool</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> togglesDataStore.isToggleOn(toggle)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">toggle</span>(<span class="params">isOn</span>: <span class="type">Bool</span>) &#123;</span><br><span class="line">        togglesDataStore.update(toggle: toggle, value: isOn)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="InternalMenuActionTriggerItemViewModel"><a href="#InternalMenuActionTriggerItemViewModel" class="headerlink" title="InternalMenuActionTriggerItemViewModel"></a>InternalMenuActionTriggerItemViewModel</h3><p>我们为响应点击事件的 <code>Cell</code> 都封装在 <code>InternalMenuActionTriggerItemViewModel</code> 里面，该 <code>ViewModel</code> 是一个类。代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">InternalMenuActionTriggerItemViewModel</span>: <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> type: <span class="type">InternalMenuItemType</span> &#123; .actionTrigger &#125;</span><br><span class="line">    <span class="keyword">var</span> title: <span class="type">String</span> &#123; <span class="built_in">fatalError</span>(<span class="type">L10n</span>.<span class="type">Development</span>.fatalErrorSubclassToImplement) &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">select</span>() &#123; <span class="built_in">fatalError</span>(<span class="type">L10n</span>.<span class="type">Development</span>.fatalErrorSubclassToImplement) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>InternalMenuActionTriggerItemViewModel</code> 遵循了 <code>InternalMenuItemViewModel</code> 协议，因此也需要实现 <code>type</code> 属性，并返回 <code>.actionTrigger</code>，同时我还实现了 <code>title</code> 属性和 <code>select()</code> 方法，它们都直接抛出 <code>fatalError</code> 错误。这是为什么呢？</p>
+<p>因为我们想把 <code>InternalMenuActionTriggerItemViewModel</code> 定义为一个抽象类，然后把 <code>title</code> 属性和 <code>select()</code> 方法都定义为抽象属性和抽象方法。可是 Swift 并不支持抽象类，为了模拟概念上的抽象类，我们定义了一个普通的类，然后在 <code>title</code> 属性和 <code>select()</code> 方法里面抛出 <code>fatalError</code> 错误。</p>
+<p>这样做有两个作用，第一是能防止调用者直接构造出 <code>InternalMenuActionTriggerItemViewModel</code> 的实例。第二是强迫其子类重写 <code>title</code> 属性和 <code>select()</code> 方法。下面是它的两个子类的实现代码。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">InternalMenuCrashAppItemViewModel</span>: <span class="title class_">InternalMenuActionTriggerItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">var</span> title: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">L10n</span>.<span class="type">InternalMenu</span>.crashApp</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">select</span>() &#123;</span><br><span class="line">        <span class="built_in">fatalError</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">InternalMenuDesignKitDemoItemViewModel</span>: <span class="title class_">InternalMenuActionTriggerItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">let</span> router: <span class="type">AppRouting</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">let</span> routingSourceProvider: <span class="type">RoutingSourceProvider</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">router</span>: <span class="type">AppRouting</span>, <span class="params">routingSourceProvider</span>: <span class="keyword">@escaping</span> <span class="type">RoutingSourceProvider</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.router <span class="operator">=</span> router</span><br><span class="line">        <span class="keyword">self</span>.routingSourceProvider <span class="operator">=</span> routingSourceProvider</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">var</span> title: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">L10n</span>.<span class="type">InternalMenu</span>.designKitDemo</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">select</span>() &#123;</span><br><span class="line">        router.route(to: <span class="type">URL</span>(string: <span class="string">&quot;<span class="subst">\(UniversalLinks.baseURL)</span>DesignKit&quot;</span>), from: routingSourceProvider(), using: .show)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们为 <code>InternalMenuActionTriggerItemViewModel</code> 定义子类的时候，为了让子类不能被其他子类所继承，而且提高编译速度，我们把子类 <code>InternalMenuCrashAppItemViewModel</code> 和 <code>InternalMenuDesignKitDemoItemViewModel</code> 都定义成 <code>final class</code>。</p>
+<p>这两个子类都重写了 <code>title</code> 属性和 <code>select()</code> 方法。下面分别看看它们的具体实现。</p>
+<p><code>InternalMenuCrashAppItemViewModel</code> 的作用是把 App 给闪退了，因此在其 <code>select()</code> 方法里面调用了 <code>fatalError()</code>。当用户点击闪退 App Cell 的时候，App 会立刻崩溃并退出。</p>
+<p>而 <code>InternalMenuDesignKitDemoItemViewModel</code> 是用于打开 DesignKit 的范例页面。我们在其 <code>select()</code> 方法里面调用了 <code>router.route(to:from:using)</code> 进行导航。当用户点击 DesignKit 范例 Cell 的时候，App 会导航到 DesignKit 的范例页面，方便设计师和产品经理查看公共设计组件。</p>
+<p>以上是如何开发用于显示 <code>UITableViewCell</code> 的 <code>ViewModel</code> 。下面一起看看 <code>TableView Section</code> 所对应的 <code>ViewModel</code>。</p>
+<h3 id="用于-TableView-Section-的-ViewModel"><a href="#用于-TableView-Section-的-ViewModel" class="headerlink" title="用于 TableView Section 的 ViewModel"></a>用于 TableView Section 的 ViewModel</h3><p>为了准备 <code>TableView Section</code> 的数据，我建立一个名叫 <code>InternalMenuSection</code> 的结构体（Struct）。这个结构体遵循了自于 <code>RxDataSources</code> 的 <code>SectionModelType</code> 协议。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409671094843.jpg"></p>
+<p>因为 <code>SectionModelType</code> 使用了 <code>associatedtype</code> 来定义 <code>Item</code> 的类型，所有遵循该协议的类型都必须为 <code>Item</code> 明确指明其类型信息，代码如下。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">protocol</span> <span class="title class_">SectionModelType</span> &#123;</span><br><span class="line">    <span class="keyword">associatedtype</span> <span class="type">Item</span></span><br><span class="line">    <span class="keyword">var</span> items: [<span class="type">Item</span>] &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">original</span>: <span class="keyword">Self</span>, <span class="params">items</span>: [<span class="type">Item</span>])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为 <code>InternalMenuSection</code> 遵循了 <code>SectionModelType</code> 协议，所以需要明确指明 <code>Item</code> 的类型为 <code>InternalMenuItemViewModel</code>。 <code>InternalMenuSection</code> 还实现了两个 <code>init</code> 方法来进行初始化。具体代码如下。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">InternalMenuSection</span>: <span class="title class_">SectionModelType</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> title: <span class="type">String</span></span><br><span class="line">    <span class="keyword">let</span> items: [<span class="type">InternalMenuItemViewModel</span>]</span><br><span class="line">    <span class="keyword">let</span> footer: <span class="type">String</span>?</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">title</span>: <span class="type">String</span>, <span class="params">items</span>: [<span class="type">InternalMenuItemViewModel</span>], <span class="params">footer</span>: <span class="type">String</span>? <span class="operator">=</span> <span class="literal">nil</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.title <span class="operator">=</span> title</span><br><span class="line">        <span class="keyword">self</span>.items <span class="operator">=</span> items</span><br><span class="line">        <span class="keyword">self</span>.footer <span class="operator">=</span> footer</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">original</span>: <span class="type">InternalMenuSection</span>, <span class="params">items</span>: [<span class="type">InternalMenuItemViewModel</span>]) &#123;</span><br><span class="line">        <span class="keyword">self</span>.<span class="keyword">init</span>(title: original.title, items: items, footer: original.footer)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有了用于 <code>UITableViewCell</code> 和 <code>TableView Section</code> 的 <code>ViewModel</code> 以后，现在就剩下最后一个了，一起看看如何实现一个用于<code>UITableView的 ViewModel</code> 吧。</p>
+<h3 id="用于-TableView-的-ViewModel"><a href="#用于-TableView-的-ViewModel" class="headerlink" title="用于 TableView 的 ViewModel"></a>用于 TableView 的 ViewModel</h3><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409672703693.jpg"></p>
+<p>用于 <code>UITableView</code> 的 <code>ViewModel</code> 也是遵循面向协议编程的原则。首先，我们定义了一个名叫 <code>InternalMenuViewModelType</code> 的协议。该协议只有两个属性 <code>title</code> 和 <code>sections</code>。其中，<code>title</code> 用于显示 <code>ViewController</code> 的标题，<code>sections</code> 用于显示 <code>TableView</code> 的数据，代码如下。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protocol</span> <span class="title class_">InternalMenuViewModelType</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> title: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> sections: <span class="type">Observable</span>&lt;[<span class="type">InternalMenuSection</span>]&gt; &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>InternalMenuViewModel</code> 作为一个遵循 <code>InternalMenuViewModelType</code> 协议的结构体，它要实现 <code>title</code> 和 <code>sections</code> 属性。其中，<code>title</code> 只是返回包含标题的字符串即可。而 <code>sections</code> 则需要使用 <code>RxSwift</code> 的 <code>Observable</code> 来返回一个数组，这个数组包含了多个 <code>Session ViewModel</code>。</p>
+<p>我们会在响应式编程一讲中详细讲述 <code>Observable</code>。在此你可以把它理解为一个能返回数组的数据流。下面是具体的代码实现。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">InternalMenuViewModel</span>: <span class="title class_">InternalMenuViewModelType</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> title <span class="operator">=</span> <span class="type">L10n</span>.<span class="type">InternalMenu</span>.area51</span><br><span class="line">    <span class="keyword">let</span> sections: <span class="type">Observable</span>&lt;[<span class="type">InternalMenuSection</span>]&gt;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">router</span>: <span class="type">AppRouting</span>, <span class="params">routingSourceProvider</span>: <span class="keyword">@escaping</span> <span class="type">RoutingSourceProvider</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> appVersion <span class="operator">=</span> <span class="string">&quot;<span class="subst">\(L10n.InternalMenu.version)</span> <span class="subst">\((Bundle.main.object(forInfoDictionaryKey: L10n.InternalMenu.cfBundleVersion) <span class="keyword">as?</span> String) <span class="operator">??</span> <span class="string">&quot;1.0&quot;</span>)</span>&quot;</span></span><br><span class="line">        <span class="keyword">let</span> infoSection <span class="operator">=</span> <span class="type">InternalMenuSection</span>(</span><br><span class="line">            title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.generalInfo,</span><br><span class="line">            items: [<span class="type">InternalMenuDescriptionItemViewModel</span>(title: appVersion)]</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">let</span> designKitSection <span class="operator">=</span> <span class="type">InternalMenuSection</span>(</span><br><span class="line">            title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.designKitDemo,</span><br><span class="line">            items: [<span class="type">InternalMenuDesignKitDemoItemViewModel</span>(router: router, routingSourceProvider: routingSourceProvider)])</span><br><span class="line">        <span class="keyword">let</span> featureTogglesSection <span class="operator">=</span> <span class="type">InternalMenuSection</span>(</span><br><span class="line">            title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.featureToggles,</span><br><span class="line">            items: [</span><br><span class="line">                <span class="type">InternalMenuFeatureToggleItemViewModel</span>(title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.likeButtonForMomentEnabled, toggle: <span class="type">InternalToggle</span>.isLikeButtonForMomentEnabled),</span><br><span class="line">                <span class="type">InternalMenuFeatureToggleItemViewModel</span>(title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.swiftUIEnabled, toggle: <span class="type">InternalToggle</span>.isSwiftUIEnabled)</span><br><span class="line">            ])</span><br><span class="line">        <span class="keyword">let</span> toolsSection <span class="operator">=</span> <span class="type">InternalMenuSection</span>(</span><br><span class="line">            title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.tools,</span><br><span class="line">            items: [<span class="type">InternalMenuCrashAppItemViewModel</span>()]</span><br><span class="line">        )</span><br><span class="line">        sections <span class="operator">=</span> .just([</span><br><span class="line">            infoSection,</span><br><span class="line">            designKitSection,</span><br><span class="line">            featureTogglesSection,</span><br><span class="line">            toolsSection</span><br><span class="line">        ])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从代码可以看到，<code>InternalMenuViewModel</code> 的主要任务是把各个 <code>Cell</code> 的 <code>ViewModel</code> 进行初始化，然后放进各组 <code>Section</code> 的 <code>ViewModel</code> 里面，最后把各组 <code>Section</code> 的 <code>ViewModel</code> 放到 <code>items</code> 属性里面。</p>
+<p>因为所有用于 <code>UITableViewCell</code> 的 <code>ViewModel</code> 都遵循了 <code>InternalMenuItemViewModel</code> 协议，所以它们能够保持统一的接口，方便我们快速扩展新功能。比如，我们要为实时聊天功能添加一个新的本地功能开关时，只需要下面一行代码就行了。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="type">InternalMenuFeatureToggleItemViewModel</span>(title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.instantMessagingEnabled, toggle: <span class="type">InternalToggle</span>.isInstantMessagingEnabled)</span><br></pre></td></tr></table></figure>
+
+<p>运行效果如下:</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409675412551.jpg"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在这一讲中，我向你介绍了如何实现一个隐藏菜单功能，有了这个功能，我们的测试人员和产品经理可以使用这些功能来加速功能的测试与验证。在实现过程，我们把 UI 和配置数据部分进行分离，而且使用了面向协议的编程方式，让这个功能变得灵活且易于可扩展。在实际工作当中，你也可以使用这个模式来快速开发出各种配置页面。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17403876634367.jpg"></p>
 ]]></content>
       <categories>
         <category>学习笔记</category>
@@ -1439,94 +1551,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【Hexo】Gitlab pages 的使用</title>
-    <url>/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>因为自己的博客，有时候访问还是比较慢的，原因是我的代码是在 GitHub 上托管的，众所周知，GitHub 是国外的服务器，在国内访问就是特别慢，然后，我就想是否可以找到国内的既能实现代码托管，又能生成静态网页的平台，来实现 Hexo 双线部署。</p>
-<p>于是，我找到了 Coding pages，但是它被腾讯从 Coding 下线了，放到了腾讯云上，开始收费了；然后，我又找到了 Gitee pages，但是它被阿里从 Gitee 下线了，放到了阿里云上，也开始收费了；那该怎么办呢？只能说功夫不负有心人，最后我找到了 Gitlab pages！</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="如何使用-Gitlab-pages"><a href="#如何使用-Gitlab-pages" class="headerlink" title="如何使用 Gitlab pages?"></a>如何使用 Gitlab pages?</h2><h3 id="Gitlab-创建项目"><a href="#Gitlab-创建项目" class="headerlink" title="Gitlab 创建项目"></a>Gitlab 创建项目</h3><p>首先打开 Gitlab 登录：<a href="https://gitlab.com/users/sign_in">GitLab</a> ，这里我没有注册直接使用的是 Github 账号登录。</p>
-<p>然后就是先创建一个 Gitlab 的项目了，这里与 github、gitee 都是大同小异，就不多说了。</p>
-<h3 id="生成-git-公钥（如果之前有配置，直接跳过）"><a href="#生成-git-公钥（如果之前有配置，直接跳过）" class="headerlink" title="生成 git 公钥（如果之前有配置，直接跳过）"></a>生成 git 公钥（如果之前有配置，直接跳过）</h3><h4 id="1、配置本地用户名及邮箱"><a href="#1、配置本地用户名及邮箱" class="headerlink" title="1、配置本地用户名及邮箱"></a>1、配置本地用户名及邮箱</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># 配置用户名</span><br><span class="line">git config <span class="operator">--</span>global user.name <span class="string">&quot;用户名&quot;</span></span><br><span class="line"># 配置邮箱</span><br><span class="line">git config <span class="operator">--</span>global user.email <span class="string">&quot;邮箱地址&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>以上命令执行结束后，可用 <code>git config --global --list</code> 命令查看配置是否成功</p>
-<h4 id="2、git生成公钥"><a href="#2、git生成公钥" class="headerlink" title="2、git生成公钥"></a>2、git生成公钥</h4><p>在 终端 窗口输入下面指令即可生成带注释的公钥：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">ssh<span class="operator">-</span>keygen <span class="operator">-</span>t rsa <span class="operator">-</span><span class="type">C</span> &#x27;邮箱地址&#x27;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>设置存放公钥的位置，默认的话直接回车键确认</p>
-</li>
-<li><p>输入密码和确认密码，不设置密码直接按回车键</p>
-</li>
-</ul>
-<h3 id="查看本地-git-公钥"><a href="#查看本地-git-公钥" class="headerlink" title="查看本地 git 公钥"></a>查看本地 git 公钥</h3><p>通过 终端 命令窗口：<br>查看公钥：<code>cat id_rsa.pub</code> 或者 <code>vim id_rsa.pub</code></p>
-<p>因为在之前我的电脑上是配置过的，所以直接输入 <code>cat ~/.ssh/id_rsa.pub</code> 即可查看，然后进行配置：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374471576779.jpg"></p>
-<h3 id="开启-GitLab-Pages"><a href="#开启-GitLab-Pages" class="headerlink" title="开启 GitLab Pages"></a>开启 GitLab Pages</h3><p>想要开启 GitLab Pages，首先需要将 Github 上的博客文件同步到 Gitlab 项目，然后通过 <code>gitLab ci</code> 触发自动部署，来开启 GitLab Pages。</p>
-<h4 id="1、使用-Github-actions-把-github-仓库代码同步到-gitlab-仓库"><a href="#1、使用-Github-actions-把-github-仓库代码同步到-gitlab-仓库" class="headerlink" title="1、使用 Github actions 把 github 仓库代码同步到 gitlab 仓库"></a>1、使用 Github actions 把 github 仓库代码同步到 gitlab 仓库</h4><ul>
-<li>gitlab 添加个人令牌（token）</li>
-</ul>
-<p>在设置中找到 访问令牌、然后添加</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374482702595.jpg"></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374484172632.jpg"></p>
-<ul>
-<li>在 Gitlab<br><code>设置-&gt;安全设置-&gt;SSH公钥</code>，标题可以随便起名，值为：<code>id_rsa.pub</code>文件内容：</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374488054875.jpg"></p>
-<ul>
-<li>在 Github 项目<br><code>Settings-&gt;Secrets-&gt;Actions</code>，名称为：<code>GITLAB</code>，值为：<code>~/.ssh/</code>目录下<code>id_rsa</code> 文件内容，⚠️注意不是 <code>id_rsa.pub</code>：</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374486339840.jpg"></p>
-<ul>
-<li>GitHub 创建 Github workflow</li>
-</ul>
-<p>在项目根目录下找到 <code>.github/workflows</code> 文件夹，如果没有就创建一个，新建一个 <code>sync-2-gitlab.yml</code>文件，填入下面的内容：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">name: <span class="type">Sync</span></span><br><span class="line"></span><br><span class="line">on:</span><br><span class="line">  push:</span><br><span class="line">    branches: [main, hexo]</span><br><span class="line"></span><br><span class="line">jobs:</span><br><span class="line">  sync<span class="operator">-</span><span class="number">2</span><span class="operator">-</span>gitlab:</span><br><span class="line">    runs<span class="operator">-</span>on: ubuntu<span class="operator">-</span>latest</span><br><span class="line">    steps:</span><br><span class="line">      <span class="operator">-</span> name: <span class="type">Sync</span> to <span class="type">Gitlab</span></span><br><span class="line">        uses: wearerequired<span class="operator">/</span>git<span class="operator">-</span>mirror<span class="operator">-</span>action<span class="meta">@master</span></span><br><span class="line">        env:</span><br><span class="line">          # 注意在 <span class="type">Github</span> <span class="type">Settings</span>-&gt;<span class="type">Secrets</span> 配置的 <span class="type">GITLAB</span></span><br><span class="line">          <span class="type">SSH_PRIVATE_KEY</span>: $&#123;&#123; secrets.<span class="type">GITLAB</span> &#125;&#125;</span><br><span class="line">        with:</span><br><span class="line">          # 注意替换为你的 <span class="type">GitHub</span> 源仓库地址</span><br><span class="line">          source<span class="operator">-</span>repo: git<span class="meta">@github</span>.com:fengyanxin<span class="operator">/</span>fengyanxin.github.io.git</span><br><span class="line">          # 注意替换为你的 <span class="type">Gitlab</span> 目标仓库地址</span><br><span class="line">          destination<span class="operator">-</span>repo: git<span class="meta">@gitlab</span>.com:fengyanxin<span class="operator">/</span>fengyanxin.git</span><br></pre></td></tr></table></figure>
-
-<p>保存，并把文件推送到 github 中，这时应该可以在 github action 看见刚刚的 workflow 在运行了。</p>
-<p>注意：如果同步到 Gitlab 的 action 运行报错时可以在项目中的 <code>Settings-&gt;Repository-&gt;Protected branches</code>右边的 <code>Expand</code>,把<code>Allowed to force push</code>按钮打开，或者点<code>Unprotect</code> :</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374499679706.jpg"></p>
-<h4 id="2、配置-Gitlab-的-ci-文件-gitlab-ci-yml-文件"><a href="#2、配置-Gitlab-的-ci-文件-gitlab-ci-yml-文件" class="headerlink" title="2、配置 Gitlab 的 ci 文件 .gitlab-ci.yml 文件"></a>2、配置 Gitlab 的 ci 文件 .gitlab-ci.yml 文件</h4><p>由于我的这个仓库源码是从 github 项目打包后产出 public 的纯 html 静态资源后，在通过 ci 脚本文件提交到 gitlab 仓库的，所以我这里的脚本内容就可以直接使用纯 html 的脚本</p>
-<p>根目录添加 <code>.gitlab-ci.yml</code> 文件（根据自己的实际需求配置对应脚本内容）：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">pages:</span><br><span class="line">  stage: deploy</span><br><span class="line">  script:</span><br><span class="line">    <span class="operator">-</span> mkdir .public</span><br><span class="line">    <span class="operator">-</span> cp <span class="operator">-</span>r <span class="operator">./*</span> .public</span><br><span class="line">    <span class="operator">-</span> rm <span class="operator">-</span>rf <span class="keyword">public</span></span><br><span class="line">    <span class="operator">-</span> mv .public <span class="keyword">public</span></span><br><span class="line">  artifacts:</span><br><span class="line">    paths:</span><br><span class="line">      <span class="operator">-</span> <span class="keyword">public</span></span><br><span class="line">  rules:</span><br><span class="line">    <span class="operator">-</span> <span class="keyword">if</span>: <span class="variable">$CI_COMMIT_BRANCH</span> <span class="operator">==</span> <span class="variable">$CI_DEFAULT_BRANCH</span></span><br></pre></td></tr></table></figure>
-
-<p>或者在 Gitlab 项目下添加 CI，文件内容如上，添加完成后会在项目目录下生成一个 <code>.gitlab-ci.yml</code>：</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374503143964.jpg"></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374503426979.jpg"></p>
-<h4 id="3、配置-Gitlab-的-pages"><a href="#3、配置-Gitlab-的-pages" class="headerlink" title="3、配置 Gitlab 的 pages"></a>3、配置 Gitlab 的 pages</h4><ul>
-<li>上面的 Github 代码同步 和 Gitlab CI 执行完成之后，会在项目中生成一个 Gitlab pages， 如下图：</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374507141434.jpg"></p>
-<ul>
-<li>点开 <code>部署 - Pages</code>可以查看：</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374507888015.jpg"></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374509003727.jpg"></p>
-<ul>
-<li>此时，输入 Pages 的域名就可以查看自己的博客了：</li>
-</ul>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374511461885.jpg"></p>
-<p>至此，Gitlab pages 的部署就完成了！</p>
-<p>但是，当我还沉浸在成功的喜悦中的时候，就又 Get 到了一个非常坏的消息。</p>
-<h2 id="Gitlab-将不再为中国用户服务"><a href="#Gitlab-将不再为中国用户服务" class="headerlink" title="Gitlab 将不再为中国用户服务"></a>Gitlab 将不再为中国用户服务</h2><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374514542403.jpg"></p>
-<p>近日，GitLab 发布了一则重要通知 <strong>《Important Change to Your GitLab.com Account》</strong>，宣布将不再为位于 <strong>中国大陆、澳门和香港</strong> 的用户提供 <code>GitLab.com</code> 账户服务。该平台建议受影响的用户将账户迁移至 <code>极狐 GitLab（JiHu）</code>，这是由 GitLab 授权的独立公司，专门为这些地区提供本地化服务。</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17403610587765.jpg"></p>
-<p>用户必须在 <strong>2025 年 5 月 8 日</strong> 之前完成迁移，之后 GitLab 将从系统中删除帐户。</p>
-<p>所以，以后 <code>GitLab.com</code> 就不能用了，只能使用 <code>极狐 GitLab（JiHu）</code>，遗憾的是 <code>极狐 GitLab（JiHu）</code> 也不再提供 Pages功能了！</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374520857005.jpg"></p>
-<p>这一顿操作真的是…!!!</p>
-<p>博主只能掩面叹息！</p>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【Hexo】Mac 上使用Hexo + Github搭建个人博客</title>
     <url>/Hexo/%E3%80%90Hexo%E3%80%91Mac-%E4%B8%8A%E4%BD%BF%E7%94%A8Hexo-Github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h1 id="【Hexo】Mac-上使用Hexo-Github搭建个人博客"><a href="#【Hexo】Mac-上使用Hexo-Github搭建个人博客" class="headerlink" title="【Hexo】Mac 上使用Hexo + Github搭建个人博客"></a>【Hexo】Mac 上使用Hexo + Github搭建个人博客</h1><h2 id="为什么要用Hexo-Github？"><a href="#为什么要用Hexo-Github？" class="headerlink" title="为什么要用Hexo + Github？"></a>为什么要用Hexo + Github？</h2><h3 id="Hexo介绍"><a href="#Hexo介绍" class="headerlink" title="Hexo介绍"></a>Hexo介绍</h3><p>Hexo是一款基于Nodejs的，快速、简洁且高效的博客框架。它具有丰富的插件和主题，具有超快的速度，支持Makedown语法，可以方便快捷的编写博客文档。同时还支持node命令，可以一键部署到GitHub Pages, Heroku 或其他平台。更详细的信息可以看一下 <a href="https://hexo.io/zh-cn">Hexo官网</a> 。</p>
@@ -1644,79 +1668,6 @@
 <p>最后</p>
 <p>基本上到这里，属于我们自己的博客就搭建完成啦，整个搭建流程如果不出错半个小时之内其实是可以搞定的，但是这路哪里那么好走呢，每个人去搭建的过程中或多或少都会遇到一些问题，我自己在搭建的过程中也碰到了一些问题，我会抽空把遇到的问题详细整理出来，希望能够帮助大家如果要搭建博客的时候少踩点坑。</p>
 <p>大兄弟，都看到这里了，就不要吝啬你的小星星了，为博主点个赞再走吧～</p>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【Hexo】如何将博客源码上传到GitHub</title>
-    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</url>
-    <content><![CDATA[<h1 id="如何将博客源码上传到-GitHub"><a href="#如何将博客源码上传到-GitHub" class="headerlink" title="如何将博客源码上传到 GitHub"></a>如何将博客源码上传到 GitHub</h1><h2 id="一、为什么要把博客源码上传到-GitHub-？"><a href="#一、为什么要把博客源码上传到-GitHub-？" class="headerlink" title="一、为什么要把博客源码上传到 GitHub ？"></a>一、为什么要把博客源码上传到 GitHub ？</h2><p>首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：</p>
-<ul>
-<li>多台电脑同时操作 hexo 源码</li>
-<li>原先 hexo 源码所在电脑重装系统（丢失文件）</li>
-<li>要将 hexo 源码移动到其他磁盘（更换电脑）</li>
-</ul>
-<span id="more"></span>
-
-<p>将 hexo 源码上传到 GitHub，就是做了一个稳定、安全的远程备份，遇到上面的情况将不会再是什么问题。</p>
-<p>因为，之前在 GitHub 上的部署（使用 <code>hexo d</code> 上传部署到github）其实是 hexo 编译后的文件，是用来生成网页的，不包含所有 hexo 生成的网站原始文件。只有把源码也上传才能解决问题。</p>
-<h2 id="二、如何上传博客源码？"><a href="#二、如何上传博客源码？" class="headerlink" title="二、如何上传博客源码？"></a>二、如何上传博客源码？</h2><h3 id="1、思路分析"><a href="#1、思路分析" class="headerlink" title="1、思路分析"></a>1、思路分析</h3><ul>
-<li><p><code>main</code>（<code>master</code>） 分支：存放博客的静态网页。</p>
-</li>
-<li><p><code>hexo</code>分支：存放 Hexo 博客的源码文件。</p>
-</li>
-</ul>
-<h3 id="2、hexo-分支创建及管理"><a href="#2、hexo-分支创建及管理" class="headerlink" title="2、hexo 分支创建及管理"></a>2、hexo 分支创建及管理</h3><h4 id="（1）github-准备"><a href="#（1）github-准备" class="headerlink" title="（1）github 准备"></a>（1）github 准备</h4><p>先在 GitHub 项目创建一个远程分支 <code>hexo</code></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787834628307.jpg"></p>
-<p>将其设置为默认分支</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787836604366.jpg"></p>
-<h4 id="2-打包将要推送到GitHub上的原始文件"><a href="#2-打包将要推送到GitHub上的原始文件" class="headerlink" title="(2) 打包将要推送到GitHub上的原始文件"></a>(2) 打包将要推送到GitHub上的原始文件</h4><ol>
-<li>clone该仓库到本地（clone的是hexo默认分支）</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li><p>下载的文件夹里仅留下 <code>.git</code> 文件夹，其他的文件都删除</p>
-</li>
-<li><p>找见我们 hexo 原位置，将 hexo 文件夹内除 <code>.deploy_git</code> 以外都复制到clone下来的文件夹中</p>
-</li>
-<li><p>修改 <code>.gitignore</code> 文件，将静态网页的目录及其他无需提交的源文件及目录排除掉。(没有即新建添加)</p>
-</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">.<span class="property">DS_Store</span></span><br><span class="line"><span class="title class_">Thumbs</span>.<span class="property">db</span></span><br><span class="line">db.<span class="property">json</span></span><br><span class="line">*.<span class="property">log</span></span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.<span class="property">deploy</span>*/</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>如果已经 clone 过主题文件，最好把 theme 主题文件夹里的 <code>.git</code> 也删除</li>
-</ol>
-<h4 id="3-将-clone-并修改的文件夹推送到-GitHub"><a href="#3-将-clone-并修改的文件夹推送到-GitHub" class="headerlink" title="(3) 将 clone 并修改的文件夹推送到 GitHub"></a>(3) 将 clone 并修改的文件夹推送到 GitHub</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;Code update&#x27;</span></span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure>
-
-<h3 id="3、main-master-分支管理"><a href="#3、main-master-分支管理" class="headerlink" title="3、main (master) 分支管理"></a>3、main (master) 分支管理</h3><p>进入<strong>站点配置文件</strong>，搜索 <code>deploy</code>关键词，修改如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy</span>:</span><br><span class="line">  <span class="attr">type</span>: git</span><br><span class="line">  <span class="attr">repo</span>: git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br><span class="line">  <span class="attr">branch</span>: main</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787847648363.jpg"></p>
-<p>修改完成，执行以下代码进行管理：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//清除本地旧代码。</span></span><br><span class="line">hexo clean</span><br><span class="line"><span class="comment">//生成静态网站</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="comment">//部署静态网站到 GitHub 的 main(master) 分支上</span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<h3 id="4、统一分支管理和部署"><a href="#4、统一分支管理和部署" class="headerlink" title="4、统一分支管理和部署"></a>4、统一分支管理和部署</h3><p>利用我上一篇文章讲到的 <code>deploy.sh</code>脚本进行一键部署，可以极大提高部署效率和降低维护成本。</p>
-<p>在 <code>deploy.sh</code> 文件中添加如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line"><span class="variable constant_">DIR</span>=<span class="string">`dirname $0`</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Generate</span> blog</span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Deploy</span></span><br><span class="line">hexo deploy</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Push</span> hexo code</span><br><span class="line">git add .</span><br><span class="line">current_date=<span class="string">`date &quot;+%Y-%m-%d %H:%M:%S&quot;`</span></span><br><span class="line">git commit -m <span class="string">&quot;Blog updated: $current_date&quot;</span></span><br><span class="line"></span><br><span class="line">sleep <span class="number">2</span></span><br><span class="line"></span><br><span class="line">git push origin hexo</span><br><span class="line"></span><br><span class="line">echo <span class="string">&quot;=====&gt;Finish!&lt;=====&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>然后附加脚本执行权限:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<p>然后执行即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<p>如此，便可以一键部署博客及备份博客源码到 github 的分支 <code>hexo</code> 分支上。</p>
-<h3 id="5、其他电脑源码使用"><a href="#5、其他电脑源码使用" class="headerlink" title="5、其他电脑源码使用"></a>5、其他电脑源码使用</h3><p>换到不同电脑上时，只需clone github 上的 hexo 分支即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
-
 ]]></content>
       <categories>
         <category>Hexo</category>
@@ -2019,26 +1970,69 @@
       </tags>
   </entry>
   <entry>
-    <title>【Hexo】添加 .sh 脚本文件，快速测试和部署</title>
-    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<h1 id="添加-sh-脚本文件，快速测试和部署"><a href="#添加-sh-脚本文件，快速测试和部署" class="headerlink" title="添加 .sh 脚本文件，快速测试和部署"></a>添加 .sh 脚本文件，快速测试和部署</h1><h2 id="一、创建-sh-脚本文件"><a href="#一、创建-sh-脚本文件" class="headerlink" title="一、创建 .sh 脚本文件"></a>一、创建 .sh 脚本文件</h2><h3 id="1-启动-Sublime-Test"><a href="#1-启动-Sublime-Test" class="headerlink" title="1.启动 Sublime Test"></a>1.启动 Sublime Test</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755102992.jpg"></p>
+    <title>【Hexo】如何将博客源码上传到GitHub</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</url>
+    <content><![CDATA[<h1 id="如何将博客源码上传到-GitHub"><a href="#如何将博客源码上传到-GitHub" class="headerlink" title="如何将博客源码上传到 GitHub"></a>如何将博客源码上传到 GitHub</h1><h2 id="一、为什么要把博客源码上传到-GitHub-？"><a href="#一、为什么要把博客源码上传到-GitHub-？" class="headerlink" title="一、为什么要把博客源码上传到 GitHub ？"></a>一、为什么要把博客源码上传到 GitHub ？</h2><p>首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：</p>
+<ul>
+<li>多台电脑同时操作 hexo 源码</li>
+<li>原先 hexo 源码所在电脑重装系统（丢失文件）</li>
+<li>要将 hexo 源码移动到其他磁盘（更换电脑）</li>
+</ul>
 <span id="more"></span>
 
-<h3 id="2-打开的-Sublime-Test"><a href="#2-打开的-Sublime-Test" class="headerlink" title="2.打开的 Sublime Test"></a>2.打开的 Sublime Test</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755213456.jpg"></p>
-<h3 id="3-写入或者复制进去脚本代码"><a href="#3-写入或者复制进去脚本代码" class="headerlink" title="3.写入或者复制进去脚本代码"></a>3.写入或者复制进去脚本代码</h3><p>此处以 Hexo localhost 测试为例</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>将 hexo 源码上传到 GitHub，就是做了一个稳定、安全的远程备份，遇到上面的情况将不会再是什么问题。</p>
+<p>因为，之前在 GitHub 上的部署（使用 <code>hexo d</code> 上传部署到github）其实是 hexo 编译后的文件，是用来生成网页的，不包含所有 hexo 生成的网站原始文件。只有把源码也上传才能解决问题。</p>
+<h2 id="二、如何上传博客源码？"><a href="#二、如何上传博客源码？" class="headerlink" title="二、如何上传博客源码？"></a>二、如何上传博客源码？</h2><h3 id="1、思路分析"><a href="#1、思路分析" class="headerlink" title="1、思路分析"></a>1、思路分析</h3><ul>
+<li><p><code>main</code>（<code>master</code>） 分支：存放博客的静态网页。</p>
+</li>
+<li><p><code>hexo</code>分支：存放 Hexo 博客的源码文件。</p>
+</li>
+</ul>
+<h3 id="2、hexo-分支创建及管理"><a href="#2、hexo-分支创建及管理" class="headerlink" title="2、hexo 分支创建及管理"></a>2、hexo 分支创建及管理</h3><h4 id="（1）github-准备"><a href="#（1）github-准备" class="headerlink" title="（1）github 准备"></a>（1）github 准备</h4><p>先在 GitHub 项目创建一个远程分支 <code>hexo</code></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787834628307.jpg"></p>
+<p>将其设置为默认分支</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787836604366.jpg"></p>
+<h4 id="2-打包将要推送到GitHub上的原始文件"><a href="#2-打包将要推送到GitHub上的原始文件" class="headerlink" title="(2) 打包将要推送到GitHub上的原始文件"></a>(2) 打包将要推送到GitHub上的原始文件</h4><ol>
+<li>clone该仓库到本地（clone的是hexo默认分支）</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
 
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755345365.jpg"></p>
-<h3 id="4-另存为-sh-文件，导入-hexo-文件夹"><a href="#4-另存为-sh-文件，导入-hexo-文件夹" class="headerlink" title="4.另存为 .sh 文件，导入 hexo 文件夹"></a>4.另存为 .sh 文件，导入 hexo 文件夹</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755472530.jpg"></p>
-<h2 id="二、赋予脚本可执行权限"><a href="#二、赋予脚本可执行权限" class="headerlink" title="二、赋予脚本可执行权限"></a>二、赋予脚本可执行权限</h2><h3 id="1-cd到编写的-sh-文件所在目录"><a href="#1-cd到编写的-sh-文件所在目录" class="headerlink" title="1.cd到编写的 .sh 文件所在目录"></a>1.cd到编写的 .sh 文件所在目录</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755599104.jpg"></p>
-<h3 id="2-执行-chmod-x-指令"><a href="#2-执行-chmod-x-指令" class="headerlink" title="2.执行 chmod +x 指令"></a>2.执行 chmod +x 指令</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x localhost.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>下载的文件夹里仅留下 <code>.git</code> 文件夹，其他的文件都删除</p>
+</li>
+<li><p>找见我们 hexo 原位置，将 hexo 文件夹内除 <code>.deploy_git</code> 以外都复制到clone下来的文件夹中</p>
+</li>
+<li><p>修改 <code>.gitignore</code> 文件，将静态网页的目录及其他无需提交的源文件及目录排除掉。(没有即新建添加)</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">.<span class="property">DS_Store</span></span><br><span class="line"><span class="title class_">Thumbs</span>.<span class="property">db</span></span><br><span class="line">db.<span class="property">json</span></span><br><span class="line">*.<span class="property">log</span></span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.<span class="property">deploy</span>*/</span><br></pre></td></tr></table></figure>
 
-<h3 id="3-执行脚本"><a href="#3-执行脚本" class="headerlink" title="3.执行脚本"></a>3.执行脚本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./localhost.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>如果已经 clone 过主题文件，最好把 theme 主题文件夹里的 <code>.git</code> 也删除</li>
+</ol>
+<h4 id="3-将-clone-并修改的文件夹推送到-GitHub"><a href="#3-将-clone-并修改的文件夹推送到-GitHub" class="headerlink" title="(3) 将 clone 并修改的文件夹推送到 GitHub"></a>(3) 将 clone 并修改的文件夹推送到 GitHub</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;Code update&#x27;</span></span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure>
 
-<p>至此，localhost 测试脚本就完成了，部署脚本同理，在文件夹下新建一个 <code>deploy.sh</code> 文件，在其中输入以下代码即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+<h3 id="3、main-master-分支管理"><a href="#3、main-master-分支管理" class="headerlink" title="3、main (master) 分支管理"></a>3、main (master) 分支管理</h3><p>进入<strong>站点配置文件</strong>，搜索 <code>deploy</code>关键词，修改如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy</span>:</span><br><span class="line">  <span class="attr">type</span>: git</span><br><span class="line">  <span class="attr">repo</span>: git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br><span class="line">  <span class="attr">branch</span>: main</span><br></pre></td></tr></table></figure>
 
-<p>当然，添加其他助力 Hexo 快速执行的脚本亦可。</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787847648363.jpg"></p>
+<p>修改完成，执行以下代码进行管理：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//清除本地旧代码。</span></span><br><span class="line">hexo clean</span><br><span class="line"><span class="comment">//生成静态网站</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="comment">//部署静态网站到 GitHub 的 main(master) 分支上</span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、统一分支管理和部署"><a href="#4、统一分支管理和部署" class="headerlink" title="4、统一分支管理和部署"></a>4、统一分支管理和部署</h3><p>利用我上一篇文章讲到的 <code>deploy.sh</code>脚本进行一键部署，可以极大提高部署效率和降低维护成本。</p>
+<p>在 <code>deploy.sh</code> 文件中添加如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line"><span class="variable constant_">DIR</span>=<span class="string">`dirname $0`</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Generate</span> blog</span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Deploy</span></span><br><span class="line">hexo deploy</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Push</span> hexo code</span><br><span class="line">git add .</span><br><span class="line">current_date=<span class="string">`date &quot;+%Y-%m-%d %H:%M:%S&quot;`</span></span><br><span class="line">git commit -m <span class="string">&quot;Blog updated: $current_date&quot;</span></span><br><span class="line"></span><br><span class="line">sleep <span class="number">2</span></span><br><span class="line"></span><br><span class="line">git push origin hexo</span><br><span class="line"></span><br><span class="line">echo <span class="string">&quot;=====&gt;Finish!&lt;=====&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后附加脚本执行权限:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>然后执行即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>如此，便可以一键部署博客及备份博客源码到 github 的分支 <code>hexo</code> 分支上。</p>
+<h3 id="5、其他电脑源码使用"><a href="#5、其他电脑源码使用" class="headerlink" title="5、其他电脑源码使用"></a>5、其他电脑源码使用</h3><p>换到不同电脑上时，只需clone github 上的 hexo 分支即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>Hexo</category>
@@ -2098,6 +2092,69 @@
       </categories>
       <tags>
         <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【OC】方法拦截器：如何 hook 三方 SDK 中的方法?</title>
+    <url>/iOS/%E3%80%90OC%E3%80%91%E6%96%B9%E6%B3%95%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%9A%E5%A6%82%E4%BD%95-hook-%E4%B8%89%E6%96%B9-SDK-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="一、前因"><a href="#一、前因" class="headerlink" title="一、前因"></a>一、前因</h2><p>缘由：项目中使用 <code>Pod</code> 集成了一个三方的远端SDK，这个SDK中的某个类遵循了一个代理协议，这个代理中有很多方法实现。现在的需求是，我在使用这个SDK的类时，只想实现代理方法中的其中一个方法，而不想把所有方法都实现一遍，而且也没办法全部实现。但是，我如果在引用类中遵循代理，就得把所有方法都实现一遍，这显然不现实；如果只实现固定方法，其他方法就会失效，这也不行。</p>
+<span id="more"></span>
+
+<p>所以，我就有了一个想法：<strong>不遵循代理，只是对需要实现的方法进行监听，在其执行时，不执行原有方法流程，转而执行自定义方法。</strong></p>
+<p>这个思路显然是可行的，接下来就是如何把这个方法 <code>hook</code> 出来的问题。</p>
+<h2 id="二、后果"><a href="#二、后果" class="headerlink" title="二、后果"></a>二、后果</h2><p>有了思路，剩下的就是验证思路和解决问题，经过一段时间的思考和查阅资料，就有了如下结果和方案：</p>
+<h3 id="1、初版：对三方源码有入侵"><a href="#1、初版：对三方源码有入侵" class="headerlink" title="1、初版：对三方源码有入侵"></a>1、初版：对三方源码有入侵</h3><p>这个方案，对三方源码有一定的入侵，但是因为入侵较小，所以决定尝试一下。</p>
+<p>创建一个 <code>NSObject</code>的 <code>Category</code>，为什么会选择 <code>NSObject</code>，因为他是所有对象类的基类，注册监听方法时更为方便和通用。</p>
+<h4 id="NSObject-SRModuleAuthorization-h"><a href="#NSObject-SRModuleAuthorization-h" class="headerlink" title="NSObject+SRModuleAuthorization.h"></a>NSObject+SRModuleAuthorization.h</h4><p>在 <code>NSObject+SRModuleAuthorization.h</code> 实现代码如下:</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">NSObject</span> (<span class="type">SRModuleAuthorization</span>)</span><br><span class="line"></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel;</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<p><code>.h</code> 只对外暴露一个注册需要被监听方法的API。</p>
+<h4 id="NSObject-SRModuleAuthorization-m"><a href="#NSObject-SRModuleAuthorization-m" class="headerlink" title="NSObject+SRModuleAuthorization.m"></a>NSObject+SRModuleAuthorization.m</h4><p>在<code>NSObject+SRModuleAuthorization.m</code> 实现代码如下:</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注册需要被拦截的方法</span></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel&#123;</span><br><span class="line">    <span class="comment">// 获取方法的名称，根据该方法名称设置自定义的方法名称</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(sel);</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;sr_auth_%@&quot;</span>, methodName];</span><br><span class="line">    <span class="comment">// 获取自定义方法的实例</span></span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">Method</span> newMethod <span class="operator">=</span> class_getInstanceMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel);</span><br><span class="line">    <span class="comment">// 判断是否已经添加了自定义的方法，如果为空就添加自定义方法</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">!</span>newMethod)&#123;</span><br><span class="line">        <span class="comment">// 获取被拦截方法的结构体对象</span></span><br><span class="line">        <span class="type">Method</span> method <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, sel);</span><br><span class="line">        <span class="comment">// 获取被拦截方法的方法签名字符串</span></span><br><span class="line">        const char <span class="operator">*</span>functionType  <span class="operator">=</span> method_getTypeEncoding(method);</span><br><span class="line">        <span class="type">NSString</span> <span class="operator">*</span>functionTypeStr <span class="operator">=</span> [<span class="type">NSString</span> stringWithUTF8String:functionType];</span><br><span class="line">        <span class="comment">// 判断方法签名的字符串中，：8是否是最后两个字符</span></span><br><span class="line">        <span class="comment">// 如果是则代表无参方法，否则是有参方法</span></span><br><span class="line">        <span class="comment">// 针对这两种方法添加不同的自定义拦截方法</span></span><br><span class="line">        <span class="type">NSRange</span> range <span class="operator">=</span> [functionTypeStr rangeOfString:@<span class="string">&quot;:8&quot;</span>];</span><br><span class="line">        <span class="type">Method</span> intercetionMethod;</span><br><span class="line">        <span class="keyword">if</span> (range.location <span class="operator">+</span> range.length <span class="operator">&lt;</span> functionTypeStr.length)&#123;</span><br><span class="line">            <span class="comment">// 有参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion::));</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">// 无参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 获取自定义拦截方法的实例，</span></span><br><span class="line">        <span class="comment">// 并将自定义方法的selector与实例关联，动态的添加进当前类型</span></span><br><span class="line">        <span class="type">IMP</span> imp <span class="operator">=</span> method_getImplementation(intercetionMethod);</span><br><span class="line">        class_addMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel, imp, functionType);</span><br><span class="line">        <span class="comment">// 最后重新获取自定义方法的方法结构体</span></span><br><span class="line">        <span class="comment">// 并与被监听方法进行实例交换，交换后，</span></span><br><span class="line">        <span class="comment">// 被监听的方法被调用时，就会执行我们自定义的方法实例，即intercetion</span></span><br><span class="line">        <span class="type">Method</span> method2 <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, newSel);</span><br><span class="line">        method_exchangeImplementations(method, method2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是无参拦截方法的实现：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 执行自定义代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有参拦截方法是一个可变参数列表，我们可以遍历 <code>invocation</code> 对象的参数，以达到传参的目的。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">//有参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion: (id)param1 :(id)param2,<span class="operator">...</span>&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">NSMutableArray</span> *<span class="title class_">params</span> = [<span class="title class_">NSMutableArray</span> <span class="title class_">array</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 参数个数signature.numberOfArguments 默认有一个_cmd 一个target 所以要-2, 正常参数从第三个开始</span></span><br><span class="line">        <span class="keyword">if</span> (signature.numberOfArguments) &#123;</span><br><span class="line">            <span class="type">NSInteger</span> argCount <span class="operator">=</span> signature.numberOfArguments;</span><br><span class="line">            va_list args;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">2</span>)&#123;</span><br><span class="line">                [params addObject:param1];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">3</span>)&#123;</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_start(args, param2);</span><br><span class="line">            <span class="keyword">for</span> (int i <span class="operator">=</span> <span class="number">4</span>; i <span class="operator">&lt;</span> argCount; i<span class="operator">++</span>) &#123;</span><br><span class="line">                param2 <span class="operator">=</span> va_arg(args, id);</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_end(args);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (params.count <span class="operator">!=</span> argCount<span class="operator">-</span><span class="number">2</span>)&#123;</span><br><span class="line">               <span class="type">NSLog</span>(@<span class="string">&quot;proxy --- 传参有误! please check it! ---&quot;</span>);</span><br><span class="line">               <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 执行自定义代码</span></span><br><span class="line">       </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里有一个问题：因为参数遍历转化时， <code>va_arg(args, id)</code> 方法会把传递过来的参数转化成 <code>id</code> 类型，如果的不 <code>NSObject</code> 类型的参数无法完成转化。所以，如果被监听的方法的参数类型不是对象类型，会发生错误。</p>
+<p>实现起来很简单，只需要在被监听的类的初始化方法里，调用 <code>registerNeedMonitorSEL</code> 方法即可，如下:</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test)];</span><br><span class="line"><span class="comment">// 有参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:)];</span><br><span class="line"><span class="comment">// 多参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:test1:)];</span><br></pre></td></tr></table></figure>
+
+<p>分析：这个方法虽然解决了我的问题，但是缺点也是很明显的:</p>
+<p>问题1: 对参数类型不是<code>NSObject</code>的方法无法监听，可能发生崩溃的情况。</p>
+<p>问题2: 如何是监听三方SDK的方法，会对其造成代码入侵，SDK更新方法会失效。</p>
+<h3 id="2、进阶版：对三方源码无入侵"><a href="#2、进阶版：对三方源码无入侵" class="headerlink" title="2、进阶版：对三方源码无入侵"></a>2、进阶版：对三方源码无入侵</h3><p>初版的方案显然不尽如人意，所以，针对以上问题，我又开始了新一轮的思考。</p>
+<p>如何在不入侵三方源码的情况下，对方法进行 <code>hook</code> 呢？</p>
+<p>结果就有了下面的方案：</p>
+<p>实现思路：对需要的监听方法的类做一个category扩展，利用 <code>Method Swizzling</code> 对监听的方法进行转换，然后把它 <code>hook</code> 出来。</p>
+<p>下面说一下我的代码实现：</p>
+<p>首先，对监听方法的类做一个 <code>category</code> 扩展。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">TUIBaseChatViewController</span> (<span class="type">PHHookMethod</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，在category的 <code>.m</code> 文件里实现如下代码：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">+</span> (void)load&#123;</span><br><span class="line">    <span class="keyword">static</span> dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(<span class="operator">&amp;</span>onceToken, <span class="operator">^</span>&#123;</span><br><span class="line">        <span class="comment">// 假如要监听方法,则把下面这行代码打开</span></span><br><span class="line">        __gbh_tracer_swizzleMethod([<span class="keyword">self</span> <span class="keyword">class</span>], <span class="meta">@selector</span>(messageController:onSelectMessageAvatar:), <span class="meta">@selector</span>(__gbh_tracer_messageController:onSelectMessageAvatar:));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码很好理解，就是在程序启动时就注册方法监听，等到方法执行时，对其进行转换，转换方法看下面：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">void __gbh_tracer_swizzleMethod(<span class="type">Class</span> <span class="keyword">class</span>, <span class="type">SEL</span> originalSelector, <span class="type">SEL</span> swizzledSelector)&#123;</span><br><span class="line">    <span class="type">Method</span> originalMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, originalSelector);</span><br><span class="line">    <span class="type">Method</span> swizzledMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, swizzledSelector);</span><br><span class="line">    </span><br><span class="line">    <span class="type">BOOL</span> didAddMethod <span class="operator">=</span></span><br><span class="line">    class_addMethod(<span class="keyword">class</span>,</span><br><span class="line">                    originalSelector,</span><br><span class="line">                    method_getImplementation(swizzledMethod),</span><br><span class="line">                    method_getTypeEncoding(swizzledMethod));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (didAddMethod) &#123;</span><br><span class="line">        class_replaceMethod(<span class="keyword">class</span>,</span><br><span class="line">                            swizzledSelector,</span><br><span class="line">                            method_getImplementation(originalMethod),</span><br><span class="line">                            method_getTypeEncoding(originalMethod));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        method_exchangeImplementations(originalMethod, swizzledMethod);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个标准的 <code>swizzling</code> 写法，当然了  <code>github</code> 上面也有关于 <code>swizzling</code> 的开源库，用起来也顺手，这里就不多说了。</p>
+<p>然后就是 <code>swizzling</code> 转换到的方法：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">-</span> (void)__gbh_tracer_messageController:(<span class="type">TUIBaseMessageController</span> <span class="operator">*</span>)controller onSelectMessageAvatar:(<span class="type">TUIMessageCell</span> <span class="operator">*</span>)cell&#123;</span><br><span class="line"><span class="comment">//    [self __gbh_tracer_messageController:controller onSelectMessageAvatar:cell]; //由于方法已经被交换,这里调用的实际上是messageController:onSelectMessageAvatar:方法</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 执行自定义方法</span></span><br><span class="line">    [<span class="keyword">self</span> clickMessageAvatar:cell];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>转换后的方法我们既可以让其继续执行以前的方法流程，也可以执行自己定义的方法，简直不要太爽。</p>
+<p>这就是一整个 <code>hook</code> 流程，即简单又方便，以后，我只需要往工程里面添加这个 <code>Category</code> ，这个被监听的方法就会被 <code>hook</code> 出来，可以让我为所欲为，还不会出现之前的报错和源码入侵的问题。</p>
+<h2 id="三、参考资料"><a href="#三、参考资料" class="headerlink" title="三、参考资料"></a>三、参考资料</h2><blockquote>
+<p>膜拜大神！<br><a href="https://www.jianshu.com/p/57827c100a3f">https://www.jianshu.com/p/57827c100a3f</a><br><a href="https://www.cnblogs.com/n1ckyxu/p/6186850.html">https://www.cnblogs.com/n1ckyxu/p/6186850.html</a><br><a href="https://www.jianshu.com/p/99d06ad0fa51">https://www.jianshu.com/p/99d06ad0fa51</a><br><a href="https://blog.csdn.net/u014600626/article/details/119271920">https://blog.csdn.net/u014600626/article/details/119271920</a><br><a href="http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more">http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>iOS</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+        <tag>OC</tag>
       </tags>
   </entry>
   <entry>
@@ -2165,66 +2222,33 @@
       </tags>
   </entry>
   <entry>
-    <title>【OC】方法拦截器：如何 hook 三方 SDK 中的方法?</title>
-    <url>/iOS/%E3%80%90OC%E3%80%91%E6%96%B9%E6%B3%95%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%9A%E5%A6%82%E4%BD%95-hook-%E4%B8%89%E6%96%B9-SDK-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="一、前因"><a href="#一、前因" class="headerlink" title="一、前因"></a>一、前因</h2><p>缘由：项目中使用 <code>Pod</code> 集成了一个三方的远端SDK，这个SDK中的某个类遵循了一个代理协议，这个代理中有很多方法实现。现在的需求是，我在使用这个SDK的类时，只想实现代理方法中的其中一个方法，而不想把所有方法都实现一遍，而且也没办法全部实现。但是，我如果在引用类中遵循代理，就得把所有方法都实现一遍，这显然不现实；如果只实现固定方法，其他方法就会失效，这也不行。</p>
+    <title>【Hexo】添加 .sh 脚本文件，快速测试和部署</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<h1 id="添加-sh-脚本文件，快速测试和部署"><a href="#添加-sh-脚本文件，快速测试和部署" class="headerlink" title="添加 .sh 脚本文件，快速测试和部署"></a>添加 .sh 脚本文件，快速测试和部署</h1><h2 id="一、创建-sh-脚本文件"><a href="#一、创建-sh-脚本文件" class="headerlink" title="一、创建 .sh 脚本文件"></a>一、创建 .sh 脚本文件</h2><h3 id="1-启动-Sublime-Test"><a href="#1-启动-Sublime-Test" class="headerlink" title="1.启动 Sublime Test"></a>1.启动 Sublime Test</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755102992.jpg"></p>
 <span id="more"></span>
 
-<p>所以，我就有了一个想法：<strong>不遵循代理，只是对需要实现的方法进行监听，在其执行时，不执行原有方法流程，转而执行自定义方法。</strong></p>
-<p>这个思路显然是可行的，接下来就是如何把这个方法 <code>hook</code> 出来的问题。</p>
-<h2 id="二、后果"><a href="#二、后果" class="headerlink" title="二、后果"></a>二、后果</h2><p>有了思路，剩下的就是验证思路和解决问题，经过一段时间的思考和查阅资料，就有了如下结果和方案：</p>
-<h3 id="1、初版：对三方源码有入侵"><a href="#1、初版：对三方源码有入侵" class="headerlink" title="1、初版：对三方源码有入侵"></a>1、初版：对三方源码有入侵</h3><p>这个方案，对三方源码有一定的入侵，但是因为入侵较小，所以决定尝试一下。</p>
-<p>创建一个 <code>NSObject</code>的 <code>Category</code>，为什么会选择 <code>NSObject</code>，因为他是所有对象类的基类，注册监听方法时更为方便和通用。</p>
-<h4 id="NSObject-SRModuleAuthorization-h"><a href="#NSObject-SRModuleAuthorization-h" class="headerlink" title="NSObject+SRModuleAuthorization.h"></a>NSObject+SRModuleAuthorization.h</h4><p>在 <code>NSObject+SRModuleAuthorization.h</code> 实现代码如下:</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">NSObject</span> (<span class="type">SRModuleAuthorization</span>)</span><br><span class="line"></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel;</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-打开的-Sublime-Test"><a href="#2-打开的-Sublime-Test" class="headerlink" title="2.打开的 Sublime Test"></a>2.打开的 Sublime Test</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755213456.jpg"></p>
+<h3 id="3-写入或者复制进去脚本代码"><a href="#3-写入或者复制进去脚本代码" class="headerlink" title="3.写入或者复制进去脚本代码"></a>3.写入或者复制进去脚本代码</h3><p>此处以 Hexo localhost 测试为例</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
 
-<p><code>.h</code> 只对外暴露一个注册需要被监听方法的API。</p>
-<h4 id="NSObject-SRModuleAuthorization-m"><a href="#NSObject-SRModuleAuthorization-m" class="headerlink" title="NSObject+SRModuleAuthorization.m"></a>NSObject+SRModuleAuthorization.m</h4><p>在<code>NSObject+SRModuleAuthorization.m</code> 实现代码如下:</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注册需要被拦截的方法</span></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel&#123;</span><br><span class="line">    <span class="comment">// 获取方法的名称，根据该方法名称设置自定义的方法名称</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(sel);</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;sr_auth_%@&quot;</span>, methodName];</span><br><span class="line">    <span class="comment">// 获取自定义方法的实例</span></span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">Method</span> newMethod <span class="operator">=</span> class_getInstanceMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel);</span><br><span class="line">    <span class="comment">// 判断是否已经添加了自定义的方法，如果为空就添加自定义方法</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">!</span>newMethod)&#123;</span><br><span class="line">        <span class="comment">// 获取被拦截方法的结构体对象</span></span><br><span class="line">        <span class="type">Method</span> method <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, sel);</span><br><span class="line">        <span class="comment">// 获取被拦截方法的方法签名字符串</span></span><br><span class="line">        const char <span class="operator">*</span>functionType  <span class="operator">=</span> method_getTypeEncoding(method);</span><br><span class="line">        <span class="type">NSString</span> <span class="operator">*</span>functionTypeStr <span class="operator">=</span> [<span class="type">NSString</span> stringWithUTF8String:functionType];</span><br><span class="line">        <span class="comment">// 判断方法签名的字符串中，：8是否是最后两个字符</span></span><br><span class="line">        <span class="comment">// 如果是则代表无参方法，否则是有参方法</span></span><br><span class="line">        <span class="comment">// 针对这两种方法添加不同的自定义拦截方法</span></span><br><span class="line">        <span class="type">NSRange</span> range <span class="operator">=</span> [functionTypeStr rangeOfString:@<span class="string">&quot;:8&quot;</span>];</span><br><span class="line">        <span class="type">Method</span> intercetionMethod;</span><br><span class="line">        <span class="keyword">if</span> (range.location <span class="operator">+</span> range.length <span class="operator">&lt;</span> functionTypeStr.length)&#123;</span><br><span class="line">            <span class="comment">// 有参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion::));</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">// 无参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 获取自定义拦截方法的实例，</span></span><br><span class="line">        <span class="comment">// 并将自定义方法的selector与实例关联，动态的添加进当前类型</span></span><br><span class="line">        <span class="type">IMP</span> imp <span class="operator">=</span> method_getImplementation(intercetionMethod);</span><br><span class="line">        class_addMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel, imp, functionType);</span><br><span class="line">        <span class="comment">// 最后重新获取自定义方法的方法结构体</span></span><br><span class="line">        <span class="comment">// 并与被监听方法进行实例交换，交换后，</span></span><br><span class="line">        <span class="comment">// 被监听的方法被调用时，就会执行我们自定义的方法实例，即intercetion</span></span><br><span class="line">        <span class="type">Method</span> method2 <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, newSel);</span><br><span class="line">        method_exchangeImplementations(method, method2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755345365.jpg"></p>
+<h3 id="4-另存为-sh-文件，导入-hexo-文件夹"><a href="#4-另存为-sh-文件，导入-hexo-文件夹" class="headerlink" title="4.另存为 .sh 文件，导入 hexo 文件夹"></a>4.另存为 .sh 文件，导入 hexo 文件夹</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755472530.jpg"></p>
+<h2 id="二、赋予脚本可执行权限"><a href="#二、赋予脚本可执行权限" class="headerlink" title="二、赋予脚本可执行权限"></a>二、赋予脚本可执行权限</h2><h3 id="1-cd到编写的-sh-文件所在目录"><a href="#1-cd到编写的-sh-文件所在目录" class="headerlink" title="1.cd到编写的 .sh 文件所在目录"></a>1.cd到编写的 .sh 文件所在目录</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755599104.jpg"></p>
+<h3 id="2-执行-chmod-x-指令"><a href="#2-执行-chmod-x-指令" class="headerlink" title="2.执行 chmod +x 指令"></a>2.执行 chmod +x 指令</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x localhost.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
 
-<p>下面是无参拦截方法的实现：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 执行自定义代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-执行脚本"><a href="#3-执行脚本" class="headerlink" title="3.执行脚本"></a>3.执行脚本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./localhost.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
 
-<p>有参拦截方法是一个可变参数列表，我们可以遍历 <code>invocation</code> 对象的参数，以达到传参的目的。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">//有参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion: (id)param1 :(id)param2,<span class="operator">...</span>&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">NSMutableArray</span> *<span class="title class_">params</span> = [<span class="title class_">NSMutableArray</span> <span class="title class_">array</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 参数个数signature.numberOfArguments 默认有一个_cmd 一个target 所以要-2, 正常参数从第三个开始</span></span><br><span class="line">        <span class="keyword">if</span> (signature.numberOfArguments) &#123;</span><br><span class="line">            <span class="type">NSInteger</span> argCount <span class="operator">=</span> signature.numberOfArguments;</span><br><span class="line">            va_list args;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">2</span>)&#123;</span><br><span class="line">                [params addObject:param1];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">3</span>)&#123;</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_start(args, param2);</span><br><span class="line">            <span class="keyword">for</span> (int i <span class="operator">=</span> <span class="number">4</span>; i <span class="operator">&lt;</span> argCount; i<span class="operator">++</span>) &#123;</span><br><span class="line">                param2 <span class="operator">=</span> va_arg(args, id);</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_end(args);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (params.count <span class="operator">!=</span> argCount<span class="operator">-</span><span class="number">2</span>)&#123;</span><br><span class="line">               <span class="type">NSLog</span>(@<span class="string">&quot;proxy --- 传参有误! please check it! ---&quot;</span>);</span><br><span class="line">               <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 执行自定义代码</span></span><br><span class="line">       </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，localhost 测试脚本就完成了，部署脚本同理，在文件夹下新建一个 <code>deploy.sh</code> 文件，在其中输入以下代码即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
 
-<p>这里有一个问题：因为参数遍历转化时， <code>va_arg(args, id)</code> 方法会把传递过来的参数转化成 <code>id</code> 类型，如果的不 <code>NSObject</code> 类型的参数无法完成转化。所以，如果被监听的方法的参数类型不是对象类型，会发生错误。</p>
-<p>实现起来很简单，只需要在被监听的类的初始化方法里，调用 <code>registerNeedMonitorSEL</code> 方法即可，如下:</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test)];</span><br><span class="line"><span class="comment">// 有参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:)];</span><br><span class="line"><span class="comment">// 多参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:test1:)];</span><br></pre></td></tr></table></figure>
-
-<p>分析：这个方法虽然解决了我的问题，但是缺点也是很明显的:</p>
-<p>问题1: 对参数类型不是<code>NSObject</code>的方法无法监听，可能发生崩溃的情况。</p>
-<p>问题2: 如何是监听三方SDK的方法，会对其造成代码入侵，SDK更新方法会失效。</p>
-<h3 id="2、进阶版：对三方源码无入侵"><a href="#2、进阶版：对三方源码无入侵" class="headerlink" title="2、进阶版：对三方源码无入侵"></a>2、进阶版：对三方源码无入侵</h3><p>初版的方案显然不尽如人意，所以，针对以上问题，我又开始了新一轮的思考。</p>
-<p>如何在不入侵三方源码的情况下，对方法进行 <code>hook</code> 呢？</p>
-<p>结果就有了下面的方案：</p>
-<p>实现思路：对需要的监听方法的类做一个category扩展，利用 <code>Method Swizzling</code> 对监听的方法进行转换，然后把它 <code>hook</code> 出来。</p>
-<p>下面说一下我的代码实现：</p>
-<p>首先，对监听方法的类做一个 <code>category</code> 扩展。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">TUIBaseChatViewController</span> (<span class="type">PHHookMethod</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
-
-<p>然后，在category的 <code>.m</code> 文件里实现如下代码：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">+</span> (void)load&#123;</span><br><span class="line">    <span class="keyword">static</span> dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(<span class="operator">&amp;</span>onceToken, <span class="operator">^</span>&#123;</span><br><span class="line">        <span class="comment">// 假如要监听方法,则把下面这行代码打开</span></span><br><span class="line">        __gbh_tracer_swizzleMethod([<span class="keyword">self</span> <span class="keyword">class</span>], <span class="meta">@selector</span>(messageController:onSelectMessageAvatar:), <span class="meta">@selector</span>(__gbh_tracer_messageController:onSelectMessageAvatar:));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这段代码很好理解，就是在程序启动时就注册方法监听，等到方法执行时，对其进行转换，转换方法看下面：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">void __gbh_tracer_swizzleMethod(<span class="type">Class</span> <span class="keyword">class</span>, <span class="type">SEL</span> originalSelector, <span class="type">SEL</span> swizzledSelector)&#123;</span><br><span class="line">    <span class="type">Method</span> originalMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, originalSelector);</span><br><span class="line">    <span class="type">Method</span> swizzledMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, swizzledSelector);</span><br><span class="line">    </span><br><span class="line">    <span class="type">BOOL</span> didAddMethod <span class="operator">=</span></span><br><span class="line">    class_addMethod(<span class="keyword">class</span>,</span><br><span class="line">                    originalSelector,</span><br><span class="line">                    method_getImplementation(swizzledMethod),</span><br><span class="line">                    method_getTypeEncoding(swizzledMethod));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (didAddMethod) &#123;</span><br><span class="line">        class_replaceMethod(<span class="keyword">class</span>,</span><br><span class="line">                            swizzledSelector,</span><br><span class="line">                            method_getImplementation(originalMethod),</span><br><span class="line">                            method_getTypeEncoding(originalMethod));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        method_exchangeImplementations(originalMethod, swizzledMethod);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这是一个标准的 <code>swizzling</code> 写法，当然了  <code>github</code> 上面也有关于 <code>swizzling</code> 的开源库，用起来也顺手，这里就不多说了。</p>
-<p>然后就是 <code>swizzling</code> 转换到的方法：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">-</span> (void)__gbh_tracer_messageController:(<span class="type">TUIBaseMessageController</span> <span class="operator">*</span>)controller onSelectMessageAvatar:(<span class="type">TUIMessageCell</span> <span class="operator">*</span>)cell&#123;</span><br><span class="line"><span class="comment">//    [self __gbh_tracer_messageController:controller onSelectMessageAvatar:cell]; //由于方法已经被交换,这里调用的实际上是messageController:onSelectMessageAvatar:方法</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 执行自定义方法</span></span><br><span class="line">    [<span class="keyword">self</span> clickMessageAvatar:cell];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>转换后的方法我们既可以让其继续执行以前的方法流程，也可以执行自己定义的方法，简直不要太爽。</p>
-<p>这就是一整个 <code>hook</code> 流程，即简单又方便，以后，我只需要往工程里面添加这个 <code>Category</code> ，这个被监听的方法就会被 <code>hook</code> 出来，可以让我为所欲为，还不会出现之前的报错和源码入侵的问题。</p>
-<h2 id="三、参考资料"><a href="#三、参考资料" class="headerlink" title="三、参考资料"></a>三、参考资料</h2><blockquote>
-<p>膜拜大神！<br><a href="https://www.jianshu.com/p/57827c100a3f">https://www.jianshu.com/p/57827c100a3f</a><br><a href="https://www.cnblogs.com/n1ckyxu/p/6186850.html">https://www.cnblogs.com/n1ckyxu/p/6186850.html</a><br><a href="https://www.jianshu.com/p/99d06ad0fa51">https://www.jianshu.com/p/99d06ad0fa51</a><br><a href="https://blog.csdn.net/u014600626/article/details/119271920">https://blog.csdn.net/u014600626/article/details/119271920</a><br><a href="http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more">http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more</a></p>
-</blockquote>
+<p>当然，添加其他助力 Hexo 快速执行的脚本亦可。</p>
 ]]></content>
       <categories>
-        <category>iOS</category>
+        <category>Hexo</category>
       </categories>
       <tags>
-        <tag>iOS</tag>
-        <tag>OC</tag>
+        <tag>学习笔记</tag>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -3047,6 +3071,94 @@
       </categories>
       <tags>
         <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Hexo】Gitlab pages 的使用</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>因为自己的博客，有时候访问还是比较慢的，原因是我的代码是在 GitHub 上托管的，众所周知，GitHub 是国外的服务器，在国内访问就是特别慢，然后，我就想是否可以找到国内的既能实现代码托管，又能生成静态网页的平台，来实现 Hexo 双线部署。</p>
+<p>于是，我找到了 Coding pages，但是它被腾讯从 Coding 下线了，放到了腾讯云上，开始收费了；然后，我又找到了 Gitee pages，但是它被阿里从 Gitee 下线了，放到了阿里云上，也开始收费了；那该怎么办呢？只能说功夫不负有心人，最后我找到了 Gitlab pages！</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="如何使用-Gitlab-pages"><a href="#如何使用-Gitlab-pages" class="headerlink" title="如何使用 Gitlab pages?"></a>如何使用 Gitlab pages?</h2><h3 id="Gitlab-创建项目"><a href="#Gitlab-创建项目" class="headerlink" title="Gitlab 创建项目"></a>Gitlab 创建项目</h3><p>首先打开 Gitlab 登录：<a href="https://gitlab.com/users/sign_in">GitLab</a> ，这里我没有注册直接使用的是 Github 账号登录。</p>
+<p>然后就是先创建一个 Gitlab 的项目了，这里与 github、gitee 都是大同小异，就不多说了。</p>
+<h3 id="生成-git-公钥（如果之前有配置，直接跳过）"><a href="#生成-git-公钥（如果之前有配置，直接跳过）" class="headerlink" title="生成 git 公钥（如果之前有配置，直接跳过）"></a>生成 git 公钥（如果之前有配置，直接跳过）</h3><h4 id="1、配置本地用户名及邮箱"><a href="#1、配置本地用户名及邮箱" class="headerlink" title="1、配置本地用户名及邮箱"></a>1、配置本地用户名及邮箱</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"># 配置用户名</span><br><span class="line">git config <span class="operator">--</span>global user.name <span class="string">&quot;用户名&quot;</span></span><br><span class="line"># 配置邮箱</span><br><span class="line">git config <span class="operator">--</span>global user.email <span class="string">&quot;邮箱地址&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>以上命令执行结束后，可用 <code>git config --global --list</code> 命令查看配置是否成功</p>
+<h4 id="2、git生成公钥"><a href="#2、git生成公钥" class="headerlink" title="2、git生成公钥"></a>2、git生成公钥</h4><p>在 终端 窗口输入下面指令即可生成带注释的公钥：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">ssh<span class="operator">-</span>keygen <span class="operator">-</span>t rsa <span class="operator">-</span><span class="type">C</span> &#x27;邮箱地址&#x27;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>设置存放公钥的位置，默认的话直接回车键确认</p>
+</li>
+<li><p>输入密码和确认密码，不设置密码直接按回车键</p>
+</li>
+</ul>
+<h3 id="查看本地-git-公钥"><a href="#查看本地-git-公钥" class="headerlink" title="查看本地 git 公钥"></a>查看本地 git 公钥</h3><p>通过 终端 命令窗口：<br>查看公钥：<code>cat id_rsa.pub</code> 或者 <code>vim id_rsa.pub</code></p>
+<p>因为在之前我的电脑上是配置过的，所以直接输入 <code>cat ~/.ssh/id_rsa.pub</code> 即可查看，然后进行配置：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374471576779.jpg"></p>
+<h3 id="开启-GitLab-Pages"><a href="#开启-GitLab-Pages" class="headerlink" title="开启 GitLab Pages"></a>开启 GitLab Pages</h3><p>想要开启 GitLab Pages，首先需要将 Github 上的博客文件同步到 Gitlab 项目，然后通过 <code>gitLab ci</code> 触发自动部署，来开启 GitLab Pages。</p>
+<h4 id="1、使用-Github-actions-把-github-仓库代码同步到-gitlab-仓库"><a href="#1、使用-Github-actions-把-github-仓库代码同步到-gitlab-仓库" class="headerlink" title="1、使用 Github actions 把 github 仓库代码同步到 gitlab 仓库"></a>1、使用 Github actions 把 github 仓库代码同步到 gitlab 仓库</h4><ul>
+<li>gitlab 添加个人令牌（token）</li>
+</ul>
+<p>在设置中找到 访问令牌、然后添加</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374482702595.jpg"></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374484172632.jpg"></p>
+<ul>
+<li>在 Gitlab<br><code>设置-&gt;安全设置-&gt;SSH公钥</code>，标题可以随便起名，值为：<code>id_rsa.pub</code>文件内容：</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374488054875.jpg"></p>
+<ul>
+<li>在 Github 项目<br><code>Settings-&gt;Secrets-&gt;Actions</code>，名称为：<code>GITLAB</code>，值为：<code>~/.ssh/</code>目录下<code>id_rsa</code> 文件内容，⚠️注意不是 <code>id_rsa.pub</code>：</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374486339840.jpg"></p>
+<ul>
+<li>GitHub 创建 Github workflow</li>
+</ul>
+<p>在项目根目录下找到 <code>.github/workflows</code> 文件夹，如果没有就创建一个，新建一个 <code>sync-2-gitlab.yml</code>文件，填入下面的内容：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">name: <span class="type">Sync</span></span><br><span class="line"></span><br><span class="line">on:</span><br><span class="line">  push:</span><br><span class="line">    branches: [main, hexo]</span><br><span class="line"></span><br><span class="line">jobs:</span><br><span class="line">  sync<span class="operator">-</span><span class="number">2</span><span class="operator">-</span>gitlab:</span><br><span class="line">    runs<span class="operator">-</span>on: ubuntu<span class="operator">-</span>latest</span><br><span class="line">    steps:</span><br><span class="line">      <span class="operator">-</span> name: <span class="type">Sync</span> to <span class="type">Gitlab</span></span><br><span class="line">        uses: wearerequired<span class="operator">/</span>git<span class="operator">-</span>mirror<span class="operator">-</span>action<span class="meta">@master</span></span><br><span class="line">        env:</span><br><span class="line">          # 注意在 <span class="type">Github</span> <span class="type">Settings</span>-&gt;<span class="type">Secrets</span> 配置的 <span class="type">GITLAB</span></span><br><span class="line">          <span class="type">SSH_PRIVATE_KEY</span>: $&#123;&#123; secrets.<span class="type">GITLAB</span> &#125;&#125;</span><br><span class="line">        with:</span><br><span class="line">          # 注意替换为你的 <span class="type">GitHub</span> 源仓库地址</span><br><span class="line">          source<span class="operator">-</span>repo: git<span class="meta">@github</span>.com:fengyanxin<span class="operator">/</span>fengyanxin.github.io.git</span><br><span class="line">          # 注意替换为你的 <span class="type">Gitlab</span> 目标仓库地址</span><br><span class="line">          destination<span class="operator">-</span>repo: git<span class="meta">@gitlab</span>.com:fengyanxin<span class="operator">/</span>fengyanxin.git</span><br></pre></td></tr></table></figure>
+
+<p>保存，并把文件推送到 github 中，这时应该可以在 github action 看见刚刚的 workflow 在运行了。</p>
+<p>注意：如果同步到 Gitlab 的 action 运行报错时可以在项目中的 <code>Settings-&gt;Repository-&gt;Protected branches</code>右边的 <code>Expand</code>,把<code>Allowed to force push</code>按钮打开，或者点<code>Unprotect</code> :</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374499679706.jpg"></p>
+<h4 id="2、配置-Gitlab-的-ci-文件-gitlab-ci-yml-文件"><a href="#2、配置-Gitlab-的-ci-文件-gitlab-ci-yml-文件" class="headerlink" title="2、配置 Gitlab 的 ci 文件 .gitlab-ci.yml 文件"></a>2、配置 Gitlab 的 ci 文件 .gitlab-ci.yml 文件</h4><p>由于我的这个仓库源码是从 github 项目打包后产出 public 的纯 html 静态资源后，在通过 ci 脚本文件提交到 gitlab 仓库的，所以我这里的脚本内容就可以直接使用纯 html 的脚本</p>
+<p>根目录添加 <code>.gitlab-ci.yml</code> 文件（根据自己的实际需求配置对应脚本内容）：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">pages:</span><br><span class="line">  stage: deploy</span><br><span class="line">  script:</span><br><span class="line">    <span class="operator">-</span> mkdir .public</span><br><span class="line">    <span class="operator">-</span> cp <span class="operator">-</span>r <span class="operator">./*</span> .public</span><br><span class="line">    <span class="operator">-</span> rm <span class="operator">-</span>rf <span class="keyword">public</span></span><br><span class="line">    <span class="operator">-</span> mv .public <span class="keyword">public</span></span><br><span class="line">  artifacts:</span><br><span class="line">    paths:</span><br><span class="line">      <span class="operator">-</span> <span class="keyword">public</span></span><br><span class="line">  rules:</span><br><span class="line">    <span class="operator">-</span> <span class="keyword">if</span>: <span class="variable">$CI_COMMIT_BRANCH</span> <span class="operator">==</span> <span class="variable">$CI_DEFAULT_BRANCH</span></span><br></pre></td></tr></table></figure>
+
+<p>或者在 Gitlab 项目下添加 CI，文件内容如上，添加完成后会在项目目录下生成一个 <code>.gitlab-ci.yml</code>：</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374503143964.jpg"></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374503426979.jpg"></p>
+<h4 id="3、配置-Gitlab-的-pages"><a href="#3、配置-Gitlab-的-pages" class="headerlink" title="3、配置 Gitlab 的 pages"></a>3、配置 Gitlab 的 pages</h4><ul>
+<li>上面的 Github 代码同步 和 Gitlab CI 执行完成之后，会在项目中生成一个 Gitlab pages， 如下图：</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374507141434.jpg"></p>
+<ul>
+<li>点开 <code>部署 - Pages</code>可以查看：</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374507888015.jpg"></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374509003727.jpg"></p>
+<ul>
+<li>此时，输入 Pages 的域名就可以查看自己的博客了：</li>
+</ul>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374511461885.jpg"></p>
+<p>至此，Gitlab pages 的部署就完成了！</p>
+<p>但是，当我还沉浸在成功的喜悦中的时候，就又 Get 到了一个非常坏的消息。</p>
+<h2 id="Gitlab-将不再为中国用户服务"><a href="#Gitlab-将不再为中国用户服务" class="headerlink" title="Gitlab 将不再为中国用户服务"></a>Gitlab 将不再为中国用户服务</h2><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374514542403.jpg"></p>
+<p>近日，GitLab 发布了一则重要通知 <strong>《Important Change to Your GitLab.com Account》</strong>，宣布将不再为位于 <strong>中国大陆、澳门和香港</strong> 的用户提供 <code>GitLab.com</code> 账户服务。该平台建议受影响的用户将账户迁移至 <code>极狐 GitLab（JiHu）</code>，这是由 GitLab 授权的独立公司，专门为这些地区提供本地化服务。</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17403610587765.jpg"></p>
+<p>用户必须在 <strong>2025 年 5 月 8 日</strong> 之前完成迁移，之后 GitLab 将从系统中删除帐户。</p>
+<p>所以，以后 <code>GitLab.com</code> 就不能用了，只能使用 <code>极狐 GitLab（JiHu）</code>，遗憾的是 <code>极狐 GitLab（JiHu）</code> 也不再提供 Pages功能了！</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/17374520857005.jpg"></p>
+<p>这一顿操作真的是…!!!</p>
+<p>博主只能掩面叹息！</p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -5541,74 +5653,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【Tips】解决 ping github.com 超时问题</title>
-    <url>/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="解决-ping-github-com-超时问题"><a href="#解决-ping-github-com-超时问题" class="headerlink" title="解决 ping github.com 超时问题"></a>解决 ping github.com 超时问题</h1><p>1、尝试 <code>ping github.com</code>，结果发现Ping不通，但是 <code>ping baidu.com</code> 却是正常的。</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg"></p>
-<span id="more"></span>
-
-<p>2、初步分心应该是本地的DNS无法解析导致的，需要修改Hosts文件，添加 github 的ip地址项</p>
-<h2 id="如何修改Hosts文件？"><a href="#如何修改Hosts文件？" class="headerlink" title="如何修改Hosts文件？"></a>如何修改Hosts文件？</h2><h3 id="1、通过终端命令修改"><a href="#1、通过终端命令修改" class="headerlink" title="1、通过终端命令修改"></a>1、通过终端命令修改</h3><p>（1）打开终端，输入命令行：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># sudo 以管理员权限执行</span><br><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
-
-<p>（2）输入本机密码后，会自动打开hosts文件 。</p>
-<ul>
-<li>键盘输入<code>i</code>（插入），修改完成后，按 <code>esc</code> 键退出插入页面</li>
-<li>保存退出：输入  <code>:wq</code> 或者<code>:wq!</code>，再<code>enter</code>键 </li>
-<li>不保存退出：输入<code>q</code>和<code>！</code>键，再<code>enter</code>键</li>
-</ul>
-<h3 id="2、在-Finder-中修改"><a href="#2、在-Finder-中修改" class="headerlink" title="2、在 Finder 中修改"></a>2、在 Finder 中修改</h3><p>方法一：</p>
-<p>（1）打开 <code>Finder</code> ，快捷键 <code>Command+Shift+G</code> 查找文件，输入 <code>/etc/hosts</code>，点击前往</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg"></p>
-<p>（2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg"></p>
-<p>方法二：</p>
-<p>（1）打开Finder，快捷键 <code>Shift+Command+G</code> 查找文件，输入 <code>/private</code> 前往</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg"></p>
-<p>（2）找到 <code>etc</code> 文件之后，选择显示简介</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg"></p>
-<p>（3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg"></p>
-<h2 id="如何在-Hosts-文件中配置-github-com-映射"><a href="#如何在-Hosts-文件中配置-github-com-映射" class="headerlink" title="如何在 Hosts 文件中配置 github.com 映射"></a>如何在 Hosts 文件中配置 github.com 映射</h2><p>host文件打开之后可以看到：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg"></p>
-<p>在文件下面添加如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="title class_">GitHub</span>地址</span><br><span class="line"><span class="number">140.82</span><span class="number">.114</span><span class="number">.3</span> github.<span class="property">com</span> git</span><br><span class="line"><span class="number">151.101</span><span class="number">.129</span><span class="number">.194</span> github.<span class="property">global</span>.<span class="property">ssl</span>.<span class="property">fastly</span>.<span class="property">net</span></span><br></pre></td></tr></table></figure>
-
-<p>上图中的 IP 可以通过， <a href="https://www.ipaddress.com/">ipaddress</a> 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg"></p>
-<p><code>140.82.114.3</code>：这个IP地址修改为 <code>github.com</code>搜索到的IP地址</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg"></p>
-<p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
-<p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
-<h2 id="使用三方工具自动修改（最新推荐）"><a href="#使用三方工具自动修改（最新推荐）" class="headerlink" title="使用三方工具自动修改（最新推荐）"></a>使用三方工具自动修改（最新推荐）</h2><p>推荐 <a href="https://github.com/oldj/SwitchHosts">SwitchHosts</a> 工具管理 hosts</p>
-<p>以 SwitchHosts 为例，看一下怎么使用的，配置参考下面：</p>
-<ul>
-<li><p><strong>Hosts 类型</strong>: <code>Remote</code></p>
-</li>
-<li><p><strong>Hosts 标题</strong>: 随意</p>
-</li>
-<li><p><strong>URL</strong>: <code>https://raw.hellogithub.com/hosts</code></p>
-</li>
-<li><p><strong>自动刷新</strong>: 最好选 1 小时</p>
-</li>
-</ul>
-<p>如图：</p>
-<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/17392449105283.jpg"></p>
-<p>这样每次 hosts 有更新都能及时进行更新，免去手动更新。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
-<li><a href="https://www.github-zh.com/projects/263556058-github520">GitHub 520</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Tips</category>
-      </categories>
-      <tags>
-        <tag>GitHub</tag>
-        <tag>Tips</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【iOS】集成阿里云消息推送</title>
     <url>/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/</url>
     <content><![CDATA[<h1 id="集成阿里云消息推送"><a href="#集成阿里云消息推送" class="headerlink" title="集成阿里云消息推送"></a>集成阿里云消息推送</h1><h2 id="基本的业务流程："><a href="#基本的业务流程：" class="headerlink" title="基本的业务流程："></a>基本的业务流程：</h2><p><img data-src="/iOS/%E3%80%90iOS%E3%80%91%E9%9B%86%E6%88%90%E9%98%BF%E9%87%8C%E4%BA%91%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/16782576576028.jpg"></p>
@@ -5811,6 +5855,75 @@
       </categories>
       <tags>
         <tag>随笔</tag>
+        <tag>AI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Tips】解决 ping github.com 超时问题</title>
+    <url>/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="解决-ping-github-com-超时问题"><a href="#解决-ping-github-com-超时问题" class="headerlink" title="解决 ping github.com 超时问题"></a>解决 ping github.com 超时问题</h1><p>1、尝试 <code>ping github.com</code>，结果发现Ping不通，但是 <code>ping baidu.com</code> 却是正常的。</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751105633.jpg"></p>
+<span id="more"></span>
+
+<p>2、初步分心应该是本地的DNS无法解析导致的，需要修改Hosts文件，添加 github 的ip地址项</p>
+<h2 id="如何修改Hosts文件？"><a href="#如何修改Hosts文件？" class="headerlink" title="如何修改Hosts文件？"></a>如何修改Hosts文件？</h2><h3 id="1、通过终端命令修改"><a href="#1、通过终端命令修改" class="headerlink" title="1、通过终端命令修改"></a>1、通过终端命令修改</h3><p>（1）打开终端，输入命令行：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"># sudo 以管理员权限执行</span><br><span class="line">sudo vi /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>（2）输入本机密码后，会自动打开hosts文件 。</p>
+<ul>
+<li>键盘输入<code>i</code>（插入），修改完成后，按 <code>esc</code> 键退出插入页面</li>
+<li>保存退出：输入  <code>:wq</code> 或者<code>:wq!</code>，再<code>enter</code>键 </li>
+<li>不保存退出：输入<code>q</code>和<code>！</code>键，再<code>enter</code>键</li>
+</ul>
+<h3 id="2、在-Finder-中修改"><a href="#2、在-Finder-中修改" class="headerlink" title="2、在 Finder 中修改"></a>2、在 Finder 中修改</h3><p>方法一：</p>
+<p>（1）打开 <code>Finder</code> ，快捷键 <code>Command+Shift+G</code> 查找文件，输入 <code>/etc/hosts</code>，点击前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751416982.jpg"></p>
+<p>（2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751730177.jpg"></p>
+<p>方法二：</p>
+<p>（1）打开Finder，快捷键 <code>Shift+Command+G</code> 查找文件，输入 <code>/private</code> 前往</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787751897989.jpg"></p>
+<p>（2）找到 <code>etc</code> 文件之后，选择显示简介</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752011240.jpg"></p>
+<p>（3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752140821.jpg"></p>
+<h2 id="如何在-Hosts-文件中配置-github-com-映射"><a href="#如何在-Hosts-文件中配置-github-com-映射" class="headerlink" title="如何在 Hosts 文件中配置 github.com 映射"></a>如何在 Hosts 文件中配置 github.com 映射</h2><p>host文件打开之后可以看到：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752278743.jpg"></p>
+<p>在文件下面添加如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#<span class="title class_">GitHub</span>地址</span><br><span class="line"><span class="number">140.82</span><span class="number">.114</span><span class="number">.3</span> github.<span class="property">com</span> git</span><br><span class="line"><span class="number">151.101</span><span class="number">.129</span><span class="number">.194</span> github.<span class="property">global</span>.<span class="property">ssl</span>.<span class="property">fastly</span>.<span class="property">net</span></span><br></pre></td></tr></table></figure>
+
+<p>上图中的 IP 可以通过， <a href="https://www.ipaddress.com/">ipaddress</a> 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752425693.jpg"></p>
+<p><code>140.82.114.3</code>：这个IP地址修改为 <code>github.com</code>搜索到的IP地址</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752554840.jpg"></p>
+<p><code>151.101.129.194</code>：这个IP地址修改为<code>github.global.ssl.fastly.net</code>搜索到的<br>IP地址，其中可能会有多个，挑选其中一个即可。</p>
+<p>添加完成，重新在终端 <code>ping github.com</code>，发现可以 ping 通了， 如下图：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/16787752693740.jpg"></p>
+<h2 id="使用三方工具自动修改（最新推荐）"><a href="#使用三方工具自动修改（最新推荐）" class="headerlink" title="使用三方工具自动修改（最新推荐）"></a>使用三方工具自动修改（最新推荐）</h2><p>推荐 <a href="https://github.com/oldj/SwitchHosts">SwitchHosts</a> 工具管理 hosts</p>
+<p>以 SwitchHosts 为例，看一下怎么使用的，配置参考下面：</p>
+<ul>
+<li><p><strong>Hosts 类型</strong>: <code>Remote</code></p>
+</li>
+<li><p><strong>Hosts 标题</strong>: 随意</p>
+</li>
+<li><p><strong>URL</strong>: <code>https://raw.hellogithub.com/hosts</code></p>
+</li>
+<li><p><strong>自动刷新</strong>: 最好选 1 小时</p>
+</li>
+</ul>
+<p>如图：</p>
+<p><img data-src="/Tips/%E3%80%90Tips%E3%80%91%E8%A7%A3%E5%86%B3ping%20github.com%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/17392449105283.jpg"></p>
+<p>这样每次 hosts 有更新都能及时进行更新，免去手动更新。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a href="https://www.github-zh.com/projects/263556058-github520">GitHub 520</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Tips</category>
+      </categories>
+      <tags>
+        <tag>GitHub</tag>
+        <tag>Tips</tag>
       </tags>
   </entry>
 </search>
