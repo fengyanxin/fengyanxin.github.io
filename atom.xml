@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-03-03T02:12:10.145Z</updated>
+  <updated>2025-03-25T11:20:38.323Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>11 | 功能组件：如何使用路由，支持多页面导航？</title>
+    <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%B7%AF%E7%94%B1%EF%BC%8C%E6%94%AF%E6%8C%81%E5%A4%9A%E9%A1%B5%E9%9D%A2%E5%AF%BC%E8%88%AA%EF%BC%9F/"/>
+    <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%B7%AF%E7%94%B1%EF%BC%8C%E6%94%AF%E6%8C%81%E5%A4%9A%E9%A1%B5%E9%9D%A2%E5%AF%BC%E8%88%AA%EF%BC%9F/</id>
+    <published>2025-03-25T06:26:08.000Z</published>
+    <updated>2025-03-25T11:20:38.323Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;如何使用路由，支持多页面导航？&quot;&gt;&lt;a href=&quot;#如何使用路由，支持多页面导航？&quot; class=&quot;headerlink&quot; title=&quot;如何使用路由，支持多页面导航？&quot;&gt;&lt;/a&gt;如何使用路由，支持多页面导航？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%B7%AF%E7%94%B1%EF%BC%8C%E6%94%AF%E6%8C%81%E5%A4%9A%E9%A1%B5%E9%9D%A2%E5%AF%BC%E8%88%AA%EF%BC%9F/17428840890690.jpg&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="学习笔记" scheme="https://fengyanxin.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+  </entry>
   
   <entry>
     <title>10 | 支撑组件：如何实现隐藏菜单，快速测试与验证？</title>
@@ -434,27 +455,6 @@
     
     
     <summary type="html">&lt;h1 id=&quot;一、配置准备：如何搭建多环境支持，为-App-开发作准备&quot;&gt;&lt;a href=&quot;#一、配置准备：如何搭建多环境支持，为-App-开发作准备&quot; class=&quot;headerlink&quot; title=&quot;一、配置准备：如何搭建多环境支持，为 App 开发作准备&quot;&gt;&lt;/a&gt;一、配置准备：如何搭建多环境支持，为 App 开发作准备&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788668316765.jpg&quot;&gt;&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>02｜依赖管理：如何使用CocoaPods统一依赖库的管理？</title>
-    <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/"/>
-    <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/</id>
-    <published>2023-03-15T13:06:05.000Z</published>
-    <updated>2025-01-21T03:08:29.998Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;依赖管理：如何使用-CocoaPods-统一依赖库的管理？&quot;&gt;&lt;a href=&quot;#依赖管理：如何使用-CocoaPods-统一依赖库的管理？&quot; class=&quot;headerlink&quot; title=&quot;依赖管理：如何使用 CocoaPods 统一依赖库的管理？&quot;&gt;&lt;/a&gt;依赖管理：如何使用 CocoaPods 统一依赖库的管理？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788496868852.jpg&quot;&gt;&lt;/p&gt;</summary>
     
     
     
