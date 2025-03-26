@@ -1,5 +1,5 @@
 ---
-title: 02｜依赖管理：如何使用CocoaPods统一依赖库的管理？
+title: 【iOS进阶】02｜依赖管理：如何使用CocoaPods统一依赖库的管理？
 date: 2023-03-15 21:06:05
 tags:
 - 学习笔记
@@ -8,7 +8,7 @@ categories:
 - 学习笔记
 ---
 
-# 依赖管理：如何使用 CocoaPods 统一依赖库的管理？
+# 如何使用 CocoaPods 统一依赖库的管理？
 
 ![](assets/16788496868852.jpg)
 
