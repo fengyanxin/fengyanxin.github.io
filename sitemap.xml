@@ -191,6 +191,15 @@
   </url>
   
   <url>
+    <loc>https://fengyanxin.github.io/about/index.html</loc>
+    
+    <lastmod>2025-01-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://fengyanxin.github.io/categories/index.html</loc>
     
     <lastmod>2025-01-21</lastmod>
@@ -201,15 +210,6 @@
   
   <url>
     <loc>https://fengyanxin.github.io/tags/index.html</loc>
-    
-    <lastmod>2025-01-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://fengyanxin.github.io/about/index.html</loc>
     
     <lastmod>2025-01-21</lastmod>
     
@@ -365,14 +365,14 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/tags/Hexo/</loc>
+    <loc>https://fengyanxin.github.io/tags/GitHub/</loc>
     <lastmod>2025-03-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/tags/GitHub/</loc>
+    <loc>https://fengyanxin.github.io/tags/Hexo/</loc>
     <lastmod>2025-03-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -423,14 +423,14 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/categories/Hexo/</loc>
+    <loc>https://fengyanxin.github.io/categories/GitHub/</loc>
     <lastmod>2025-03-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/categories/GitHub/</loc>
+    <loc>https://fengyanxin.github.io/categories/Hexo/</loc>
     <lastmod>2025-03-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

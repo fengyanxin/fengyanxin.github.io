@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-03-27T01:54:10.391Z</updated>
+  <updated>2025-03-27T02:37:04.087Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -21,13 +21,12 @@
     <link href="https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91%E5%9C%A8-OC-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9E%9A%E4%B8%BE%EF%BC%9F/"/>
     <id>https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91%E5%9C%A8-OC-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9E%9A%E4%B8%BE%EF%BC%9F/</id>
     <published>2025-03-27T01:34:40.000Z</published>
-    <updated>2025-03-27T01:54:10.391Z</updated>
+    <updated>2025-03-27T02:37:04.087Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;h1 id=&quot;一、常见枚举写法&quot;&gt;&lt;a href=&quot;#一、常见枚举写法&quot; class=&quot;headerlink&quot; title=&quot;一、常见枚举写法&quot;&gt;&lt;/a&gt;一、常见枚举写法&lt;/h1&gt;&lt;h3 id=&quot;1、C-语言模式的枚举写法：enum&quot;&gt;&lt;a href=&quot;#1、C-语言模式的枚举</summary>
-      
+    <summary type="html">&lt;h1 id=&quot;一、常见枚举写法&quot;&gt;&lt;a href=&quot;#一、常见枚举写法&quot; class=&quot;headerlink&quot; title=&quot;一、常见枚举写法&quot;&gt;&lt;/a&gt;一、常见枚举写法&lt;/h1&gt;&lt;h3 id=&quot;1、C-语言模式的枚举写法：enum&quot;&gt;&lt;a href=&quot;#1、C-语言模式的枚举写法：enum&quot; class=&quot;headerlink&quot; title=&quot;1、C 语言模式的枚举写法：enum&quot;&gt;&lt;/a&gt;1、C 语言模式的枚举写法：enum&lt;/h3&gt;&lt;figure class=&quot;highlight swift&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;typedef &lt;span class=&quot;keyword&quot;&gt;enum&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;type&quot;&gt;KLTypeRed&lt;/span&gt; &lt;span class=&quot;operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;type&quot;&gt;KLTypeGreen&lt;/span&gt; &lt;span class=&quot;operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;type&quot;&gt;KLTypeOrange&lt;/span&gt; &lt;span class=&quot;operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125; &lt;span class=&quot;type&quot;&gt;KLType&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;2、普通【整型】枚举写法-：NS-ENUM&quot;&gt;&lt;a href=&quot;#2、普通【整型】枚举写法-：NS-ENUM&quot; class=&quot;headerlink&quot; title=&quot;2、普通【整型】枚举写法 ：NS_ENUM&quot;&gt;&lt;/a&gt;2、普通【整型】枚举写法 ：NS_ENUM&lt;/h3&gt;&lt;figure class=&quot;highlight swift&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;typedef &lt;span class=&quot;type&quot;&gt;NS_ENUM&lt;/span&gt;(&lt;span class=&quot;type&quot;&gt;NSUInteger&lt;/span&gt;, &lt;span class=&quot;type&quot;&gt;KLType&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;type&quot;&gt;KLTypeRed&lt;/span&gt; &lt;span class=&quot;operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;type&quot;&gt;KLTypeGreen&lt;/span&gt; &lt;span class=&quot;operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;type&quot;&gt;KLTypeOrange&lt;/span&gt; &lt;span class=&quot;operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
     
     
     
