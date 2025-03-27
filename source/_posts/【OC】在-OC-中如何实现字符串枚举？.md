@@ -30,6 +30,8 @@ typedef NS_ENUM(NSUInteger, KLType) {
 };
 ```
 
+<!-- more -->
+
 ### 3、位移枚举 ：NS_OPTIONS
 
 ``` swift
@@ -51,6 +53,7 @@ typedef NS_ENUM(NSUInteger, KLType) {
     KLTypeGreen  = 2,
     KLTypeOrange = 3,
 };
+
 // 定义一个C方法，C方法就是通过枚举值匹配字符串
 NSString *KLTypeString(KLType status) {
     switch (status) {
@@ -75,13 +78,13 @@ typedef NS_ENUM(NSUInteger, KLType) {
     KLTypeGreen  = 2,
     KLTypeOrange = 3,
 };
+
 // 这个是 Map NSString * 类型的数组
 NSString *KLTypeStringMap[] = {
     [KLTypeRed]    = @"红色",
     [KLTypeGreen]  = @"绿色",
     [KLTypeOrange] = @"橘色"
 };
-
 
 // 使用：
 KLType type = KLTypeRed;
@@ -123,5 +126,9 @@ NSString * const KLTypeStringGreen  = @"绿色";
 NSString * const KLTypeStringOrange = @"橘色"; 
 ```
 
-ps：比较的时候 `Str1 == Str2` 直接比较的是内存地址，效率更高。
+注：比较的时候 `Str1 == Str2` 直接比较的是内存地址，效率更高。
 由于过多的宏定义会产生过多的二进制文件，故如果宏定义比较多，建议用 `FOUNDATION_EXPORT`。
+
+# 三、参考
+
+[https://www.jianshu.com/p/ae7cb47ae44b](https://www.jianshu.com/p/ae7cb47ae44b)
