@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-03-28T07:13:03.178Z</updated>
+  <updated>2025-03-28T07:42:01.208Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【OC】Label字数和行数的计算方法</title>
+    <link href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91Label%E5%AD%97%E6%95%B0%E5%92%8C%E8%A1%8C%E6%95%B0%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95/"/>
+    <id>https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91Label%E5%AD%97%E6%95%B0%E5%92%8C%E8%A1%8C%E6%95%B0%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95/</id>
+    <published>2025-03-28T07:29:42.000Z</published>
+    <updated>2025-03-28T07:42:01.208Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;在 iOS 中，UILabel 常常需要计算高度来实现动态高度变化，以下是一些关于 label 字数和行数的计算方法总结，以备需要之时查看。&lt;/p&gt;
+&lt;h3 id=&quot;1、计算label行数：&quot;&gt;&lt;a href=&quot;#1、计算label行数：&quot; class=&quot;headerlink&quot; title=&quot;1、计算label行数：&quot;&gt;&lt;/a&gt;1、计算label行数：&lt;/h3&gt;&lt;figure class=&quot;highlight swift&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;operator&quot;&gt;-&lt;/span&gt; (&lt;span class=&quot;type&quot;&gt;NSUInteger&lt;/span&gt;)lineCount&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;span class=&quot;type&quot;&gt;CGSize&lt;/span&gt; size &lt;span class=&quot;operator&quot;&gt;=&lt;/span&gt; [&lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt; sizeThatFits:&lt;span class=&quot;type&quot;&gt;CGSizeMake&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;.frame.size.width, &lt;span class=&quot;type&quot;&gt;CGFLOAT_MAX&lt;/span&gt;)];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;MAX&lt;/span&gt;((int)(size.height &lt;span class=&quot;operator&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;.font.lineHeight), &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
+    
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/categories/iOS/"/>
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+    <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
+    
+  </entry>
   
   <entry>
     <title>【iOS】view点击事件穿透</title>
@@ -446,26 +468,6 @@
     <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【Tips】Markdown 语法</title>
-    <link href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Markdown-%E8%AF%AD%E6%B3%95/"/>
-    <id>https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Markdown-%E8%AF%AD%E6%B3%95/</id>
-    <published>2023-03-25T02:00:21.000Z</published>
-    <updated>2025-01-21T03:08:30.300Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;Markdown&quot;&gt;&lt;a href=&quot;#Markdown&quot; class=&quot;headerlink&quot; title=&quot;Markdown&quot;&gt;&lt;/a&gt;Markdown&lt;/h1&gt;&lt;h2 id=&quot;一、Markdown纯文本基本语法&quot;&gt;&lt;a href=&quot;#一、Markdown纯文本基本语法&quot; class=&quot;headerlink&quot; title=&quot;一、Markdown纯文本基本语法&quot;&gt;&lt;/a&gt;一、Markdown纯文本基本语法&lt;/h2&gt;&lt;h3 id=&quot;1-标题&quot;&gt;&lt;a href=&quot;#1-标题&quot; class=&quot;headerlink&quot; title=&quot;1. 标题&quot;&gt;&lt;/a&gt;1. 标题&lt;/h3&gt;&lt;p&gt;Markdown 支持两种标题的语法，类 Setext 和类 atx 形式。 类 Setext 形式是用底线的形式，利用 = （最高阶标题）和 - （第二阶标题），例如：&lt;/p&gt;
-&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;This is an H1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;=======&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;This is an H2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;----------&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
-    
-    
-    
-    <category term="Tips" scheme="https://fengyanxin.github.io/categories/Tips/"/>
-    
-    
-    <category term="Tips" scheme="https://fengyanxin.github.io/tags/Tips/"/>
     
   </entry>
   
