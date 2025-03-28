@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-03-27T02:37:04.087Z</updated>
+  <updated>2025-03-28T07:13:03.178Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【iOS】view点击事件穿透</title>
+    <link href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91view%E7%82%B9%E5%87%BB%E4%BA%8B%E4%BB%B6%E7%A9%BF%E9%80%8F%E5%92%8C%E6%94%B9%E5%8F%98/"/>
+    <id>https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91view%E7%82%B9%E5%87%BB%E4%BA%8B%E4%BB%B6%E7%A9%BF%E9%80%8F%E5%92%8C%E6%94%B9%E5%8F%98/</id>
+    <published>2025-03-28T06:59:01.000Z</published>
+    <updated>2025-03-28T07:13:03.178Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;事件传递&quot;&gt;&lt;a href=&quot;#事件传递&quot; class=&quot;headerlink&quot; title=&quot;事件传递&quot;&gt;&lt;/a&gt;事件传递&lt;/h2&gt;&lt;p&gt;当触摸一个视图时，首先系统会捕捉此事件，并为此事件创建一个 UIEvent 对象，将此对象加入当前应用程序的事件队列中，然后由 UIApplication 对象从队列中，一个一个取出来进行分发，首先分发给 UIWindow 对象，然后由 UIWindow 对象分发给触摸的视图对象，也就是第一响应者对象。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/categories/iOS/"/>
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+    <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
+    
+  </entry>
   
   <entry>
     <title>【OC】在 OC 中如何实现字符串枚举？</title>
@@ -445,27 +466,6 @@
     
     
     <category term="Tips" scheme="https://fengyanxin.github.io/tags/Tips/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>第一次与ChatGPT闲聊</title>
-    <link href="https://fengyanxin.github.io/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/"/>
-    <id>https://fengyanxin.github.io/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/</id>
-    <published>2023-03-20T13:02:56.000Z</published>
-    <updated>2025-03-03T02:14:03.223Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;第一次与ChatGPT闲聊&quot;&gt;&lt;a href=&quot;#第一次与ChatGPT闲聊&quot; class=&quot;headerlink&quot; title=&quot;第一次与ChatGPT闲聊&quot;&gt;&lt;/a&gt;第一次与ChatGPT闲聊&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8EChatGPT%E9%97%B2%E8%81%8A/16792994415736.jpg&quot;&gt;&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="随笔" scheme="https://fengyanxin.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-    <category term="随笔" scheme="https://fengyanxin.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
-    
-    <category term="AI" scheme="https://fengyanxin.github.io/tags/AI/"/>
     
   </entry>
   
