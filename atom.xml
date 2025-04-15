@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-03-28T07:42:01.208Z</updated>
+  <updated>2025-04-15T05:39:38.447Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【iOS】如何访问私有库中的图片、Xib资源</title>
+    <link href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%A6%82%E4%BD%95%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E5%BA%93%E4%B8%AD%E7%9A%84%E5%9B%BE%E7%89%87%E3%80%81Xib%E8%B5%84%E6%BA%90/"/>
+    <id>https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%A6%82%E4%BD%95%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E5%BA%93%E4%B8%AD%E7%9A%84%E5%9B%BE%E7%89%87%E3%80%81Xib%E8%B5%84%E6%BA%90/</id>
+    <published>2025-04-15T05:27:35.000Z</published>
+    <updated>2025-04-15T05:39:38.447Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;我们制作私有库时，若要在私有库中使用图片，需要在podSpec文件中指定图片来源。&lt;/p&gt;
+&lt;figure class=&quot;highlight swift&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;s.resource_bundles &lt;span class=&quot;operator&quot;&gt;=&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#x27;&lt;span class=&quot;type&quot;&gt;KDIBaseUI&lt;/span&gt;&amp;#x27; &lt;span class=&quot;operator&quot;&gt;=&amp;gt;&lt;/span&gt; [&amp;#x27;&lt;span class=&quot;type&quot;&gt;KDIBaseUI&lt;/span&gt;&lt;span class=&quot;operator&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;type&quot;&gt;Assets&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;/*&amp;#x27;]&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;这样，图片会放在一个&lt;code&gt;资源bundle&lt;/code&gt;中。&lt;/p&gt;
+&lt;p&gt;对于私有库工程来说，直接通过 &lt;code&gt;[UIImage imageNamed:@&amp;quot;xxx&amp;quot;]&lt;/code&gt; 的形式访问即可。比较麻烦的是，从其他工程访问私有库图片的情况。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/categories/iOS/"/>
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+    <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
+    
+  </entry>
   
   <entry>
     <title>【OC】Label字数和行数的计算方法</title>
@@ -438,27 +463,6 @@
     
     
     <summary type="html">&lt;h1 id=&quot;如何使用-Fastlane-管理自动化操作？&quot;&gt;&lt;a href=&quot;#如何使用-Fastlane-管理自动化操作？&quot; class=&quot;headerlink&quot; title=&quot;如何使用 Fastlane 管理自动化操作？&quot;&gt;&lt;/a&gt;如何使用 Fastlane 管理自动化操作？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/16784358918168.jpg&quot; alt=&quot;16784358918168&quot;&gt;&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【iOS进阶】04 | 编码规范：如何使用 SwiftLint 统一编码规范？</title>
-    <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/04%EF%BD%9C%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-SwiftLint-%E7%BB%9F%E4%B8%80%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%9F/"/>
-    <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/04%EF%BD%9C%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-SwiftLint-%E7%BB%9F%E4%B8%80%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%9F/</id>
-    <published>2023-07-03T13:00:06.000Z</published>
-    <updated>2025-03-26T08:30:43.124Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;如何使用-SwiftLint-统一编码规范？&quot;&gt;&lt;a href=&quot;#如何使用-SwiftLint-统一编码规范？&quot; class=&quot;headerlink&quot; title=&quot;如何使用 SwiftLint 统一编码规范？&quot;&gt;&lt;/a&gt;如何使用 SwiftLint 统一编码规范？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/04%EF%BD%9C%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-SwiftLint-%E7%BB%9F%E4%B8%80%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%9F/16781731613340.jpg&quot; alt=&quot;16781731613340&quot;&gt;&lt;/p&gt;</summary>
     
     
     
