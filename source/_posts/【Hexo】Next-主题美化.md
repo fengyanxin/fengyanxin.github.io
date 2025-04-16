@@ -857,6 +857,40 @@ sleep 5
 
 > 注意：这里有一个坑，imagemin 压缩，由于版本原因始终无法执行成功，这里暂时先把它给注了
 
+#### 添加可切换的暗黑模式
+
+`hexo-next-darkmode` 插件支持自动添加可切换的暗黑模式，同时支持暗黑模式下的 CSS 样式高度自定义，兼容 Next 7.x 与 8.x 版本。
+
+1. 安装 `hexo-next-darkmode` 插件
+
+``` swift
+$ npm install hexo-next-darkmode --save
+```
+
+2. 在 Next 主题的 `_config.yml` 配置文件里添加以下内容:
+
+``` swift
+# Darkmode JS
+# For more information: https://github.com/rqh656418510/hexo-next-darkmode, https://github.com/sandoche/Darkmode.js
+darkmode_js:
+  enable: true
+  bottom: '64px' # default: '32px'
+  right: 'unset' # default: '32px'
+  left: '32px' # default: 'unset'
+  time: '0.5s' # default: '0.3s'
+  mixColor: 'transparent' # default: '#fff'
+  backgroundColor: 'transparent' # default: '#fff'
+  buttonColorDark: '#100f2c' # default: '#100f2c'
+  buttonColorLight: '#fff' # default: '#fff'
+  isActivated: false # default false
+  saveInCookies: true # default: true
+  label: '🌓' # default: ''
+  autoMatchOsTheme: true # default: true
+  libUrl: # Set custom library cdn url for Darkmode.js
+```
+
+`isActivated: true`：默认激活暗黑/夜间模式，请始终与 `saveInCookies: false`、`autoMatchOsTheme: false` 一起使用
+
 ### 3、特殊配置
 
 #### 捐赠（打赏）
