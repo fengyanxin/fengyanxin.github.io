@@ -8,6 +8,7 @@ hexo clean
 hexo generate
 sleep 5
 
+# 压缩文件
 gulp
 sleep 5
 
