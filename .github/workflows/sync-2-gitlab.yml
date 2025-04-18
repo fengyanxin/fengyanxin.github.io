@@ -14,6 +14,7 @@ jobs:
           # 注意在 Settings->Secrets 配置 GITLAB
 #          SSH_PRIVATE_KEY: ${{ secrets.GITLAB }}
           SSH_PRIVATE_KEY: ${{ secrets.GITCODE }}
+          dst_token: ${{ secrets.GITCODETOKEN }}  # Gitcode账户的私人令牌
         with:
           # 注意替换为你的 GitHub 源仓库地址
           source-repo: git@github.com:fengyanxin/fengyanxin.github.io.git
