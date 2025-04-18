@@ -110,6 +110,7 @@ deploy:
   repo:
      github: git@github.com:fengyanxin/fengyanxin.github.io.git,main
      gitlab: git@gitlab.com:fengyanxin/fengyanxin.git,main
+     atomgit: git@atomgit.com:fengyanxin/MyBlog.git
 
 # feed (RSS订阅)
 # Dependencies: https://github.com/hexojs/hexo-generator-feed
