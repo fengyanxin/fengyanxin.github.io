@@ -1,14 +1,14 @@
-#name: Sync
-#
-#on:
-#  push:
-#    branches: [main, hexo]
-#
-#jobs:
-#  sync-2-gitlab:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Sync to Gitlab
+name: Sync
+
+on:
+  push:
+    branches: [main, hexo]
+
+jobs:
+  sync-2-gitlab:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync to Gitlab
 #        uses: wearerequired/git-mirror-action@master
 #        env:
 #          # 注意在 Settings->Secrets 配置 GITLAB
