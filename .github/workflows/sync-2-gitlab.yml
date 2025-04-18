@@ -13,11 +13,11 @@ jobs:
         env:
           # 注意在 Settings->Secrets 配置 GITLAB
 #          SSH_PRIVATE_KEY: ${{ secrets.GITLAB }}
-          SSH_PRIVATE_KEY: ${{ secrets.GITCODE }}
-          dst_token: ${{ secrets.GITCODETOKEN }}  # Gitcode账户的私人令牌
+          SSH_PRIVATE_KEY: ${{ secrets.ATOM }}
+          dst_token: ${{ secrets.ATOM_TOKEN }}  # Gitcode账户的私人令牌
         with:
           # 注意替换为你的 GitHub 源仓库地址
           source-repo: git@github.com:fengyanxin/fengyanxin.github.io.git
           # 注意替换为你的 Gitee 目标仓库地址
 #          destination-repo: git@gitlab.com:fengyanxin/fengyanxin.git
-          destination-repo: git@gitcode.com:ranheran/MyBlog.git
+          destination-repo: git@atomgit.com:fengyanxin/MyBlog.git
