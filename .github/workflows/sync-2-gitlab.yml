@@ -19,4 +19,4 @@ jobs:
           source-repo: git@github.com:fengyanxin/fengyanxin.github.io.git
           # 注意替换为你的 Gitee 目标仓库地址
 #          destination-repo: git@gitlab.com:fengyanxin/fengyanxin.git
-          destination-repo: git@gitcode.com:ranheran/MyBlog.git
+          destination-repo: git@gitcode.com:ranheran/fengyanxin.git
