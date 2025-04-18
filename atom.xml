@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-04-15T05:39:38.447Z</updated>
+  <updated>2025-04-18T06:00:12.450Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【iOS】关于 dismissViewController</title>
+    <link href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%85%B3%E4%BA%8EdismissViewController/"/>
+    <id>https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%85%B3%E4%BA%8EdismissViewController/</id>
+    <published>2025-04-18T05:38:22.000Z</published>
+    <updated>2025-04-18T06:00:12.450Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;工程中有个多层控制器时，调用 &lt;code&gt;dismissViewControllerAnimated&lt;/code&gt; 时不时会不起作用。&lt;/p&gt;
+&lt;h3 id=&quot;原理&quot;&gt;&lt;a href=&quot;#原理&quot; class=&quot;headerlink&quot; title=&quot;原理&quot;&gt;&lt;/a&gt;原理&lt;/h3&gt;&lt;p&gt;我们都知道 &lt;code&gt;dismissViewControllerAnimated:completion:&lt;/code&gt; 方法是针对被 &lt;code&gt;present&lt;/code&gt; 出来的控制器的。&lt;/p&gt;
+&lt;p&gt;一般我们这样使用：在一个控制器中 &lt;code&gt;present&lt;/code&gt; 另外一个控制器A，然后在A中执行 &lt;code&gt;dismissViewControllerAnimated:completion:&lt;/code&gt; 让自己消失。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/categories/iOS/"/>
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+    <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
+    
+  </entry>
   
   <entry>
     <title>【iOS】如何访问私有库中的图片、Xib资源</title>
@@ -442,27 +465,6 @@
     
     
     <summary type="html">&lt;h1 id=&quot;如何使用-Git-与-GitHub-统一代码管理流程？&quot;&gt;&lt;a href=&quot;#如何使用-Git-与-GitHub-统一代码管理流程？&quot; class=&quot;headerlink&quot; title=&quot;如何使用 Git 与 GitHub 统一代码管理流程？&quot;&gt;&lt;/a&gt;如何使用 Git 与 GitHub 统一代码管理流程？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/06%EF%BD%9C%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Git%E4%B8%8EGitHub%E7%BB%9F%E4%B8%80%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%B5%81%E7%A8%8B%EF%BC%9F/16784401369610.jpg&quot; alt=&quot;16784401369610&quot;&gt;&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【iOS进阶】05 | 自动化准备：如何使用 Fastlane 管理自动化操作？</title>
-    <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/"/>
-    <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/</id>
-    <published>2023-07-10T07:28:46.000Z</published>
-    <updated>2025-03-26T08:30:56.397Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;如何使用-Fastlane-管理自动化操作？&quot;&gt;&lt;a href=&quot;#如何使用-Fastlane-管理自动化操作？&quot; class=&quot;headerlink&quot; title=&quot;如何使用 Fastlane 管理自动化操作？&quot;&gt;&lt;/a&gt;如何使用 Fastlane 管理自动化操作？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/05%EF%BD%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Fastlane-%E7%AE%A1%E7%90%86%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%9F/16784358918168.jpg&quot; alt=&quot;16784358918168&quot;&gt;&lt;/p&gt;</summary>
     
     
     
