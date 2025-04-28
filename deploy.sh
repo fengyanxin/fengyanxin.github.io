@@ -4,8 +4,7 @@ DIR=`dirname $0`
 echo "=====> Start ! <====="
 
 # Generate blog
-hexo clean && hexo generate --config _config.yml,_config.github.yml
-hexo clean && hexo generate --config _config.yml,_config.atomgit.yml
+hexo clean && hexo generate
 sleep 5
 
 # 压缩文件
@@ -13,8 +12,7 @@ gulp
 sleep 5
 
 # Deploy
-hexo deploy --config _config.yml,_config.github.yml
-hexo deploy --config _config.yml,_config.atomgit.yml
+hexo deploy 
 sleep 5
 
 echo "=====> Deploy finish! <====="
