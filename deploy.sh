@@ -4,16 +4,16 @@ DIR=`dirname $0`
 echo "=====> Start ! <====="
 
 # Generate blog
-hexo clean
-hexo generate
+hexo clean --config _config.yml,_config.atomgit.yml
+hexo generate --config _config.yml,_config.atomgit.yml
 sleep 5
 
 # 压缩文件
-gulp
+gulp 
 sleep 5
 
 # Deploy
-hexo deploy
+hexo deploy --config _config.yml,_config.atomgit.yml
 sleep 5
 
 echo "=====> Deploy finish! <====="

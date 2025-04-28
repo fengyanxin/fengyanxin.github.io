@@ -1,7 +1,7 @@
-hexo clean
+hexo clean --config _config.yml,_config.atomgit.yml
 
-hexo g
+hexo g --config _config.yml,_config.atomgit.yml
 
 gulp
 
-hexo s
+hexo s --config _config.yml,_config.atomgit.yml
