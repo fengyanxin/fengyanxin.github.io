@@ -5,7 +5,6 @@ keywords: 'blog, iOS, 学习笔记, 读书笔记'
 author: 凤炎忻
 language: zh-CN
 timezone: ''
-url: 'https://fengyanxin.atomgit.net'
 permalink: ':category/:title/'
 permalink_defaults: null
 pretty_urls:
@@ -60,10 +59,6 @@ include: null
 exclude: null
 ignore: null
 theme: next
-deploy:
-  - type: git
-    repo: 'git@atomgit.com:fengyanxin/MyBlog.git'
-    branch: main
 feed:
   type: atom
   path: atom.xml
@@ -75,3 +70,8 @@ search:
   field: post
   format: html
   limit: 10000
+url: 'https://fengyanxin.atomgit.net'
+deploy:
+  - type: git
+    repo: 'git@atomgit.com:fengyanxin/MyBlog.git'
+    branch: main

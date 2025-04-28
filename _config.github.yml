@@ -1,0 +1,14 @@
+# Hexo Configuration
+## Docs: https://hexo.io/docs/configuration.html
+## Source: https://github.com/hexojs/hexo/
+
+# URL
+## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
+url: 'https://fengyanxin.github.io'
+# Deployment
+## Docs: https://hexo.io/docs/one-command-deployment
+deploy:
+ - type: git
+   repo: git@github.com:fengyanxin/fengyanxin.github.io.git
+   branch: main
+
