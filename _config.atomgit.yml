@@ -9,5 +9,6 @@ url: 'https://fengyanxin.atomgit.net'
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
  - type: git
-   repo: git@atomgit.com:fengyanxin/MyBlog.git,main
+   repo: git@atomgit.com:fengyanxin/MyBlog.git
+   branch: main
 

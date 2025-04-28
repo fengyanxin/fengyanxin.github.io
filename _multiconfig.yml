@@ -62,7 +62,8 @@ ignore: null
 theme: next
 deploy:
   - type: git
-    repo: 'git@atomgit.com:fengyanxin/MyBlog.git,main'
+    repo: 'git@atomgit.com:fengyanxin/MyBlog.git'
+    branch: main
 feed:
   type: atom
   path: atom.xml
