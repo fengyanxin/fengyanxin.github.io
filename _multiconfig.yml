@@ -63,8 +63,6 @@ theme: next
 deploy:
   - type: git
     repo: 'git@atomgit.com:fengyanxin/MyBlog.git,main'
-  - type: git
-    repo: 'git@atomgit.com:fengyanxin/MyBlog.git,main'
 feed:
   type: atom
   path: atom.xml

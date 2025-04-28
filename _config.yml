@@ -15,7 +15,6 @@ timezone: ''
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: 'https://fengyanxin.github.io'
-#url: 'https://fengyanxin.atomgit.net'
 permalink: ':category/:title/'
 permalink_defaults:
 pretty_urls:
@@ -109,8 +108,8 @@ theme: next
 deploy:
  - type: git
    repo: git@github.com:fengyanxin/fengyanxin.github.io.git,main
- - type: git
-   repo: git@atomgit.com:fengyanxin/MyBlog.git,main
+# - type: git
+#   repo: git@atomgit.com:fengyanxin/MyBlog.git,main
 
 # feed (RSS订阅)
 # Dependencies: https://github.com/hexojs/hexo-generator-feed
