@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-04-18T06:00:12.450Z</updated>
+  <updated>2025-04-29T08:16:15.439Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【iOS】 Runtime 详解</title>
+    <link href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91-Runtime%E8%AF%A6%E8%A7%A3/"/>
+    <id>https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91-Runtime%E8%AF%A6%E8%A7%A3/</id>
+    <published>2025-04-29T07:31:58.000Z</published>
+    <updated>2025-04-29T08:16:15.439Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;/iOS/%E3%80%90iOS%E3%80%91-Runtime%E8%AF%A6%E8%A7%A3/17459141483680.jpg&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;一、Runtime-介绍&quot;&gt;&lt;a href=&quot;#一、Runtime-介绍&quot; class=&quot;headerlink&quot; title=&quot;一、Runtime 介绍&quot;&gt;&lt;/a&gt;一、Runtime 介绍&lt;/h2&gt;&lt;p&gt;&lt;code&gt;Objective-C&lt;/code&gt; 扩展了 &lt;code&gt;C&lt;/code&gt; 语言，并加入了面向对象特性和 &lt;code&gt;Smalltalk&lt;/code&gt; 式的消息传递机制。而这个扩展的核心是一个用 &lt;code&gt;C&lt;/code&gt; 和 编译语言 写的 &lt;code&gt;Runtime&lt;/code&gt; 库。它是 &lt;code&gt;Objective-C&lt;/code&gt; 面向对象和动态机制的基石。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Objective-C&lt;/code&gt; 是一个动态语言，这意味着它不仅需要一个编译器，也需要一个运行时系统来动态得创建类和对象、进行消息传递和转发。理解 &lt;code&gt;Objective-C&lt;/code&gt; 的 &lt;code&gt;Runtime&lt;/code&gt; 机制可以帮我们更好的了解这个语言，适当的时候还能对语言进行扩展，从系统层面解决项目中的一些设计或技术问题。了解 &lt;code&gt;Runtime&lt;/code&gt; ，要先了解它的核心 - &lt;code&gt;消息传递 （Messaging）&lt;/code&gt;。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/categories/iOS/"/>
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+    <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
+    
+  </entry>
   
   <entry>
     <title>【iOS】关于 dismissViewController</title>
@@ -453,27 +476,6 @@
     <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
     
     <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【iOS进阶】06 | 代码管理：如何使用 Git 与 GitHub 统一代码管理流程？</title>
-    <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/06%EF%BD%9C%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Git%E4%B8%8EGitHub%E7%BB%9F%E4%B8%80%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%B5%81%E7%A8%8B%EF%BC%9F/"/>
-    <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/06%EF%BD%9C%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Git%E4%B8%8EGitHub%E7%BB%9F%E4%B8%80%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%B5%81%E7%A8%8B%EF%BC%9F/</id>
-    <published>2023-07-19T02:23:33.000Z</published>
-    <updated>2025-03-26T08:31:11.481Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;如何使用-Git-与-GitHub-统一代码管理流程？&quot;&gt;&lt;a href=&quot;#如何使用-Git-与-GitHub-统一代码管理流程？&quot; class=&quot;headerlink&quot; title=&quot;如何使用 Git 与 GitHub 统一代码管理流程？&quot;&gt;&lt;/a&gt;如何使用 Git 与 GitHub 统一代码管理流程？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/06%EF%BD%9C%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Git%E4%B8%8EGitHub%E7%BB%9F%E4%B8%80%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%B5%81%E7%A8%8B%EF%BC%9F/16784401369610.jpg&quot; alt=&quot;16784401369610&quot;&gt;&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
     
   </entry>
   
