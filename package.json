@@ -19,7 +19,7 @@
     "gulp-minify-css": "^1.2.4",
     "gulp-uglify": "^3.0.2",
     "hexo": "^5.0.0",
-    "hexo-asset-image": "https://github.com/CodeFalling/hexo-asset-image.git",
+    "hexo-asset-image": "^1.0.0",
     "hexo-asset-img": "^1.2.0",
     "hexo-browsersync": "^0.3.0",
     "hexo-deployer-git": "^4.0.0",
