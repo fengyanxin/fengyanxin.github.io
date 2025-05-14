@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-04-29T08:16:15.439Z</updated>
+  <updated>2025-05-14T07:00:00.365Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -21,10 +21,10 @@
     <link href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91-Runtime%E8%AF%A6%E8%A7%A3/"/>
     <id>https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91-Runtime%E8%AF%A6%E8%A7%A3/</id>
     <published>2025-04-29T07:31:58.000Z</published>
-    <updated>2025-04-29T08:16:15.439Z</updated>
+    <updated>2025-05-14T07:00:00.365Z</updated>
     
     
-    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;/iOS/%E3%80%90iOS%E3%80%91-Runtime%E8%AF%A6%E8%A7%A3/17459141483680.jpg&quot;&gt;&lt;/p&gt;
+    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://pic1.imgdb.cn/item/68243e3b58cb8da5c8f15b01.jpg&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;一、Runtime-介绍&quot;&gt;&lt;a href=&quot;#一、Runtime-介绍&quot; class=&quot;headerlink&quot; title=&quot;一、Runtime 介绍&quot;&gt;&lt;/a&gt;一、Runtime 介绍&lt;/h2&gt;&lt;p&gt;&lt;code&gt;Objective-C&lt;/code&gt; 扩展了 &lt;code&gt;C&lt;/code&gt; 语言，并加入了面向对象特性和 &lt;code&gt;Smalltalk&lt;/code&gt; 式的消息传递机制。而这个扩展的核心是一个用 &lt;code&gt;C&lt;/code&gt; 和 编译语言 写的 &lt;code&gt;Runtime&lt;/code&gt; 库。它是 &lt;code&gt;Objective-C&lt;/code&gt; 面向对象和动态机制的基石。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Objective-C&lt;/code&gt; 是一个动态语言，这意味着它不仅需要一个编译器，也需要一个运行时系统来动态得创建类和对象、进行消息传递和转发。理解 &lt;code&gt;Objective-C&lt;/code&gt; 的 &lt;code&gt;Runtime&lt;/code&gt; 机制可以帮我们更好的了解这个语言，适当的时候还能对语言进行扩展，从系统层面解决项目中的一些设计或技术问题。了解 &lt;code&gt;Runtime&lt;/code&gt; ，要先了解它的核心 - &lt;code&gt;消息传递 （Messaging）&lt;/code&gt;。&lt;/p&gt;</summary>
     

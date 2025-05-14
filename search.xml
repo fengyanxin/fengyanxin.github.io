@@ -129,6 +129,187 @@
       </tags>
   </entry>
   <entry>
+    <title>【iOS进阶】02｜依赖管理：如何使用CocoaPods统一依赖库的管理？</title>
+    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/</url>
+    <content><![CDATA[<h1 id="如何使用-CocoaPods-统一依赖库的管理？"><a href="#如何使用-CocoaPods-统一依赖库的管理？" class="headerlink" title="如何使用 CocoaPods 统一依赖库的管理？"></a>如何使用 CocoaPods 统一依赖库的管理？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788496868852.jpg"></p>
+<span id="more"></span>
+
+<p>在 iOS App 开发方面，几乎所有的 App 都需要使用到第三方依赖库。依赖库不仅能为我们提供丰富的功能，还能避免我们从头开发，在节省时间的同时也减少许多 Bug 。</p>
+<p>但伴随着软件功能越来越丰富，依赖库数量越来越多，由此也出现了“依赖地狱”，比如依赖库循环依赖，底层依赖库版本冲突等。为了解决此类问题，于是，依赖库管理工具也就出现了。</p>
+<p>目前流行的依赖库管理工具主要有：<strong>Git Submodules</strong>、<strong>Carthage</strong>、 <strong>Swift Package Manager</strong> 和 <strong>CocoaPods</strong>。在这里我们选择 CocoaPods。为什么呢？原因有三：</p>
+<ol>
+<li><p>CocoaPods 非常成熟，十分稳定，并且简单易用，学习成本低，效果明显；</p>
+</li>
+<li><p>CocoaPods 会自动整合 Xcode 项目，使得其他项目成员在使用第三方库时无须任何额外的手工操作；</p>
+</li>
+<li><p>CocoaPods 已经成为 iOS 业界标准，支持几乎所有的开源库和商业库，即便是 Objective-C 的依赖库以及二进制文件（binary）依赖库，CocoaPods 也提供支持。</p>
+</li>
+</ol>
+<p>那么，怎样使用 CocoaPods 来管理第三方依赖库呢？接下来我会从<strong>语义化版本管理</strong>、<strong>Pod 版本管理</strong>、<strong>Pod 版本更新</strong>三个方面展开介绍。</p>
+<h2 id="语义化版本管理"><a href="#语义化版本管理" class="headerlink" title="语义化版本管理"></a>语义化版本管理</h2><p>开发软件，免不了要更新迭代，所以每一次更新的版本号管理变得很重要。并且，一旦版本号混乱，就会导致一系列问题，比如很难查找和修改线上崩溃，没办法支持多团队并行开发，等等。为了避免此类问题，我们可以使用语义化版本管理（Semantic Versioning）来统一版本号的定义规范。</p>
+<p>语义化版本号是一种通用的版本号格式规范，目前绝大部分优秀的第三方依赖库都遵循这一规范来发布版本。</p>
+<p>具体来说，语义化版本号的版本号一般包括四部分：<code>MAJOR、MINOR、PATCH、BUILD</code>。每一部分都由递增的数值组成，例如 1.2.3.4，其中 1 是MAJOR， 2 是 MINOR。如果我们更新 MINOR 版本号，那么下一个版本就是 1.3.0.0。接下来我详细介绍下这四部分。</p>
+<ul>
+<li><p><strong>MAJOR 是指主版本号</strong>，通常在重大更新的时候才会需要更新主版本号。例如 iOS 每年都会更新一个主版本号。而对于第三方库来说，主版本号的更新，表示该库的 API 新增了重大功能，或者引入了不可兼容的更新 （breaking changes）。</p>
+</li>
+<li><p><strong>MINOR 是指副版本号</strong>，用于小功能的改善。例如 iOS 14 在发布主版本后，在一年内可能发布多个副版本如 14.1、 14.2 来完善其系统功能。一般对于第三方库来说，副版本的更新就是新增一些 API，但不包含不可兼容的更新。</p>
+</li>
+<li><p><strong>PATCH 是指补丁版本号</strong>，一般用于 bug fix 以及修复安全性问题等。对于第三方库来说，补丁版本号的更新也不应该有不可兼容的更新。虽然实际操作中这会有些困难，但我们可以通过把原有 API 标记为 deprecated，或者为新 API 参数提供默认值等办法来解决。</p>
+</li>
+<li><p><strong>BUILD 是指构建版本号</strong>，通常在内部测试时使用。一般当我们使用 CI 服务器进行自动构建时，构建版本号会自动更新。</p>
+</li>
+</ul>
+<h2 id="Pod-版本管理"><a href="#Pod-版本管理" class="headerlink" title="Pod 版本管理"></a>Pod 版本管理</h2><p>要使用 CocoaPods 管理第三方依赖库，首先要新建一个 Podfile 文件，然后执行 <code>bundle exec pod install</code> 命令来安装所有依赖库。这时候 CocoaPods 会自动帮我们建立一个 Podfile.lock 文件和一个 Workspace文档。</p>
+<p>注意，在第一讲我们说过，由于是通过 Bundler 来安装 CocoaPods，每次执行<code>pod</code>命令前，都需要加上<code>bundle exec</code>。不过为了简洁，后面涉及<code>pod</code>命令时，我会省略<code>bundle exec</code>部分。</p>
+<p>接下来，我详细介绍下 Podfile 文件、 Podfile.lock 和 Workspace 文档到底是什么，以及如何使用。</p>
+<h3 id="Podfile-文件"><a href="#Podfile-文件" class="headerlink" title="Podfile 文件"></a>Podfile 文件</h3><p><code>Podfile</code> 文件是一个配置文件，它主要是用来描述 Xcode 项目里各个 target 的依赖库。我们项目的 Podfile 文件可以在<a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile">仓库中</a>找到。在这里，我主要和你介绍一下 Podfile 文件中的几个重要配置。</p>
+<h3 id="source-配置"><a href="#source-配置" class="headerlink" title="source 配置"></a>source 配置</h3><p><code>source</code>用于指向 PodSpec（Pod 规范）文件的 Repo，从而使得 CocoaPods 能查询到相应的 PodSpec 文件。</p>
+<p>具体来说，当使用公共依赖库的时候，source需要指向 CocoaPods Master Repo，这个主仓库集中存放所有公共依赖库的 PodSpec 文件。 由于 CocoaPods 经常被开发者吐槽 Pod 下载很慢，因此 CocoaPods 使用了 CDN （Content Delivery Network，内容分发网络）来缓存整个 CocoaPods Master Repo， 方便开发者快速下载。具体的配置方法就是使source指向 CND 的地址，代码示例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source <span class="string">&#x27;https://cdn.cocoapods.org/&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果使用的是私有依赖库，我们也需要把source指向私有库的 PodSpec Repo，以使得 CocoaPods 能找到相应的 PodSpec 文件。 代码示例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source <span class="string">&#x27;https://my-git-server.com/internal-podspecs&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意，当我们使用私有库时，执行pod install命令的机器必须能访问到source所指向的 Repo。</p>
+<h3 id="project-和-workspace"><a href="#project-和-workspace" class="headerlink" title="project 和 workspace"></a>project 和 workspace</h3><p>project用于指定我们的主项目文档。该项目文档会使用到 CocoaPods 管理的所有第三方依赖库。</p>
+<p>workspace用于指定要生成和更新的 Workspace 文档。和其他依赖库管理工具不一样，CocoaPods 会自动生成一个 Workspace 文档，然后我们只能使用该文档而不是 Xcode 项目文档来进行后续开发。</p>
+<p>代码示例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">project <span class="string">&#x27;./Moments/Moments.xcodeproj&#x27;</span></span><br><span class="line">workspace <span class="string">&#x27;./Moments.xcworkspace&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这其中 <code>Moments.xcodeproj</code> 就是我们的主项目文档，它一般放在和项目名字相同的下一层目录下。</p>
+<p>而 <code>Moments.xcworkspace</code> 是 CocoaPods 为我们生成的 Workspace文档，为了统一，我建议名字也是和主项目相同。</p>
+<h3 id="platform-和-use-frameworks"><a href="#platform-和-use-frameworks" class="headerlink" title="platform 和 use_frameworks"></a>platform 和 use_frameworks</h3><p>先看示例，它表示什么呢？</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">platform :ios, <span class="string">&#x27;14.0&#x27;</span></span><br><span class="line">use_frameworks!</span><br></pre></td></tr></table></figure>
+
+<p>为了保证所有依赖库与主项目在编译和运行时兼容，我们指定的系统版本号需要和主项目所支持的系统版本号保持一致。而<code>platform</code>就是用于指定操作系统以及所支持系统的最低版本号。比如，例子中的<code>platform :ios, &#39;14.0&#39;</code>就表示支持 iOS 14.0 以上的所有 iOS 版本。</p>
+<p>另外一行的<code>use_frameworks!</code>这一配置会让 CocoaPods 把所有第三方依赖库打包生成一个动态加载库，而不是静态库。因为动态库是我们经常用到的，它能有效地加快编译和链接的速度。</p>
+<h3 id="组织同类型的第三方依赖库"><a href="#组织同类型的第三方依赖库" class="headerlink" title="组织同类型的第三方依赖库"></a>组织同类型的第三方依赖库</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">def dev_pods</span><br><span class="line">  pod <span class="string">&#x27;SwiftLint&#x27;</span>, <span class="string">&#x27;0.40.3&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line">  pod <span class="string">&#x27;SwiftGen&#x27;</span>, <span class="string">&#x27;6.4.0&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>configurations: [&#39;Debug&#39;]</code>用于指定该依赖库只是使用到<code>Debug</code>构建目标（target）里面，而不在其他（如<code>Release</code>）构建目标里面，这样做能有效减少 App Store 发布版本的体积。</p>
+<p><code>def dev_pods end</code>代码块是“复用同一类依赖库方式”的意思，我们可以把同类型的依赖库都放进这个代码块里面。比如，我们的 Moments 项目中就分别有<code>dev_pods</code>（开发相关的库）,<code>core_pods</code>（核心库）以及<code>thirdparty_pods</code>(第三方库)等代码块定义。</p>
+<h3 id="target-配置"><a href="#target-配置" class="headerlink" title="target 配置"></a>target 配置</h3><p>有了这些复用库定义以后，怎样使用到项目的构建目标（target）里面呢？下面就是一个例子。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">target <span class="string">&#x27;Moments&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  dev_pods</span><br><span class="line">  core_pods</span><br><span class="line">  # other pods...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>我们可以把构建目标所使用的所有依赖库放进<code>target</code>代码块中间，上面中的<code>Moments</code>就是我们的 App 构建目标。该构建目标依赖了<code>dev_pods</code>和<code>core_pods</code>等各组依赖库。执行<code>pod install</code>的时候，CocoaPods 会把<code>dev_pods</code>代码块自动展开为<code>SwiftLint</code>和<code>SwiftGen</code>，那么<code>Moments</code>构建目标能使用<code>SwiftLint</code>和<code>SwiftGen</code>依赖库了。</p>
+<h3 id="依赖库的版本"><a href="#依赖库的版本" class="headerlink" title="依赖库的版本"></a>依赖库的版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">pod <span class="string">&#x27;RxSwift&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br><span class="line">pod <span class="string">&#x27;RxRelay&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>在 CocoaPods 里面，每一个依赖库称为一个 Pod （注意这里首字母大写，Pod 指一个库），指定一个 Pod 的命令是<code>pod</code>（注意这里是小写，表示一条命令）。在 Podfile 里面我们可以通过这样的格式<code>pod &#39;RxSwift&#39;, &#39;= 5.1.1&#39;</code>来配置依赖库的版本号。其中，<code>RxSwift</code>或者<code>RxRelay</code>是依赖库的名字，<code>5.1.1</code>为版本号。这些库的名字以及版本号都可以在 CocoaPods 官网上找到。</p>
+<p><strong>为了统一管理第三方依赖库的版本，我建议统一使用 <code>= </code>来锁定该依赖库的版本，这样就能保证每次执行<code>pod install</code>的时候都可以为同一个库下载同一个版本。</strong></p>
+<p>除了 <code>=</code> 操作符以外，CocoaPods 还支持其他操作符来指定版本：</p>
+<ul>
+<li><p><code>&gt; 0.1</code>表示大于 0.1 的任何版本，这样可以包含 0.2 或者 1.0；</p>
+</li>
+<li><p><code>&gt;= 0.1</code>表示大于或等于 0.1 的任何版本；</p>
+</li>
+<li><p><code>&lt; 0.1</code>表示少于 0.1 的任何版本；</p>
+</li>
+<li><p><code>&lt;= 0.1</code>表示少于或等于 0.1 的任何版本；</p>
+</li>
+<li><p><code>~&gt; 0.1.2</code>表示大于 0.1.2 而且最高支持 0.1.* 的版本，但不包含 0.2 版本。</p>
+</li>
+</ul>
+<p>这几个操作符相里面，<code>~&gt;</code>（Squiggy arrow）操作符更为常用，它是以最后一个部分的版本号（例子中 0.1.2 的最后一个部分是补丁版本号 ..2）来计算可以支持的最高版本号。</p>
+<p>例如<code>~&gt; 0.1.2</code>表示 &gt;= 0.1.2 并且 &lt; 0.2.0，但不能等于 0.2.0， 因为 0.2.0 已经更新了副版本号而不仅仅是补丁版本号了。</p>
+<p>另外一个例子是<code>~&gt; 0.1</code>，表示  &gt;= 0.1  并且 &lt; 1.0，举例来说，我们可以更新到 0.9 但不能更新到 1.0。</p>
+<p>前面我介绍的是引用外部的第三方依赖库，如果我们的项目有自己的内部依赖库，要怎样在 CocoaPods 引用它呢？其实很简单，我们可以执行以下命令：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">pod <span class="string">&#x27;DesignKit&#x27;</span>, :<span class="function"><span class="params">path</span> =&gt;</span> <span class="string">&#x27;./Frameworks/DesignKit&#x27;</span>, :<span class="function"><span class="params">inhibit_warnings</span> =&gt;</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p>和其他外部依赖库不一样，我们需要使用<code>:path</code>来指定该内部库的路径。</p>
+<h3 id="Podfile-lock-文件"><a href="#Podfile-lock-文件" class="headerlink" title="Podfile.lock 文件"></a>Podfile.lock 文件</h3><p><code>Podfile.lock</code> 文件是由 CocoaPods 自动生成和更新的，该文件会详细列举所有依赖库具体的版本号。比如，</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">DEPENDENCIES</span>:</span><br><span class="line">  - <span class="title class_">Alamofire</span> (= <span class="number">5.2</span><span class="number">.0</span>)</span><br><span class="line">  - <span class="title class_">Firebase</span>/<span class="title class_">Analytics</span> (= <span class="number">7.0</span><span class="number">.0</span>)</span><br><span class="line"><span class="variable constant_">PODFILE</span> <span class="attr">CHECKSUM</span>: 400d19dbc4f5050f438797c5c6459ca0ef74a777</span><br></pre></td></tr></table></figure>
+
+<p>当执行<code>pod install</code>后，CocoaPods 会根据 Podfile 文件解释出各依赖库的特定版本号，然后一一列举在 <code>DEPENDENCIES</code> 下面。在上述的例子中，我们的 App 在构建过程中使用了5.2.0 的 Alamofire 库以及 7.0.0 的 Firebase Analytics 库。</p>
+<p><code>PODFILE CHECKSUM</code> 用于记录 Podfile 的验证码，任何库的版本号的更改，都会改变该验证码。这样能帮助我们在不同的机器上，快速检测依赖库的版本号是否一致。</p>
+<p>我建议要把 <code>Podfile</code> 和 <code>Podfile.lock</code> 文件一同 commit 并 push 到 Git 代码管理服务器里面。特别是在团队开发的环境下，这样能帮助我们保证各个依赖库版本号的一致性。</p>
+<p>在实践操作中，无论我们在哪台机器上执行<code>pod install</code>， <code>PODFILE CHECKSUM</code> 都不应该发生任何改变。因为我们在 Git 保存了 <code>Podfile.lock</code>，一旦我们发现老版本 App 的 Bug ，就可以根据该文件为各个依赖库重新安装同一版本号，来重现和定位问题，从而帮助我们快速修改这些 Bug。</p>
+<h3 id="Workspace-文档"><a href="#Workspace-文档" class="headerlink" title="Workspace 文档"></a>Workspace 文档</h3><p><code>Workspace</code> 文档是 Xcode 管理子项目的方式。通过 Workspace，我们可以把相关联的多个 Xcode 子项目组合起来方便开发。</p>
+<p>前面说过，当我们执行<code>pod install</code>的时候，CocoaPods 会自动创建或者更新一个叫作 Pods 的项目文档（<code>Pods.xcodeproj</code> ）以及一个 Workspace 文档（在我们项目中叫作 <code>Moments.xcworkspace</code>）。</p>
+<p>其中，Pods 项目文档负责统一管理各个依赖库，当我们在 Podfile 里面指定构建成动态库的时候，该项目会自动生成一个名叫<code>Pods_&lt;项目名称&gt;.framework</code>的动态库供我们项目使用。</p>
+<p>而 Workspace 文档则统一管理了我们原有的主项目 （Moments.xcodeproj）以及那个 Pods 项目。</p>
+<p>与此同时，CocoaPods 还会修改 Xcode 项目中的 <code>Build Phases</code>  以此来检测 <code>Podfile.lock</code> 和 <code>Manifest.lock</code> 文件的一致性，并把<code>Pods_&lt;项目名称&gt;.framework</code>动态库嵌入我们的主项目中去。</p>
+<p>以上所有操作都是由 CocoaPods 自动帮我们完成。以后的开发，我们都可以打开 Workspace 文档而不是原有的 Xcode 项目文档来进行。</p>
+<h2 id="Pod-版本更新"><a href="#Pod-版本更新" class="headerlink" title="Pod 版本更新"></a>Pod 版本更新</h2><p>使用 CocoaPods 管理第三方依赖库的操作非常简单，可是一旦使用不当，特别是在 Pod 更新的时候，很容易引起依赖库版本不一致，从而出现各种问题。</p>
+<p>比如，在编译程序的时候，有些开发者可以顺利进行，而另外一些开发者编译时候就会出错；或者程序在本地编译时运行良好，一旦在 <code>CI</code> 上构建，就会出现 App 崩溃，等等。</p>
+<p>那么，怎么保证更新 Pod 的时候都能保证版本一致呢？</p>
+<p>下面结合我的实践经验，以第三方网络库 Alamofire 为例子和你介绍下。</p>
+<p><strong>第一步</strong>，CocoaPods 已经为我们提供了<code>pod outdated</code>命令，我们可以用它一次查看所有 Pod 的最新版本，而无须到 GitHub 上逐一寻找。下面是执行<code>pod outdated</code>命令的其中一条结果：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">The</span> following pod updates are <span class="attr">available</span>:</span><br><span class="line">- <span class="title class_">Alamofire</span> <span class="number">5.2</span><span class="number">.0</span> -&gt; <span class="number">5.2</span><span class="number">.0</span> (latest version <span class="number">5.4</span><span class="number">.0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这表示当前我们使用了版本为 5.2.0 的 Alamofire ，其最新版本为 5.4.0。如果我们决定更新到版本 5.4.0，那么可以继续下一步。</p>
+<p><strong>第二步</strong>，在更新依赖库版本之前，为了避免在新版本中不小心引入 Bug，我们需要了解新的版本到底提供了哪些新功能，修改了哪些 Bug，与老版本是否兼容等事项。具体我们可以到 CocoaPods 官网上查找需要更新的第三方依赖库，然后在 GitHub 等平台上找到，并仔细阅读该库的版本说明（<code>release note</code>）。</p>
+<p><code>请注意，我们要阅读当前使用版本到要更新的版本之间的所有版本说明</code>。 在这个例子中，我们要阅读 5.2.1，5.2.2，5.3.0 和 5.4.0 的所有版本说明。这些版本说明会列出新增功能，更新的 API，修改的 Bug，有没有不可兼容的更新 。</p>
+<p><strong>第三步</strong>，在 Podfile 文件里把要更新的 Pod 的版本号进行修改。例如把<code>pod &#39;Alamofire&#39;, &#39;= 5.2.0&#39;</code>改成<code>pod &#39;Alamofire&#39;, &#39;= 5.4.0&#39;</code>。 然后执行pod install来重新生成 Podfile.lock 文件。</p>
+<p>此时特别注意的是，我们要使用<code>pod install</code>而不是<code>pod update</code>。因为执行pod update会自动更新所有 Pod 的版本，这可能会更新了一些我们目前还不想更新的 Pod，从而会引入一些难以觉察的问题。</p>
+<p><strong>第四步</strong>，如果所更新的版本包含了不可兼容的更新，我们需要修改代码来保证代码能顺利完成编译。</p>
+<p><strong>第五步</strong>，很多第三方依赖库都是一些通用的基础组件，一旦发生问题会影响到整个 App 的功能，因此我们需要根据所更新的库进行回归测试。例如当更新了 Alamofire 库的时候，我们需要把每个网络请求都执行一遍，避免所更新的版本引入新的 Bug。</p>
+<p><strong>第六步</strong>，为了把更新的版本共享给所有开发者和 CI 服务器，我们需要把 Podfile 和 Podfile.lock 文件一同 commit 并 push 到 Git 代码管理服务器，并通过 Pull Request 流程并入主分支。</p>
+<p><strong>第七步</strong>，一旦更新的代码并入主分支后，要通过 Slack 等内部通信软件告诉所有开发者 pull 或者 rebase 主分支的代码，并执行pod install来更新他们开发环境的所有依赖库。</p>
+<p><code>特别注意，千万不要使用pod update，因为pod update会自动把开发者机器上所有 Pod 的版本自动更新了</code>。这种更新往往不是我们想要的结果，我们希望统一更新各个 Pod 的版本，并通过 Git 进行集中管理。</p>
+<p>如果开发者在编译新代码前没有执行pod install命令，会出现以下的错误。</p>
+<blockquote>
+<p>The sandbox is not in sync with the Podfile.lock. Run ‘pod install’ or update your CocoaPods installation.</p>
+</blockquote>
+<p>这错误可以有效提醒所有开发者，需要再次执行pod install来更新他们本地的依赖库，从而保证所有开发者使用的依赖库的版本都是一致的。</p>
+<p>另外，如果更新了基础组件的依赖库（如网络库），在测试阶段，我们还需要进行全面的回归测试。因为这些基础组件库的新版本如果有 Bug 很可能导致我们的 App 会发生大比例的崩溃，严重影响用户的体验。</p>
+<p>有了上面的一流程，我们就可以有效地保证每个开发者使用的依赖库版本都是一致的，同时也能保证 CI 在自动构建 App 的时候所使用的依赖库版本也是统一的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲我介绍了如何使用 CocoaPods 来统一管理依赖库的版本。特别是根据我自己的经验总结了一套更新 Pod 版本的流程，希望你灵活使用这些步骤，从而少走弯路。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497199239.jpg"></p>
+<p><strong>这里我再特别强调一下，为了保证依赖库版本都能保持一致，尽量不要执行pod update，而是使用通过修改 Podfile 文件里的版本号并执行pod install来更新 Pod 的版本，然后把 Podfile 和 Podfile.lock 文件一同并入 Git 主分支中进行统一管理。</strong></p>
+<h3 id="源码地址："><a href="#源码地址：" class="headerlink" title="源码地址："></a>源码地址：</h3><blockquote>
+<p>Podfile 文件地址：<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile</a></p>
+</blockquote>
+<h1 id="学习笔记与扩展"><a href="#学习笔记与扩展" class="headerlink" title="学习笔记与扩展"></a>学习笔记与扩展</h1><h2 id="Carthage-的简单使用"><a href="#Carthage-的简单使用" class="headerlink" title="Carthage 的简单使用"></a>Carthage 的简单使用</h2><h3 id="一、安装-Carthage："><a href="#一、安装-Carthage：" class="headerlink" title="一、安装 Carthage："></a>一、安装 Carthage：</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 安装</span></span><br><span class="line">brew install carthage</span><br><span class="line"><span class="comment">// 查看版本</span></span><br><span class="line">carthage version</span><br><span class="line"><span class="comment">// 升级</span></span><br><span class="line">brew upgrade carthage</span><br><span class="line"><span class="comment">// 卸载</span></span><br><span class="line">brew uninstall carthage</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497339391.jpg"></p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497595924.jpg"></p>
+<h3 id="二、使用-Carthage-下载三方库"><a href="#二、使用-Carthage-下载三方库" class="headerlink" title="二、使用 Carthage 下载三方库"></a>二、使用 Carthage 下载三方库</h3><h4 id="1、在工程文件里创建-Cartfile-文件"><a href="#1、在工程文件里创建-Cartfile-文件" class="headerlink" title="1、在工程文件里创建 Cartfile 文件:"></a>1、在工程文件里创建 Cartfile 文件:</h4><p><code>cd</code> 到工程目录下，然后执行如下命令：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建 Cartfile 文件</span></span><br><span class="line">touch <span class="title class_">Cartfile</span></span><br><span class="line"><span class="comment">// 使用 Xcode 命令打开 Cartfile 文件</span></span><br><span class="line">open -a <span class="title class_">Xcode</span> <span class="title class_">Cartfile</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2、在-Cartfile-文件添加依赖库"><a href="#2、在-Cartfile-文件添加依赖库" class="headerlink" title="2、在 Cartfile 文件添加依赖库"></a>2、在 Cartfile 文件添加依赖库</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">github <span class="string">&quot;SnapKit/SnapKit&quot;</span> ~&gt; <span class="number">5.6</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497742378.jpg"></p>
+<p>版本含义：如果没有指明版本号，则会自动使用最新的版本</p>
+<ul>
+<li><code>~&gt;5.0</code>：表示使用版本 <code>5.0</code> 以上但是低于 <code>6.0</code> 的最新版本，如 <code>5.1</code> ，<code>5.4</code></li>
+<li><code>==5.0</code>：表示使用 <code>5.0</code> 版本</li>
+<li><code>&gt;=5.0</code>：表示使用 <code>5.0</code> 或更高的版本</li>
+</ul>
+<h4 id="3、保存-Cartfile-文件，然后执行安装"><a href="#3、保存-Cartfile-文件，然后执行安装" class="headerlink" title="3、保存 Cartfile 文件，然后执行安装"></a>3、保存 Cartfile 文件，然后执行安装</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下载添加依赖库的第三方框架</span></span><br><span class="line">carthage update</span><br></pre></td></tr></table></figure>
+
+<p>执行成功之后，会在工程目录里生成一个 <code>Carthage</code> 的文件夹，里面有自动生成的 <code>framework</code>:</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497876744.jpg"></p>
+<ul>
+<li>有时候 Carthage 更新会出现 arm64 报错：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">A shell task (<span class="regexp">/usr/</span>bin/xcrun lipo -create /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Intermediates</span>.<span class="property">noindex</span>/<span class="title class_">ArchiveIntermediates</span>/<span class="title class_">Alamofire</span>\ iOS/<span class="title class_">IntermediateBuildFilesPath</span>/<span class="title class_">UninstalledProducts</span>/iphoneos/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Products</span>/<span class="title class_">Release</span>-iphonesimulator/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> -output /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Desktop</span>/AY_Project/<span class="number">123456</span>/<span class="title class_">Carthage</span>/<span class="title class_">Build</span>/iOS/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span>) failed <span class="keyword">with</span> exit code <span class="number">1</span>:</span><br><span class="line">fatal <span class="attr">error</span>: <span class="regexp">/Applications/</span><span class="title class_">Xcode</span>.<span class="property">app</span>/<span class="title class_">Contents</span>/<span class="title class_">Developer</span>/<span class="title class_">Toolchains</span>/<span class="title class_">XcodeDefault</span>.<span class="property">xctoolchain</span>/usr/bin/<span class="attr">lipo</span>: <span class="regexp">/Users/</span>coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Intermediates</span>.<span class="property">noindex</span>/<span class="title class_">ArchiveIntermediates</span>/<span class="title class_">Alamofire</span> iOS/<span class="title class_">IntermediateBuildFilesPath</span>/<span class="title class_">UninstalledProducts</span>/iphoneos/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> and /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Products</span>/<span class="title class_">Release</span>-iphonesimulator/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> have the same architectures (arm64) and can<span class="string">&#x27;t be in the same fat output file</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Building universal frameworks with common architectures is not possible. The device and simulator slices for &quot;Alamofire&quot; both build for: arm64</span></span><br><span class="line"><span class="string">Rebuild with --use-xcframeworks to create an xcframework bundle instead.</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>根据提示终端重新输入：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 不区分iOS、macOS</span></span><br><span class="line">carthage update --use-xcframeworks</span><br><span class="line"><span class="comment">// 只限iOS</span></span><br><span class="line">carthage update --platform iOS --use-xcframeworks</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498111841.jpg"></p>
+<h3 id="三、将下载三方框架集成到项目"><a href="#三、将下载三方框架集成到项目" class="headerlink" title="三、将下载三方框架集成到项目"></a>三、将下载三方框架集成到项目</h3><h4 id="1、添加-framework-文件："><a href="#1、添加-framework-文件：" class="headerlink" title="1、添加 framework 文件："></a>1、添加 framework 文件：</h4><p>打开工程文件中的iOS文件夹 -&gt; 将 framework 文件拖入到项目 General 中的 Frameworks，Libraries 中</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498234874.jpg"></p>
+<h4 id="2、添加编译脚本："><a href="#2、添加编译脚本：" class="headerlink" title="2、添加编译脚本："></a>2、添加编译脚本：</h4><p><strong>Target -&gt; Build Phases -&gt; 点击 + -&gt; New Run Script Phase</strong> -&gt; 添加如下脚本：</p>
+<p><code>/usr/local/bin/carthage copy-frameworks</code></p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498355244.jpg"></p>
+<h4 id="3、编译，导入头文件使用"><a href="#3、编译，导入头文件使用" class="headerlink" title="3、编译，导入头文件使用"></a>3、编译，导入头文件使用</h4><p>编译，然后导入头文件使用，但是可能会出现如下错误：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498494980.jpg"></p>
+<p>这是因为，我使用的是模拟器运行，但是导入的却是 iOS 真机的 framework，这时候我们需要将原来的 framework 删除，然后导入模拟器 framework。找到如下目录然后拖入：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498611867.jpg"></p>
+<p>然后，我们再次编译运行，就可以成功了，效果如下：</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498763007.jpg"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【iOS进阶】03 | 配置准备：如何搭建多环境支持，为 App 开发作准备</title>
     <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/</url>
     <content><![CDATA[<h1 id="一、配置准备：如何搭建多环境支持，为-App-开发作准备"><a href="#一、配置准备：如何搭建多环境支持，为-App-开发作准备" class="headerlink" title="一、配置准备：如何搭建多环境支持，为 App 开发作准备"></a>一、配置准备：如何搭建多环境支持，为 App 开发作准备</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/03%EF%BD%9C%E9%85%8D%E7%BD%AE%E5%87%86%E5%A4%87%EF%BC%9A%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BAApp%E5%BC%80%E5%8F%91%E4%BD%9C%E5%87%86%E5%A4%87/16788668316765.jpg"></p>
@@ -361,187 +542,6 @@
 
 
 
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>iOS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【iOS进阶】02｜依赖管理：如何使用CocoaPods统一依赖库的管理？</title>
-    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/</url>
-    <content><![CDATA[<h1 id="如何使用-CocoaPods-统一依赖库的管理？"><a href="#如何使用-CocoaPods-统一依赖库的管理？" class="headerlink" title="如何使用 CocoaPods 统一依赖库的管理？"></a>如何使用 CocoaPods 统一依赖库的管理？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788496868852.jpg"></p>
-<span id="more"></span>
-
-<p>在 iOS App 开发方面，几乎所有的 App 都需要使用到第三方依赖库。依赖库不仅能为我们提供丰富的功能，还能避免我们从头开发，在节省时间的同时也减少许多 Bug 。</p>
-<p>但伴随着软件功能越来越丰富，依赖库数量越来越多，由此也出现了“依赖地狱”，比如依赖库循环依赖，底层依赖库版本冲突等。为了解决此类问题，于是，依赖库管理工具也就出现了。</p>
-<p>目前流行的依赖库管理工具主要有：<strong>Git Submodules</strong>、<strong>Carthage</strong>、 <strong>Swift Package Manager</strong> 和 <strong>CocoaPods</strong>。在这里我们选择 CocoaPods。为什么呢？原因有三：</p>
-<ol>
-<li><p>CocoaPods 非常成熟，十分稳定，并且简单易用，学习成本低，效果明显；</p>
-</li>
-<li><p>CocoaPods 会自动整合 Xcode 项目，使得其他项目成员在使用第三方库时无须任何额外的手工操作；</p>
-</li>
-<li><p>CocoaPods 已经成为 iOS 业界标准，支持几乎所有的开源库和商业库，即便是 Objective-C 的依赖库以及二进制文件（binary）依赖库，CocoaPods 也提供支持。</p>
-</li>
-</ol>
-<p>那么，怎样使用 CocoaPods 来管理第三方依赖库呢？接下来我会从<strong>语义化版本管理</strong>、<strong>Pod 版本管理</strong>、<strong>Pod 版本更新</strong>三个方面展开介绍。</p>
-<h2 id="语义化版本管理"><a href="#语义化版本管理" class="headerlink" title="语义化版本管理"></a>语义化版本管理</h2><p>开发软件，免不了要更新迭代，所以每一次更新的版本号管理变得很重要。并且，一旦版本号混乱，就会导致一系列问题，比如很难查找和修改线上崩溃，没办法支持多团队并行开发，等等。为了避免此类问题，我们可以使用语义化版本管理（Semantic Versioning）来统一版本号的定义规范。</p>
-<p>语义化版本号是一种通用的版本号格式规范，目前绝大部分优秀的第三方依赖库都遵循这一规范来发布版本。</p>
-<p>具体来说，语义化版本号的版本号一般包括四部分：<code>MAJOR、MINOR、PATCH、BUILD</code>。每一部分都由递增的数值组成，例如 1.2.3.4，其中 1 是MAJOR， 2 是 MINOR。如果我们更新 MINOR 版本号，那么下一个版本就是 1.3.0.0。接下来我详细介绍下这四部分。</p>
-<ul>
-<li><p><strong>MAJOR 是指主版本号</strong>，通常在重大更新的时候才会需要更新主版本号。例如 iOS 每年都会更新一个主版本号。而对于第三方库来说，主版本号的更新，表示该库的 API 新增了重大功能，或者引入了不可兼容的更新 （breaking changes）。</p>
-</li>
-<li><p><strong>MINOR 是指副版本号</strong>，用于小功能的改善。例如 iOS 14 在发布主版本后，在一年内可能发布多个副版本如 14.1、 14.2 来完善其系统功能。一般对于第三方库来说，副版本的更新就是新增一些 API，但不包含不可兼容的更新。</p>
-</li>
-<li><p><strong>PATCH 是指补丁版本号</strong>，一般用于 bug fix 以及修复安全性问题等。对于第三方库来说，补丁版本号的更新也不应该有不可兼容的更新。虽然实际操作中这会有些困难，但我们可以通过把原有 API 标记为 deprecated，或者为新 API 参数提供默认值等办法来解决。</p>
-</li>
-<li><p><strong>BUILD 是指构建版本号</strong>，通常在内部测试时使用。一般当我们使用 CI 服务器进行自动构建时，构建版本号会自动更新。</p>
-</li>
-</ul>
-<h2 id="Pod-版本管理"><a href="#Pod-版本管理" class="headerlink" title="Pod 版本管理"></a>Pod 版本管理</h2><p>要使用 CocoaPods 管理第三方依赖库，首先要新建一个 Podfile 文件，然后执行 <code>bundle exec pod install</code> 命令来安装所有依赖库。这时候 CocoaPods 会自动帮我们建立一个 Podfile.lock 文件和一个 Workspace文档。</p>
-<p>注意，在第一讲我们说过，由于是通过 Bundler 来安装 CocoaPods，每次执行<code>pod</code>命令前，都需要加上<code>bundle exec</code>。不过为了简洁，后面涉及<code>pod</code>命令时，我会省略<code>bundle exec</code>部分。</p>
-<p>接下来，我详细介绍下 Podfile 文件、 Podfile.lock 和 Workspace 文档到底是什么，以及如何使用。</p>
-<h3 id="Podfile-文件"><a href="#Podfile-文件" class="headerlink" title="Podfile 文件"></a>Podfile 文件</h3><p><code>Podfile</code> 文件是一个配置文件，它主要是用来描述 Xcode 项目里各个 target 的依赖库。我们项目的 Podfile 文件可以在<a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile">仓库中</a>找到。在这里，我主要和你介绍一下 Podfile 文件中的几个重要配置。</p>
-<h3 id="source-配置"><a href="#source-配置" class="headerlink" title="source 配置"></a>source 配置</h3><p><code>source</code>用于指向 PodSpec（Pod 规范）文件的 Repo，从而使得 CocoaPods 能查询到相应的 PodSpec 文件。</p>
-<p>具体来说，当使用公共依赖库的时候，source需要指向 CocoaPods Master Repo，这个主仓库集中存放所有公共依赖库的 PodSpec 文件。 由于 CocoaPods 经常被开发者吐槽 Pod 下载很慢，因此 CocoaPods 使用了 CDN （Content Delivery Network，内容分发网络）来缓存整个 CocoaPods Master Repo， 方便开发者快速下载。具体的配置方法就是使source指向 CND 的地址，代码示例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source <span class="string">&#x27;https://cdn.cocoapods.org/&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>如果使用的是私有依赖库，我们也需要把source指向私有库的 PodSpec Repo，以使得 CocoaPods 能找到相应的 PodSpec 文件。 代码示例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">source <span class="string">&#x27;https://my-git-server.com/internal-podspecs&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>注意，当我们使用私有库时，执行pod install命令的机器必须能访问到source所指向的 Repo。</p>
-<h3 id="project-和-workspace"><a href="#project-和-workspace" class="headerlink" title="project 和 workspace"></a>project 和 workspace</h3><p>project用于指定我们的主项目文档。该项目文档会使用到 CocoaPods 管理的所有第三方依赖库。</p>
-<p>workspace用于指定要生成和更新的 Workspace 文档。和其他依赖库管理工具不一样，CocoaPods 会自动生成一个 Workspace 文档，然后我们只能使用该文档而不是 Xcode 项目文档来进行后续开发。</p>
-<p>代码示例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">project <span class="string">&#x27;./Moments/Moments.xcodeproj&#x27;</span></span><br><span class="line">workspace <span class="string">&#x27;./Moments.xcworkspace&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>这其中 <code>Moments.xcodeproj</code> 就是我们的主项目文档，它一般放在和项目名字相同的下一层目录下。</p>
-<p>而 <code>Moments.xcworkspace</code> 是 CocoaPods 为我们生成的 Workspace文档，为了统一，我建议名字也是和主项目相同。</p>
-<h3 id="platform-和-use-frameworks"><a href="#platform-和-use-frameworks" class="headerlink" title="platform 和 use_frameworks"></a>platform 和 use_frameworks</h3><p>先看示例，它表示什么呢？</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">platform :ios, <span class="string">&#x27;14.0&#x27;</span></span><br><span class="line">use_frameworks!</span><br></pre></td></tr></table></figure>
-
-<p>为了保证所有依赖库与主项目在编译和运行时兼容，我们指定的系统版本号需要和主项目所支持的系统版本号保持一致。而<code>platform</code>就是用于指定操作系统以及所支持系统的最低版本号。比如，例子中的<code>platform :ios, &#39;14.0&#39;</code>就表示支持 iOS 14.0 以上的所有 iOS 版本。</p>
-<p>另外一行的<code>use_frameworks!</code>这一配置会让 CocoaPods 把所有第三方依赖库打包生成一个动态加载库，而不是静态库。因为动态库是我们经常用到的，它能有效地加快编译和链接的速度。</p>
-<h3 id="组织同类型的第三方依赖库"><a href="#组织同类型的第三方依赖库" class="headerlink" title="组织同类型的第三方依赖库"></a>组织同类型的第三方依赖库</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">def dev_pods</span><br><span class="line">  pod <span class="string">&#x27;SwiftLint&#x27;</span>, <span class="string">&#x27;0.40.3&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line">  pod <span class="string">&#x27;SwiftGen&#x27;</span>, <span class="string">&#x27;6.4.0&#x27;</span>, <span class="attr">configurations</span>: [<span class="string">&#x27;Debug&#x27;</span>]</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>其中<code>configurations: [&#39;Debug&#39;]</code>用于指定该依赖库只是使用到<code>Debug</code>构建目标（target）里面，而不在其他（如<code>Release</code>）构建目标里面，这样做能有效减少 App Store 发布版本的体积。</p>
-<p><code>def dev_pods end</code>代码块是“复用同一类依赖库方式”的意思，我们可以把同类型的依赖库都放进这个代码块里面。比如，我们的 Moments 项目中就分别有<code>dev_pods</code>（开发相关的库）,<code>core_pods</code>（核心库）以及<code>thirdparty_pods</code>(第三方库)等代码块定义。</p>
-<h3 id="target-配置"><a href="#target-配置" class="headerlink" title="target 配置"></a>target 配置</h3><p>有了这些复用库定义以后，怎样使用到项目的构建目标（target）里面呢？下面就是一个例子。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">target <span class="string">&#x27;Moments&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  dev_pods</span><br><span class="line">  core_pods</span><br><span class="line">  # other pods...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>我们可以把构建目标所使用的所有依赖库放进<code>target</code>代码块中间，上面中的<code>Moments</code>就是我们的 App 构建目标。该构建目标依赖了<code>dev_pods</code>和<code>core_pods</code>等各组依赖库。执行<code>pod install</code>的时候，CocoaPods 会把<code>dev_pods</code>代码块自动展开为<code>SwiftLint</code>和<code>SwiftGen</code>，那么<code>Moments</code>构建目标能使用<code>SwiftLint</code>和<code>SwiftGen</code>依赖库了。</p>
-<h3 id="依赖库的版本"><a href="#依赖库的版本" class="headerlink" title="依赖库的版本"></a>依赖库的版本</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">pod <span class="string">&#x27;RxSwift&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br><span class="line">pod <span class="string">&#x27;RxRelay&#x27;</span>, <span class="string">&#x27;= 5.1.1&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>在 CocoaPods 里面，每一个依赖库称为一个 Pod （注意这里首字母大写，Pod 指一个库），指定一个 Pod 的命令是<code>pod</code>（注意这里是小写，表示一条命令）。在 Podfile 里面我们可以通过这样的格式<code>pod &#39;RxSwift&#39;, &#39;= 5.1.1&#39;</code>来配置依赖库的版本号。其中，<code>RxSwift</code>或者<code>RxRelay</code>是依赖库的名字，<code>5.1.1</code>为版本号。这些库的名字以及版本号都可以在 CocoaPods 官网上找到。</p>
-<p><strong>为了统一管理第三方依赖库的版本，我建议统一使用 <code>= </code>来锁定该依赖库的版本，这样就能保证每次执行<code>pod install</code>的时候都可以为同一个库下载同一个版本。</strong></p>
-<p>除了 <code>=</code> 操作符以外，CocoaPods 还支持其他操作符来指定版本：</p>
-<ul>
-<li><p><code>&gt; 0.1</code>表示大于 0.1 的任何版本，这样可以包含 0.2 或者 1.0；</p>
-</li>
-<li><p><code>&gt;= 0.1</code>表示大于或等于 0.1 的任何版本；</p>
-</li>
-<li><p><code>&lt; 0.1</code>表示少于 0.1 的任何版本；</p>
-</li>
-<li><p><code>&lt;= 0.1</code>表示少于或等于 0.1 的任何版本；</p>
-</li>
-<li><p><code>~&gt; 0.1.2</code>表示大于 0.1.2 而且最高支持 0.1.* 的版本，但不包含 0.2 版本。</p>
-</li>
-</ul>
-<p>这几个操作符相里面，<code>~&gt;</code>（Squiggy arrow）操作符更为常用，它是以最后一个部分的版本号（例子中 0.1.2 的最后一个部分是补丁版本号 ..2）来计算可以支持的最高版本号。</p>
-<p>例如<code>~&gt; 0.1.2</code>表示 &gt;= 0.1.2 并且 &lt; 0.2.0，但不能等于 0.2.0， 因为 0.2.0 已经更新了副版本号而不仅仅是补丁版本号了。</p>
-<p>另外一个例子是<code>~&gt; 0.1</code>，表示  &gt;= 0.1  并且 &lt; 1.0，举例来说，我们可以更新到 0.9 但不能更新到 1.0。</p>
-<p>前面我介绍的是引用外部的第三方依赖库，如果我们的项目有自己的内部依赖库，要怎样在 CocoaPods 引用它呢？其实很简单，我们可以执行以下命令：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">pod <span class="string">&#x27;DesignKit&#x27;</span>, :<span class="function"><span class="params">path</span> =&gt;</span> <span class="string">&#x27;./Frameworks/DesignKit&#x27;</span>, :<span class="function"><span class="params">inhibit_warnings</span> =&gt;</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
-
-<p>和其他外部依赖库不一样，我们需要使用<code>:path</code>来指定该内部库的路径。</p>
-<h3 id="Podfile-lock-文件"><a href="#Podfile-lock-文件" class="headerlink" title="Podfile.lock 文件"></a>Podfile.lock 文件</h3><p><code>Podfile.lock</code> 文件是由 CocoaPods 自动生成和更新的，该文件会详细列举所有依赖库具体的版本号。比如，</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">DEPENDENCIES</span>:</span><br><span class="line">  - <span class="title class_">Alamofire</span> (= <span class="number">5.2</span><span class="number">.0</span>)</span><br><span class="line">  - <span class="title class_">Firebase</span>/<span class="title class_">Analytics</span> (= <span class="number">7.0</span><span class="number">.0</span>)</span><br><span class="line"><span class="variable constant_">PODFILE</span> <span class="attr">CHECKSUM</span>: 400d19dbc4f5050f438797c5c6459ca0ef74a777</span><br></pre></td></tr></table></figure>
-
-<p>当执行<code>pod install</code>后，CocoaPods 会根据 Podfile 文件解释出各依赖库的特定版本号，然后一一列举在 <code>DEPENDENCIES</code> 下面。在上述的例子中，我们的 App 在构建过程中使用了5.2.0 的 Alamofire 库以及 7.0.0 的 Firebase Analytics 库。</p>
-<p><code>PODFILE CHECKSUM</code> 用于记录 Podfile 的验证码，任何库的版本号的更改，都会改变该验证码。这样能帮助我们在不同的机器上，快速检测依赖库的版本号是否一致。</p>
-<p>我建议要把 <code>Podfile</code> 和 <code>Podfile.lock</code> 文件一同 commit 并 push 到 Git 代码管理服务器里面。特别是在团队开发的环境下，这样能帮助我们保证各个依赖库版本号的一致性。</p>
-<p>在实践操作中，无论我们在哪台机器上执行<code>pod install</code>， <code>PODFILE CHECKSUM</code> 都不应该发生任何改变。因为我们在 Git 保存了 <code>Podfile.lock</code>，一旦我们发现老版本 App 的 Bug ，就可以根据该文件为各个依赖库重新安装同一版本号，来重现和定位问题，从而帮助我们快速修改这些 Bug。</p>
-<h3 id="Workspace-文档"><a href="#Workspace-文档" class="headerlink" title="Workspace 文档"></a>Workspace 文档</h3><p><code>Workspace</code> 文档是 Xcode 管理子项目的方式。通过 Workspace，我们可以把相关联的多个 Xcode 子项目组合起来方便开发。</p>
-<p>前面说过，当我们执行<code>pod install</code>的时候，CocoaPods 会自动创建或者更新一个叫作 Pods 的项目文档（<code>Pods.xcodeproj</code> ）以及一个 Workspace 文档（在我们项目中叫作 <code>Moments.xcworkspace</code>）。</p>
-<p>其中，Pods 项目文档负责统一管理各个依赖库，当我们在 Podfile 里面指定构建成动态库的时候，该项目会自动生成一个名叫<code>Pods_&lt;项目名称&gt;.framework</code>的动态库供我们项目使用。</p>
-<p>而 Workspace 文档则统一管理了我们原有的主项目 （Moments.xcodeproj）以及那个 Pods 项目。</p>
-<p>与此同时，CocoaPods 还会修改 Xcode 项目中的 <code>Build Phases</code>  以此来检测 <code>Podfile.lock</code> 和 <code>Manifest.lock</code> 文件的一致性，并把<code>Pods_&lt;项目名称&gt;.framework</code>动态库嵌入我们的主项目中去。</p>
-<p>以上所有操作都是由 CocoaPods 自动帮我们完成。以后的开发，我们都可以打开 Workspace 文档而不是原有的 Xcode 项目文档来进行。</p>
-<h2 id="Pod-版本更新"><a href="#Pod-版本更新" class="headerlink" title="Pod 版本更新"></a>Pod 版本更新</h2><p>使用 CocoaPods 管理第三方依赖库的操作非常简单，可是一旦使用不当，特别是在 Pod 更新的时候，很容易引起依赖库版本不一致，从而出现各种问题。</p>
-<p>比如，在编译程序的时候，有些开发者可以顺利进行，而另外一些开发者编译时候就会出错；或者程序在本地编译时运行良好，一旦在 <code>CI</code> 上构建，就会出现 App 崩溃，等等。</p>
-<p>那么，怎么保证更新 Pod 的时候都能保证版本一致呢？</p>
-<p>下面结合我的实践经验，以第三方网络库 Alamofire 为例子和你介绍下。</p>
-<p><strong>第一步</strong>，CocoaPods 已经为我们提供了<code>pod outdated</code>命令，我们可以用它一次查看所有 Pod 的最新版本，而无须到 GitHub 上逐一寻找。下面是执行<code>pod outdated</code>命令的其中一条结果：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">The</span> following pod updates are <span class="attr">available</span>:</span><br><span class="line">- <span class="title class_">Alamofire</span> <span class="number">5.2</span><span class="number">.0</span> -&gt; <span class="number">5.2</span><span class="number">.0</span> (latest version <span class="number">5.4</span><span class="number">.0</span>)</span><br></pre></td></tr></table></figure>
-
-<p>这表示当前我们使用了版本为 5.2.0 的 Alamofire ，其最新版本为 5.4.0。如果我们决定更新到版本 5.4.0，那么可以继续下一步。</p>
-<p><strong>第二步</strong>，在更新依赖库版本之前，为了避免在新版本中不小心引入 Bug，我们需要了解新的版本到底提供了哪些新功能，修改了哪些 Bug，与老版本是否兼容等事项。具体我们可以到 CocoaPods 官网上查找需要更新的第三方依赖库，然后在 GitHub 等平台上找到，并仔细阅读该库的版本说明（<code>release note</code>）。</p>
-<p><code>请注意，我们要阅读当前使用版本到要更新的版本之间的所有版本说明</code>。 在这个例子中，我们要阅读 5.2.1，5.2.2，5.3.0 和 5.4.0 的所有版本说明。这些版本说明会列出新增功能，更新的 API，修改的 Bug，有没有不可兼容的更新 。</p>
-<p><strong>第三步</strong>，在 Podfile 文件里把要更新的 Pod 的版本号进行修改。例如把<code>pod &#39;Alamofire&#39;, &#39;= 5.2.0&#39;</code>改成<code>pod &#39;Alamofire&#39;, &#39;= 5.4.0&#39;</code>。 然后执行pod install来重新生成 Podfile.lock 文件。</p>
-<p>此时特别注意的是，我们要使用<code>pod install</code>而不是<code>pod update</code>。因为执行pod update会自动更新所有 Pod 的版本，这可能会更新了一些我们目前还不想更新的 Pod，从而会引入一些难以觉察的问题。</p>
-<p><strong>第四步</strong>，如果所更新的版本包含了不可兼容的更新，我们需要修改代码来保证代码能顺利完成编译。</p>
-<p><strong>第五步</strong>，很多第三方依赖库都是一些通用的基础组件，一旦发生问题会影响到整个 App 的功能，因此我们需要根据所更新的库进行回归测试。例如当更新了 Alamofire 库的时候，我们需要把每个网络请求都执行一遍，避免所更新的版本引入新的 Bug。</p>
-<p><strong>第六步</strong>，为了把更新的版本共享给所有开发者和 CI 服务器，我们需要把 Podfile 和 Podfile.lock 文件一同 commit 并 push 到 Git 代码管理服务器，并通过 Pull Request 流程并入主分支。</p>
-<p><strong>第七步</strong>，一旦更新的代码并入主分支后，要通过 Slack 等内部通信软件告诉所有开发者 pull 或者 rebase 主分支的代码，并执行pod install来更新他们开发环境的所有依赖库。</p>
-<p><code>特别注意，千万不要使用pod update，因为pod update会自动把开发者机器上所有 Pod 的版本自动更新了</code>。这种更新往往不是我们想要的结果，我们希望统一更新各个 Pod 的版本，并通过 Git 进行集中管理。</p>
-<p>如果开发者在编译新代码前没有执行pod install命令，会出现以下的错误。</p>
-<blockquote>
-<p>The sandbox is not in sync with the Podfile.lock. Run ‘pod install’ or update your CocoaPods installation.</p>
-</blockquote>
-<p>这错误可以有效提醒所有开发者，需要再次执行pod install来更新他们本地的依赖库，从而保证所有开发者使用的依赖库的版本都是一致的。</p>
-<p>另外，如果更新了基础组件的依赖库（如网络库），在测试阶段，我们还需要进行全面的回归测试。因为这些基础组件库的新版本如果有 Bug 很可能导致我们的 App 会发生大比例的崩溃，严重影响用户的体验。</p>
-<p>有了上面的一流程，我们就可以有效地保证每个开发者使用的依赖库版本都是一致的，同时也能保证 CI 在自动构建 App 的时候所使用的依赖库版本也是统一的。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲我介绍了如何使用 CocoaPods 来统一管理依赖库的版本。特别是根据我自己的经验总结了一套更新 Pod 版本的流程，希望你灵活使用这些步骤，从而少走弯路。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497199239.jpg"></p>
-<p><strong>这里我再特别强调一下，为了保证依赖库版本都能保持一致，尽量不要执行pod update，而是使用通过修改 Podfile 文件里的版本号并执行pod install来更新 Pod 的版本，然后把 Podfile 和 Podfile.lock 文件一同并入 Git 主分支中进行统一管理。</strong></p>
-<h3 id="源码地址："><a href="#源码地址：" class="headerlink" title="源码地址："></a>源码地址：</h3><blockquote>
-<p>Podfile 文件地址：<br><a href="https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile">https://github.com/lagoueduCol/iOS-linyongjian/blob/main/Podfile</a></p>
-</blockquote>
-<h1 id="学习笔记与扩展"><a href="#学习笔记与扩展" class="headerlink" title="学习笔记与扩展"></a>学习笔记与扩展</h1><h2 id="Carthage-的简单使用"><a href="#Carthage-的简单使用" class="headerlink" title="Carthage 的简单使用"></a>Carthage 的简单使用</h2><h3 id="一、安装-Carthage："><a href="#一、安装-Carthage：" class="headerlink" title="一、安装 Carthage："></a>一、安装 Carthage：</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 安装</span></span><br><span class="line">brew install carthage</span><br><span class="line"><span class="comment">// 查看版本</span></span><br><span class="line">carthage version</span><br><span class="line"><span class="comment">// 升级</span></span><br><span class="line">brew upgrade carthage</span><br><span class="line"><span class="comment">// 卸载</span></span><br><span class="line">brew uninstall carthage</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497339391.jpg"></p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497595924.jpg"></p>
-<h3 id="二、使用-Carthage-下载三方库"><a href="#二、使用-Carthage-下载三方库" class="headerlink" title="二、使用 Carthage 下载三方库"></a>二、使用 Carthage 下载三方库</h3><h4 id="1、在工程文件里创建-Cartfile-文件"><a href="#1、在工程文件里创建-Cartfile-文件" class="headerlink" title="1、在工程文件里创建 Cartfile 文件:"></a>1、在工程文件里创建 Cartfile 文件:</h4><p><code>cd</code> 到工程目录下，然后执行如下命令：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建 Cartfile 文件</span></span><br><span class="line">touch <span class="title class_">Cartfile</span></span><br><span class="line"><span class="comment">// 使用 Xcode 命令打开 Cartfile 文件</span></span><br><span class="line">open -a <span class="title class_">Xcode</span> <span class="title class_">Cartfile</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="2、在-Cartfile-文件添加依赖库"><a href="#2、在-Cartfile-文件添加依赖库" class="headerlink" title="2、在 Cartfile 文件添加依赖库"></a>2、在 Cartfile 文件添加依赖库</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">github <span class="string">&quot;SnapKit/SnapKit&quot;</span> ~&gt; <span class="number">5.6</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497742378.jpg"></p>
-<p>版本含义：如果没有指明版本号，则会自动使用最新的版本</p>
-<ul>
-<li><code>~&gt;5.0</code>：表示使用版本 <code>5.0</code> 以上但是低于 <code>6.0</code> 的最新版本，如 <code>5.1</code> ，<code>5.4</code></li>
-<li><code>==5.0</code>：表示使用 <code>5.0</code> 版本</li>
-<li><code>&gt;=5.0</code>：表示使用 <code>5.0</code> 或更高的版本</li>
-</ul>
-<h4 id="3、保存-Cartfile-文件，然后执行安装"><a href="#3、保存-Cartfile-文件，然后执行安装" class="headerlink" title="3、保存 Cartfile 文件，然后执行安装"></a>3、保存 Cartfile 文件，然后执行安装</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 下载添加依赖库的第三方框架</span></span><br><span class="line">carthage update</span><br></pre></td></tr></table></figure>
-
-<p>执行成功之后，会在工程目录里生成一个 <code>Carthage</code> 的文件夹，里面有自动生成的 <code>framework</code>:</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788497876744.jpg"></p>
-<ul>
-<li>有时候 Carthage 更新会出现 arm64 报错：</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">A shell task (<span class="regexp">/usr/</span>bin/xcrun lipo -create /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Intermediates</span>.<span class="property">noindex</span>/<span class="title class_">ArchiveIntermediates</span>/<span class="title class_">Alamofire</span>\ iOS/<span class="title class_">IntermediateBuildFilesPath</span>/<span class="title class_">UninstalledProducts</span>/iphoneos/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Products</span>/<span class="title class_">Release</span>-iphonesimulator/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> -output /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Desktop</span>/AY_Project/<span class="number">123456</span>/<span class="title class_">Carthage</span>/<span class="title class_">Build</span>/iOS/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span>) failed <span class="keyword">with</span> exit code <span class="number">1</span>:</span><br><span class="line">fatal <span class="attr">error</span>: <span class="regexp">/Applications/</span><span class="title class_">Xcode</span>.<span class="property">app</span>/<span class="title class_">Contents</span>/<span class="title class_">Developer</span>/<span class="title class_">Toolchains</span>/<span class="title class_">XcodeDefault</span>.<span class="property">xctoolchain</span>/usr/bin/<span class="attr">lipo</span>: <span class="regexp">/Users/</span>coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Intermediates</span>.<span class="property">noindex</span>/<span class="title class_">ArchiveIntermediates</span>/<span class="title class_">Alamofire</span> iOS/<span class="title class_">IntermediateBuildFilesPath</span>/<span class="title class_">UninstalledProducts</span>/iphoneos/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> and /<span class="title class_">Users</span>/coming_ay/<span class="title class_">Library</span>/<span class="title class_">Caches</span>/org.<span class="property">carthage</span>.<span class="property">CarthageKit</span>/<span class="title class_">DerivedData</span>/<span class="number">12.5</span><span class="number">.1_12E507</span>/<span class="title class_">Alamofire</span>/<span class="number">5.4</span><span class="number">.4</span>/<span class="title class_">Build</span>/<span class="title class_">Products</span>/<span class="title class_">Release</span>-iphonesimulator/<span class="title class_">Alamofire</span>.<span class="property">framework</span>/<span class="title class_">Alamofire</span> have the same architectures (arm64) and can<span class="string">&#x27;t be in the same fat output file</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Building universal frameworks with common architectures is not possible. The device and simulator slices for &quot;Alamofire&quot; both build for: arm64</span></span><br><span class="line"><span class="string">Rebuild with --use-xcframeworks to create an xcframework bundle instead.</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>根据提示终端重新输入：</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 不区分iOS、macOS</span></span><br><span class="line">carthage update --use-xcframeworks</span><br><span class="line"><span class="comment">// 只限iOS</span></span><br><span class="line">carthage update --platform iOS --use-xcframeworks</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498111841.jpg"></p>
-<h3 id="三、将下载三方框架集成到项目"><a href="#三、将下载三方框架集成到项目" class="headerlink" title="三、将下载三方框架集成到项目"></a>三、将下载三方框架集成到项目</h3><h4 id="1、添加-framework-文件："><a href="#1、添加-framework-文件：" class="headerlink" title="1、添加 framework 文件："></a>1、添加 framework 文件：</h4><p>打开工程文件中的iOS文件夹 -&gt; 将 framework 文件拖入到项目 General 中的 Frameworks，Libraries 中</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498234874.jpg"></p>
-<h4 id="2、添加编译脚本："><a href="#2、添加编译脚本：" class="headerlink" title="2、添加编译脚本："></a>2、添加编译脚本：</h4><p><strong>Target -&gt; Build Phases -&gt; 点击 + -&gt; New Run Script Phase</strong> -&gt; 添加如下脚本：</p>
-<p><code>/usr/local/bin/carthage copy-frameworks</code></p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498355244.jpg"></p>
-<h4 id="3、编译，导入头文件使用"><a href="#3、编译，导入头文件使用" class="headerlink" title="3、编译，导入头文件使用"></a>3、编译，导入头文件使用</h4><p>编译，然后导入头文件使用，但是可能会出现如下错误：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498494980.jpg"></p>
-<p>这是因为，我使用的是模拟器运行，但是导入的却是 iOS 真机的 framework，这时候我们需要将原来的 framework 删除，然后导入模拟器 framework。找到如下目录然后拖入：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498611867.jpg"></p>
-<p>然后，我们再次编译运行，就可以成功了，效果如下：</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/02%EF%BD%9C%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CocoaPods%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%E5%BA%93%E7%9A%84%E7%AE%A1%E7%90%86%EF%BC%9F/16788498763007.jpg"></p>
 ]]></content>
       <categories>
         <category>学习笔记</category>
@@ -1226,6 +1226,136 @@
       </tags>
   </entry>
   <entry>
+    <title>【iOS进阶】10 | 支撑组件：如何实现隐藏菜单，快速测试与验证？</title>
+    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/</url>
+    <content><![CDATA[<h1 id="如何实现隐藏菜单，快速测试与验证？"><a href="#如何实现隐藏菜单，快速测试与验证？" class="headerlink" title="如何实现隐藏菜单，快速测试与验证？"></a>如何实现隐藏菜单，快速测试与验证？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17403876634367.jpg"></p>
+<span id="more"></span>
+
+<p>不知道在工作当中，你有没有为了测试和验证开发中的功能，特意为测试和产品经理打包一个特殊版本的 App？或者当多个团队并行开发的时候，为了测试，每个团队都单独打包出不同版本的 App？还有当你想添加某些供内部使用的功能（如清理 Cache），但又不想让 App Store 的用户使用，你是不是又专门打包了一个特殊版本的 App？</p>
+<p>每次遇到这些情况，你是不是觉得特麻烦？</p>
+<p>其实，这些都可以通过一个内部隐藏功能菜单来解决。在这一讲我就结合我们的 Moments App 来和你介绍下，如何开发了一个隐藏功能菜单，快速实现功能测试和验证。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409650905492.jpg"></p>
+<p>下面是隐藏菜单模块使用到的所有源代码文件。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409653948167.jpg"></p>
+<p>我把这些模块中使用到的类型分成两大类：</p>
+<ul>
+<li><p>用于呈现的 <strong>View</strong>，主要分为 ViewController + Tableview 以及 TableViewCell 两层；</p>
+</li>
+<li><p>用于存储配置数据的 <strong>ViewModel</strong>，它分为用于 TableView 的 ViewModel，用于 TableView Section 的 ViewModel 以及用于 TableView Cell 的 ViewModel。</p>
+</li>
+</ul>
+<p>下面是所有类型的分类总揽图，你可以简单看一下，我会在后面进行一一介绍。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409657080517.jpg"></p>
+<h2 id="View"><a href="#View" class="headerlink" title="View"></a>View</h2><p>下面是 View 部分的所有类型的关系图。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409657702632.jpg"></p>
+<p>隐藏菜单的 UI 使用了 <code>UIKit</code> 的 <code>UITableView</code> 来实现，其包含了四大部分：<strong>通用信息、DesignKit 范例、功能开关和工具箱</strong>，每一部分都是一个 <code>TableView Section</code>。</p>
+<p>为了提高可重用性，以便于快速开发新的隐藏功能，我们把 <code>UITableView</code> 嵌入到 <code>UIViewController</code> 的子类 <code>InternalMenuViewController</code> 里面。然后通过 <code>RxDataSources</code> 把 <code>tableView</code> 和 <code>viewModel</code> 绑定到一起。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> dataSource <span class="operator">=</span> <span class="type">RxTableViewSectionedReloadDataSource</span>&lt;<span class="type">InternalMenuSection</span>&gt;(</span><br><span class="line">    configureCell: &#123; <span class="keyword">_</span>, tableView, indexPath, item <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">let</span> cell <span class="operator">=</span> tableView.dequeueReusableCell(withIdentifier: item.type.rawValue, for: indexPath)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> cell <span class="operator">=</span> cell <span class="keyword">as?</span> <span class="type">InternalMenuCellType</span> &#123;</span><br><span class="line">            cell.update(with: item)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cell</span><br><span class="line">    &#125;, titleForHeaderInSection: &#123; dataSource, section <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> dataSource.sectionModels[section].title</span><br><span class="line">    &#125;, titleForFooterInSection: &#123; dataSource, section <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> dataSource.sectionModels[section].footer</span><br><span class="line">    &#125;)</span><br><span class="line">viewModel.sections</span><br><span class="line">    .bind(to: tableView.rx.items(dataSource: dataSource))</span><br><span class="line">    .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>你可以看到，<code>RxDataSources</code> 帮我们把 <code>UIKit</code> 里面恼人的 <code>DataSource</code> 和 <code>Delegate</code> 通过封包封装起来。当生成 <code>Cell</code> 的时候，统一调用 <code>InternalMenuCellType</code> 协议的 <code>update(with item: InternalMenuItemViewModel)</code> 方法来更新 <code>Cell</code> 的 UI。因此所有的 <code>Cell</code> 都必须遵循 <code>InternalMenuCellType</code> 协议。</p>
+<p>根据 <code>Cell</code> 的不同作用，我们把它分成三类：</p>
+<ul>
+<li><p>用于显示描述信息的 <code>InternalMenuDescriptionCell</code></p>
+</li>
+<li><p>用于响应点击事件的 <code>InternalMenuActionTriggerCell</code></p>
+</li>
+<li><p>用于功能开关的 <code>InternalMenuFeatureToggleCell</code></p>
+</li>
+</ul>
+<p>它们都必须实现 <code>InternalMenuCellType</code> 协议里面的 <code>update(with item: InternalMenuItemViewModel)</code> 方法。下面以 <code>InternalMenuDescriptionCell</code> 为例子来看看具体代码是怎样实现的。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">InternalMenuDescriptionCell</span>: <span class="title class_">UITableViewCell</span>, <span class="title class_">InternalMenuCellType</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">update</span>(<span class="params">with</span> <span class="params">item</span>: <span class="type">InternalMenuItemViewModel</span>) &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> item <span class="operator">=</span> item <span class="keyword">as?</span> <span class="type">InternalMenuDescriptionItemViewModel</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        selectionStyle <span class="operator">=</span> .none</span><br><span class="line">        textLabel<span class="operator">?</span>.text <span class="operator">=</span> item.title</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>update</code> 的方法里，我们通过 <code>guard</code> 语句检查并把 <code>item</code> 的类型从 <code>InternalMenuItemViewModel</code> 向下转型（downcast）为 <code>InternalMenuDescriptionItemViewModel</code>。因为只有在类型转换成功的时候，才能更新当前 <code>Cell</code> 的 UI。 <code>InternalMenuActionTriggerCell</code> 和 <code>InternalMenuFeatureToggleCell</code> 的实现方法也和 <code>InternalMenuDescriptionCell</code> 一样。<br>到此为止， <code>View</code> 部分的实现以及完成了。你可能会问 <code>InternalMenuItemViewModel</code> 和 <code>InternalMenuDescriptionItemViewModel</code> 那些类型是哪里来的？我们一起来看看 <code>ViewModel</code> 部分吧。</p>
+<h2 id="ViewModel"><a href="#ViewModel" class="headerlink" title="ViewModel"></a>ViewModel</h2><p><code>ViewModel</code> 的作用是为 <code>View</code> 准备需要呈现的数据，因此 <code>ViewModel</code> 的类型层级关系也与 <code>View</code> 类型层级关系一一对应起来，分成三大类。</p>
+<ul>
+<li><p>用于准备 TableView 数据的 <code>InternalMenuViewModel</code></p>
+</li>
+<li><p>用于准备 TableView Section 数据的 <code>InternalMenuSection</code></p>
+</li>
+<li><p>用于准备 TableView Cell 数据的 <code>InternalMenuItemViewModel</code></p>
+</li>
+</ul>
+<p>由于位于上层的类型会引用到下层的类型，为了更好地理解它们的依赖关系，我准备从下往上为你介绍各层类型的实现。</p>
+<h3 id="用于-TableView-Cell-的-ViewModel"><a href="#用于-TableView-Cell-的-ViewModel" class="headerlink" title="用于 TableView Cell 的 ViewModel"></a>用于 TableView Cell 的 ViewModel</h3><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409662428722.jpg"></p>
+<p>前面提到过，我把 <code>Cell</code> 分成了三类，与之对应的 <code>ViewModel</code> 也分成三类。我定义了一个名叫 <code>InternalMenuItemType</code> 的枚举类型（enum）来存放这些分类信息，假如以后要在隐藏菜单里开发新功能的 <code>Cell</code>，我们可以在该类型里面增加一个 <code>case</code>。下面是当前 <code>InternalMenuItemType</code> 的代码。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">InternalMenuItemType</span>: <span class="title class_">String</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> description</span><br><span class="line">    <span class="keyword">case</span> featureToggle</span><br><span class="line">    <span class="keyword">case</span> actionTrigger</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为我们在为 <code>InternalMenuViewController</code> 的 <code>tableView</code> 注册 <code>Cell</code> 的时候使用了这个枚举作为 <code>ReuseIdentifier</code>，因此把这个枚举的原始值（Raw value）定义为 <code>String</code> 类型。下面是注册 <code>Cell</code> 时的代码。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="variable">$tableView</span>.register(<span class="type">InternalMenuDescriptionCell</span>.<span class="keyword">self</span>, forCellReuseIdentifier: <span class="type">InternalMenuItemType</span>.description.rawValue)</span><br></pre></td></tr></table></figure>
+
+<p>为了提高代码的可扩展性，我们在架构和开发 Moments App 时都遵守面向协议编程（Protocol Oriented Programming）的原则。落实到这个地方，我们为三个 ViewModel 抽象出一个共同的协议 <code>InternalMenuItemViewModel</code>，其代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protocol</span> <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> type: <span class="type">InternalMenuItemType</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> title: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">select</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>InternalMenuItemViewModel</code> 定义了两个属性分别用于表示 <code>Cell</code> 类型以及显示的标题，同时也定义了一个名叫 <code>select()</code> 方法来处理 <code>Cell</code> 的点击事件。我们在 <code>InternalMenuViewController</code> 里通过 <code>RxDataSources</code> 把 <code>tableView和InternalMenuItemViewModel</code> 绑定起来，使得 <code>InternalMenuItemViewModel</code> 可以处理 <code>Cell</code> 的点击事件。代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">tableView.rx</span><br><span class="line">    .modelSelected(<span class="type">InternalMenuItemViewModel</span>.<span class="keyword">self</span>)</span><br><span class="line">    .subscribe(onNext: &#123; item <span class="keyword">in</span></span><br><span class="line">        item.select()</span><br><span class="line">    &#125;)</span><br><span class="line">    .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>当用户点击 <code>TableView</code> 上某个 <code>Cell</code> 的时候，就会调用对应的 <code>ViewModel</code> 的 <code>select()</code> 方法。 但并不是所有的 <code>Cell</code> 都需要响应点击的事件，例如用于描述 App 版本号的 <code>Cell</code>，就不需要处理点击事件。</p>
+<p>为了简化开发的工作量，我们为 <code>InternalMenuItemViewModel</code> 定义了一个名叫 <code>select()</code> 的协议扩展方法，并且为该协议提供了一个默认的实现，即当遵循 <code>InternalMenuItemViewModel</code> 协议的类型未实现 <code>select()</code> 方法时，程序就会执行协议扩展所定义的 <code>select()</code> 方法 。代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">select</span>() &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面一起看看不同类型 <code>Cell</code> 所对应的 <code>ViewModel</code> 实现方法。</p>
+<h3 id="InternalMenuDescriptionItemViewModel"><a href="#InternalMenuDescriptionItemViewModel" class="headerlink" title="InternalMenuDescriptionItemViewModel"></a>InternalMenuDescriptionItemViewModel</h3><p><code>InternalMenuDescriptionItemViewModel</code> 用于显示描述类型的 <code>Cell</code>，其功能非常简单，就是显示一句描述信息，例如 App 的版本号。其代码实现也十分容易，首先它需要实现来自 <code>InternalMenuItemViewModel</code> 的 <code>type</code> 属性并返回 <code>.description</code>，然后实现 <code>title</code> 属性来存储描述信息的字符串。 其具体代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">InternalMenuDescriptionItemViewModel</span>: <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> type: <span class="type">InternalMenuItemType</span> <span class="operator">=</span> .description</span><br><span class="line">    <span class="keyword">let</span> title: <span class="type">String</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="InternalMenuFeatureToggleItemViewModel"><a href="#InternalMenuFeatureToggleItemViewModel" class="headerlink" title="InternalMenuFeatureToggleItemViewModel"></a>InternalMenuFeatureToggleItemViewModel</h3><p><code>InternalMenuFeatureToggleItemViewModel</code> 用于存放本地功能开关的配置数据，因此它引用了上一讲提到过的 <code>InternalTogglesDataStore</code> 来存储和读取本地开关的信息。</p>
+<p>除了实现 <code>type</code> 和 <code>title</code> 属性以外，它提供了两个关键的接口供外部使用：</p>
+<ol>
+<li><p>命名为 <code>isOn</code> 的计算属性（Computed property），供外部读取开关的状态；</p>
+</li>
+<li><p><code>toggle(isOn: Bool)</code> 方法，给外部更新开关的状态。</p>
+</li>
+</ol>
+<p>具体代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">InternalMenuFeatureToggleItemViewModel</span>: <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">let</span> toggle: <span class="type">ToggleType</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">let</span> togglesDataStore: <span class="type">TogglesDataStoreType</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">title</span>: <span class="type">String</span>, <span class="params">toggle</span>: <span class="type">ToggleType</span>, <span class="params">togglesDataStore</span>: <span class="type">TogglesDataStoreType</span> <span class="operator">=</span> <span class="type">InternalTogglesDataStore</span>.shared) &#123;</span><br><span class="line">        <span class="keyword">self</span>.title <span class="operator">=</span> title</span><br><span class="line">        <span class="keyword">self</span>.toggle <span class="operator">=</span> toggle</span><br><span class="line">        <span class="keyword">self</span>.togglesDataStore <span class="operator">=</span> togglesDataStore</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> type: <span class="type">InternalMenuItemType</span> <span class="operator">=</span> .featureToggle</span><br><span class="line">    <span class="keyword">let</span> title: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> isOn: <span class="type">Bool</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> togglesDataStore.isToggleOn(toggle)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">toggle</span>(<span class="params">isOn</span>: <span class="type">Bool</span>) &#123;</span><br><span class="line">        togglesDataStore.update(toggle: toggle, value: isOn)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="InternalMenuActionTriggerItemViewModel"><a href="#InternalMenuActionTriggerItemViewModel" class="headerlink" title="InternalMenuActionTriggerItemViewModel"></a>InternalMenuActionTriggerItemViewModel</h3><p>我们为响应点击事件的 <code>Cell</code> 都封装在 <code>InternalMenuActionTriggerItemViewModel</code> 里面，该 <code>ViewModel</code> 是一个类。代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">InternalMenuActionTriggerItemViewModel</span>: <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> type: <span class="type">InternalMenuItemType</span> &#123; .actionTrigger &#125;</span><br><span class="line">    <span class="keyword">var</span> title: <span class="type">String</span> &#123; <span class="built_in">fatalError</span>(<span class="type">L10n</span>.<span class="type">Development</span>.fatalErrorSubclassToImplement) &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">select</span>() &#123; <span class="built_in">fatalError</span>(<span class="type">L10n</span>.<span class="type">Development</span>.fatalErrorSubclassToImplement) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>InternalMenuActionTriggerItemViewModel</code> 遵循了 <code>InternalMenuItemViewModel</code> 协议，因此也需要实现 <code>type</code> 属性，并返回 <code>.actionTrigger</code>，同时我还实现了 <code>title</code> 属性和 <code>select()</code> 方法，它们都直接抛出 <code>fatalError</code> 错误。这是为什么呢？</p>
+<p>因为我们想把 <code>InternalMenuActionTriggerItemViewModel</code> 定义为一个抽象类，然后把 <code>title</code> 属性和 <code>select()</code> 方法都定义为抽象属性和抽象方法。可是 Swift 并不支持抽象类，为了模拟概念上的抽象类，我们定义了一个普通的类，然后在 <code>title</code> 属性和 <code>select()</code> 方法里面抛出 <code>fatalError</code> 错误。</p>
+<p>这样做有两个作用，第一是能防止调用者直接构造出 <code>InternalMenuActionTriggerItemViewModel</code> 的实例。第二是强迫其子类重写 <code>title</code> 属性和 <code>select()</code> 方法。下面是它的两个子类的实现代码。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">InternalMenuCrashAppItemViewModel</span>: <span class="title class_">InternalMenuActionTriggerItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">var</span> title: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">L10n</span>.<span class="type">InternalMenu</span>.crashApp</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">select</span>() &#123;</span><br><span class="line">        <span class="built_in">fatalError</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">InternalMenuDesignKitDemoItemViewModel</span>: <span class="title class_">InternalMenuActionTriggerItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">let</span> router: <span class="type">AppRouting</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">let</span> routingSourceProvider: <span class="type">RoutingSourceProvider</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">router</span>: <span class="type">AppRouting</span>, <span class="params">routingSourceProvider</span>: <span class="keyword">@escaping</span> <span class="type">RoutingSourceProvider</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.router <span class="operator">=</span> router</span><br><span class="line">        <span class="keyword">self</span>.routingSourceProvider <span class="operator">=</span> routingSourceProvider</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">var</span> title: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">L10n</span>.<span class="type">InternalMenu</span>.designKitDemo</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">select</span>() &#123;</span><br><span class="line">        router.route(to: <span class="type">URL</span>(string: <span class="string">&quot;<span class="subst">\(UniversalLinks.baseURL)</span>DesignKit&quot;</span>), from: routingSourceProvider(), using: .show)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们为 <code>InternalMenuActionTriggerItemViewModel</code> 定义子类的时候，为了让子类不能被其他子类所继承，而且提高编译速度，我们把子类 <code>InternalMenuCrashAppItemViewModel</code> 和 <code>InternalMenuDesignKitDemoItemViewModel</code> 都定义成 <code>final class</code>。</p>
+<p>这两个子类都重写了 <code>title</code> 属性和 <code>select()</code> 方法。下面分别看看它们的具体实现。</p>
+<p><code>InternalMenuCrashAppItemViewModel</code> 的作用是把 App 给闪退了，因此在其 <code>select()</code> 方法里面调用了 <code>fatalError()</code>。当用户点击闪退 App Cell 的时候，App 会立刻崩溃并退出。</p>
+<p>而 <code>InternalMenuDesignKitDemoItemViewModel</code> 是用于打开 DesignKit 的范例页面。我们在其 <code>select()</code> 方法里面调用了 <code>router.route(to:from:using)</code> 进行导航。当用户点击 DesignKit 范例 Cell 的时候，App 会导航到 DesignKit 的范例页面，方便设计师和产品经理查看公共设计组件。</p>
+<p>以上是如何开发用于显示 <code>UITableViewCell</code> 的 <code>ViewModel</code> 。下面一起看看 <code>TableView Section</code> 所对应的 <code>ViewModel</code>。</p>
+<h3 id="用于-TableView-Section-的-ViewModel"><a href="#用于-TableView-Section-的-ViewModel" class="headerlink" title="用于 TableView Section 的 ViewModel"></a>用于 TableView Section 的 ViewModel</h3><p>为了准备 <code>TableView Section</code> 的数据，我建立一个名叫 <code>InternalMenuSection</code> 的结构体（Struct）。这个结构体遵循了自于 <code>RxDataSources</code> 的 <code>SectionModelType</code> 协议。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409671094843.jpg"></p>
+<p>因为 <code>SectionModelType</code> 使用了 <code>associatedtype</code> 来定义 <code>Item</code> 的类型，所有遵循该协议的类型都必须为 <code>Item</code> 明确指明其类型信息，代码如下。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">protocol</span> <span class="title class_">SectionModelType</span> &#123;</span><br><span class="line">    <span class="keyword">associatedtype</span> <span class="type">Item</span></span><br><span class="line">    <span class="keyword">var</span> items: [<span class="type">Item</span>] &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">original</span>: <span class="keyword">Self</span>, <span class="params">items</span>: [<span class="type">Item</span>])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为 <code>InternalMenuSection</code> 遵循了 <code>SectionModelType</code> 协议，所以需要明确指明 <code>Item</code> 的类型为 <code>InternalMenuItemViewModel</code>。 <code>InternalMenuSection</code> 还实现了两个 <code>init</code> 方法来进行初始化。具体代码如下。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">InternalMenuSection</span>: <span class="title class_">SectionModelType</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> title: <span class="type">String</span></span><br><span class="line">    <span class="keyword">let</span> items: [<span class="type">InternalMenuItemViewModel</span>]</span><br><span class="line">    <span class="keyword">let</span> footer: <span class="type">String</span>?</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">title</span>: <span class="type">String</span>, <span class="params">items</span>: [<span class="type">InternalMenuItemViewModel</span>], <span class="params">footer</span>: <span class="type">String</span>? <span class="operator">=</span> <span class="literal">nil</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.title <span class="operator">=</span> title</span><br><span class="line">        <span class="keyword">self</span>.items <span class="operator">=</span> items</span><br><span class="line">        <span class="keyword">self</span>.footer <span class="operator">=</span> footer</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">original</span>: <span class="type">InternalMenuSection</span>, <span class="params">items</span>: [<span class="type">InternalMenuItemViewModel</span>]) &#123;</span><br><span class="line">        <span class="keyword">self</span>.<span class="keyword">init</span>(title: original.title, items: items, footer: original.footer)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有了用于 <code>UITableViewCell</code> 和 <code>TableView Section</code> 的 <code>ViewModel</code> 以后，现在就剩下最后一个了，一起看看如何实现一个用于<code>UITableView的 ViewModel</code> 吧。</p>
+<h3 id="用于-TableView-的-ViewModel"><a href="#用于-TableView-的-ViewModel" class="headerlink" title="用于 TableView 的 ViewModel"></a>用于 TableView 的 ViewModel</h3><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409672703693.jpg"></p>
+<p>用于 <code>UITableView</code> 的 <code>ViewModel</code> 也是遵循面向协议编程的原则。首先，我们定义了一个名叫 <code>InternalMenuViewModelType</code> 的协议。该协议只有两个属性 <code>title</code> 和 <code>sections</code>。其中，<code>title</code> 用于显示 <code>ViewController</code> 的标题，<code>sections</code> 用于显示 <code>TableView</code> 的数据，代码如下。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protocol</span> <span class="title class_">InternalMenuViewModelType</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> title: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> sections: <span class="type">Observable</span>&lt;[<span class="type">InternalMenuSection</span>]&gt; &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>InternalMenuViewModel</code> 作为一个遵循 <code>InternalMenuViewModelType</code> 协议的结构体，它要实现 <code>title</code> 和 <code>sections</code> 属性。其中，<code>title</code> 只是返回包含标题的字符串即可。而 <code>sections</code> 则需要使用 <code>RxSwift</code> 的 <code>Observable</code> 来返回一个数组，这个数组包含了多个 <code>Session ViewModel</code>。</p>
+<p>我们会在响应式编程一讲中详细讲述 <code>Observable</code>。在此你可以把它理解为一个能返回数组的数据流。下面是具体的代码实现。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">InternalMenuViewModel</span>: <span class="title class_">InternalMenuViewModelType</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> title <span class="operator">=</span> <span class="type">L10n</span>.<span class="type">InternalMenu</span>.area51</span><br><span class="line">    <span class="keyword">let</span> sections: <span class="type">Observable</span>&lt;[<span class="type">InternalMenuSection</span>]&gt;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">router</span>: <span class="type">AppRouting</span>, <span class="params">routingSourceProvider</span>: <span class="keyword">@escaping</span> <span class="type">RoutingSourceProvider</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> appVersion <span class="operator">=</span> <span class="string">&quot;<span class="subst">\(L10n.InternalMenu.version)</span> <span class="subst">\((Bundle.main.object(forInfoDictionaryKey: L10n.InternalMenu.cfBundleVersion) <span class="keyword">as?</span> String) <span class="operator">??</span> <span class="string">&quot;1.0&quot;</span>)</span>&quot;</span></span><br><span class="line">        <span class="keyword">let</span> infoSection <span class="operator">=</span> <span class="type">InternalMenuSection</span>(</span><br><span class="line">            title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.generalInfo,</span><br><span class="line">            items: [<span class="type">InternalMenuDescriptionItemViewModel</span>(title: appVersion)]</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">let</span> designKitSection <span class="operator">=</span> <span class="type">InternalMenuSection</span>(</span><br><span class="line">            title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.designKitDemo,</span><br><span class="line">            items: [<span class="type">InternalMenuDesignKitDemoItemViewModel</span>(router: router, routingSourceProvider: routingSourceProvider)])</span><br><span class="line">        <span class="keyword">let</span> featureTogglesSection <span class="operator">=</span> <span class="type">InternalMenuSection</span>(</span><br><span class="line">            title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.featureToggles,</span><br><span class="line">            items: [</span><br><span class="line">                <span class="type">InternalMenuFeatureToggleItemViewModel</span>(title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.likeButtonForMomentEnabled, toggle: <span class="type">InternalToggle</span>.isLikeButtonForMomentEnabled),</span><br><span class="line">                <span class="type">InternalMenuFeatureToggleItemViewModel</span>(title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.swiftUIEnabled, toggle: <span class="type">InternalToggle</span>.isSwiftUIEnabled)</span><br><span class="line">            ])</span><br><span class="line">        <span class="keyword">let</span> toolsSection <span class="operator">=</span> <span class="type">InternalMenuSection</span>(</span><br><span class="line">            title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.tools,</span><br><span class="line">            items: [<span class="type">InternalMenuCrashAppItemViewModel</span>()]</span><br><span class="line">        )</span><br><span class="line">        sections <span class="operator">=</span> .just([</span><br><span class="line">            infoSection,</span><br><span class="line">            designKitSection,</span><br><span class="line">            featureTogglesSection,</span><br><span class="line">            toolsSection</span><br><span class="line">        ])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从代码可以看到，<code>InternalMenuViewModel</code> 的主要任务是把各个 <code>Cell</code> 的 <code>ViewModel</code> 进行初始化，然后放进各组 <code>Section</code> 的 <code>ViewModel</code> 里面，最后把各组 <code>Section</code> 的 <code>ViewModel</code> 放到 <code>items</code> 属性里面。</p>
+<p>因为所有用于 <code>UITableViewCell</code> 的 <code>ViewModel</code> 都遵循了 <code>InternalMenuItemViewModel</code> 协议，所以它们能够保持统一的接口，方便我们快速扩展新功能。比如，我们要为实时聊天功能添加一个新的本地功能开关时，只需要下面一行代码就行了。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="type">InternalMenuFeatureToggleItemViewModel</span>(title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.instantMessagingEnabled, toggle: <span class="type">InternalToggle</span>.isInstantMessagingEnabled)</span><br></pre></td></tr></table></figure>
+
+<p>运行效果如下:</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409675412551.jpg"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在这一讲中，我向你介绍了如何实现一个隐藏菜单功能，有了这个功能，我们的测试人员和产品经理可以使用这些功能来加速功能的测试与验证。在实现过程，我们把 UI 和配置数据部分进行分离，而且使用了面向协议的编程方式，让这个功能变得灵活且易于可扩展。在实际工作当中，你也可以使用这个模式来快速开发出各种配置页面。</p>
+<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17403876634367.jpg"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【iOS进阶】11 | 功能组件：如何使用路由，支持多页面导航？</title>
     <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%B7%AF%E7%94%B1%EF%BC%8C%E6%94%AF%E6%8C%81%E5%A4%9A%E9%A1%B5%E9%9D%A2%E5%AF%BC%E8%88%AA%EF%BC%9F/</url>
     <content><![CDATA[<h1 id="如何使用路由，支持多页面导航？"><a href="#如何使用路由，支持多页面导航？" class="headerlink" title="如何使用路由，支持多页面导航？"></a>如何使用路由，支持多页面导航？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%B7%AF%E7%94%B1%EF%BC%8C%E6%94%AF%E6%8C%81%E5%A4%9A%E9%A1%B5%E9%9D%A2%E5%AF%BC%E8%88%AA%EF%BC%9F/17428840890690.jpg"></p>
@@ -1439,136 +1569,6 @@
       <tags>
         <tag>iOS</tag>
         <tag>Flutter</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【iOS进阶】10 | 支撑组件：如何实现隐藏菜单，快速测试与验证？</title>
-    <url>/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/</url>
-    <content><![CDATA[<h1 id="如何实现隐藏菜单，快速测试与验证？"><a href="#如何实现隐藏菜单，快速测试与验证？" class="headerlink" title="如何实现隐藏菜单，快速测试与验证？"></a>如何实现隐藏菜单，快速测试与验证？</h1><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17403876634367.jpg"></p>
-<span id="more"></span>
-
-<p>不知道在工作当中，你有没有为了测试和验证开发中的功能，特意为测试和产品经理打包一个特殊版本的 App？或者当多个团队并行开发的时候，为了测试，每个团队都单独打包出不同版本的 App？还有当你想添加某些供内部使用的功能（如清理 Cache），但又不想让 App Store 的用户使用，你是不是又专门打包了一个特殊版本的 App？</p>
-<p>每次遇到这些情况，你是不是觉得特麻烦？</p>
-<p>其实，这些都可以通过一个内部隐藏功能菜单来解决。在这一讲我就结合我们的 Moments App 来和你介绍下，如何开发了一个隐藏功能菜单，快速实现功能测试和验证。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409650905492.jpg"></p>
-<p>下面是隐藏菜单模块使用到的所有源代码文件。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409653948167.jpg"></p>
-<p>我把这些模块中使用到的类型分成两大类：</p>
-<ul>
-<li><p>用于呈现的 <strong>View</strong>，主要分为 ViewController + Tableview 以及 TableViewCell 两层；</p>
-</li>
-<li><p>用于存储配置数据的 <strong>ViewModel</strong>，它分为用于 TableView 的 ViewModel，用于 TableView Section 的 ViewModel 以及用于 TableView Cell 的 ViewModel。</p>
-</li>
-</ul>
-<p>下面是所有类型的分类总揽图，你可以简单看一下，我会在后面进行一一介绍。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409657080517.jpg"></p>
-<h2 id="View"><a href="#View" class="headerlink" title="View"></a>View</h2><p>下面是 View 部分的所有类型的关系图。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409657702632.jpg"></p>
-<p>隐藏菜单的 UI 使用了 <code>UIKit</code> 的 <code>UITableView</code> 来实现，其包含了四大部分：<strong>通用信息、DesignKit 范例、功能开关和工具箱</strong>，每一部分都是一个 <code>TableView Section</code>。</p>
-<p>为了提高可重用性，以便于快速开发新的隐藏功能，我们把 <code>UITableView</code> 嵌入到 <code>UIViewController</code> 的子类 <code>InternalMenuViewController</code> 里面。然后通过 <code>RxDataSources</code> 把 <code>tableView</code> 和 <code>viewModel</code> 绑定到一起。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> dataSource <span class="operator">=</span> <span class="type">RxTableViewSectionedReloadDataSource</span>&lt;<span class="type">InternalMenuSection</span>&gt;(</span><br><span class="line">    configureCell: &#123; <span class="keyword">_</span>, tableView, indexPath, item <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">let</span> cell <span class="operator">=</span> tableView.dequeueReusableCell(withIdentifier: item.type.rawValue, for: indexPath)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> cell <span class="operator">=</span> cell <span class="keyword">as?</span> <span class="type">InternalMenuCellType</span> &#123;</span><br><span class="line">            cell.update(with: item)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cell</span><br><span class="line">    &#125;, titleForHeaderInSection: &#123; dataSource, section <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> dataSource.sectionModels[section].title</span><br><span class="line">    &#125;, titleForFooterInSection: &#123; dataSource, section <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> dataSource.sectionModels[section].footer</span><br><span class="line">    &#125;)</span><br><span class="line">viewModel.sections</span><br><span class="line">    .bind(to: tableView.rx.items(dataSource: dataSource))</span><br><span class="line">    .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
-
-<p>你可以看到，<code>RxDataSources</code> 帮我们把 <code>UIKit</code> 里面恼人的 <code>DataSource</code> 和 <code>Delegate</code> 通过封包封装起来。当生成 <code>Cell</code> 的时候，统一调用 <code>InternalMenuCellType</code> 协议的 <code>update(with item: InternalMenuItemViewModel)</code> 方法来更新 <code>Cell</code> 的 UI。因此所有的 <code>Cell</code> 都必须遵循 <code>InternalMenuCellType</code> 协议。</p>
-<p>根据 <code>Cell</code> 的不同作用，我们把它分成三类：</p>
-<ul>
-<li><p>用于显示描述信息的 <code>InternalMenuDescriptionCell</code></p>
-</li>
-<li><p>用于响应点击事件的 <code>InternalMenuActionTriggerCell</code></p>
-</li>
-<li><p>用于功能开关的 <code>InternalMenuFeatureToggleCell</code></p>
-</li>
-</ul>
-<p>它们都必须实现 <code>InternalMenuCellType</code> 协议里面的 <code>update(with item: InternalMenuItemViewModel)</code> 方法。下面以 <code>InternalMenuDescriptionCell</code> 为例子来看看具体代码是怎样实现的。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">InternalMenuDescriptionCell</span>: <span class="title class_">UITableViewCell</span>, <span class="title class_">InternalMenuCellType</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">update</span>(<span class="params">with</span> <span class="params">item</span>: <span class="type">InternalMenuItemViewModel</span>) &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> item <span class="operator">=</span> item <span class="keyword">as?</span> <span class="type">InternalMenuDescriptionItemViewModel</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        selectionStyle <span class="operator">=</span> .none</span><br><span class="line">        textLabel<span class="operator">?</span>.text <span class="operator">=</span> item.title</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在 <code>update</code> 的方法里，我们通过 <code>guard</code> 语句检查并把 <code>item</code> 的类型从 <code>InternalMenuItemViewModel</code> 向下转型（downcast）为 <code>InternalMenuDescriptionItemViewModel</code>。因为只有在类型转换成功的时候，才能更新当前 <code>Cell</code> 的 UI。 <code>InternalMenuActionTriggerCell</code> 和 <code>InternalMenuFeatureToggleCell</code> 的实现方法也和 <code>InternalMenuDescriptionCell</code> 一样。<br>到此为止， <code>View</code> 部分的实现以及完成了。你可能会问 <code>InternalMenuItemViewModel</code> 和 <code>InternalMenuDescriptionItemViewModel</code> 那些类型是哪里来的？我们一起来看看 <code>ViewModel</code> 部分吧。</p>
-<h2 id="ViewModel"><a href="#ViewModel" class="headerlink" title="ViewModel"></a>ViewModel</h2><p><code>ViewModel</code> 的作用是为 <code>View</code> 准备需要呈现的数据，因此 <code>ViewModel</code> 的类型层级关系也与 <code>View</code> 类型层级关系一一对应起来，分成三大类。</p>
-<ul>
-<li><p>用于准备 TableView 数据的 <code>InternalMenuViewModel</code></p>
-</li>
-<li><p>用于准备 TableView Section 数据的 <code>InternalMenuSection</code></p>
-</li>
-<li><p>用于准备 TableView Cell 数据的 <code>InternalMenuItemViewModel</code></p>
-</li>
-</ul>
-<p>由于位于上层的类型会引用到下层的类型，为了更好地理解它们的依赖关系，我准备从下往上为你介绍各层类型的实现。</p>
-<h3 id="用于-TableView-Cell-的-ViewModel"><a href="#用于-TableView-Cell-的-ViewModel" class="headerlink" title="用于 TableView Cell 的 ViewModel"></a>用于 TableView Cell 的 ViewModel</h3><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409662428722.jpg"></p>
-<p>前面提到过，我把 <code>Cell</code> 分成了三类，与之对应的 <code>ViewModel</code> 也分成三类。我定义了一个名叫 <code>InternalMenuItemType</code> 的枚举类型（enum）来存放这些分类信息，假如以后要在隐藏菜单里开发新功能的 <code>Cell</code>，我们可以在该类型里面增加一个 <code>case</code>。下面是当前 <code>InternalMenuItemType</code> 的代码。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">InternalMenuItemType</span>: <span class="title class_">String</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> description</span><br><span class="line">    <span class="keyword">case</span> featureToggle</span><br><span class="line">    <span class="keyword">case</span> actionTrigger</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>因为我们在为 <code>InternalMenuViewController</code> 的 <code>tableView</code> 注册 <code>Cell</code> 的时候使用了这个枚举作为 <code>ReuseIdentifier</code>，因此把这个枚举的原始值（Raw value）定义为 <code>String</code> 类型。下面是注册 <code>Cell</code> 时的代码。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="variable">$tableView</span>.register(<span class="type">InternalMenuDescriptionCell</span>.<span class="keyword">self</span>, forCellReuseIdentifier: <span class="type">InternalMenuItemType</span>.description.rawValue)</span><br></pre></td></tr></table></figure>
-
-<p>为了提高代码的可扩展性，我们在架构和开发 Moments App 时都遵守面向协议编程（Protocol Oriented Programming）的原则。落实到这个地方，我们为三个 ViewModel 抽象出一个共同的协议 <code>InternalMenuItemViewModel</code>，其代码如下：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protocol</span> <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> type: <span class="type">InternalMenuItemType</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> title: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">select</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>InternalMenuItemViewModel</code> 定义了两个属性分别用于表示 <code>Cell</code> 类型以及显示的标题，同时也定义了一个名叫 <code>select()</code> 方法来处理 <code>Cell</code> 的点击事件。我们在 <code>InternalMenuViewController</code> 里通过 <code>RxDataSources</code> 把 <code>tableView和InternalMenuItemViewModel</code> 绑定起来，使得 <code>InternalMenuItemViewModel</code> 可以处理 <code>Cell</code> 的点击事件。代码如下：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">tableView.rx</span><br><span class="line">    .modelSelected(<span class="type">InternalMenuItemViewModel</span>.<span class="keyword">self</span>)</span><br><span class="line">    .subscribe(onNext: &#123; item <span class="keyword">in</span></span><br><span class="line">        item.select()</span><br><span class="line">    &#125;)</span><br><span class="line">    .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure>
-
-<p>当用户点击 <code>TableView</code> 上某个 <code>Cell</code> 的时候，就会调用对应的 <code>ViewModel</code> 的 <code>select()</code> 方法。 但并不是所有的 <code>Cell</code> 都需要响应点击的事件，例如用于描述 App 版本号的 <code>Cell</code>，就不需要处理点击事件。</p>
-<p>为了简化开发的工作量，我们为 <code>InternalMenuItemViewModel</code> 定义了一个名叫 <code>select()</code> 的协议扩展方法，并且为该协议提供了一个默认的实现，即当遵循 <code>InternalMenuItemViewModel</code> 协议的类型未实现 <code>select()</code> 方法时，程序就会执行协议扩展所定义的 <code>select()</code> 方法 。代码如下：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">select</span>() &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>下面一起看看不同类型 <code>Cell</code> 所对应的 <code>ViewModel</code> 实现方法。</p>
-<h3 id="InternalMenuDescriptionItemViewModel"><a href="#InternalMenuDescriptionItemViewModel" class="headerlink" title="InternalMenuDescriptionItemViewModel"></a>InternalMenuDescriptionItemViewModel</h3><p><code>InternalMenuDescriptionItemViewModel</code> 用于显示描述类型的 <code>Cell</code>，其功能非常简单，就是显示一句描述信息，例如 App 的版本号。其代码实现也十分容易，首先它需要实现来自 <code>InternalMenuItemViewModel</code> 的 <code>type</code> 属性并返回 <code>.description</code>，然后实现 <code>title</code> 属性来存储描述信息的字符串。 其具体代码如下：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">InternalMenuDescriptionItemViewModel</span>: <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> type: <span class="type">InternalMenuItemType</span> <span class="operator">=</span> .description</span><br><span class="line">    <span class="keyword">let</span> title: <span class="type">String</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="InternalMenuFeatureToggleItemViewModel"><a href="#InternalMenuFeatureToggleItemViewModel" class="headerlink" title="InternalMenuFeatureToggleItemViewModel"></a>InternalMenuFeatureToggleItemViewModel</h3><p><code>InternalMenuFeatureToggleItemViewModel</code> 用于存放本地功能开关的配置数据，因此它引用了上一讲提到过的 <code>InternalTogglesDataStore</code> 来存储和读取本地开关的信息。</p>
-<p>除了实现 <code>type</code> 和 <code>title</code> 属性以外，它提供了两个关键的接口供外部使用：</p>
-<ol>
-<li><p>命名为 <code>isOn</code> 的计算属性（Computed property），供外部读取开关的状态；</p>
-</li>
-<li><p><code>toggle(isOn: Bool)</code> 方法，给外部更新开关的状态。</p>
-</li>
-</ol>
-<p>具体代码如下：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">InternalMenuFeatureToggleItemViewModel</span>: <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">let</span> toggle: <span class="type">ToggleType</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">let</span> togglesDataStore: <span class="type">TogglesDataStoreType</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">title</span>: <span class="type">String</span>, <span class="params">toggle</span>: <span class="type">ToggleType</span>, <span class="params">togglesDataStore</span>: <span class="type">TogglesDataStoreType</span> <span class="operator">=</span> <span class="type">InternalTogglesDataStore</span>.shared) &#123;</span><br><span class="line">        <span class="keyword">self</span>.title <span class="operator">=</span> title</span><br><span class="line">        <span class="keyword">self</span>.toggle <span class="operator">=</span> toggle</span><br><span class="line">        <span class="keyword">self</span>.togglesDataStore <span class="operator">=</span> togglesDataStore</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> type: <span class="type">InternalMenuItemType</span> <span class="operator">=</span> .featureToggle</span><br><span class="line">    <span class="keyword">let</span> title: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> isOn: <span class="type">Bool</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> togglesDataStore.isToggleOn(toggle)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">toggle</span>(<span class="params">isOn</span>: <span class="type">Bool</span>) &#123;</span><br><span class="line">        togglesDataStore.update(toggle: toggle, value: isOn)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="InternalMenuActionTriggerItemViewModel"><a href="#InternalMenuActionTriggerItemViewModel" class="headerlink" title="InternalMenuActionTriggerItemViewModel"></a>InternalMenuActionTriggerItemViewModel</h3><p>我们为响应点击事件的 <code>Cell</code> 都封装在 <code>InternalMenuActionTriggerItemViewModel</code> 里面，该 <code>ViewModel</code> 是一个类。代码如下：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">InternalMenuActionTriggerItemViewModel</span>: <span class="title class_">InternalMenuItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> type: <span class="type">InternalMenuItemType</span> &#123; .actionTrigger &#125;</span><br><span class="line">    <span class="keyword">var</span> title: <span class="type">String</span> &#123; <span class="built_in">fatalError</span>(<span class="type">L10n</span>.<span class="type">Development</span>.fatalErrorSubclassToImplement) &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">select</span>() &#123; <span class="built_in">fatalError</span>(<span class="type">L10n</span>.<span class="type">Development</span>.fatalErrorSubclassToImplement) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>InternalMenuActionTriggerItemViewModel</code> 遵循了 <code>InternalMenuItemViewModel</code> 协议，因此也需要实现 <code>type</code> 属性，并返回 <code>.actionTrigger</code>，同时我还实现了 <code>title</code> 属性和 <code>select()</code> 方法，它们都直接抛出 <code>fatalError</code> 错误。这是为什么呢？</p>
-<p>因为我们想把 <code>InternalMenuActionTriggerItemViewModel</code> 定义为一个抽象类，然后把 <code>title</code> 属性和 <code>select()</code> 方法都定义为抽象属性和抽象方法。可是 Swift 并不支持抽象类，为了模拟概念上的抽象类，我们定义了一个普通的类，然后在 <code>title</code> 属性和 <code>select()</code> 方法里面抛出 <code>fatalError</code> 错误。</p>
-<p>这样做有两个作用，第一是能防止调用者直接构造出 <code>InternalMenuActionTriggerItemViewModel</code> 的实例。第二是强迫其子类重写 <code>title</code> 属性和 <code>select()</code> 方法。下面是它的两个子类的实现代码。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">InternalMenuCrashAppItemViewModel</span>: <span class="title class_">InternalMenuActionTriggerItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">var</span> title: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">L10n</span>.<span class="type">InternalMenu</span>.crashApp</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">select</span>() &#123;</span><br><span class="line">        <span class="built_in">fatalError</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">InternalMenuDesignKitDemoItemViewModel</span>: <span class="title class_">InternalMenuActionTriggerItemViewModel</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">let</span> router: <span class="type">AppRouting</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">let</span> routingSourceProvider: <span class="type">RoutingSourceProvider</span></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">router</span>: <span class="type">AppRouting</span>, <span class="params">routingSourceProvider</span>: <span class="keyword">@escaping</span> <span class="type">RoutingSourceProvider</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.router <span class="operator">=</span> router</span><br><span class="line">        <span class="keyword">self</span>.routingSourceProvider <span class="operator">=</span> routingSourceProvider</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">var</span> title: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">L10n</span>.<span class="type">InternalMenu</span>.designKitDemo</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">select</span>() &#123;</span><br><span class="line">        router.route(to: <span class="type">URL</span>(string: <span class="string">&quot;<span class="subst">\(UniversalLinks.baseURL)</span>DesignKit&quot;</span>), from: routingSourceProvider(), using: .show)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>当我们为 <code>InternalMenuActionTriggerItemViewModel</code> 定义子类的时候，为了让子类不能被其他子类所继承，而且提高编译速度，我们把子类 <code>InternalMenuCrashAppItemViewModel</code> 和 <code>InternalMenuDesignKitDemoItemViewModel</code> 都定义成 <code>final class</code>。</p>
-<p>这两个子类都重写了 <code>title</code> 属性和 <code>select()</code> 方法。下面分别看看它们的具体实现。</p>
-<p><code>InternalMenuCrashAppItemViewModel</code> 的作用是把 App 给闪退了，因此在其 <code>select()</code> 方法里面调用了 <code>fatalError()</code>。当用户点击闪退 App Cell 的时候，App 会立刻崩溃并退出。</p>
-<p>而 <code>InternalMenuDesignKitDemoItemViewModel</code> 是用于打开 DesignKit 的范例页面。我们在其 <code>select()</code> 方法里面调用了 <code>router.route(to:from:using)</code> 进行导航。当用户点击 DesignKit 范例 Cell 的时候，App 会导航到 DesignKit 的范例页面，方便设计师和产品经理查看公共设计组件。</p>
-<p>以上是如何开发用于显示 <code>UITableViewCell</code> 的 <code>ViewModel</code> 。下面一起看看 <code>TableView Section</code> 所对应的 <code>ViewModel</code>。</p>
-<h3 id="用于-TableView-Section-的-ViewModel"><a href="#用于-TableView-Section-的-ViewModel" class="headerlink" title="用于 TableView Section 的 ViewModel"></a>用于 TableView Section 的 ViewModel</h3><p>为了准备 <code>TableView Section</code> 的数据，我建立一个名叫 <code>InternalMenuSection</code> 的结构体（Struct）。这个结构体遵循了自于 <code>RxDataSources</code> 的 <code>SectionModelType</code> 协议。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409671094843.jpg"></p>
-<p>因为 <code>SectionModelType</code> 使用了 <code>associatedtype</code> 来定义 <code>Item</code> 的类型，所有遵循该协议的类型都必须为 <code>Item</code> 明确指明其类型信息，代码如下。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">protocol</span> <span class="title class_">SectionModelType</span> &#123;</span><br><span class="line">    <span class="keyword">associatedtype</span> <span class="type">Item</span></span><br><span class="line">    <span class="keyword">var</span> items: [<span class="type">Item</span>] &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">original</span>: <span class="keyword">Self</span>, <span class="params">items</span>: [<span class="type">Item</span>])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>因为 <code>InternalMenuSection</code> 遵循了 <code>SectionModelType</code> 协议，所以需要明确指明 <code>Item</code> 的类型为 <code>InternalMenuItemViewModel</code>。 <code>InternalMenuSection</code> 还实现了两个 <code>init</code> 方法来进行初始化。具体代码如下。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">InternalMenuSection</span>: <span class="title class_">SectionModelType</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> title: <span class="type">String</span></span><br><span class="line">    <span class="keyword">let</span> items: [<span class="type">InternalMenuItemViewModel</span>]</span><br><span class="line">    <span class="keyword">let</span> footer: <span class="type">String</span>?</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">title</span>: <span class="type">String</span>, <span class="params">items</span>: [<span class="type">InternalMenuItemViewModel</span>], <span class="params">footer</span>: <span class="type">String</span>? <span class="operator">=</span> <span class="literal">nil</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.title <span class="operator">=</span> title</span><br><span class="line">        <span class="keyword">self</span>.items <span class="operator">=</span> items</span><br><span class="line">        <span class="keyword">self</span>.footer <span class="operator">=</span> footer</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">original</span>: <span class="type">InternalMenuSection</span>, <span class="params">items</span>: [<span class="type">InternalMenuItemViewModel</span>]) &#123;</span><br><span class="line">        <span class="keyword">self</span>.<span class="keyword">init</span>(title: original.title, items: items, footer: original.footer)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>有了用于 <code>UITableViewCell</code> 和 <code>TableView Section</code> 的 <code>ViewModel</code> 以后，现在就剩下最后一个了，一起看看如何实现一个用于<code>UITableView的 ViewModel</code> 吧。</p>
-<h3 id="用于-TableView-的-ViewModel"><a href="#用于-TableView-的-ViewModel" class="headerlink" title="用于 TableView 的 ViewModel"></a>用于 TableView 的 ViewModel</h3><p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409672703693.jpg"></p>
-<p>用于 <code>UITableView</code> 的 <code>ViewModel</code> 也是遵循面向协议编程的原则。首先，我们定义了一个名叫 <code>InternalMenuViewModelType</code> 的协议。该协议只有两个属性 <code>title</code> 和 <code>sections</code>。其中，<code>title</code> 用于显示 <code>ViewController</code> 的标题，<code>sections</code> 用于显示 <code>TableView</code> 的数据，代码如下。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protocol</span> <span class="title class_">InternalMenuViewModelType</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> title: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> sections: <span class="type">Observable</span>&lt;[<span class="type">InternalMenuSection</span>]&gt; &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>InternalMenuViewModel</code> 作为一个遵循 <code>InternalMenuViewModelType</code> 协议的结构体，它要实现 <code>title</code> 和 <code>sections</code> 属性。其中，<code>title</code> 只是返回包含标题的字符串即可。而 <code>sections</code> 则需要使用 <code>RxSwift</code> 的 <code>Observable</code> 来返回一个数组，这个数组包含了多个 <code>Session ViewModel</code>。</p>
-<p>我们会在响应式编程一讲中详细讲述 <code>Observable</code>。在此你可以把它理解为一个能返回数组的数据流。下面是具体的代码实现。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">InternalMenuViewModel</span>: <span class="title class_">InternalMenuViewModelType</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> title <span class="operator">=</span> <span class="type">L10n</span>.<span class="type">InternalMenu</span>.area51</span><br><span class="line">    <span class="keyword">let</span> sections: <span class="type">Observable</span>&lt;[<span class="type">InternalMenuSection</span>]&gt;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">router</span>: <span class="type">AppRouting</span>, <span class="params">routingSourceProvider</span>: <span class="keyword">@escaping</span> <span class="type">RoutingSourceProvider</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> appVersion <span class="operator">=</span> <span class="string">&quot;<span class="subst">\(L10n.InternalMenu.version)</span> <span class="subst">\((Bundle.main.object(forInfoDictionaryKey: L10n.InternalMenu.cfBundleVersion) <span class="keyword">as?</span> String) <span class="operator">??</span> <span class="string">&quot;1.0&quot;</span>)</span>&quot;</span></span><br><span class="line">        <span class="keyword">let</span> infoSection <span class="operator">=</span> <span class="type">InternalMenuSection</span>(</span><br><span class="line">            title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.generalInfo,</span><br><span class="line">            items: [<span class="type">InternalMenuDescriptionItemViewModel</span>(title: appVersion)]</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">let</span> designKitSection <span class="operator">=</span> <span class="type">InternalMenuSection</span>(</span><br><span class="line">            title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.designKitDemo,</span><br><span class="line">            items: [<span class="type">InternalMenuDesignKitDemoItemViewModel</span>(router: router, routingSourceProvider: routingSourceProvider)])</span><br><span class="line">        <span class="keyword">let</span> featureTogglesSection <span class="operator">=</span> <span class="type">InternalMenuSection</span>(</span><br><span class="line">            title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.featureToggles,</span><br><span class="line">            items: [</span><br><span class="line">                <span class="type">InternalMenuFeatureToggleItemViewModel</span>(title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.likeButtonForMomentEnabled, toggle: <span class="type">InternalToggle</span>.isLikeButtonForMomentEnabled),</span><br><span class="line">                <span class="type">InternalMenuFeatureToggleItemViewModel</span>(title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.swiftUIEnabled, toggle: <span class="type">InternalToggle</span>.isSwiftUIEnabled)</span><br><span class="line">            ])</span><br><span class="line">        <span class="keyword">let</span> toolsSection <span class="operator">=</span> <span class="type">InternalMenuSection</span>(</span><br><span class="line">            title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.tools,</span><br><span class="line">            items: [<span class="type">InternalMenuCrashAppItemViewModel</span>()]</span><br><span class="line">        )</span><br><span class="line">        sections <span class="operator">=</span> .just([</span><br><span class="line">            infoSection,</span><br><span class="line">            designKitSection,</span><br><span class="line">            featureTogglesSection,</span><br><span class="line">            toolsSection</span><br><span class="line">        ])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>从代码可以看到，<code>InternalMenuViewModel</code> 的主要任务是把各个 <code>Cell</code> 的 <code>ViewModel</code> 进行初始化，然后放进各组 <code>Section</code> 的 <code>ViewModel</code> 里面，最后把各组 <code>Section</code> 的 <code>ViewModel</code> 放到 <code>items</code> 属性里面。</p>
-<p>因为所有用于 <code>UITableViewCell</code> 的 <code>ViewModel</code> 都遵循了 <code>InternalMenuItemViewModel</code> 协议，所以它们能够保持统一的接口，方便我们快速扩展新功能。比如，我们要为实时聊天功能添加一个新的本地功能开关时，只需要下面一行代码就行了。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="type">InternalMenuFeatureToggleItemViewModel</span>(title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.instantMessagingEnabled, toggle: <span class="type">InternalToggle</span>.isInstantMessagingEnabled)</span><br></pre></td></tr></table></figure>
-
-<p>运行效果如下:</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17409675412551.jpg"></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在这一讲中，我向你介绍了如何实现一个隐藏菜单功能，有了这个功能，我们的测试人员和产品经理可以使用这些功能来加速功能的测试与验证。在实现过程，我们把 UI 和配置数据部分进行分离，而且使用了面向协议的编程方式，让这个功能变得灵活且易于可扩展。在实际工作当中，你也可以使用这个模式来快速开发出各种配置页面。</p>
-<p><img data-src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17403876634367.jpg"></p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>iOS</tag>
       </tags>
   </entry>
   <entry>
@@ -1938,6 +1938,79 @@
       </tags>
   </entry>
   <entry>
+    <title>【Hexo】如何将博客源码上传到GitHub</title>
+    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</url>
+    <content><![CDATA[<h1 id="如何将博客源码上传到-GitHub"><a href="#如何将博客源码上传到-GitHub" class="headerlink" title="如何将博客源码上传到 GitHub"></a>如何将博客源码上传到 GitHub</h1><h2 id="一、为什么要把博客源码上传到-GitHub-？"><a href="#一、为什么要把博客源码上传到-GitHub-？" class="headerlink" title="一、为什么要把博客源码上传到 GitHub ？"></a>一、为什么要把博客源码上传到 GitHub ？</h2><p>首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：</p>
+<ul>
+<li>多台电脑同时操作 hexo 源码</li>
+<li>原先 hexo 源码所在电脑重装系统（丢失文件）</li>
+<li>要将 hexo 源码移动到其他磁盘（更换电脑）</li>
+</ul>
+<span id="more"></span>
+
+<p>将 hexo 源码上传到 GitHub，就是做了一个稳定、安全的远程备份，遇到上面的情况将不会再是什么问题。</p>
+<p>因为，之前在 GitHub 上的部署（使用 <code>hexo d</code> 上传部署到github）其实是 hexo 编译后的文件，是用来生成网页的，不包含所有 hexo 生成的网站原始文件。只有把源码也上传才能解决问题。</p>
+<h2 id="二、如何上传博客源码？"><a href="#二、如何上传博客源码？" class="headerlink" title="二、如何上传博客源码？"></a>二、如何上传博客源码？</h2><h3 id="1、思路分析"><a href="#1、思路分析" class="headerlink" title="1、思路分析"></a>1、思路分析</h3><ul>
+<li><p><code>main</code>（<code>master</code>） 分支：存放博客的静态网页。</p>
+</li>
+<li><p><code>hexo</code>分支：存放 Hexo 博客的源码文件。</p>
+</li>
+</ul>
+<h3 id="2、hexo-分支创建及管理"><a href="#2、hexo-分支创建及管理" class="headerlink" title="2、hexo 分支创建及管理"></a>2、hexo 分支创建及管理</h3><h4 id="（1）github-准备"><a href="#（1）github-准备" class="headerlink" title="（1）github 准备"></a>（1）github 准备</h4><p>先在 GitHub 项目创建一个远程分支 <code>hexo</code></p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787834628307.jpg"></p>
+<p>将其设置为默认分支</p>
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787836604366.jpg"></p>
+<h4 id="2-打包将要推送到GitHub上的原始文件"><a href="#2-打包将要推送到GitHub上的原始文件" class="headerlink" title="(2) 打包将要推送到GitHub上的原始文件"></a>(2) 打包将要推送到GitHub上的原始文件</h4><ol>
+<li>clone该仓库到本地（clone的是hexo默认分支）</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>下载的文件夹里仅留下 <code>.git</code> 文件夹，其他的文件都删除</p>
+</li>
+<li><p>找见我们 hexo 原位置，将 hexo 文件夹内除 <code>.deploy_git</code> 以外都复制到clone下来的文件夹中</p>
+</li>
+<li><p>修改 <code>.gitignore</code> 文件，将静态网页的目录及其他无需提交的源文件及目录排除掉。(没有即新建添加)</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">.<span class="property">DS_Store</span></span><br><span class="line"><span class="title class_">Thumbs</span>.<span class="property">db</span></span><br><span class="line">db.<span class="property">json</span></span><br><span class="line">*.<span class="property">log</span></span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.<span class="property">deploy</span>*/</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>如果已经 clone 过主题文件，最好把 theme 主题文件夹里的 <code>.git</code> 也删除</li>
+</ol>
+<h4 id="3-将-clone-并修改的文件夹推送到-GitHub"><a href="#3-将-clone-并修改的文件夹推送到-GitHub" class="headerlink" title="(3) 将 clone 并修改的文件夹推送到 GitHub"></a>(3) 将 clone 并修改的文件夹推送到 GitHub</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;Code update&#x27;</span></span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、main-master-分支管理"><a href="#3、main-master-分支管理" class="headerlink" title="3、main (master) 分支管理"></a>3、main (master) 分支管理</h3><p>进入<strong>站点配置文件</strong>，搜索 <code>deploy</code>关键词，修改如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy</span>:</span><br><span class="line">  <span class="attr">type</span>: git</span><br><span class="line">  <span class="attr">repo</span>: git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br><span class="line">  <span class="attr">branch</span>: main</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787847648363.jpg"></p>
+<p>修改完成，执行以下代码进行管理：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//清除本地旧代码。</span></span><br><span class="line">hexo clean</span><br><span class="line"><span class="comment">//生成静态网站</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="comment">//部署静态网站到 GitHub 的 main(master) 分支上</span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、统一分支管理和部署"><a href="#4、统一分支管理和部署" class="headerlink" title="4、统一分支管理和部署"></a>4、统一分支管理和部署</h3><p>利用我上一篇文章讲到的 <code>deploy.sh</code>脚本进行一键部署，可以极大提高部署效率和降低维护成本。</p>
+<p>在 <code>deploy.sh</code> 文件中添加如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line"><span class="variable constant_">DIR</span>=<span class="string">`dirname $0`</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Generate</span> blog</span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Deploy</span></span><br><span class="line">hexo deploy</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Push</span> hexo code</span><br><span class="line">git add .</span><br><span class="line">current_date=<span class="string">`date &quot;+%Y-%m-%d %H:%M:%S&quot;`</span></span><br><span class="line">git commit -m <span class="string">&quot;Blog updated: $current_date&quot;</span></span><br><span class="line"></span><br><span class="line">sleep <span class="number">2</span></span><br><span class="line"></span><br><span class="line">git push origin hexo</span><br><span class="line"></span><br><span class="line">echo <span class="string">&quot;=====&gt;Finish!&lt;=====&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后附加脚本执行权限:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>然后执行即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>如此，便可以一键部署博客及备份博客源码到 github 的分支 <code>hexo</code> 分支上。</p>
+<h3 id="5、其他电脑源码使用"><a href="#5、其他电脑源码使用" class="headerlink" title="5、其他电脑源码使用"></a>5、其他电脑源码使用</h3><p>换到不同电脑上时，只需clone github 上的 hexo 分支即可：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【Hexo】Next 主题的使用与美化</title>
     <url>/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</url>
     <content><![CDATA[<h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>Next 主题是 <a href="https://hexo.io/zh-cn">Hexo</a> 上使用最广，同时在 GitHub 上也是 Star 最多的主题，bug 修复和功能更新也比较快。当前博客就是使用 Hexo 配合 Next 主题搭建的</p>
@@ -2242,79 +2315,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【Hexo】如何将博客源码上传到GitHub</title>
-    <url>/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/</url>
-    <content><![CDATA[<h1 id="如何将博客源码上传到-GitHub"><a href="#如何将博客源码上传到-GitHub" class="headerlink" title="如何将博客源码上传到 GitHub"></a>如何将博客源码上传到 GitHub</h1><h2 id="一、为什么要把博客源码上传到-GitHub-？"><a href="#一、为什么要把博客源码上传到-GitHub-？" class="headerlink" title="一、为什么要把博客源码上传到 GitHub ？"></a>一、为什么要把博客源码上传到 GitHub ？</h2><p>首先，该操作不是使用 hexo 所必须的，但是，这么做却可以让以下问题迎刃而解：</p>
-<ul>
-<li>多台电脑同时操作 hexo 源码</li>
-<li>原先 hexo 源码所在电脑重装系统（丢失文件）</li>
-<li>要将 hexo 源码移动到其他磁盘（更换电脑）</li>
-</ul>
-<span id="more"></span>
-
-<p>将 hexo 源码上传到 GitHub，就是做了一个稳定、安全的远程备份，遇到上面的情况将不会再是什么问题。</p>
-<p>因为，之前在 GitHub 上的部署（使用 <code>hexo d</code> 上传部署到github）其实是 hexo 编译后的文件，是用来生成网页的，不包含所有 hexo 生成的网站原始文件。只有把源码也上传才能解决问题。</p>
-<h2 id="二、如何上传博客源码？"><a href="#二、如何上传博客源码？" class="headerlink" title="二、如何上传博客源码？"></a>二、如何上传博客源码？</h2><h3 id="1、思路分析"><a href="#1、思路分析" class="headerlink" title="1、思路分析"></a>1、思路分析</h3><ul>
-<li><p><code>main</code>（<code>master</code>） 分支：存放博客的静态网页。</p>
-</li>
-<li><p><code>hexo</code>分支：存放 Hexo 博客的源码文件。</p>
-</li>
-</ul>
-<h3 id="2、hexo-分支创建及管理"><a href="#2、hexo-分支创建及管理" class="headerlink" title="2、hexo 分支创建及管理"></a>2、hexo 分支创建及管理</h3><h4 id="（1）github-准备"><a href="#（1）github-准备" class="headerlink" title="（1）github 准备"></a>（1）github 准备</h4><p>先在 GitHub 项目创建一个远程分支 <code>hexo</code></p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787834628307.jpg"></p>
-<p>将其设置为默认分支</p>
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787836604366.jpg"></p>
-<h4 id="2-打包将要推送到GitHub上的原始文件"><a href="#2-打包将要推送到GitHub上的原始文件" class="headerlink" title="(2) 打包将要推送到GitHub上的原始文件"></a>(2) 打包将要推送到GitHub上的原始文件</h4><ol>
-<li>clone该仓库到本地（clone的是hexo默认分支）</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li><p>下载的文件夹里仅留下 <code>.git</code> 文件夹，其他的文件都删除</p>
-</li>
-<li><p>找见我们 hexo 原位置，将 hexo 文件夹内除 <code>.deploy_git</code> 以外都复制到clone下来的文件夹中</p>
-</li>
-<li><p>修改 <code>.gitignore</code> 文件，将静态网页的目录及其他无需提交的源文件及目录排除掉。(没有即新建添加)</p>
-</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">.<span class="property">DS_Store</span></span><br><span class="line"><span class="title class_">Thumbs</span>.<span class="property">db</span></span><br><span class="line">db.<span class="property">json</span></span><br><span class="line">*.<span class="property">log</span></span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.<span class="property">deploy</span>*/</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>如果已经 clone 过主题文件，最好把 theme 主题文件夹里的 <code>.git</code> 也删除</li>
-</ol>
-<h4 id="3-将-clone-并修改的文件夹推送到-GitHub"><a href="#3-将-clone-并修改的文件夹推送到-GitHub" class="headerlink" title="(3) 将 clone 并修改的文件夹推送到 GitHub"></a>(3) 将 clone 并修改的文件夹推送到 GitHub</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;Code update&#x27;</span></span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure>
-
-<h3 id="3、main-master-分支管理"><a href="#3、main-master-分支管理" class="headerlink" title="3、main (master) 分支管理"></a>3、main (master) 分支管理</h3><p>进入<strong>站点配置文件</strong>，搜索 <code>deploy</code>关键词，修改如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy</span>:</span><br><span class="line">  <span class="attr">type</span>: git</span><br><span class="line">  <span class="attr">repo</span>: git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br><span class="line">  <span class="attr">branch</span>: main</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E4%B8%8A%E4%BC%A0%E5%88%B0GitHub/16787847648363.jpg"></p>
-<p>修改完成，执行以下代码进行管理：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//清除本地旧代码。</span></span><br><span class="line">hexo clean</span><br><span class="line"><span class="comment">//生成静态网站</span></span><br><span class="line">hexo g</span><br><span class="line"><span class="comment">//部署静态网站到 GitHub 的 main(master) 分支上</span></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<h3 id="4、统一分支管理和部署"><a href="#4、统一分支管理和部署" class="headerlink" title="4、统一分支管理和部署"></a>4、统一分支管理和部署</h3><p>利用我上一篇文章讲到的 <code>deploy.sh</code>脚本进行一键部署，可以极大提高部署效率和降低维护成本。</p>
-<p>在 <code>deploy.sh</code> 文件中添加如下代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">#!<span class="regexp">/bin/</span>bash</span><br><span class="line"><span class="variable constant_">DIR</span>=<span class="string">`dirname $0`</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Generate</span> blog</span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Deploy</span></span><br><span class="line">hexo deploy</span><br><span class="line">sleep <span class="number">5</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Push</span> hexo code</span><br><span class="line">git add .</span><br><span class="line">current_date=<span class="string">`date &quot;+%Y-%m-%d %H:%M:%S&quot;`</span></span><br><span class="line">git commit -m <span class="string">&quot;Blog updated: $current_date&quot;</span></span><br><span class="line"></span><br><span class="line">sleep <span class="number">2</span></span><br><span class="line"></span><br><span class="line">git push origin hexo</span><br><span class="line"></span><br><span class="line">echo <span class="string">&quot;=====&gt;Finish!&lt;=====&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>然后附加脚本执行权限:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">chmod +x deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<p>然后执行即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">./deploy.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
-
-<p>如此，便可以一键部署博客及备份博客源码到 github 的分支 <code>hexo</code> 分支上。</p>
-<h3 id="5、其他电脑源码使用"><a href="#5、其他电脑源码使用" class="headerlink" title="5、其他电脑源码使用"></a>5、其他电脑源码使用</h3><p>换到不同电脑上时，只需clone github 上的 hexo 分支即可：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">git clone git@github.<span class="property">com</span>:fengyanxin/fengyanxin.<span class="property">github</span>.<span class="property">io</span>.<span class="property">git</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【Hexo】添加 .sh 脚本文件，快速测试和部署</title>
     <url>/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<h1 id="添加-sh-脚本文件，快速测试和部署"><a href="#添加-sh-脚本文件，快速测试和部署" class="headerlink" title="添加 .sh 脚本文件，快速测试和部署"></a>添加 .sh 脚本文件，快速测试和部署</h1><h2 id="一、创建-sh-脚本文件"><a href="#一、创建-sh-脚本文件" class="headerlink" title="一、创建 .sh 脚本文件"></a>一、创建 .sh 脚本文件</h2><h3 id="1-启动-Sublime-Test"><a href="#1-启动-Sublime-Test" class="headerlink" title="1.启动 Sublime Test"></a>1.启动 Sublime Test</h3><p><img data-src="/Hexo/%E3%80%90Hexo%E3%80%91%E6%B7%BB%E5%8A%A0-sh-%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/16787755102992.jpg"></p>
@@ -2483,69 +2483,6 @@
 
 <p>注：比较的时候 <code>Str1 == Str2</code> 直接比较的是内存地址，效率更高。<br>由于过多的宏定义会产生过多的二进制文件，故如果宏定义比较多，建议用 <code>FOUNDATION_EXPORT</code>。</p>
 <h1 id="三、参考"><a href="#三、参考" class="headerlink" title="三、参考"></a>三、参考</h1><p><a href="https://www.jianshu.com/p/ae7cb47ae44b">https://www.jianshu.com/p/ae7cb47ae44b</a></p>
-]]></content>
-      <categories>
-        <category>iOS</category>
-      </categories>
-      <tags>
-        <tag>iOS</tag>
-        <tag>OC</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【OC】方法拦截器：如何 hook 三方 SDK 中的方法?</title>
-    <url>/iOS/%E3%80%90OC%E3%80%91%E6%96%B9%E6%B3%95%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%9A%E5%A6%82%E4%BD%95-hook-%E4%B8%89%E6%96%B9-SDK-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="一、前因"><a href="#一、前因" class="headerlink" title="一、前因"></a>一、前因</h2><p>缘由：项目中使用 <code>Pod</code> 集成了一个三方的远端SDK，这个SDK中的某个类遵循了一个代理协议，这个代理中有很多方法实现。现在的需求是，我在使用这个SDK的类时，只想实现代理方法中的其中一个方法，而不想把所有方法都实现一遍，而且也没办法全部实现。但是，我如果在引用类中遵循代理，就得把所有方法都实现一遍，这显然不现实；如果只实现固定方法，其他方法就会失效，这也不行。</p>
-<span id="more"></span>
-
-<p>所以，我就有了一个想法：<strong>不遵循代理，只是对需要实现的方法进行监听，在其执行时，不执行原有方法流程，转而执行自定义方法。</strong></p>
-<p>这个思路显然是可行的，接下来就是如何把这个方法 <code>hook</code> 出来的问题。</p>
-<h2 id="二、后果"><a href="#二、后果" class="headerlink" title="二、后果"></a>二、后果</h2><p>有了思路，剩下的就是验证思路和解决问题，经过一段时间的思考和查阅资料，就有了如下结果和方案：</p>
-<h3 id="1、初版：对三方源码有入侵"><a href="#1、初版：对三方源码有入侵" class="headerlink" title="1、初版：对三方源码有入侵"></a>1、初版：对三方源码有入侵</h3><p>这个方案，对三方源码有一定的入侵，但是因为入侵较小，所以决定尝试一下。</p>
-<p>创建一个 <code>NSObject</code>的 <code>Category</code>，为什么会选择 <code>NSObject</code>，因为他是所有对象类的基类，注册监听方法时更为方便和通用。</p>
-<h4 id="NSObject-SRModuleAuthorization-h"><a href="#NSObject-SRModuleAuthorization-h" class="headerlink" title="NSObject+SRModuleAuthorization.h"></a>NSObject+SRModuleAuthorization.h</h4><p>在 <code>NSObject+SRModuleAuthorization.h</code> 实现代码如下:</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">NSObject</span> (<span class="type">SRModuleAuthorization</span>)</span><br><span class="line"></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel;</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
-
-<p><code>.h</code> 只对外暴露一个注册需要被监听方法的API。</p>
-<h4 id="NSObject-SRModuleAuthorization-m"><a href="#NSObject-SRModuleAuthorization-m" class="headerlink" title="NSObject+SRModuleAuthorization.m"></a>NSObject+SRModuleAuthorization.m</h4><p>在<code>NSObject+SRModuleAuthorization.m</code> 实现代码如下:</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注册需要被拦截的方法</span></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel&#123;</span><br><span class="line">    <span class="comment">// 获取方法的名称，根据该方法名称设置自定义的方法名称</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(sel);</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;sr_auth_%@&quot;</span>, methodName];</span><br><span class="line">    <span class="comment">// 获取自定义方法的实例</span></span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">Method</span> newMethod <span class="operator">=</span> class_getInstanceMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel);</span><br><span class="line">    <span class="comment">// 判断是否已经添加了自定义的方法，如果为空就添加自定义方法</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">!</span>newMethod)&#123;</span><br><span class="line">        <span class="comment">// 获取被拦截方法的结构体对象</span></span><br><span class="line">        <span class="type">Method</span> method <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, sel);</span><br><span class="line">        <span class="comment">// 获取被拦截方法的方法签名字符串</span></span><br><span class="line">        const char <span class="operator">*</span>functionType  <span class="operator">=</span> method_getTypeEncoding(method);</span><br><span class="line">        <span class="type">NSString</span> <span class="operator">*</span>functionTypeStr <span class="operator">=</span> [<span class="type">NSString</span> stringWithUTF8String:functionType];</span><br><span class="line">        <span class="comment">// 判断方法签名的字符串中，：8是否是最后两个字符</span></span><br><span class="line">        <span class="comment">// 如果是则代表无参方法，否则是有参方法</span></span><br><span class="line">        <span class="comment">// 针对这两种方法添加不同的自定义拦截方法</span></span><br><span class="line">        <span class="type">NSRange</span> range <span class="operator">=</span> [functionTypeStr rangeOfString:@<span class="string">&quot;:8&quot;</span>];</span><br><span class="line">        <span class="type">Method</span> intercetionMethod;</span><br><span class="line">        <span class="keyword">if</span> (range.location <span class="operator">+</span> range.length <span class="operator">&lt;</span> functionTypeStr.length)&#123;</span><br><span class="line">            <span class="comment">// 有参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion::));</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">// 无参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 获取自定义拦截方法的实例，</span></span><br><span class="line">        <span class="comment">// 并将自定义方法的selector与实例关联，动态的添加进当前类型</span></span><br><span class="line">        <span class="type">IMP</span> imp <span class="operator">=</span> method_getImplementation(intercetionMethod);</span><br><span class="line">        class_addMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel, imp, functionType);</span><br><span class="line">        <span class="comment">// 最后重新获取自定义方法的方法结构体</span></span><br><span class="line">        <span class="comment">// 并与被监听方法进行实例交换，交换后，</span></span><br><span class="line">        <span class="comment">// 被监听的方法被调用时，就会执行我们自定义的方法实例，即intercetion</span></span><br><span class="line">        <span class="type">Method</span> method2 <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, newSel);</span><br><span class="line">        method_exchangeImplementations(method, method2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>下面是无参拦截方法的实现：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 执行自定义代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>有参拦截方法是一个可变参数列表，我们可以遍历 <code>invocation</code> 对象的参数，以达到传参的目的。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">//有参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion: (id)param1 :(id)param2,<span class="operator">...</span>&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">NSMutableArray</span> *<span class="title class_">params</span> = [<span class="title class_">NSMutableArray</span> <span class="title class_">array</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 参数个数signature.numberOfArguments 默认有一个_cmd 一个target 所以要-2, 正常参数从第三个开始</span></span><br><span class="line">        <span class="keyword">if</span> (signature.numberOfArguments) &#123;</span><br><span class="line">            <span class="type">NSInteger</span> argCount <span class="operator">=</span> signature.numberOfArguments;</span><br><span class="line">            va_list args;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">2</span>)&#123;</span><br><span class="line">                [params addObject:param1];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">3</span>)&#123;</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_start(args, param2);</span><br><span class="line">            <span class="keyword">for</span> (int i <span class="operator">=</span> <span class="number">4</span>; i <span class="operator">&lt;</span> argCount; i<span class="operator">++</span>) &#123;</span><br><span class="line">                param2 <span class="operator">=</span> va_arg(args, id);</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_end(args);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (params.count <span class="operator">!=</span> argCount<span class="operator">-</span><span class="number">2</span>)&#123;</span><br><span class="line">               <span class="type">NSLog</span>(@<span class="string">&quot;proxy --- 传参有误! please check it! ---&quot;</span>);</span><br><span class="line">               <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 执行自定义代码</span></span><br><span class="line">       </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里有一个问题：因为参数遍历转化时， <code>va_arg(args, id)</code> 方法会把传递过来的参数转化成 <code>id</code> 类型，如果的不 <code>NSObject</code> 类型的参数无法完成转化。所以，如果被监听的方法的参数类型不是对象类型，会发生错误。</p>
-<p>实现起来很简单，只需要在被监听的类的初始化方法里，调用 <code>registerNeedMonitorSEL</code> 方法即可，如下:</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test)];</span><br><span class="line"><span class="comment">// 有参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:)];</span><br><span class="line"><span class="comment">// 多参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:test1:)];</span><br></pre></td></tr></table></figure>
-
-<p>分析：这个方法虽然解决了我的问题，但是缺点也是很明显的:</p>
-<p>问题1: 对参数类型不是<code>NSObject</code>的方法无法监听，可能发生崩溃的情况。</p>
-<p>问题2: 如何是监听三方SDK的方法，会对其造成代码入侵，SDK更新方法会失效。</p>
-<h3 id="2、进阶版：对三方源码无入侵"><a href="#2、进阶版：对三方源码无入侵" class="headerlink" title="2、进阶版：对三方源码无入侵"></a>2、进阶版：对三方源码无入侵</h3><p>初版的方案显然不尽如人意，所以，针对以上问题，我又开始了新一轮的思考。</p>
-<p>如何在不入侵三方源码的情况下，对方法进行 <code>hook</code> 呢？</p>
-<p>结果就有了下面的方案：</p>
-<p>实现思路：对需要的监听方法的类做一个category扩展，利用 <code>Method Swizzling</code> 对监听的方法进行转换，然后把它 <code>hook</code> 出来。</p>
-<p>下面说一下我的代码实现：</p>
-<p>首先，对监听方法的类做一个 <code>category</code> 扩展。</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">TUIBaseChatViewController</span> (<span class="type">PHHookMethod</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
-
-<p>然后，在category的 <code>.m</code> 文件里实现如下代码：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">+</span> (void)load&#123;</span><br><span class="line">    <span class="keyword">static</span> dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(<span class="operator">&amp;</span>onceToken, <span class="operator">^</span>&#123;</span><br><span class="line">        <span class="comment">// 假如要监听方法,则把下面这行代码打开</span></span><br><span class="line">        __gbh_tracer_swizzleMethod([<span class="keyword">self</span> <span class="keyword">class</span>], <span class="meta">@selector</span>(messageController:onSelectMessageAvatar:), <span class="meta">@selector</span>(__gbh_tracer_messageController:onSelectMessageAvatar:));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这段代码很好理解，就是在程序启动时就注册方法监听，等到方法执行时，对其进行转换，转换方法看下面：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">void __gbh_tracer_swizzleMethod(<span class="type">Class</span> <span class="keyword">class</span>, <span class="type">SEL</span> originalSelector, <span class="type">SEL</span> swizzledSelector)&#123;</span><br><span class="line">    <span class="type">Method</span> originalMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, originalSelector);</span><br><span class="line">    <span class="type">Method</span> swizzledMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, swizzledSelector);</span><br><span class="line">    </span><br><span class="line">    <span class="type">BOOL</span> didAddMethod <span class="operator">=</span></span><br><span class="line">    class_addMethod(<span class="keyword">class</span>,</span><br><span class="line">                    originalSelector,</span><br><span class="line">                    method_getImplementation(swizzledMethod),</span><br><span class="line">                    method_getTypeEncoding(swizzledMethod));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (didAddMethod) &#123;</span><br><span class="line">        class_replaceMethod(<span class="keyword">class</span>,</span><br><span class="line">                            swizzledSelector,</span><br><span class="line">                            method_getImplementation(originalMethod),</span><br><span class="line">                            method_getTypeEncoding(originalMethod));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        method_exchangeImplementations(originalMethod, swizzledMethod);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这是一个标准的 <code>swizzling</code> 写法，当然了  <code>github</code> 上面也有关于 <code>swizzling</code> 的开源库，用起来也顺手，这里就不多说了。</p>
-<p>然后就是 <code>swizzling</code> 转换到的方法：</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">-</span> (void)__gbh_tracer_messageController:(<span class="type">TUIBaseMessageController</span> <span class="operator">*</span>)controller onSelectMessageAvatar:(<span class="type">TUIMessageCell</span> <span class="operator">*</span>)cell&#123;</span><br><span class="line"><span class="comment">//    [self __gbh_tracer_messageController:controller onSelectMessageAvatar:cell]; //由于方法已经被交换,这里调用的实际上是messageController:onSelectMessageAvatar:方法</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 执行自定义方法</span></span><br><span class="line">    [<span class="keyword">self</span> clickMessageAvatar:cell];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>转换后的方法我们既可以让其继续执行以前的方法流程，也可以执行自己定义的方法，简直不要太爽。</p>
-<p>这就是一整个 <code>hook</code> 流程，即简单又方便，以后，我只需要往工程里面添加这个 <code>Category</code> ，这个被监听的方法就会被 <code>hook</code> 出来，可以让我为所欲为，还不会出现之前的报错和源码入侵的问题。</p>
-<h2 id="三、参考资料"><a href="#三、参考资料" class="headerlink" title="三、参考资料"></a>三、参考资料</h2><blockquote>
-<p>膜拜大神！<br><a href="https://www.jianshu.com/p/57827c100a3f">https://www.jianshu.com/p/57827c100a3f</a><br><a href="https://www.cnblogs.com/n1ckyxu/p/6186850.html">https://www.cnblogs.com/n1ckyxu/p/6186850.html</a><br><a href="https://www.jianshu.com/p/99d06ad0fa51">https://www.jianshu.com/p/99d06ad0fa51</a><br><a href="https://blog.csdn.net/u014600626/article/details/119271920">https://blog.csdn.net/u014600626/article/details/119271920</a><br><a href="http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more">http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more</a></p>
-</blockquote>
 ]]></content>
       <categories>
         <category>iOS</category>
@@ -3246,6 +3183,69 @@
       </categories>
       <tags>
         <tag>Tips</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【OC】方法拦截器：如何 hook 三方 SDK 中的方法?</title>
+    <url>/iOS/%E3%80%90OC%E3%80%91%E6%96%B9%E6%B3%95%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%9A%E5%A6%82%E4%BD%95-hook-%E4%B8%89%E6%96%B9-SDK-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="一、前因"><a href="#一、前因" class="headerlink" title="一、前因"></a>一、前因</h2><p>缘由：项目中使用 <code>Pod</code> 集成了一个三方的远端SDK，这个SDK中的某个类遵循了一个代理协议，这个代理中有很多方法实现。现在的需求是，我在使用这个SDK的类时，只想实现代理方法中的其中一个方法，而不想把所有方法都实现一遍，而且也没办法全部实现。但是，我如果在引用类中遵循代理，就得把所有方法都实现一遍，这显然不现实；如果只实现固定方法，其他方法就会失效，这也不行。</p>
+<span id="more"></span>
+
+<p>所以，我就有了一个想法：<strong>不遵循代理，只是对需要实现的方法进行监听，在其执行时，不执行原有方法流程，转而执行自定义方法。</strong></p>
+<p>这个思路显然是可行的，接下来就是如何把这个方法 <code>hook</code> 出来的问题。</p>
+<h2 id="二、后果"><a href="#二、后果" class="headerlink" title="二、后果"></a>二、后果</h2><p>有了思路，剩下的就是验证思路和解决问题，经过一段时间的思考和查阅资料，就有了如下结果和方案：</p>
+<h3 id="1、初版：对三方源码有入侵"><a href="#1、初版：对三方源码有入侵" class="headerlink" title="1、初版：对三方源码有入侵"></a>1、初版：对三方源码有入侵</h3><p>这个方案，对三方源码有一定的入侵，但是因为入侵较小，所以决定尝试一下。</p>
+<p>创建一个 <code>NSObject</code>的 <code>Category</code>，为什么会选择 <code>NSObject</code>，因为他是所有对象类的基类，注册监听方法时更为方便和通用。</p>
+<h4 id="NSObject-SRModuleAuthorization-h"><a href="#NSObject-SRModuleAuthorization-h" class="headerlink" title="NSObject+SRModuleAuthorization.h"></a>NSObject+SRModuleAuthorization.h</h4><p>在 <code>NSObject+SRModuleAuthorization.h</code> 实现代码如下:</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">NSObject</span> (<span class="type">SRModuleAuthorization</span>)</span><br><span class="line"></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel;</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<p><code>.h</code> 只对外暴露一个注册需要被监听方法的API。</p>
+<h4 id="NSObject-SRModuleAuthorization-m"><a href="#NSObject-SRModuleAuthorization-m" class="headerlink" title="NSObject+SRModuleAuthorization.m"></a>NSObject+SRModuleAuthorization.m</h4><p>在<code>NSObject+SRModuleAuthorization.m</code> 实现代码如下:</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注册需要被拦截的方法</span></span><br><span class="line"><span class="operator">-</span> (void)registerNeedMonitorSEL:(<span class="type">SEL</span>)sel&#123;</span><br><span class="line">    <span class="comment">// 获取方法的名称，根据该方法名称设置自定义的方法名称</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(sel);</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;sr_auth_%@&quot;</span>, methodName];</span><br><span class="line">    <span class="comment">// 获取自定义方法的实例</span></span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">Method</span> newMethod <span class="operator">=</span> class_getInstanceMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel);</span><br><span class="line">    <span class="comment">// 判断是否已经添加了自定义的方法，如果为空就添加自定义方法</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">!</span>newMethod)&#123;</span><br><span class="line">        <span class="comment">// 获取被拦截方法的结构体对象</span></span><br><span class="line">        <span class="type">Method</span> method <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, sel);</span><br><span class="line">        <span class="comment">// 获取被拦截方法的方法签名字符串</span></span><br><span class="line">        const char <span class="operator">*</span>functionType  <span class="operator">=</span> method_getTypeEncoding(method);</span><br><span class="line">        <span class="type">NSString</span> <span class="operator">*</span>functionTypeStr <span class="operator">=</span> [<span class="type">NSString</span> stringWithUTF8String:functionType];</span><br><span class="line">        <span class="comment">// 判断方法签名的字符串中，：8是否是最后两个字符</span></span><br><span class="line">        <span class="comment">// 如果是则代表无参方法，否则是有参方法</span></span><br><span class="line">        <span class="comment">// 针对这两种方法添加不同的自定义拦截方法</span></span><br><span class="line">        <span class="type">NSRange</span> range <span class="operator">=</span> [functionTypeStr rangeOfString:@<span class="string">&quot;:8&quot;</span>];</span><br><span class="line">        <span class="type">Method</span> intercetionMethod;</span><br><span class="line">        <span class="keyword">if</span> (range.location <span class="operator">+</span> range.length <span class="operator">&lt;</span> functionTypeStr.length)&#123;</span><br><span class="line">            <span class="comment">// 有参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion::));</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">// 无参拦截方法</span></span><br><span class="line">            intercetionMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, <span class="meta">@selector</span>(intercetion));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 获取自定义拦截方法的实例，</span></span><br><span class="line">        <span class="comment">// 并将自定义方法的selector与实例关联，动态的添加进当前类型</span></span><br><span class="line">        <span class="type">IMP</span> imp <span class="operator">=</span> method_getImplementation(intercetionMethod);</span><br><span class="line">        class_addMethod([<span class="keyword">self</span> <span class="keyword">class</span>], newSel, imp, functionType);</span><br><span class="line">        <span class="comment">// 最后重新获取自定义方法的方法结构体</span></span><br><span class="line">        <span class="comment">// 并与被监听方法进行实例交换，交换后，</span></span><br><span class="line">        <span class="comment">// 被监听的方法被调用时，就会执行我们自定义的方法实例，即intercetion</span></span><br><span class="line">        <span class="type">Method</span> method2 <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">self</span>.class, newSel);</span><br><span class="line">        method_exchangeImplementations(method, method2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是无参拦截方法的实现：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 执行自定义代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有参拦截方法是一个可变参数列表，我们可以遍历 <code>invocation</code> 对象的参数，以达到传参的目的。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">//有参拦截方法</span></span><br><span class="line"><span class="operator">-</span> (void)intercetion: (id)param1 :(id)param2,<span class="operator">...</span>&#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>methodName <span class="operator">=</span> <span class="type">NSStringFromSelector</span>(_cmd);</span><br><span class="line"><span class="comment">//    NSString *newMethodName = [NSString stringWithFormat:@&quot;dl_auth_%@&quot;, methodName];</span></span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>newMethodName <span class="operator">=</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>, methodName];</span><br><span class="line">    <span class="type">SEL</span> newSel <span class="operator">=</span> <span class="type">NSSelectorFromString</span>(newMethodName);</span><br><span class="line">    <span class="type">NSMethodSignature</span> <span class="operator">*</span>signature <span class="operator">=</span> [[<span class="keyword">self</span> <span class="keyword">class</span>] <span class="title class_">instanceMethodSignatureForSelector</span>:<span class="title class_">newSel</span>];</span><br><span class="line">    <span class="title class_">NSMutableArray</span> *<span class="title class_">params</span> = [<span class="title class_">NSMutableArray</span> <span class="title class_">array</span>];</span><br><span class="line">    <span class="title class_">if</span> (<span class="title class_">signature</span>)&#123;</span><br><span class="line">        <span class="type">NSInvocation</span> <span class="operator">*</span>invocation <span class="operator">=</span> [<span class="type">NSInvocation</span> invocationWithMethodSignature:signature];</span><br><span class="line">        invocation.target   <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        invocation.selector <span class="operator">=</span> newSel;</span><br><span class="line">        <span class="comment">// 参数个数signature.numberOfArguments 默认有一个_cmd 一个target 所以要-2, 正常参数从第三个开始</span></span><br><span class="line">        <span class="keyword">if</span> (signature.numberOfArguments) &#123;</span><br><span class="line">            <span class="type">NSInteger</span> argCount <span class="operator">=</span> signature.numberOfArguments;</span><br><span class="line">            va_list args;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">2</span>)&#123;</span><br><span class="line">                [params addObject:param1];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (argCount <span class="operator">&gt;</span> <span class="number">3</span>)&#123;</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_start(args, param2);</span><br><span class="line">            <span class="keyword">for</span> (int i <span class="operator">=</span> <span class="number">4</span>; i <span class="operator">&lt;</span> argCount; i<span class="operator">++</span>) &#123;</span><br><span class="line">                param2 <span class="operator">=</span> va_arg(args, id);</span><br><span class="line">                [params addObject:param2];</span><br><span class="line">            &#125;</span><br><span class="line">            va_end(args);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (params.count <span class="operator">!=</span> argCount<span class="operator">-</span><span class="number">2</span>)&#123;</span><br><span class="line">               <span class="type">NSLog</span>(@<span class="string">&quot;proxy --- 传参有误! please check it! ---&quot;</span>);</span><br><span class="line">               <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 是否执行原方法</span></span><br><span class="line"><span class="comment">//        [invocation invoke];</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 执行自定义代码</span></span><br><span class="line">       </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里有一个问题：因为参数遍历转化时， <code>va_arg(args, id)</code> 方法会把传递过来的参数转化成 <code>id</code> 类型，如果的不 <code>NSObject</code> 类型的参数无法完成转化。所以，如果被监听的方法的参数类型不是对象类型，会发生错误。</p>
+<p>实现起来很简单，只需要在被监听的类的初始化方法里，调用 <code>registerNeedMonitorSEL</code> 方法即可，如下:</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test)];</span><br><span class="line"><span class="comment">// 有参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:)];</span><br><span class="line"><span class="comment">// 多参</span></span><br><span class="line">[<span class="keyword">self</span> registerNeedMonitorSEL:<span class="meta">@selector</span>(test:test1:)];</span><br></pre></td></tr></table></figure>
+
+<p>分析：这个方法虽然解决了我的问题，但是缺点也是很明显的:</p>
+<p>问题1: 对参数类型不是<code>NSObject</code>的方法无法监听，可能发生崩溃的情况。</p>
+<p>问题2: 如何是监听三方SDK的方法，会对其造成代码入侵，SDK更新方法会失效。</p>
+<h3 id="2、进阶版：对三方源码无入侵"><a href="#2、进阶版：对三方源码无入侵" class="headerlink" title="2、进阶版：对三方源码无入侵"></a>2、进阶版：对三方源码无入侵</h3><p>初版的方案显然不尽如人意，所以，针对以上问题，我又开始了新一轮的思考。</p>
+<p>如何在不入侵三方源码的情况下，对方法进行 <code>hook</code> 呢？</p>
+<p>结果就有了下面的方案：</p>
+<p>实现思路：对需要的监听方法的类做一个category扩展，利用 <code>Method Swizzling</code> 对监听的方法进行转换，然后把它 <code>hook</code> 出来。</p>
+<p>下面说一下我的代码实现：</p>
+<p>首先，对监听方法的类做一个 <code>category</code> 扩展。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="meta">@interface</span> <span class="type">TUIBaseChatViewController</span> (<span class="type">PHHookMethod</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，在category的 <code>.m</code> 文件里实现如下代码：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">+</span> (void)load&#123;</span><br><span class="line">    <span class="keyword">static</span> dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(<span class="operator">&amp;</span>onceToken, <span class="operator">^</span>&#123;</span><br><span class="line">        <span class="comment">// 假如要监听方法,则把下面这行代码打开</span></span><br><span class="line">        __gbh_tracer_swizzleMethod([<span class="keyword">self</span> <span class="keyword">class</span>], <span class="meta">@selector</span>(messageController:onSelectMessageAvatar:), <span class="meta">@selector</span>(__gbh_tracer_messageController:onSelectMessageAvatar:));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码很好理解，就是在程序启动时就注册方法监听，等到方法执行时，对其进行转换，转换方法看下面：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">void __gbh_tracer_swizzleMethod(<span class="type">Class</span> <span class="keyword">class</span>, <span class="type">SEL</span> originalSelector, <span class="type">SEL</span> swizzledSelector)&#123;</span><br><span class="line">    <span class="type">Method</span> originalMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, originalSelector);</span><br><span class="line">    <span class="type">Method</span> swizzledMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, swizzledSelector);</span><br><span class="line">    </span><br><span class="line">    <span class="type">BOOL</span> didAddMethod <span class="operator">=</span></span><br><span class="line">    class_addMethod(<span class="keyword">class</span>,</span><br><span class="line">                    originalSelector,</span><br><span class="line">                    method_getImplementation(swizzledMethod),</span><br><span class="line">                    method_getTypeEncoding(swizzledMethod));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (didAddMethod) &#123;</span><br><span class="line">        class_replaceMethod(<span class="keyword">class</span>,</span><br><span class="line">                            swizzledSelector,</span><br><span class="line">                            method_getImplementation(originalMethod),</span><br><span class="line">                            method_getTypeEncoding(originalMethod));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        method_exchangeImplementations(originalMethod, swizzledMethod);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个标准的 <code>swizzling</code> 写法，当然了  <code>github</code> 上面也有关于 <code>swizzling</code> 的开源库，用起来也顺手，这里就不多说了。</p>
+<p>然后就是 <code>swizzling</code> 转换到的方法：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="operator">-</span> (void)__gbh_tracer_messageController:(<span class="type">TUIBaseMessageController</span> <span class="operator">*</span>)controller onSelectMessageAvatar:(<span class="type">TUIMessageCell</span> <span class="operator">*</span>)cell&#123;</span><br><span class="line"><span class="comment">//    [self __gbh_tracer_messageController:controller onSelectMessageAvatar:cell]; //由于方法已经被交换,这里调用的实际上是messageController:onSelectMessageAvatar:方法</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 执行自定义方法</span></span><br><span class="line">    [<span class="keyword">self</span> clickMessageAvatar:cell];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>转换后的方法我们既可以让其继续执行以前的方法流程，也可以执行自己定义的方法，简直不要太爽。</p>
+<p>这就是一整个 <code>hook</code> 流程，即简单又方便，以后，我只需要往工程里面添加这个 <code>Category</code> ，这个被监听的方法就会被 <code>hook</code> 出来，可以让我为所欲为，还不会出现之前的报错和源码入侵的问题。</p>
+<h2 id="三、参考资料"><a href="#三、参考资料" class="headerlink" title="三、参考资料"></a>三、参考资料</h2><blockquote>
+<p>膜拜大神！<br><a href="https://www.jianshu.com/p/57827c100a3f">https://www.jianshu.com/p/57827c100a3f</a><br><a href="https://www.cnblogs.com/n1ckyxu/p/6186850.html">https://www.cnblogs.com/n1ckyxu/p/6186850.html</a><br><a href="https://www.jianshu.com/p/99d06ad0fa51">https://www.jianshu.com/p/99d06ad0fa51</a><br><a href="https://blog.csdn.net/u014600626/article/details/119271920">https://blog.csdn.net/u014600626/article/details/119271920</a><br><a href="http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more">http://yulingtianxia.com/blog/2017/04/17/Objective-C-Method-Swizzling/#more</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>iOS</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+        <tag>OC</tag>
       </tags>
   </entry>
   <entry>
@@ -5939,7 +5939,7 @@
   <entry>
     <title>【iOS】 Runtime 详解</title>
     <url>/iOS/%E3%80%90iOS%E3%80%91-Runtime%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91-Runtime%E8%AF%A6%E8%A7%A3/17459141483680.jpg"></p>
+    <content><![CDATA[<p><img data-src="https://pic1.imgdb.cn/item/68243e3b58cb8da5c8f15b01.jpg"></p>
 <h2 id="一、Runtime-介绍"><a href="#一、Runtime-介绍" class="headerlink" title="一、Runtime 介绍"></a>一、Runtime 介绍</h2><p><code>Objective-C</code> 扩展了 <code>C</code> 语言，并加入了面向对象特性和 <code>Smalltalk</code> 式的消息传递机制。而这个扩展的核心是一个用 <code>C</code> 和 编译语言 写的 <code>Runtime</code> 库。它是 <code>Objective-C</code> 面向对象和动态机制的基石。</p>
 <p><code>Objective-C</code> 是一个动态语言，这意味着它不仅需要一个编译器，也需要一个运行时系统来动态得创建类和对象、进行消息传递和转发。理解 <code>Objective-C</code> 的 <code>Runtime</code> 机制可以帮我们更好的了解这个语言，适当的时候还能对语言进行扩展，从系统层面解决项目中的一些设计或技术问题。了解 <code>Runtime</code> ，要先了解它的核心 - <code>消息传递 （Messaging）</code>。</p>
 <span id="more"></span>
@@ -5990,7 +5990,7 @@
 <h3 id="实例-objc-object"><a href="#实例-objc-object" class="headerlink" title="实例 (objc_object)"></a>实例 (objc_object)</h3><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">/// Represents an instance of a class.</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">objc_object</span> &#123;</span><br><span class="line">    <span class="type">Class</span> isa  <span class="type">OBJC_ISA_AVAILABILITY</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// A pointer to an instance of a class.</span></span><br><span class="line">typedef <span class="keyword">struct</span> <span class="title class_">objc_object</span> *<span class="title class_">id</span>;</span><br></pre></td></tr></table></figure>
 
 <p>类对象中的元数据存储的都是如何创建一个实例的相关信息，那么类对象和类方法应该从哪里创建呢？<br>就是从 <code>isa</code> 指针指向的结构体创建，类对象的 <code>isa</code> 指针指向的我们称之为 <code>元类(metaclass)</code>，<br>元类中保存了创建类对象以及类方法所需的所有信息，因此整个结构应该如下图所示:</p>
-<p><img data-src="/iOS/%E3%80%90iOS%E3%80%91-Runtime%E8%AF%A6%E8%A7%A3/17459130950596.png"></p>
+<p><img data-src="https://pic1.imgdb.cn/item/68243f2458cb8da5c8f15bb8.png"></p>
 <h3 id="元类-Meta-Class"><a href="#元类-Meta-Class" class="headerlink" title="元类 (Meta Class)"></a>元类 (Meta Class)</h3><p>通过上图我们可以看出整个体系构成了一个自闭环，<code>struct objc_object</code> 结构体实例它的 <code>isa</code> 指针指向类对象，<br>类对象的 <code>isa</code> 指针指向了元类，<code>super_class</code> 指针指向了父类的类对象，<br>而元类的 <code>super_class</code> 指针指向了父类的元类，那元类的 <code>isa</code> 指针又指向了自己。</p>
 <p><code>元类(Meta Class)</code> 是一个类对象的类。<br>在上面我们提到，所有的类自身也是一个对象，我们可以向这个对象发送消息(即调用类方法)。<br>为了调用类方法，这个类的 <code>isa</code> 指针必须指向一个包含这些类方法的一个 <code>objc_class</code> 结构体。这就引出了 <code>meta-class</code> 的概念，元类中保存了创建类对象以及类方法所需的所有信息。<br>任何 <code>NSObject</code> 继承体系下的 <code>meta-class</code> 都使用 <code>NSObject</code> 的 <code>meta-class</code> 作为自己的所属类，而基类的 <code>meta-class</code> 的 <code>isa</code> 指针是指向它自己。</p>
 <h3 id="Method-objc-method"><a href="#Method-objc-method" class="headerlink" title="Method(objc_method)"></a>Method(objc_method)</h3><p>先看下定义：</p>
