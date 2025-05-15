@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-05-14T07:00:00.365Z</updated>
+  <updated>2025-05-14T09:11:05.017Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -21,10 +21,10 @@
     <link href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91-Runtime%E8%AF%A6%E8%A7%A3/"/>
     <id>https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91-Runtime%E8%AF%A6%E8%A7%A3/</id>
     <published>2025-04-29T07:31:58.000Z</published>
-    <updated>2025-05-14T07:00:00.365Z</updated>
+    <updated>2025-05-14T09:11:05.017Z</updated>
     
     
-    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://pic1.imgdb.cn/item/68243e3b58cb8da5c8f15b01.jpg&quot;&gt;&lt;/p&gt;
+    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17459141483680.jpg&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;一、Runtime-介绍&quot;&gt;&lt;a href=&quot;#一、Runtime-介绍&quot; class=&quot;headerlink&quot; title=&quot;一、Runtime 介绍&quot;&gt;&lt;/a&gt;一、Runtime 介绍&lt;/h2&gt;&lt;p&gt;&lt;code&gt;Objective-C&lt;/code&gt; 扩展了 &lt;code&gt;C&lt;/code&gt; 语言，并加入了面向对象特性和 &lt;code&gt;Smalltalk&lt;/code&gt; 式的消息传递机制。而这个扩展的核心是一个用 &lt;code&gt;C&lt;/code&gt; 和 编译语言 写的 &lt;code&gt;Runtime&lt;/code&gt; 库。它是 &lt;code&gt;Objective-C&lt;/code&gt; 面向对象和动态机制的基石。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Objective-C&lt;/code&gt; 是一个动态语言，这意味着它不仅需要一个编译器，也需要一个运行时系统来动态得创建类和对象、进行消息传递和转发。理解 &lt;code&gt;Objective-C&lt;/code&gt; 的 &lt;code&gt;Runtime&lt;/code&gt; 机制可以帮我们更好的了解这个语言，适当的时候还能对语言进行扩展，从系统层面解决项目中的一些设计或技术问题。了解 &lt;code&gt;Runtime&lt;/code&gt; ，要先了解它的核心 - &lt;code&gt;消息传递 （Messaging）&lt;/code&gt;。&lt;/p&gt;</summary>
     
@@ -44,7 +44,7 @@
     <link href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%85%B3%E4%BA%8EdismissViewController/"/>
     <id>https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%85%B3%E4%BA%8EdismissViewController/</id>
     <published>2025-04-18T05:38:22.000Z</published>
-    <updated>2025-04-18T06:00:12.450Z</updated>
+    <updated>2025-05-15T01:22:07.397Z</updated>
     
     
     <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;工程中有个多层控制器时，调用 &lt;code&gt;dismissViewControllerAnimated&lt;/code&gt; 时不时会不起作用。&lt;/p&gt;
@@ -158,10 +158,10 @@
     <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%B7%AF%E7%94%B1%EF%BC%8C%E6%94%AF%E6%8C%81%E5%A4%9A%E9%A1%B5%E9%9D%A2%E5%AF%BC%E8%88%AA%EF%BC%9F/"/>
     <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%B7%AF%E7%94%B1%EF%BC%8C%E6%94%AF%E6%8C%81%E5%A4%9A%E9%A1%B5%E9%9D%A2%E5%AF%BC%E8%88%AA%EF%BC%9F/</id>
     <published>2025-03-25T06:26:08.000Z</published>
-    <updated>2025-03-26T08:32:16.656Z</updated>
+    <updated>2025-05-15T02:14:16.444Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;如何使用路由，支持多页面导航？&quot;&gt;&lt;a href=&quot;#如何使用路由，支持多页面导航？&quot; class=&quot;headerlink&quot; title=&quot;如何使用路由，支持多页面导航？&quot;&gt;&lt;/a&gt;如何使用路由，支持多页面导航？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%B7%AF%E7%94%B1%EF%BC%8C%E6%94%AF%E6%8C%81%E5%A4%9A%E9%A1%B5%E9%9D%A2%E5%AF%BC%E8%88%AA%EF%BC%9F/17428840890690.jpg&quot;&gt;&lt;/p&gt;</summary>
+    <summary type="html">&lt;h1 id=&quot;如何使用路由，支持多页面导航？&quot;&gt;&lt;a href=&quot;#如何使用路由，支持多页面导航？&quot; class=&quot;headerlink&quot; title=&quot;如何使用路由，支持多页面导航？&quot;&gt;&lt;/a&gt;如何使用路由，支持多页面导航？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17428840890690.jpg&quot;&gt;&lt;/p&gt;</summary>
     
     
     
@@ -179,10 +179,10 @@
     <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/"/>
     <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/</id>
     <published>2025-02-24T08:58:47.000Z</published>
-    <updated>2025-03-26T08:32:10.033Z</updated>
+    <updated>2025-05-15T02:10:58.775Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;如何实现隐藏菜单，快速测试与验证？&quot;&gt;&lt;a href=&quot;#如何实现隐藏菜单，快速测试与验证？&quot; class=&quot;headerlink&quot; title=&quot;如何实现隐藏菜单，快速测试与验证？&quot;&gt;&lt;/a&gt;如何实现隐藏菜单，快速测试与验证？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/17403876634367.jpg&quot;&gt;&lt;/p&gt;</summary>
+    <summary type="html">&lt;h1 id=&quot;如何实现隐藏菜单，快速测试与验证？&quot;&gt;&lt;a href=&quot;#如何实现隐藏菜单，快速测试与验证？&quot; class=&quot;headerlink&quot; title=&quot;如何实现隐藏菜单，快速测试与验证？&quot;&gt;&lt;/a&gt;如何实现隐藏菜单，快速测试与验证？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17403876634367.jpg&quot;&gt;&lt;/p&gt;</summary>
     
     
     
@@ -246,11 +246,11 @@
     <link href="https://fengyanxin.github.io/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8E-DeepSeek-%E9%97%B2%E8%81%8A/"/>
     <id>https://fengyanxin.github.io/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8E-DeepSeek-%E9%97%B2%E8%81%8A/</id>
     <published>2025-02-13T07:46:09.000Z</published>
-    <updated>2025-02-13T09:48:59.294Z</updated>
+    <updated>2025-05-15T02:21:03.338Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;第一次与-DeepSeek-闲聊&quot;&gt;&lt;a href=&quot;#第一次与-DeepSeek-闲聊&quot; class=&quot;headerlink&quot; title=&quot;第一次与 DeepSeek 闲聊&quot;&gt;&lt;/a&gt;第一次与 DeepSeek 闲聊&lt;/h1&gt;&lt;h2 id=&quot;认知&quot;&gt;&lt;a href=&quot;#认知&quot; class=&quot;headerlink&quot; title=&quot;认知&quot;&gt;&lt;/a&gt;认知&lt;/h2&gt;&lt;p&gt;问问他是谁？&lt;/p&gt;
-&lt;p&gt;&lt;img data-src=&quot;/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8E-DeepSeek-%E9%97%B2%E8%81%8A/17394331659337.jpg&quot;&gt;&lt;/p&gt;</summary>
+&lt;p&gt;&lt;img data-src=&quot;https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394331659337.jpg&quot;&gt;&lt;/p&gt;</summary>
     
     
     
@@ -268,10 +268,10 @@
     <link href="https://fengyanxin.github.io/GitHub/%E3%80%90GitHub%E3%80%91GitHub-Actions-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/"/>
     <id>https://fengyanxin.github.io/GitHub/%E3%80%90GitHub%E3%80%91GitHub-Actions-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</id>
     <published>2025-02-10T07:46:28.000Z</published>
-    <updated>2025-02-11T02:12:35.935Z</updated>
+    <updated>2025-05-14T09:38:53.606Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;一、GitHub-Actions-是什么？&quot;&gt;&lt;a href=&quot;#一、GitHub-Actions-是什么？&quot; class=&quot;headerlink&quot; title=&quot;一、GitHub Actions 是什么？&quot;&gt;&lt;/a&gt;一、GitHub Actions 是什么？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/GitHub/%E3%80%90GitHub%E3%80%91GitHub-Actions-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/GitHub%20Actions.jpg&quot;&gt;&lt;/p&gt;</summary>
+    <summary type="html">&lt;h1 id=&quot;一、GitHub-Actions-是什么？&quot;&gt;&lt;a href=&quot;#一、GitHub-Actions-是什么？&quot; class=&quot;headerlink&quot; title=&quot;一、GitHub Actions 是什么？&quot;&gt;&lt;/a&gt;一、GitHub Actions 是什么？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/GitHub%20Actions.jpg&quot;&gt;&lt;/p&gt;</summary>
     
     
     
@@ -287,10 +287,10 @@
     <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/09%EF%BD%9C%E5%BC%80%E5%85%B3%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E5%8A%9F%E8%83%BD%E5%BC%80%E5%85%B3%EF%BC%8C%E6%94%AF%E6%8C%81%E4%BA%A7%E5%93%81%E5%BF%AB%E9%80%9F%E8%BF%AD%E4%BB%A3/"/>
     <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/09%EF%BD%9C%E5%BC%80%E5%85%B3%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E5%8A%9F%E8%83%BD%E5%BC%80%E5%85%B3%EF%BC%8C%E6%94%AF%E6%8C%81%E4%BA%A7%E5%93%81%E5%BF%AB%E9%80%9F%E8%BF%AD%E4%BB%A3/</id>
     <published>2025-02-10T02:34:16.000Z</published>
-    <updated>2025-03-26T08:32:05.582Z</updated>
+    <updated>2025-05-15T02:07:58.810Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;如何使用功能开关，支持产品快速迭代&quot;&gt;&lt;a href=&quot;#如何使用功能开关，支持产品快速迭代&quot; class=&quot;headerlink&quot; title=&quot;如何使用功能开关，支持产品快速迭代&quot;&gt;&lt;/a&gt;如何使用功能开关，支持产品快速迭代&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/09%EF%BD%9C%E5%BC%80%E5%85%B3%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E5%8A%9F%E8%83%BD%E5%BC%80%E5%85%B3%EF%BC%8C%E6%94%AF%E6%8C%81%E4%BA%A7%E5%93%81%E5%BF%AB%E9%80%9F%E8%BF%AD%E4%BB%A3/17391673736001.jpg&quot;&gt;&lt;/p&gt;</summary>
+    <summary type="html">&lt;h1 id=&quot;如何使用功能开关，支持产品快速迭代&quot;&gt;&lt;a href=&quot;#如何使用功能开关，支持产品快速迭代&quot; class=&quot;headerlink&quot; title=&quot;如何使用功能开关，支持产品快速迭代&quot;&gt;&lt;/a&gt;如何使用功能开关，支持产品快速迭代&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17391673736001.jpg&quot;&gt;&lt;/p&gt;</summary>
     
     
     
@@ -308,7 +308,7 @@
     <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
     <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/</id>
     <published>2025-01-21T07:32:12.000Z</published>
-    <updated>2025-02-24T01:38:49.603Z</updated>
+    <updated>2025-05-14T09:49:04.110Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;blockquote&gt;
@@ -330,10 +330,10 @@
     <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/"/>
     <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/</id>
     <published>2025-01-20T03:17:14.000Z</published>
-    <updated>2025-03-26T08:32:00.071Z</updated>
+    <updated>2025-05-15T02:05:43.949Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;DesignKit-组件桥接设计与开发规范&quot;&gt;&lt;a href=&quot;#DesignKit-组件桥接设计与开发规范&quot; class=&quot;headerlink&quot; title=&quot;DesignKit 组件桥接设计与开发规范&quot;&gt;&lt;/a&gt;DesignKit 组件桥接设计与开发规范&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/08%EF%BD%9C%E8%AE%BE%E8%AE%A1%E7%BB%84%E4%BB%B6%EF%BC%9ADesignKit%E7%BB%84%E4%BB%B6%E6%A1%A5%E6%8E%A5%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/17373431283113.jpg&quot;&gt;&lt;/p&gt;</summary>
+    <summary type="html">&lt;h1 id=&quot;DesignKit-组件桥接设计与开发规范&quot;&gt;&lt;a href=&quot;#DesignKit-组件桥接设计与开发规范&quot; class=&quot;headerlink&quot; title=&quot;DesignKit 组件桥接设计与开发规范&quot;&gt;&lt;/a&gt;DesignKit 组件桥接设计与开发规范&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17373431283113.jpg&quot;&gt;&lt;/p&gt;</summary>
     
     
     
@@ -351,10 +351,10 @@
     <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/"/>
     <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/</id>
     <published>2025-01-17T06:17:26.000Z</published>
-    <updated>2025-03-26T08:31:17.052Z</updated>
+    <updated>2025-05-15T02:01:48.560Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;如何统一设计规范，提高沟通效率？&quot;&gt;&lt;a href=&quot;#如何统一设计规范，提高沟通效率？&quot; class=&quot;headerlink&quot; title=&quot;如何统一设计规范，提高沟通效率？&quot;&gt;&lt;/a&gt;如何统一设计规范，提高沟通效率？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/17370948031886.jpg&quot;&gt;&lt;/p&gt;</summary>
+    <summary type="html">&lt;h1 id=&quot;如何统一设计规范，提高沟通效率？&quot;&gt;&lt;a href=&quot;#如何统一设计规范，提高沟通效率？&quot; class=&quot;headerlink&quot; title=&quot;如何统一设计规范，提高沟通效率？&quot;&gt;&lt;/a&gt;如何统一设计规范，提高沟通效率？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17370948031886.jpg&quot;&gt;&lt;/p&gt;</summary>
     
     
     
@@ -372,7 +372,7 @@
     <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/"/>
     <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</id>
     <published>2025-01-17T05:54:45.000Z</published>
-    <updated>2025-02-11T05:46:45.926Z</updated>
+    <updated>2025-05-14T09:40:52.878Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;一、控制台打印-no-src-attr-skipped…&quot;&gt;&lt;a href=&quot;#一、控制台打印-no-src-attr-skipped…&quot; class=&quot;headerlink&quot; title=&quot;一、控制台打印 no src attr, skipped…&quot;&gt;&lt;/a&gt;一、控制台打印 no src attr, skipped…&lt;/h2&gt;&lt;p&gt;原因：这是因为 &lt;code&gt;hexo-asset-image&lt;/code&gt;插件没有捕捉到图片&lt;code&gt;src&lt;/code&gt;&lt;/p&gt;
@@ -392,7 +392,7 @@
     <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/"/>
     <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</id>
     <published>2025-01-16T06:04:12.000Z</published>
-    <updated>2025-04-16T07:58:24.806Z</updated>
+    <updated>2025-05-15T01:21:07.712Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;一、简介&quot;&gt;&lt;a href=&quot;#一、简介&quot; class=&quot;headerlink&quot; title=&quot;一、简介&quot;&gt;&lt;/a&gt;一、简介&lt;/h2&gt;&lt;p&gt;Next 主题是 &lt;a href=&quot;https://hexo.io/zh-cn&quot;&gt;Hexo&lt;/a&gt; 上使用最广，同时在 GitHub 上也是 Star 最多的主题，bug 修复和功能更新也比较快。当前博客就是使用 Hexo 配合 Next 主题搭建的&lt;/p&gt;
