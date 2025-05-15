@@ -14,13 +14,13 @@ categories:
 
 ### 1.启动 Sublime Test
 
-![](assets/16787755102992.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787755102992.jpg)
 
 <!-- more -->
 
 ### 2.打开的 Sublime Test
 
-![](assets/16787755213456.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787755213456.jpg)
 
 
 ### 3.写入或者复制进去脚本代码
@@ -33,17 +33,17 @@ hexo g
 hexo s
 ```
 
-![](assets/16787755345365.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787755345365.jpg)
 
 ### 4.另存为 .sh 文件，导入 hexo 文件夹
 
-![](assets/16787755472530.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787755472530.jpg)
 
 ## 二、赋予脚本可执行权限
 
 ### 1.cd到编写的 .sh 文件所在目录
 
-![](assets/16787755599104.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787755599104.jpg)
 
 ### 2.执行 chmod +x 指令
 

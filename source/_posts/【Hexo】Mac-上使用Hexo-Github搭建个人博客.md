@@ -43,7 +43,7 @@ GitHub 那就更不用说了，做程序员的都知道，它是多nice的一个
 1. 官网下载
 下载地址：https://nodejs.org/en/
 
-![16778370777438](assets/16778370777438.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778370777438.jpg)
 
 2. 使用homebrew安装
 
@@ -55,7 +55,7 @@ brew install node@x
 ```
 安装完成之后，可以用 *npm -v* 查询验证，如果不指定版本安装为最新版本
 
-![16778374510393](assets/16778374510393.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778374510393.jpg)
 
 ### 安装Hexo
 
@@ -78,7 +78,7 @@ cnpm install -g hexo-cli
 ```
 安装成功后，可以使用 *hexo -v* 命令查看一下hexo版本：
 
-![16778379318597](assets/16778379318597.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778379318597.jpg)
 
 ## 初始化Hexo Blog
 
@@ -94,11 +94,11 @@ hexo init
 ```
 初始化成功如下：
 
-![16778382111564](assets/16778382111564.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778382111564.jpg)
 
 这时候Blogs下的目录结构如下：
 
-![16778382603905](assets/16778382603905.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778382603905.jpg)
 
 ### 本地启动Hexo
 
@@ -107,11 +107,11 @@ hexo init
 hexo s
 ```
 
-![16778384529301](assets/16778384529301.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778384529301.jpg)
 
 ### 浏览器打开博客网站
 
-![16778384888543](assets/16778384888543.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778384888543.jpg)
 
 ## 创建博客文章
 
@@ -124,7 +124,7 @@ hexo n "first blog"
 
 文章在Blogs目录下的结构如下：
 
-![16778386968316](assets/16778386968316.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778386968316.jpg)
 
 ### 清理项目缓存
 
@@ -150,7 +150,7 @@ hexo s
 ```
 浏览器页面展示如下：
 
-![16778388704782](assets/16778388704782.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778388704782.jpg)
 
 ## 修改网站主题
 
@@ -163,17 +163,17 @@ Hexo框架默认的是landscape主题，Hexo上有三百多种主题，大家可
 git clone https://github.com/theme-next/hexo-theme-next themes/next
 ```
 
-![16778391682864](assets/16778391682864.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778391682864.jpg)
 
 我们下载的主题都存放在Blogs/themes文件夹下：
 
-![16778392610610](assets/16778392610610.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778392610610.jpg)
 
 ### 修改项目配置文件
 
 主题下载下来之后，我们需要在项目配置文件_config.yml里面修改我们的主题：
 
-![16778393394648](assets/16778393394648.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778393394648.jpg)
 
 把默认的landscape修改为我们下载好的主题 next
 
@@ -195,7 +195,7 @@ hexo s
 Tips：重新生成项目和本地启动项目可以合并： *hexo g & hexo s*
 再次打开项目，效果图如下：
 
-![16778394696679](assets/16778394696679.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778394696679.jpg)
 
 到这里，我们的主题修改就完成了，后期我们可以根据自己的需要去修改next的配置文件，让我们的博客网站更加个性化。
 
@@ -211,7 +211,7 @@ Tips：重新生成项目和本地启动项目可以合并： *hexo g & hexo s*
 
 在Github里创建一个存放博客项目的仓库，操作如下：
 
-![16778397130902](assets/16778397130902.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778397130902.jpg)
 
 这里有几个注意点：
 
@@ -223,7 +223,7 @@ Tips：重新生成项目和本地启动项目可以合并： *hexo g & hexo s*
 
 创建之后，我们就有了一个存放博客项目仓库：
 
-![16778399347942](assets/16778399347942.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778399347942.jpg)
 
 ### 安装Hexo部署插件
 
@@ -238,11 +238,11 @@ cnpm install --save hexo-deployer-git
 
 好了，万事俱备，只欠修改 *_config.yml* 文件了，打开_config.yml文件，拖拽到最后，修改文件：
 
-![16778401117276](assets/16778401117276.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778401117276.jpg)
 
 修改为：
 
-![16778401892146](assets/16778401892146.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778401892146.jpg)
 
 注意：*repo* 为你刚创建的Github项目的地址，如果你是使用的 *vim* 打开的 *_config.yml*，记得修改了要 *:wq* 保存退出
 
@@ -275,7 +275,7 @@ hexo d
 
 可以在以下路径查看：
 
-![16778403847380](assets/16778403847380.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16778403847380_2.jpg)
 
 最后
 

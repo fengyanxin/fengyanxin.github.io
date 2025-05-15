@@ -9,7 +9,7 @@ categories:
 ---
 # 如何使用 Ruby 工具链统一开发环境？
 
-![](assets/2021-03-17_10.25.34.png)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/2021-03-17_10.25.34.png)
 
 <!-- more -->
 
@@ -31,7 +31,7 @@ categories:
 
 下面一起来看看怎样搭建一个统一的开发环境吧。
 
-![](assets/2021-03-17_10.02.14.png)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/2021-03-17_10.02.14.png)
 
 通常，统一的开发环境应该从操作系统开始。对于 iOS 开发来说，**MacOS** 是目前 iOS 开发唯一支持的操作系统。在公司，MacOS 的版本一般由 IT 部门统一管理和更新。要注意，当公司统一更新了我们开发环境的 MacOS 版本以后，需要同时更新 CI 上 MacOS 的版本，以保持一致。
 
@@ -41,11 +41,11 @@ categories:
 
 像我们将要开发的这款类似朋友圈的 Moments App 项目，我就在对应的 README.md 文件里标明了需要使用 `Xcode Version 12.2 (12B45b)`。具体内容你也可以在代码仓库找到。
 
-![](assets/2021-03-17_10.12.38.png)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/2021-03-17_10.12.38.png)
 
 那我们怎样才能保证每个人都安装同一个版本号的 Xcode 呢？技巧就是我们不要到有自动更新功能的 Mac App Store 中下载 Xcode，而是到苹果的开发者网站搜索并下载。
 
-![](assets/2021-03-17_10.14.30.png)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/2021-03-17_10.14.30.png)
 
 有时候我们会同时开发多个项目，这样有可能要安装多个不同版本的 Xcode。如果你的机器有多于一个版本的 Xcode，此时需要特别注意，为了保证所使用的编译器版本一致，在每次执行自动化命令之前（如执行`bundle exec fastlane test`），要先使用`xcode-select -s`来选择该项目所对应版本的 Xcode。
 
@@ -141,13 +141,13 @@ bundle exec pod install
 
 我一般会在 `gitignore.io` 里面输入关键字，例如 Xcode，Swift 等，然后该网站会帮我们生成一个默认的 .gitignore 文件。咱们项目 Moments App 的.gitignore 文件你可以到[拉勾教育的仓库中](https://github.com/lagoueduCol/iOS-linyongjian/blob/main/.gitignore)查看。
 
-![](assets/2021-03-17_10.24.47.png)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/2021-03-17_10.24.47.png)
 
 ## **总结**
 
 以上，我们通过 Xcode、rbenv、RubyGems 和 Bundler 搭建一个统一的 iOS 开发和构建环境。
 
-![](assets/2021-03-17_10.25.34.png)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/2021-03-17_10.25.34.png)
 
 再次强调下，为了让各个开发和构建环境能保持一致，我们要把 .ruby-version、 Gemfile 和 Gemfile.lock 文件通过 Git 统一管理起来，并共享给整个项目团队使用。
 
@@ -210,7 +210,7 @@ curl -sSL https://get.rvm.io | bash -s stable
 
 至此，`RVM` 就算安装完成了，我们可以通过 `rvm -v` 代码验证安装
 
-![](assets/16786723453552.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16786723453552.jpg)
 
 ## RVM 使用
 
@@ -220,7 +220,7 @@ curl -sSL https://get.rvm.io | bash -s stable
  rvm list known
 ```
 
-![](assets/16786726089796.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16786726089796.jpg)
 
 ### 安装一个 Ruby 版本
 
@@ -234,7 +234,7 @@ rvm install 3.0.0
 rvm list
 ```
 
-![](assets/16786729194881.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16786729194881.jpg)
 
 > => 指向的是当前使用ruby版本
 > =* 指向的是当前和默认ruby版本
@@ -278,9 +278,9 @@ which -a ruby
 which ruby
 ```
 
-![](assets/16786736350427.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16786736350427.jpg)
 
-![](assets/16786739572124.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16786739572124.jpg)
 
 ### 查看 rvm 命令帮助
 
@@ -288,7 +288,7 @@ which ruby
 rvm help 
 ```
 
-![](assets/16786740460740.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16786740460740.jpg)
 
 
 

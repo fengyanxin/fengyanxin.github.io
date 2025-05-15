@@ -10,7 +10,7 @@ categories:
 
 # 一、配置准备：如何搭建多环境支持，为 App 开发作准备
 
-![](assets/16788668316765.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788668316765.jpg)
 
 <!-- more -->
 
@@ -38,7 +38,7 @@ categories:
 
 在 Moments App 项目中，主 Target 就是 Moments，Unit Test Target 是 MomentsTests， UI Test Target 就是 MomentsUITests。
 
-![](assets/16788669693800.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788669693800.jpg)
 
 ### Xcode Target
 
@@ -46,7 +46,7 @@ categories:
 
 例如在我们的 Moments App 项目中，负责单元测试的MomentsTestsTarget 就指定了 14 个测试文件需要构建（见下图的 Compile Sources），并且该 Target 依赖了主 App TargetMoments（见下图的 Dependencies）。
 
-![](assets/16788669841278.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788669841278.jpg)
 
 有了 Target 的定义，构建系统就可以读取相关的源代码文件进行编译，然后把相关的资源文件进行打包，并严格按照 Target 所指定的设置和步骤执行。那么 Target 所指定的设置哪里来的呢？来自 Build Settings。
 
@@ -56,7 +56,7 @@ categories:
 
 通常，一条 Build Setting 信息由两部分组成：名字和值。比如下面是一条 Setting 信息，`iOS Development Target`是名字，而`iOS 14.0`是值。
 
-![](assets/16788670287057.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788670287057.jpg)
 
 有了这些基础知识以后，接下来我就结合 Moments App 来和你介绍下如何进行多环境配置，从而生成不同环境版本的 App。
 
@@ -68,7 +68,7 @@ categories:
 
 当我们在 Xcode 上新建一个项目的时候，Xcode 会自动生成两个 Configuration：`Debug`和`Release`。Debug 用于日常的本地开发，Release 用于构建和分发 App。而在我们的 Moments App 项目中，有三个 configuration：`Debug`，`Internal` 和 `AppStore`。它们分别用于构建`开发环境`、`测试环境`和`生产环境`。 其中 Internal 和 AppStore 是从自动生成的 Release 拷贝而来的。
 
-![](assets/16788670470474.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788670470474.jpg)
 
 那什么是 Build Configuration 呢？
 
@@ -76,7 +76,7 @@ categories:
 
 有了 Build Configuration 以后，我们就能为同一个 Build Setting 设置不同的值。例如`Build Active Architecture Only`在 Debug configuration 是`Yes`，而在 Internal 和 AppStore configuration 则是`No`。这样就能做到同一份源代码通过使用不同的 Build Configuration 来构建出功能不一样的 App 了。
 
-![](assets/16788670611837.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788670611837.jpg)
 
 那么，在构建过程中怎样才能选择不同的 Build Configuration 呢？答案是使用 Xcode Scheme。
 
@@ -86,30 +86,30 @@ categories:
 
 我们一起看一下 Moments App 项目的 Scheme 吧。 Moments App 项目有三个 Scheme 来分别代表三个环境，`Moments Scheme` 用于开发环境，`Moments-Internal Scheme` 用于测试环境，而 `Moments-AppStore Scheme` 用于生产环境。
 
-![](assets/16788670751535.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788670751535.jpg)
 
 下面是`MomentsScheme` 的配置。
 
-![](assets/16788670865410.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788670865410.jpg)
 
 左边是该 Scheme 的各个操作，如当前选择了 Build 操作；右边是对应该操作的配置，比如 Build 对应的 Scheme 可以构建三个不同的 Targets。不同的 Scheme 所构建的 Target 数量可以不一样，例如下面是`Moments-InternalScheme` 的配置。
 
-![](assets/16788670987138.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788670987138.jpg)
 
 该 Scheme 只构建主 App TargetMoments，而不能构建其他两个测试 Target。
 
 当我们选择 Run、Test、Profile、 Analyze 和 Archive 等操作时，在右栏有一个很关键的配置
 叫作 Build Configuration，我们可以通过下拉框来选择 Moments App 项目里面三个 Configuration （Debug，Internal 和 AppStore） 中的其中一个。
 
-![](assets/16788671106806.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788671106806.jpg)
 
 为了方便管理，我们通常的做法是，一个 `Scheme` 对应一个 `Configuration`。有了这三个 Scheme 以后，我们就可以很方便地构建出 `Moments α（开发环境）`，`Moments β（测试环境`）和 `Moments（生产环境）`三个功能差异的 App。
 
-![](assets/16788671219745.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788671219745.jpg)
 
 你可能已经注意到这三个 App 的名字都不一样，怎么做到的呢？实际上是我们为不同的 Configuration 设置了不一样的 Build Setting。其中决定 App 名字的 Build Setting 叫作`PRODUCT_BUNDLE_NAME`，然后在 `Info.plist` 文件里面为 `Bundle name` 赋值，就能构建出名字不一样的 App。
 
-![](assets/16788671327468.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788671327468.jpg)
 
 为了构建出不同环境版本的 App，我们需要经常为各个 Build Configuration 下的 Build Setting 设置不一样的值。 在这其中，使用好 xcconfig 配置文件就显得非常重要。
 
@@ -119,11 +119,11 @@ xcconfig 会起到什么作用呢？
 
 一般修改 Build Setting 的办法是在 Xcode 的 Build Settings 界面上进行。 例如下面的例子中修改 Suppress Warnings。
 
-![](assets/16788671456874.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788671456874.jpg)
 
 这样做有一些不好的地方，首先是手工修改很容易出错，例如有时候很难看出来修改的 Setting 到底是 Project 级别的还是 Target 级别的。其次，最关键的是每次修改完毕以后都会修改了 xcodeproj 项目文档 （如下图所示），导致 Git 历史很难查看和对比。
 
-![](assets/16788671580857.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788671580857.jpg)
 
 幸运的是，Xcode 为我们提供了一个统一管理这些 Build Setting 的便利方法，那就是使用 xcconfig 配置文件来管理。
 
@@ -192,7 +192,7 @@ FRAMEWORK_SEARCH_PATHS = $(inherited) $(PROJECT_DIR)
 
 下面我们一起来看看 Moments App 项目是怎样管理 xcconfig 配置文件吧。
 
-![](assets/16788671799157.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788671799157.jpg)
 
 我们把所有 xcconfig 文件分成三大类：`Shared`、 `Project` 和 `Targets`。
 
@@ -291,15 +291,15 @@ PRODUCT_BUNDLE_IDENTIFIER = com.ibanimatable.moments
 
 一旦有了这些 xcconfig 配置文件，今后我们就可以在 Xcode 的 Project Info 页面里的 Configurations 上引用它们。
 
-![](assets/16788672041808.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788672041808.jpg)
 
 下面是所有 Configurations 所引用的 xcconfig 文件。
 
-![](assets/16788672157238.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788672157238.jpg)
 
 在配置好所有 xcconfig 文件的引用以后，可以在 Build Settings 页面查看某个 Build Setting 的生效值。我们以`IPHONEOS_DEPLOYMENT_TARGET`为例，一起看看。
 
-![](assets/16788672309236.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788672309236.jpg)
 
 当我们选择`All`和`Levels`时，可以看到所有配置信息分成了不同的列。这些列分别代表前面的 Build Setting 优先级：
 
@@ -319,7 +319,7 @@ PRODUCT_BUNDLE_IDENTIFIER = com.ibanimatable.moments
 
 本讲我介绍了如何通过 Build Configuration、 Xcode Scheme 以及 xcconfig 配置文件来统一项目的构建配置，从而搭建出多个不同环境，为后期构建出对应环境的 App 做准备。
 
-![](assets/16788672568915.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788672568915.jpg)
 
 在使用 xcconfig 配置时，还是需要注意以下两点：
 
@@ -342,15 +342,15 @@ PRODUCT_BUNDLE_IDENTIFIER = com.ibanimatable.moments
 
 (1)、`Duplicate` 复制 Target：
 
-![](assets/16788672796397.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788672796397.jpg)
 
 (2)、可以生成了新的 target 和 info.plist 文件：
 
-![](assets/16788672924486.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788672924486.jpg)
 
 (3)、修改 target 名字：
 
-![](assets/16788673034270.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788673034270.jpg)
 
 此处：
 
@@ -360,31 +360,31 @@ PRODUCT_BUNDLE_IDENTIFIER = com.ibanimatable.moments
 
 (4)、配置 Schemes：
 
-![](assets/16788673161851.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788673161851.jpg)
 
-![](assets/16788673310718.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788673310718.jpg)
 
 修改成功如下：
 
-![](assets/16788673438173.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788673438173.jpg)
 
 ### 2、配置工程相关信息
 
 我们现在已经有了三个Target，接下来我们为他们命名不同地 `Display Name` 、`Bundle Identifier`，并引入不同的 `Assets.xcassets`资源以生成和管理不同的app。
 
-![](assets/16788673572335.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788673572335.jpg)
 
 为不同的 app 引入不同的 `Assets.xcassets` 图片资源。
 
-![](assets/16788673685116.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788673685116.jpg)
 
 然后导入图片即可：
 
-![](assets/16788673830388.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788673830388.jpg)
 
 不同图片资源的使用可以自主选择：
 
-![](assets/16788673961061.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788673961061.jpg)
 
 ### 3、宏定义配置
 
@@ -392,7 +392,7 @@ PRODUCT_BUNDLE_IDENTIFIER = com.ibanimatable.moments
 
 找到设置路径：
 
-![](assets/16788674590270.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788674590270.jpg)
 
 以下是 swift 情况下三种 “宏定义” 的配置方式：
 
@@ -418,11 +418,11 @@ APPSTORE
 
 三种方式任选其一即可：
 
-![](assets/16788674715539.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788674715539.jpg)
 
 分别为 target 设置 “宏定义” 之后，我们就可以在代码中使用了：
 
-![](assets/16788674824238.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788674824238.jpg)
 
 ### 4、Podfile 设置
 

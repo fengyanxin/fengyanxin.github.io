@@ -9,7 +9,7 @@ categories:
 
 # 一、GitHub Actions 是什么？
 
-![](assets/GitHub%20Actions.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/GitHub%20Actions.jpg)
 
 <!-- more -->
 
@@ -23,7 +23,7 @@ categories:
 
 GitHub 做了一个 [官方市场](https://github.com/marketplace?type=actions)，可以搜索到他人提交的 `actions`。另外，还有一个 [awesome actions](https://github.com/sdras/awesome-actions) 的仓库，也可以找到不少 `action`。
 
-![](assets/17391740726196.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17391740726196.jpg)
 
 # 二、基本概念
 
@@ -192,7 +192,7 @@ jobs:
 1. 在 Github 项目
 `Settings->Secrets->Actions`，名称为：`GITLAB`，值为：`~/.ssh/`目录下`id_rsa` 文件内容，⚠️注意不是 `id_rsa.pub`：
 
-![](assets/17374486339840.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374486339840.jpg)
 
 2. GitHub 创建 Github workflow
 
@@ -225,7 +225,7 @@ jobs:
 
 把文件推送到 github 中，这时应该可以在 github action 看见刚刚的 workflow 在运行了。
 
-![](assets/17391789629942.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17391789629942.jpg)
 
 以后，项目每次修改后推送源码，GitHub Actions 都会自动运行，将构建产物发布到网页。
 

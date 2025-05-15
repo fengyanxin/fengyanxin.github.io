@@ -71,7 +71,7 @@ UINavigationController *nav = [[UINavigationController alloc] initWithRootViewCo
 
 那么很显然，执行 `[self dismissViewControllerAnimated:YES completion:nil]` 的流程是这样子的：
 
-![](assets/17449556028643.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17449556028643.jpg)
 
 在我们上面讲的复杂场景下，我们怎么一次性把当前 `present` 出来的控制都 `dismiss` 掉呢？可以通过下面的方式来查找到最顶层的 `presentingViewController`（其实，通常是我们 `window` 的 `rootViewController`）让它来执行 `dismiss` 就好了，剩下的工作可能就是处理一下导航中的控制器了。
 

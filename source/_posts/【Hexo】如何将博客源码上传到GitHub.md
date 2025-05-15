@@ -38,11 +38,11 @@ categories:
 
 先在 GitHub 项目创建一个远程分支 `hexo`
 
-![](assets/16787834628307.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787834628307.jpg)
 
 将其设置为默认分支
 
-![](assets/16787836604366.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787836604366.jpg)
 
 #### (2) 打包将要推送到GitHub上的原始文件
 
@@ -89,7 +89,7 @@ deploy:
   branch: main
 ```
 
-![](assets/16787847648363.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787847648363.jpg)
 
 修改完成，执行以下代码进行管理：
 

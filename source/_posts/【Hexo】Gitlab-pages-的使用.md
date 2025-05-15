@@ -56,7 +56,7 @@ ssh-keygen -t rsa -C '邮箱地址'
 
 因为在之前我的电脑上是配置过的，所以直接输入 `cat ~/.ssh/id_rsa.pub` 即可查看，然后进行配置：
 
-![](assets/17374471576779.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374471576779.jpg)
 
 ### 开启 GitLab Pages
 
@@ -68,19 +68,19 @@ ssh-keygen -t rsa -C '邮箱地址'
 
 在设置中找到 访问令牌、然后添加
 
-![](assets/17374482702595.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374482702595.jpg)
 
-![](assets/17374484172632.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374484172632.jpg)
 
 * 在 Gitlab
 `设置->安全设置->SSH公钥`，标题可以随便起名，值为：`id_rsa.pub`文件内容：
 
-![](assets/17374488054875.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374488054875.jpg)
 
 * 在 Github 项目
 `Settings->Secrets->Actions`，名称为：`GITLAB`，值为：`~/.ssh/`目录下`id_rsa` 文件内容，⚠️注意不是 `id_rsa.pub`：
 
-![](assets/17374486339840.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374486339840.jpg)
 
 * GitHub 创建 Github workflow
 
@@ -113,7 +113,7 @@ jobs:
 
 注意：如果同步到 Gitlab 的 action 运行报错时可以在项目中的 `Settings->Repository->Protected branches`右边的 `Expand`,把`Allowed to force push`按钮打开，或者点`Unprotect` :
 
-![](assets/17374499679706.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374499679706.jpg)
 
 #### 2、配置 Gitlab 的 ci 文件 .gitlab-ci.yml 文件
 
@@ -138,25 +138,25 @@ pages:
 
 或者在 Gitlab 项目下添加 CI，文件内容如上，添加完成后会在项目目录下生成一个 `.gitlab-ci.yml`：
 
-![](assets/17374503143964.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374503143964.jpg)
 
-![](assets/17374503426979.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374503426979.jpg)
 
 #### 3、配置 Gitlab 的 pages
 
 * 上面的 Github 代码同步 和 Gitlab CI 执行完成之后，会在项目中生成一个 Gitlab pages， 如下图：
 
-![](assets/17374507141434.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374507141434.jpg)
 
 * 点开 `部署 - Pages`可以查看：
 
-![](assets/17374507888015.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374507888015.jpg)
 
-![](assets/17374509003727.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374509003727.jpg)
 
 * 此时，输入 Pages 的域名就可以查看自己的博客了：
 
-![](assets/17374511461885.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374511461885.jpg)
 
 至此，Gitlab pages 的部署就完成了！
 
@@ -164,17 +164,17 @@ pages:
 
 ## Gitlab 将不再为中国用户服务
 
-![](assets/17374514542403.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374514542403.jpg)
 
 近日，GitLab 发布了一则重要通知 **《Important Change to Your GitLab.com Account》**，宣布将不再为位于 **中国大陆、澳门和香港** 的用户提供 `GitLab.com` 账户服务。该平台建议受影响的用户将账户迁移至 `极狐 GitLab（JiHu）`，这是由 GitLab 授权的独立公司，专门为这些地区提供本地化服务。
 
-![](assets/17403610587765.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17403610587765.jpg)
 
 用户必须在 **2025 年 5 月 8 日** 之前完成迁移，之后 GitLab 将从系统中删除帐户。
 
 所以，以后 `GitLab.com` 就不能用了，只能使用 `极狐 GitLab（JiHu）`，遗憾的是 `极狐 GitLab（JiHu）` 也不再提供 Pages功能了！
 
-![](assets/17374520857005.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17374520857005.jpg)
 
 这一顿操作真的是...!!!
 

@@ -14,15 +14,15 @@ categories:
 
 问问他是谁？
 
-![](assets/17394331659337.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394331659337.jpg)
 
 <!-- more -->
 
 猜猜我是谁？
 
-![](assets/17394331870518.jpg)
-![](assets/17394332250289.jpg)
-![](assets/17394332510099.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394331870518.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394332250289.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394332510099.jpg)
 
 初步探索，发现 DeepSeek 在认知方面非常清晰。
 
@@ -30,51 +30,51 @@ categories:
 
 让 DeepSeek 写写诗，讨论一下 我最喜欢的文学作品《红楼梦》。
 
-![](assets/17394334586394.jpg)
-![](assets/17394334841507.jpg)
-![](assets/17394334983054.jpg)
-![](assets/17394335403760.jpg)
-![](assets/17394335678901.jpg)
-![](assets/17394335841573.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394334586394.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394334841507.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394334983054.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394335403760.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394335678901.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394335841573.jpg)
 
 DeepSeek 在写诗和作词方面的能力可以说是非常优秀了。但是还是有一个弊端，同样的问题再提一遍的话，可能还是相同的回答。
 
-![](assets/17394340026494.jpg)
-![](assets/17394340148141.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394340026494.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394340148141.jpg)
 
 对比一下 ChatGPT 的回答：
 
-![](assets/17394340932045.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394340932045.jpg)
 
 可以说， DeepSeek 是全面领先了！
 
 继续往下，看一下 DeepSeek 对红楼梦细节的了解和理解。
 
-![](assets/17394348961217.jpg)
-![](assets/17394349128924.jpg)
-![](assets/17394349254433.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394348961217.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394349128924.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394349254433.jpg)
 
 再对比一下 ChatGPT：
 
-![](assets/17394349873445.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394349873445.jpg)
 
 是不是又碾压了。
 
 接下来问一个经典问题：
 
-![](assets/17394350676069.jpg)
-![](assets/17394350812486.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394350676069.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394350812486.jpg)
 
 这个回答真的太厉害了，对比 ChatGPT ：
 
-![](assets/17394351551976.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394351551976.jpg)
 
 ChatGPT 简直连小学生都不如！
 
 最后一个问题，重写红楼梦结局，这个也是我非常喜欢问 AI 的问题。
 
-![](assets/17394353064611.jpg)
-![](assets/17394353332103.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394353064611.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394353332103.jpg)
 
 这个回答中规中矩，非常符合原著设定。
 
@@ -82,12 +82,12 @@ ChatGPT 简直连小学生都不如！
 
 ## 技术与代码
 
-![](assets/17394356073888.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394356073888.jpg)
 
-![](assets/17394356682585.jpg)
-![](assets/17394357034760.jpg)
-![](assets/17394357295787.jpg)
-![](assets/17394357395582.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394356682585.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394357034760.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394357295787.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394357395582.jpg)
 
 这个回答确实帮我解决了问题，可以说非常棒了！
 

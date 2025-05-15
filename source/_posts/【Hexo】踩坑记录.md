@@ -47,7 +47,7 @@ $('img').each(function(){
 
 再看控制台输出的 `this`:
 
-![](assets/17370984380125.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17370984380125.jpg)
 
 可以看到这里的路径是 `data-src`，所以，
 
@@ -82,7 +82,7 @@ $('img').each(function(){
 
 ## 三、Github 同步仓库代码到 Gitlab 的 Action 报错
 
-![](assets/17375152368458.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17375152368458.jpg)
 
 `sync-2-gitlab.yml` Action 脚本报错：
 
@@ -108,11 +108,11 @@ Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
 
 成功结果如下：
 
-![](assets/17375156102164.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17375156102164.jpg)
 
 ## 四、GitLab Pages 页面阅读次数不显示
 
-![](assets/17392522637673.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17392522637673.jpg)
 
 现象：将博客在 GitLab Pages 上发布，阅读次数不显示了，GitHub Pages 正常显示
 
@@ -120,4 +120,4 @@ Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
 
 解决：在 Leancloud 的应用设置中，添加 GitLab Pages 域名即可，如下图：
 
-![](assets/17392527665652.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17392527665652.jpg)

@@ -11,7 +11,7 @@ categories:
 
 ## 基本的业务流程：
 
-![](assets/16782576576028.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782576576028.jpg)
 
 <!-- more -->
 
@@ -25,17 +25,17 @@ categories:
 
 #### 1. 登录阿里云控制台，添加产品
 
-![](assets/16782584388892.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782584388892.jpg)
 
 #### 2. 点击添加应用，创建ios和android对应的平台
 
-![](assets/16782585058067.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782585058067.jpg)
 
 ### 二：上传证书
 
 集成阿里云推送，我们需要在阿里云控制台上传两个证书，分别是**开发环境的推送证书**和**生成环境的推送证书**，如下图所示：
 
-![](assets/16782586952344.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782586952344.jpg)
 
 那么我们要如何获取这两个证书呢？
 
@@ -43,50 +43,50 @@ categories:
 
 1.1 在Mac的应用程序中打开钥匙串访问，在顶部菜单栏中选择钥匙串访问>证书助理>从证书颁发机构请求证书
 
-![](assets/16782592582016.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782592582016.jpg)
 
 1.2 在弹出的证书信息中，输入邮箱地址，设置选择储存到磁盘，单击继续将CSR文件存储到本地
 
-![](assets/16782593206219.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782593206219.jpg)
 
 1.3 生成之后，在目录下找到此文件
 
-![](assets/16782593919466.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782593919466.jpg)
 
 #### 2.生成AppID
 
 2.1 登录 [Apple Developer](https://developer.apple.com/account)，选择Certificates，Identifiers & Profiles选项
 
-![](assets/16782595884680.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782595884680.jpg)
 
 2.2 选择Identifiers，项目如果是自动证书管理的话我们可以看到一些以 `XC`开头的 Bundle ID ，如下图所示：
 
 如果是手动证书管理，需要点击`+`号创建 App ID，此处我们自动证书管理为例。
 
-![](assets/16782596990503.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782596990503.jpg)
 
 2.3 在上图的 Identifiers 列表中选择需要配置推送的
 Bundle ID。（如果列表中没有，可以在Xcode工程中配置）
 
-![](assets/16782603043050.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782603043050.jpg)
 
 在上图配置文件中填写Bundle ID，然后勾选`Automatically manage signing`，在下图弹框中选择`Enable Automatic`，然后回到[Apple Developer](https://developer.apple.com/account)，就可以`Identifiers`列表中看到我们刚才设置的`Bundle ID`了。
 
-![](assets/16782604788362.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782604788362.jpg)
 
 2.4 点击Identifiers 列表进入详情，向下划动找到`Push Notification`选项，勾选开启远程推送服务
 
-![](assets/16782606658935.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782606658935.jpg)
 
 #### 3.创建生产和开发推送证书
 
 3.1 点击上图中的`Edit`按钮，进入配置页面
 
-![](assets/16782609693712.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782609693712.jpg)
 
 3.2 单击`Choose File`上传已获取到的CSR文件
 
-![](assets/16782610616057.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782610616057.jpg)
 
 3.3 生成后，`download`到本地
 
@@ -96,26 +96,26 @@ Bundle ID。（如果列表中没有，可以在Xcode工程中配置）
 
 <font color=#ff0000>此处导出.p12文件时需要设置密码，阿里云配置证书时必填</font>
 
-![](assets/16782614735761.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782614735761.jpg)
 
 导出结果如下：
 
-![](assets/16782616606924.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782616606924.jpg)
 
 3.6 在阿里云控制台配置相应的开发和生产证书，如下图所示：
 
-![](assets/16782617708004.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782617708004.jpg)
 
 
 ### 三：下载配置文件并集成
 
 1.在阿里云控制台应用设置找到相应应用，点击`iOS配置下载`，将我们刚才生成好的配置文件下载下来，如下图所示：
 
-![](assets/16782621859000.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782621859000.jpg)
 
 下载完成之后，文件如下图：
 
-![](assets/16782626642638.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782626642638.jpg)
 
 将此文件导入到工程中，可以通过`CloudPushSDK.autoInit`方法自动生成推送配置，下文**功能实现**模块我们将做详细介绍。
 
@@ -153,13 +153,13 @@ import CloudPushSDK
 
 iOS端集成SDK时需要做`-ObjC`配置 ，即应用的 *TARGETS -> Build Settings -> Linking -> Other Linker Flags* ，需添加上`-ObjC`这个属性，否则推送服务无法正常使用 。
 
-![](assets/16782636066930.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782636066930.jpg)
 
 #### 4.打开系统通知
 
 <font color=#ff0000>注意：此处千万不要忘记打开，否则收不到推送，这是一个小点，很难定位</font>
 
-![](assets/16782638087381.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782638087381.jpg)
 
 
 ### 五：功能实现
@@ -316,11 +316,11 @@ public func userNotificationCenter(_ center: UNUserNotificationCenter, openSetti
 
 * iOS远程推送过程如下图所示，APNs推送的通知直接在设备上弹出；
 
-![](assets/16782654264853.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782654264853.jpg)
 
 * 添加Notification Service Extension后，如下图所示，APNs推送的通知在弹出前，可先到达Extension进行处理。
 
-![](assets/16782655214693.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782655214693.jpg)
 
 
 <font color=#ff0000>【注意】OpenAPI 需要调用 setiOSMutableContent(true) 接口，这样Extension才可生效。这里的OpenAPI就是阿里云API了，让后台配置一下setiOSMutableContent(true)就好。</font>
@@ -329,27 +329,27 @@ public func userNotificationCenter(_ center: UNUserNotificationCenter, openSetti
 
 #### 1、点击 file->new->target
 
-![](assets/16782671772445.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782671772445.jpg)
 
 #### 2、选择 iOS->Notification Service Extension
 
-![](assets/16782674597379.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782674597379.jpg)
 
 
 #### 3、选择创建extension的项目target，输入扩展名称，点击finish，即创建扩展完成
 
-![](assets/16782674134664.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782674134664.jpg)
 
 ### 配置Extension
 
 创建完成后，主要有两个文件`NotificationService.swift` 和 `info.plist`
 
-![](assets/16782676305569.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782676305569.jpg)
 
 
 1、首先，需要在扩展对应的target->Signing&Capabilities，点击+Capability，添加push notification
 
-![](assets/16782676848331.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782676848331.jpg)
 
 2、`NotificationService.swift`中主要有两个方法
 
@@ -373,7 +373,7 @@ override func serviceExtensionTimeWillExpire()
 
 接下来，我们就可以对接收到的推送消息做自定义动态修改了。如下图所示：
 
-![](assets/16782680346445.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16782680346445.jpg)
 
 然后我们就可以看到手机接收到的推送变了。
 

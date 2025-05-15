@@ -379,4 +379,4 @@ title可加可不加
 
 效果如下：
 
-![](assets/16781754751832.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16781754751832.jpg)

@@ -10,7 +10,7 @@ categories:
 
 # 如何使用 Git 与 GitHub 统一代码管理流程？
 
-![16784401369610](assets/16784401369610.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16784401369610.jpg)
 
 <!-- more -->
 
@@ -46,7 +46,7 @@ categories:
 
 来看下面这幅。
 
-![16784370985101](assets/16784370985101.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16784370985101.jpg)
 
 举例来说，我有一个同事要开发点赞功能，他就从主分支最新的 `MC1` commit 签出（`checkout`）并新建`feature/add-like-button-to-moments-screen`来进行点赞功能的开发。与此同时，另外一个同事发现了一个用户头像的 UI Bug，她也从 `MC1` commit 签出并新建了`bugfix/fix-avatar-ui-bug`来修改 Bug。
 
@@ -60,7 +60,7 @@ categories:
 
 有了发布分支以后，一旦发生严重的线上事故，例如出现引起高崩溃率的 Bug 时，我们可以马上在发布分支上进行修复。一般的做法是从发布分支上签出一个功能分支，例如当修复点赞按钮引起的崩溃时，我们可以建立一个叫作 `bugfix/fix-like-button-crash` 的功能分支，在修复该崩溃以后马上合并到发布分支，并提交到 App Store ，更新线上的 App。
 
-![16784375243224](assets/16784375243224.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16784375243224.jpg)
 
 由上图可见，当我们把主分支最新的 `MC1` commit 合并到 `release` 分支以后，提交了一个版本号为`V2.0`的 App 到 App Store。当我们通过查看崩溃报告，得知新上线的点缀功能引起很多崩溃时，可以采取如下措施：
 
@@ -82,7 +82,7 @@ categories:
 
 下面我们一起看一套完整的，并经过我们多年实践证明过的 PR 流程。
 
-![16784381478018](assets/16784381478018.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16784381478018.jpg)
 
 这套流程分成六步。
 
@@ -94,13 +94,13 @@ categories:
 
 在我们 Moments App 项目中，为了方便开发者编写 PR 描述文档，我们建立了一个模板文件`pull_request_template.md`。当我们提交 PR 的时候，GitHub 会自动读取并准备好描述文档的模板，我们只需要填写相关内容即可。
 
-![16784385522677](assets/16784385522677.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16784385522677.jpg)
 
 你可以到 [此代码仓库](https://github.com/lagoueduCol/iOS-linyongjian/blob/main/.github/pull_request_template.md) 查看该模板文件。
 
 在提交 **PR** 的时候，我们还可以加上代码审查人（*Reviewer*）来通知他/她审查代码。同时也可以加上分类的标签（*Label*）来方便管理所有的 PR，例如使用 `enhancement` 表示功能开发，使用 `bug` 表示 Bug 修改。如果你的项目由多团队同时开发，我们还会为每个产品团队都建立一个标签，这样就能清楚地知道这个 PR 来自那个产品团队了。
 
-![16784395274002](assets/16784395274002.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16784395274002.jpg)
 
 **第四步**，一旦 PR 提交以后，其他成员就会收到通知消息，他们可以进行代码审查，并把反馈意见留言到 RP 里面。提交者可以根据留言来修改代码和提交新的 commit。当所有留言都修正和完善以后，可以再次通知审查人进行进一步的审查。
 
@@ -118,15 +118,15 @@ categories:
 
 **首先**，我们可以把主分支*保护*起来，不允许任何人直接 Push 到主分支。
 
-![16784396993344](assets/16784396993344.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16784396993344.jpg)
 
 **然后**，要求所有 PR 在合并之前都必须经过一个或以上的*代码审查人*批准。审查人的数量可以根据团队的情况进行调整。
 
-![16784399029329](assets/16784399029329.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16784399029329.jpg)
 
 当 Github 检查到有某些条件不完全符合时，就不允许我们合并该 PR。
 
-![16784399346622](assets/16784399346622.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16784399346622.jpg)
 
 比如，因为我们的 Moments 项目配置了所有的 PR 都必须有一个或以上的代码审查人批准后才能合并。上图可以见 GitHub PR 页面上的 `Merge pull request` 按钮是失效的，并提示 *“Merging can be performed automatically with 1 approving review”（需要一个代码审查通过后才能合并）*。
 
@@ -134,7 +134,7 @@ categories:
 
 在这一讲我介绍了 Git 的分支管理和 GitHub 的 **Pull Request** 流程。根据多年的项目经验，我给出了一套完整的统一代码管理流程，其重点是把 Git 分支分成三类，**主分支、功能分支和发布分支**，然后严格按照 **GitHub Pull Request** 流程来把代码合并到主分支里面。
 
-![16784401369610](assets/16784401369610.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16784401369610.jpg)
 
 有了这个规范，开发者就能严格遵循这个流程贡献代码，从而保证主分支在管控状态，同时也为项目的自动化和工程化打下基础。
 

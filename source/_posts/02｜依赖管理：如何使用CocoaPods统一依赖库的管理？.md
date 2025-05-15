@@ -10,7 +10,7 @@ categories:
 
 # 如何使用 CocoaPods 统一依赖库的管理？
 
-![](assets/16788496868852.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788496868852.jpg)
 
 <!-- more -->
 
@@ -252,7 +252,7 @@ The following pod updates are available:
 
 这一讲我介绍了如何使用 CocoaPods 来统一管理依赖库的版本。特别是根据我自己的经验总结了一套更新 Pod 版本的流程，希望你灵活使用这些步骤，从而少走弯路。
 
-![](assets/16788497199239.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788497199239.jpg)
 
 
 **这里我再特别强调一下，为了保证依赖库版本都能保持一致，尽量不要执行pod update，而是使用通过修改 Podfile 文件里的版本号并执行pod install来更新 Pod 的版本，然后把 Podfile 和 Podfile.lock 文件一同并入 Git 主分支中进行统一管理。**
@@ -280,9 +280,9 @@ brew upgrade carthage
 brew uninstall carthage
 ```
 
-![](assets/16788497339391.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788497339391.jpg)
 
-![](assets/16788497595924.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788497595924.jpg)
 
 
 ### 二、使用 Carthage 下载三方库
@@ -304,7 +304,7 @@ open -a Xcode Cartfile
 github "SnapKit/SnapKit" ~> 5.6.0
 ```
 
-![](assets/16788497742378.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788497742378.jpg)
 
 
 版本含义：如果没有指明版本号，则会自动使用最新的版本
@@ -321,7 +321,7 @@ carthage update
 
 执行成功之后，会在工程目录里生成一个 `Carthage` 的文件夹，里面有自动生成的 `framework`:
 
-![](assets/16788497876744.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788497876744.jpg)
 
 * 有时候 Carthage 更新会出现 arm64 报错：
 
@@ -342,7 +342,7 @@ carthage update --use-xcframeworks
 carthage update --platform iOS --use-xcframeworks
 ```
 
-![](assets/16788498111841.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788498111841.jpg)
 
 ### 三、将下载三方框架集成到项目
 
@@ -350,7 +350,7 @@ carthage update --platform iOS --use-xcframeworks
 
 打开工程文件中的iOS文件夹 -> 将 framework 文件拖入到项目 General 中的 Frameworks，Libraries 中
 
-![](assets/16788498234874.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788498234874.jpg)
 
 #### 2、添加编译脚本：
 
@@ -358,21 +358,21 @@ carthage update --platform iOS --use-xcframeworks
 
 `/usr/local/bin/carthage copy-frameworks`
 
-![](assets/16788498355244.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788498355244.jpg)
 
 #### 3、编译，导入头文件使用
 
 编译，然后导入头文件使用，但是可能会出现如下错误：
 
-![](assets/16788498494980.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788498494980.jpg)
 
 这是因为，我使用的是模拟器运行，但是导入的却是 iOS 真机的 framework，这时候我们需要将原来的 framework 删除，然后导入模拟器 framework。找到如下目录然后拖入：
 
-![](assets/16788498611867.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788498611867.jpg)
 
 然后，我们再次编译运行，就可以成功了，效果如下：
 
-![](assets/16788498763007.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16788498763007.jpg)
 
 
 

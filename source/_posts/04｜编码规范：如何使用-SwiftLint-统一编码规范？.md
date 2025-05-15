@@ -10,7 +10,7 @@ categories:
 
 # 如何使用 SwiftLint 统一编码规范？
 
-![16781731613340](assets/16781731613340.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16781731613340.jpg)
 
 <!-- more -->
 
@@ -44,13 +44,13 @@ pod 'SwiftLint', '= 0.41.0', configurations: ['Debug']
 
 为了每次编译完都使用 SwiftLint 来检查代码，我们需要在主 App TargetMoments的 `Build Phases` 里面添加`Run SwiftLint`步骤。然后配置它执行`"${PODS_ROOT}/SwiftLint/swiftlint"`命令。
 
-![16781724760038](assets/16781724760038.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16781724760038.jpg)
 
 这里要注意，由于 SwiftLint 的设计是检查有效的 Swift 代码（编译通过的代码就是有效的代码），我们需要把`Run SwiftLint`步骤放在`Compile Source`步骤之后。否则 SwiftLint 可能会反馈一些错误的结果。
 
 有了上面的配置以后，每次编译程序， SwiftLint 都会自动执行检查，我们可以在 Xcode 上修正这些警告信息来保证编码规范的统一。
 
-![16781725272726](assets/16781725272726.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16781725272726.jpg)
 
 例如上面的截图所示，SwiftLint 告诉我们空格的使用不正确。
 
@@ -60,7 +60,7 @@ pod 'SwiftLint', '= 0.41.0', configurations: ['Debug']
 
 当我们执行 `SwiftLint` 命令时，它会自动帮我们启动一堆编码规则，并扫描和检查我们的项目。这些规则有`comma`（逗号前后的空格处理），`private_over_fileprivate`（优先使用 priviate），`force_cast`（避免强制转型）等等 。详细规则列表你也可以在 [SwiftLint 官网](https://realm.github.io/SwiftLint/rule-directory.html) 找到。
 
-![SwiftLint官网](assets/SwiftLint%E5%AE%98%E7%BD%91.png)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/SwiftLint.png)
 
 
 但正如 SwiftLint 的作者所说： *“规则存在，但并不意味着你必须用它”*。我们需要根据团队自身的情况和成员的统一意见，来决定需要启动和关闭哪些规则。此时，就需要用到 `.swiftlint.yml` 文件了。
@@ -101,7 +101,7 @@ only_rules:
 
 在我们配置一条规则的时候，为了符合团队自身的情况，可以修改其默认配置。例如`line_length`的默认配置是当一行代码多于 120 个字符的时候会报告编译警告，而多于 200 个字符的时候报告编译错误。
 
-![16781729423822](assets/16781729423822.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16781729423822.jpg)
 
 我们可以在 .swiftlint.yml 文件中修改这些配置。
 
@@ -129,7 +129,7 @@ custom_rules:
 
 该规则`no_hardcoded_strings`会通过正则表达式来检查字符串是否进行了硬编码。如果是SwiftLint 会根据我们的自定义规则显示警告信息，如下图所示。
 
-![16781730434720](assets/16781730434720.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16781730434720.jpg)
 
 ### 排除扫描文件
 
@@ -146,7 +146,7 @@ excluded:
 
 在这一讲，我介绍了如何使用 SwiftLint 来统一编码规范。特别是其中的`only_rules`，我们要使用它来定义需要生效的规则。
 
-![16781731613340](assets/16781731613340.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16781731613340.jpg)
 
 此外，在制定编码规范时，我们还需要注意以下几点。
 

@@ -8,7 +8,7 @@ categories:
 - iOS
 ---
 
-![](https://pic1.imgdb.cn/item/68243e3b58cb8da5c8f15b01.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17459141483680.jpg)
 
 ## 一、Runtime 介绍
 
@@ -150,7 +150,7 @@ typedef struct objc_object *id;
 就是从 `isa` 指针指向的结构体创建，类对象的 `isa` 指针指向的我们称之为 `元类(metaclass)`，
 元类中保存了创建类对象以及类方法所需的所有信息，因此整个结构应该如下图所示:
 
-![](https://pic1.imgdb.cn/item/68243f2458cb8da5c8f15bb8.png)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17459130950596.png)
 
 
 ### 元类 (Meta Class)

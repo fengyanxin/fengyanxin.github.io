@@ -12,7 +12,7 @@ categories:
 
 1、尝试 `ping github.com`，结果发现Ping不通，但是 `ping baidu.com` 却是正常的。
 
-![](assets/16787751105633.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787751105633.jpg)
 
 <!-- more -->
 
@@ -41,36 +41,36 @@ sudo vi /etc/hosts
 
 （1）打开 `Finder` ，快捷键 `Command+Shift+G` 查找文件，输入 `/etc/hosts`，点击前往
 
-![](assets/16787751416982.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787751416982.jpg)
 
 
 （2） 复制hosts文件到桌面，修改成功后替换原hosts文件即可
 
-![](assets/16787751730177.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787751730177.jpg)
 
 
 方法二：
 
 （1）打开Finder，快捷键 `Shift+Command+G` 查找文件，输入 `/private` 前往
 
-![](assets/16787751897989.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787751897989.jpg)
 
 
 （2）找到 `etc` 文件之后，选择显示简介
 
-![](assets/16787752011240.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787752011240.jpg)
 
 
 （3）找到共享与权限，将everyone的权限修改为读和写，保存后修改hosts文件，修改成功后记得把权限修改回来！
 
-![](assets/16787752140821.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787752140821.jpg)
 
 
 ## 如何在 Hosts 文件中配置 github.com 映射
 
 host文件打开之后可以看到：
 
-![](assets/16787752278743.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787752278743.jpg)
 
 
 在文件下面添加如下代码：
@@ -83,12 +83,12 @@ host文件打开之后可以看到：
 
 上图中的 IP 可以通过， [ipaddress](https://www.ipaddress.com) 网站查询，输入网址就可查阅到对应的IP地址。（这是一个查询域名映射关系的工具）
 
-![](assets/16787752425693.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787752425693.jpg)
 
 
 `140.82.114.3`：这个IP地址修改为 `github.com`搜索到的IP地址
 
-![](assets/16787752554840.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787752554840.jpg)
 
 
 `151.101.129.194`：这个IP地址修改为`github.global.ssl.fastly.net`搜索到的
@@ -96,7 +96,7 @@ IP地址，其中可能会有多个，挑选其中一个即可。
 
 添加完成，重新在终端 `ping github.com`，发现可以 ping 通了， 如下图：
 
-![](assets/16787752693740.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16787752693740.jpg)
 
 ## 使用三方工具自动修改（最新推荐）
 
@@ -114,7 +114,7 @@ IP地址，其中可能会有多个，挑选其中一个即可。
 
 如图：
 
-![](assets/17392449105283.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17392449105283.jpg)
 
 这样每次 hosts 有更新都能及时进行更新，免去手动更新。
 

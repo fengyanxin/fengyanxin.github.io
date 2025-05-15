@@ -31,7 +31,7 @@ categories:
 
 这里的`0.6.0`就是构建iOS包的版本号，而`1`就是build号。分别对应前面的`CFBundleVersion`和`CFBundleShortVersionString`。
 
-![16781763866764](assets/16781763866764.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16781763866764.jpg)
 
 
 3）最后，了解了上面的信息之后，我们想要修改构建出来的iOS包的版本号就好办了。
@@ -51,7 +51,7 @@ flutter build ios --release
 
 然后再使用Xcode打开iOS工程，此时我们就可以很清晰的看到自动生成的版本信息文件`(Generated)`发生变化了。内容如下：
 
-![16781777724396](assets/16781777724396.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16781777724396.jpg)
 
 
 确认完以上信息，我们就可以手动打包了。
@@ -83,6 +83,6 @@ flutter build ios --build-name=0.6.0 --build-number=1
 
 更改以上配置之后，我们就可以在iOS工程配置中手动修改iOS包的版本信息了。效果如下图：
 
-![16781786409936](assets/16781786409936.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16781786409936.jpg)
 
 修改完进行打包。

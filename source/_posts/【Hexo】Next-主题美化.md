@@ -73,11 +73,11 @@ scheme: Gemini
 
 初始 4 种风格效果如下：
 
-![](assets/Next%E4%B8%BB%E9%A2%98.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/NextTheme.jpg)
 
 美化后的 **Gemini** 风格效果如下：
 
-![](assets/%E7%BE%8E%E5%8C%96%E7%9A%84Gemini.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/Gemini.jpg)
 
 #### 网页图标
 
@@ -183,7 +183,7 @@ local_search:
 
 4. 效果如下：
 
-![](assets/17370245926708.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17370245926708.jpg)
 
 #### 侧边栏
 
@@ -243,7 +243,7 @@ social_icons:
 
 1. 想要自定义社交平台，可以先去 [iconfont](https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a)，下载一下需要的平台 **SVG** 图标，比如小红书，将图片放在 `themes/next/source/images`目录下：
 
-![](assets/17370128583449.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17370128583449.jpg)
 
 2. 然后找到 `themes/next/source/css/main.styl` 目录文件，编辑如下：
 
@@ -365,7 +365,7 @@ github_banner:
 
 2. 效果如下：
 
-![](assets/17370209299074.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17370209299074.jpg)
 
 
 #### Mermaid
@@ -486,7 +486,7 @@ auto_excerpt:
 
 其后面的部分就不会显示了，只能点击 **阅读全文** 才能看。效果如下：
 
-![](assets/17370224998555.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17370224998555.jpg)
 
 其他文章相关配置：
 
@@ -646,7 +646,7 @@ passage_end_tag:
 
 5. 效果如下：
 
-![](assets/17370182981965.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17370182981965.jpg)
 
 
 #### 自定义头部背景区域
@@ -706,13 +706,13 @@ canvas_ribbon:
 
 3. 效果如下：
 
-![](assets/%E8%83%8C%E6%99%AF%E4%B8%9D%E5%B8%A6.gif)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/bgSilkRibbon.gif)
 
 #### Valine在线评论
 
 1. 首先要先去 [LeanCloud](https://www.leancloud.cn) 注册一个帐号，然后再创建一个应用，如下：
 
-![](assets/17370822732228.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17370822732228.jpg)
 
 2. 拿到应用的 `appid` 和 `appkey` 之后，打开 `themes/next/_config.yml`主题配置文件，查找 `valine`，填入`appid`和 `appkey` ，如下:
 
@@ -740,7 +740,7 @@ valine:
 
 3. 效果如下：
 
-![](assets/17370825991243.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17370825991243.jpg)
 
 #### 静态资源压缩
 
@@ -755,7 +755,7 @@ $ npm install imagemin-gifsicle imagemin-mozjpeg imagemin-optipng imagemin-svgo 
 
 2. 如下图所示，在站点目录下，新建 `gulpfile.js` ，并填入以下内容：
 
-![](assets/17370990019472.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17370990019472.jpg)
 
 3. 填入以下代码：
 
@@ -969,7 +969,7 @@ permalink: /404.html
 ```
 
 4. 效果如下：
-![](assets/17370818231816.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17370818231816.jpg)
 
-![](assets/17370817394824.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17370817394824.jpg)
 

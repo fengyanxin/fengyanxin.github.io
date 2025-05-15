@@ -10,7 +10,7 @@ categories:
 
 # DesignKit 组件桥接设计与开发规范
 
-![](assets/17373431283113.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17373431283113.jpg)
 
 <!-- more -->
 
@@ -120,7 +120,7 @@ pod 'DesignKit', :path => './Frameworks/DesignKit', :inhibit_warnings => false
 当执行 `bundle exec pod install` 命令以后，CocoaPods 会在 Pods 项目下建立一个
 `Development Pods` 文件夹来存放所有内部库的相关文件。
 
-![](assets/17373431509846.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17373431509846.jpg)
 
 有了 CocoaPods，我们新建、管理和使用公共组件库就会变得非常简单。下面我们介绍下如何开发设计组件 DesignKit。
 
@@ -128,7 +128,7 @@ pod 'DesignKit', :path => './Frameworks/DesignKit', :inhibit_warnings => false
 
 DesignKit 是一个设计组件，用于封装与 UI 相关的公共组件。为了方便维护，每次新增一个组件，我们最好都建立一个独立的文件夹，例如把 `UIButtonExtensions.swift` 放在新建的 `FavoriteButton` 文件夹中。
 
-![](assets/17373431685601.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17373431685601.jpg)
 
 下面以几乎每个 App 都会使用到的三个组件：*间距（Spacing）*、*头像（Avatar）* 和 *点赞按钮（Favorite Button）* 为例子，介绍下如何封装基础设计组件。
 
@@ -203,7 +203,7 @@ public extension UIImageView {
 
 这是人像组件的显示效果，可以在内部菜单查看。
 
-![](assets/17373431939202.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17373431939202.jpg)
 
 ### 点赞按钮
 
@@ -260,7 +260,7 @@ private let favoriteButton: UIButton = configure(.init()) {
 
 前面我介绍了如何封装公共功能组件库，以及以怎样封装基础设计组件，希望对你有所帮助。合理使用功能组件可以让你的开发事半功倍。
 
-![](assets/17373431283113.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17373431283113.jpg)
 
 不过，在封装组件的时候，我还需要提醒你注意这么几点。
 
@@ -347,11 +347,11 @@ What is your class prefix?
 
 成功后会创建出一个pod_test工程，目录结构如下:
 
-![](assets/17373534365111.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17373534365111.jpg)
 
 4. 将编写好的一些文件拉入 `pod_test/classes`中，或者在`pod_test/classes` 目录下新建代码文件：
 
-![](assets/17373535574754.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17373535574754.jpg)
 
 5. 配置 `.podspec` 文件
 
@@ -463,22 +463,22 @@ pod trunk push LXExtension.podspec --allow-warnings
 * 本地库校验
 `pod lib lint` ： 本地组件库校验
 `pod lib lint AFXXXX.podspec --allow-warnings` ：本地组件库校验忽略警告
-`pod lib lint --sources=https://github.com/xxxx/xxxxspecs.git --use-libraries --allow-warnings` ：如果你的库同时依赖了私有库，可通过上面方式指定source索引
-`pod lib lint --sources=https://github.com/xxxx/xxxxspecs.git,https://github.com/CocoaPods/Specs.git --use-libraries --allow-warnings` ： 如果你的库同时依赖了私有库以及公有库，可通过指定多个source索引，中间用逗号分隔
+`pod lib lint --sources=https://github.com/xxxx/xxxxspecs.git --use-libraries --allow-warnings` ：如果你的库同时依赖了私有库，可通过上面方式指定 source 索引
+`pod lib lint --sources=https://github.com/xxxx/xxxxspecs.git,https://github.com/CocoaPods/Specs.git --use-libraries --allow-warnings` ： 如果你的库同时依赖了私有库以及公有库，可通过指定多个 source 索引，中间用逗号分隔
 
 * 远程库校验
 `pod spec lint ` ：远程组件库校验
 `pod spec lint --allow-warnings` ： 远程组件库校验忽略警告
 
 * 生成私有库
-`pod repo add LXPodSpec https://github.com/xxx/LXPodSpec.git` ： 添加私有索引库到本地repo中
-`pod repo push LXPodSpec LXMyTools.podspec --allow-warnings` ：推送到 CocoaPods 服务器上，其他开发者可通过CocoaPods 安装和使用这个 Pod，但是需要指定source为https://github.com/xxx/LXPodSpec.git
+`pod repo add LXPodSpec https://github.com/xxx/LXPodSpec.git` ： 添加私有索引库到本地 repo 中
+`pod repo push LXPodSpec LXMyTools.podspec --allow-warnings` ：推送到 CocoaPods 服务器上，其他开发者可通过 CocoaPods 安装和使用这个 Pod，但是需要指定 source 为 https://github.com/xxx/LXPodSpec.git
 `pod repo push LXPodSpec LXMyTools.podspec -skip-import-validation --allow-warnings` ：如果你的库同时依赖了私有库以及公有库，可通过上面方式跳过验证，谨慎使用
 
 * 生成公有库
 `pod trunk me` ：检查是否已注册 CocoaPods 账户
-`pod trunk push LXExtension.podspec --allow-warnings` ：推送至pod公共仓库
+`pod trunk push LXExtension.podspec --allow-warnings` ：推送至 pod 公共仓库
 
 * 一些其他命令
-`pod spec cat SnapKit` ： 查看SnapKit 的 podspec 文件的内容。
+`pod spec cat SnapKit` ： 查看 SnapKit 的 podspec 文件的内容。
 

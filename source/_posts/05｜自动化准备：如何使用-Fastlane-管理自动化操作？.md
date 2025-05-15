@@ -10,7 +10,7 @@ categories:
 
 # 如何使用 Fastlane 管理自动化操作？
 
-![16784358918168](assets/16784358918168.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16784358918168.jpg)
 
 <!-- more -->
 
@@ -52,14 +52,14 @@ fastlane 为我们提供了一百多个 **Action**，它们是 iOS 项目开发�
 
 这些 `Action` 怎么执行呢？我们可以通过`fastlane <action>`（例如`fastlane scan`）来执行。下面是执行效果，它提示我选择其中一个 Scheme 来继续执行。
 
-![16784334923105](assets/16784334923105.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16784334923105.jpg)
 
 
 从运行情况可知，尽管这些 `Action` 为我们提供了不少便利，但还是需要手工输入来继续。所以，我不推荐你直接使用这些 `Action`，而是根据项目需要，在开发自己的自动化操作时通过传入合适的参数来调用 fastlane 所提供的 Action。
 
 具体来说，我们可以把所需的 Action 组合在一起，开发出对应的自动化操作。在 fastlane 中，我们把这个自动化操作或者任务叫作 `Lane`。**实际上， iOS 开发中的所有自动化操作，主要通过 Lane 来封装和配置的。**
 
-![16784335778467](assets/16784335778467.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16784335778467.jpg)
 
 
 `Lane` 和 `Action` 的关系如上图所示， 一条 Lane 可以通过参数调用一个或几个 Action 。以 Moments app 为例，我们要自动打包和签名 App，那么我就建了一条名叫`archive_appstore`的 Lane。因为这条 Lane 用到的“更新签名”和“打包”在 fastalne 里已经提供了相关的 Action——`update_code_signing_settings`和`gym`，我们可以到 [fastlane官网](https://docs.fastlane.tools) 去寻找，从而减轻了开发工作量。
@@ -215,7 +215,7 @@ fastlane 首先调用`foo` Lane，然后进去`get_pi` Lane 并返回到`foo`，
 
 3. 当我们调用 fastlane 所提供的 Action 时，要明确传递各个参数，在执行过程中就无须任何手工交互就能从头到尾执行整个操作。
 
-![16784358918168](assets/16784358918168.jpg)
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/16784358918168.jpg)
 
 
 有了项目需要的所有 Lane 以后，能有效减轻团队成员的重复劳动，并为项目的自动化和工程化打下坚实的基础。在后面的章节中，我会详细介绍如何使用 fastlane 来管理证书，打包 App 和上传到 App Store。
