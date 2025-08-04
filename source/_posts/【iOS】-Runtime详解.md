@@ -100,7 +100,7 @@ struct objc_method {
 * 类缓存(objc_cache)
 * Category(objc_category)
 
-### 类对象 (objc_class)
+### 1、类对象 (objc_class)
 
 `Objective-C` 类是由 `Class` 类型来表示的，它实际上是一个指向 `objc_class` 结构体的指针。
 
@@ -134,7 +134,7 @@ struct objc_class {
 一个类包含的信息也不就正是这些吗？没错，类对象就是一个结构体 `struct objc_class`，这个结构体存放的数据称为 `元数据(metadata)`，
 该结构体的第一个成员变量也是 `isa` 指针，这就说明了 `Class` 本身其实也是一个对象，因此我们称之为类对象，类对象在编译期产生用于创建实例对象，是单例。
 
-### 实例 (objc_object)
+### 2、实例 (objc_object)
 
 ``` swift
 /// Represents an instance of a class.
@@ -153,7 +153,7 @@ typedef struct objc_object *id;
 ![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17459130950596.png)
 
 
-### 元类 (Meta Class)
+### 3、元类 (Meta Class)
 
 通过上图我们可以看出整个体系构成了一个自闭环，`struct objc_object` 结构体实例它的 `isa` 指针指向类对象，
 类对象的 `isa` 指针指向了元类，`super_class` 指针指向了父类的类对象，
@@ -164,7 +164,7 @@ typedef struct objc_object *id;
 为了调用类方法，这个类的 `isa` 指针必须指向一个包含这些类方法的一个 `objc_class` 结构体。这就引出了 `meta-class` 的概念，元类中保存了创建类对象以及类方法所需的所有信息。
 任何 `NSObject` 继承体系下的 `meta-class` 都使用 `NSObject` 的 `meta-class` 作为自己的所属类，而基类的 `meta-class` 的 `isa` 指针是指向它自己。
 
-### Method(objc_method)
+### 4、Method(objc_method)
 
 先看下定义：
 
@@ -199,7 +199,7 @@ struct objc_method {
 
 我们接着来看 `SEL`。
 
-### SEL(objc_selector)
+### 5、SEL(objc_selector)
 
 先看下定义：
 
@@ -247,7 +247,7 @@ typedef struct objc_selector *SEL;
 
 在不同类中相同名字的方法所对应的方法选择器是相同的，即使方法名字相同而变量类型不同也会导致它们具有相同的方法选择器。
 
-### IMP
+### 6、IMP
 
 看下 `IMP` 的定义：
 
@@ -261,13 +261,13 @@ typedef id (*IMP)(id, SEL, ...);
 
 在 `iOS` 的 `Runtime` 中，`Method` 通过 `selector` 和 `IMP` 两个属性，实现了快速查询方法及实现，相对提高了性能，又保持了灵活性。
 
-### 类缓存 (objc_cache)
+### 7、类缓存 (objc_cache)
 
 当 `Objective-C` 运行时通过跟踪它的 `isa` 指针检查对象时，它可以找到一个实现许多方法的对象。然而，你可能只调用它们的一小部分，并且每次查找时，搜索所有选择器的类分派表没有意义。所以类实现一个缓存，每当你搜索一个类分派表，并找到相应的选择器，它把它放入它的缓存。所以当 `objc_msgSend` 查找一个类的选择器，它首先搜索类缓存。这是基于这样的理论：如果你在类上调用一个消息，你可能以后再次调用该消息。
 
 为了加速消息分发， 系统会对方法和对应的地址进行缓存，就放在上述的 `objc_cache`，所以在实际运行中，大部分常用的方法都是会被缓存起来的，`Runtime` 系统实际上非常快，接近直接执行内存地址的程序速度。
 
-### Category(objc_category)
+### 8、Category(objc_category)
 
 `Category` 是表示一个指向分类的结构体的指针，其定义如下：
 
@@ -290,3 +290,183 @@ instanceProperties：表示Category里所有的properties，这就是我们可�
 ```
 
 从上面的 `category_t` 的结构体中可以看出，分类中可以添加实例方法，类方法，甚至可以实现协议，添加属性，不可以添加成员变量。
+
+## 三、Runtime 消息转发
+
+前文介绍了进行一次发送消息会在相关的类对象中搜索方法列表，如果找不到则会沿着继承树向上一直搜索知道继承树根部（通常为 NSObject），如果还是找不到并且消息转发都失败了就回执行 `doesNotRecognizeSelector:` 方法报 `unrecognized selector` 错。
+
+那么消息转发到底是什么呢？接下来将会逐一介绍最后的三次机会。
+
+* 动态方法解析
+* 备用接收者
+* 完整消息转发
+
+![](https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/image-20250804135619261.png)
+
+### 1、动态方法解析
+
+首先，`Objective-C` 运行时会调用 `+resolveInstanceMethod:` 或者 `+resolveClassMethod:`，让你有机会提供一个函数实现。如果你添加了函数并返回YES， 那运行时系统就会重新启动一次消息发送的过程。
+
+实现一个动态方法解析的例子如下：
+
+``` swift
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    //执行foo函数
+    [self performSelector:@selector(foo:)];
+}
+
++ (BOOL)resolveInstanceMethod:(SEL)sel {
+    if (sel == @selector(foo:)) {//如果是执行foo函数，就动态解析，指定新的IMP
+        class_addMethod([self class], sel, (IMP)fooMethod, "v@:");
+        return YES;
+    }
+    return [super resolveInstanceMethod:sel];
+}
+
+void fooMethod(id obj, SEL _cmd) {
+    NSLog(@"Doing foo");//新的foo函数
+}
+```
+
+>
+>打印结果： 2018-04-01 12:23:35.952670+0800 ocram[87546:23235469] Doing foo
+>
+
+可以看到虽然没有实现 `foo:` 这个函数，但是我们通过 `class_addMethod` 动态添加`fooMethod` 函数，并执行 `fooMethod` 这个函数的 `IMP`。从打印结果看，成功实现了。
+
+如果 `resolve` 方法返回 NO ，运行时就会移到下一步：`forwardingTargetForSelector`。
+
+### 2、备用接收者
+
+如果目标对象实现了 `-forwardingTargetForSelector:`，`Runtime` 这时就会调用这个方法，给你把这个消息转发给其他对象的机会。
+
+实现一个备用接收者的例子如下：
+
+``` swift
+#import "ViewController.h"
+#import "objc/runtime.h"
+
+@interface Person: NSObject
+
+@end
+
+@implementation Person
+
+- (void)foo {
+    NSLog(@"Doing foo");//Person的foo函数
+}
+
+@end
+
+@interface ViewController ()
+
+@end
+
+@implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    //执行foo函数
+    [self performSelector:@selector(foo)];
+}
+
++ (BOOL)resolveInstanceMethod:(SEL)sel {
+    return YES;//返回YES，进入下一步转发
+}
+
+- (id)forwardingTargetForSelector:(SEL)aSelector {
+    if (aSelector == @selector(foo)) {
+        return [Person new];//返回Person对象，让Person对象接收这个消息
+    }
+    
+    return [super forwardingTargetForSelector:aSelector];
+}
+
+@end
+```
+
+>
+>打印结果： 2018-04-01 12:45:04.757929+0800 ocram[88023:23260346] Doing foo
+>
+
+可以看到我们通过 `forwardingTargetForSelector` 把当前 `ViewController` 的方法转发给了 `Person` 去执行了。打印结果也证明我们成功实现了转发。
+
+### 3、完整消息转发
+
+如果在上一步还不能处理未知消息，则唯一能做的就是启用完整的消息转发机制了。
+首先它会发送 `-methodSignatureForSelector:` 消息获得函数的参数和返回值类型。如果 `-methodSignatureForSelector:` 返回 nil ，`Runtime` 则会发出 `-doesNotRecognizeSelector: ` 消息，程序这时也就挂掉了。如果返回了一个函数签名，`Runtime` 就会创建一个 `NSInvocation` 对象并发送 `-forwardInvocation:` 消息给目标对象。
+
+实现一个完整转发的例子如下：
+
+``` swift
+#import "ViewController.h"
+#import "objc/runtime.h"
+
+@interface Person: NSObject
+
+@end
+
+@implementation Person
+
+- (void)foo {
+    NSLog(@"Doing foo");//Person的foo函数
+}
+
+@end
+
+@interface ViewController ()
+
+@end
+
+@implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    //执行foo函数
+    [self performSelector:@selector(foo)];
+}
+
++ (BOOL)resolveInstanceMethod:(SEL)sel {
+    return YES;//返回YES，进入下一步转发
+}
+
+- (id)forwardingTargetForSelector:(SEL)aSelector {
+    return nil;//返回nil，进入下一步转发
+}
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector {
+    if ([NSStringFromSelector(aSelector) isEqualToString:@"foo"]) {
+        return [NSMethodSignature signatureWithObjCTypes:"v@:"];//签名，进入forwardInvocation
+    }
+    
+    return [super methodSignatureForSelector:aSelector];
+}
+
+- (void)forwardInvocation:(NSInvocation *)anInvocation {
+    SEL sel = anInvocation.selector;
+
+    Person *p = [Person new];
+    if([p respondsToSelector:sel]) {
+        [anInvocation invokeWithTarget:p];
+    }
+    else {
+        [self doesNotRecognizeSelector:sel];
+    }
+
+}
+
+@end
+```
+
+>
+>打印结果： 2018-04-01 13:00:45.423385+0800 ocram[88353:23279961] Doing foo
+>
+
+从打印结果来看，我们实现了完整的转发。通过签名，`Runtime` 生成了一个对象`anInvocation`，发送给了 `forwardInvocation`，我们在 `forwardInvocation` 方法里面让 `Person` 对象去执行了 `foo` 函数。签名参数 `v@:` 怎么解释呢，这里苹果文档 [Type Encodings](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html#//apple_ref/doc/uid/TP40008048-CH100-SW1) 有详细的解释。
+
+以上就是 `Runtime` 的三次转发流程。下面我们讲讲 `Runtime` 的实际应用。
+
