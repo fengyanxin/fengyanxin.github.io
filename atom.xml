@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-09-02T03:47:41.933Z</updated>
+  <updated>2025-09-02T05:29:47.065Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -21,13 +21,11 @@
     <link href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%94%A4%E8%B5%B7-APP-Universal-Link/"/>
     <id>https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%94%A4%E8%B5%B7-APP-Universal-Link/</id>
     <published>2025-09-02T02:50:25.000Z</published>
-    <updated>2025-09-02T03:47:41.933Z</updated>
+    <updated>2025-09-02T05:29:47.065Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;p&gt;&lt;code&gt;iOS 9&lt;/code&gt; 之前，一直使用的是 &lt;code&gt;URL Schemes&lt;/code&gt; 技术来从外部对 App 进行跳转，但是 iOS 系统中进行 &lt;code&gt;URL Schemes&lt;/code&gt; 跳转的时候如果没有安装 App，会提示 &lt;code&gt;Ca</summary>
-      
+    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250902132639817.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;iOS 9&lt;/code&gt; 之前，一直使用的是 &lt;code&gt;URL Schemes&lt;/code&gt; 技术来从外部对 App 进行跳转，但是 iOS 系统中进行 &lt;code&gt;URL Schemes&lt;/code&gt; 跳转的时候如果没有安装 App，会提示 &lt;code&gt;Cannot open Page&lt;/code&gt; 的提示，而且当注册有多个 &lt;code&gt;scheme&lt;/code&gt; 相同的时候，目前没有办法区分，但是从 &lt;code&gt;iOS 9&lt;/code&gt; 起可以使用 &lt;code&gt;Universal Links&lt;/code&gt; 技术进行跳转页面，这是一种体验更加完美的解决方案。&lt;/p&gt;</summary>
     
     
     
