@@ -8,7 +8,11 @@ categories:
 - iOS
 ---
 
+![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250902132639817.png)
+
 `iOS 9` 之前，一直使用的是 `URL Schemes` 技术来从外部对 App 进行跳转，但是 iOS 系统中进行 `URL Schemes` 跳转的时候如果没有安装 App，会提示 `Cannot open Page` 的提示，而且当注册有多个 `scheme` 相同的时候，目前没有办法区分，但是从 `iOS 9` 起可以使用 `Universal Links` 技术进行跳转页面，这是一种体验更加完美的解决方案。
+
+<!-- more -->
 
 ## Universal Link （通用链接）
 
@@ -253,4 +257,8 @@ func application(_ application: UIApplication, continue userActivity: NSUserActi
     return true;
 }
 ```
+
+## 五、参考资料
+
+>1、[iOS 唤起 APP: Universal Link(通用链接)](https://juejin.cn/post/6844904126300553223)
 
