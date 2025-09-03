@@ -14,7 +14,7 @@ categories:
 
 Windows 和 Android 的 Toast 有着千丝万缕的联系，据说一位微软前员工在开发 MSN Messenger 时，觉得MSN弹出通知方式很像烤面包（Toast）烤熟时从烤面包机（Toaster）里弹出来一样，因此把这种提示方式命名为 Toast，后来这位微软前员工带着这一习惯命名跳槽去了 Google。
 
-![img](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/2)
+![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/2)
 
 <!-- more -->
 
@@ -36,7 +36,7 @@ iOS 并没有 Toast 这个控件，但 iOS 中确实有类似于 Toast 样式出
 2. 虽然非模态，但是黑乎乎的样式上给人一种模态的错觉。
 3. 遮盖其他控件，但不能对 Toast 进行交互。
 
-## 代码实现
+## 一个简单的 Toast 控件
 
 以下是一个很简洁的 framework:
 
@@ -1261,6 +1261,6 @@ static const NSString * CSToastQueueKey             = @"CSToastQueueKey";
 
 ![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/338-20250903164842341)
 
-## 五、参考资料
+## 参考资料
 
 >1、[Objective-C 的 Toast 提示的学习笔记](https://www.jianshu.com/p/c415bd156896?ivk_sa=1024320u)
