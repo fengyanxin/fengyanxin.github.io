@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-09-03T08:53:06.968Z</updated>
+  <updated>2025-09-03T09:04:37.424Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -21,12 +21,12 @@
     <link href="https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91Toast%E6%8F%90%E7%A4%BA/"/>
     <id>https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91Toast%E6%8F%90%E7%A4%BA/</id>
     <published>2025-09-03T08:24:33.000Z</published>
-    <updated>2025-09-03T08:53:06.968Z</updated>
+    <updated>2025-09-03T09:04:37.424Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;Toast-提示简介&quot;&gt;&lt;a href=&quot;#Toast-提示简介&quot; class=&quot;headerlink&quot; title=&quot;Toast 提示简介&quot;&gt;&lt;/a&gt;Toast 提示简介&lt;/h2&gt;&lt;p&gt;除了 Android 规范，Windows 的规范中也有 Toast，但定义不一样。Toast 在 Android 中的定义就是大家所熟悉的黑色半透明提示，而在 Windows 的规范中 Toast 概念几乎等同于 Android 的一条 Notification(通知)。&lt;/p&gt;
 &lt;p&gt;Windows 和 Android 的 Toast 有着千丝万缕的联系，据说一位微软前员工在开发 MSN Messenger 时，觉得MSN弹出通知方式很像烤面包（Toast）烤熟时从烤面包机（Toaster）里弹出来一样，因此把这种提示方式命名为 Toast，后来这位微软前员工带着这一习惯命名跳槽去了 Google。&lt;/p&gt;
-&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/2&quot; alt=&quot;img&quot;&gt;&lt;/p&gt;</summary>
+&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/2&quot;&gt;&lt;/p&gt;</summary>
     
     
     
