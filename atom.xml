@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-09-02T05:29:47.065Z</updated>
+  <updated>2025-09-03T08:53:06.968Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【OC】Toast 提示</title>
+    <link href="https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91Toast%E6%8F%90%E7%A4%BA/"/>
+    <id>https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91Toast%E6%8F%90%E7%A4%BA/</id>
+    <published>2025-09-03T08:24:33.000Z</published>
+    <updated>2025-09-03T08:53:06.968Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;Toast-提示简介&quot;&gt;&lt;a href=&quot;#Toast-提示简介&quot; class=&quot;headerlink&quot; title=&quot;Toast 提示简介&quot;&gt;&lt;/a&gt;Toast 提示简介&lt;/h2&gt;&lt;p&gt;除了 Android 规范，Windows 的规范中也有 Toast，但定义不一样。Toast 在 Android 中的定义就是大家所熟悉的黑色半透明提示，而在 Windows 的规范中 Toast 概念几乎等同于 Android 的一条 Notification(通知)。&lt;/p&gt;
+&lt;p&gt;Windows 和 Android 的 Toast 有着千丝万缕的联系，据说一位微软前员工在开发 MSN Messenger 时，觉得MSN弹出通知方式很像烤面包（Toast）烤熟时从烤面包机（Toaster）里弹出来一样，因此把这种提示方式命名为 Toast，后来这位微软前员工带着这一习惯命名跳槽去了 Google。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/2&quot; alt=&quot;img&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/categories/iOS/"/>
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+    <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
+    
+  </entry>
   
   <entry>
     <title>【iOS】唤起 APP: Universal Link</title>
@@ -450,33 +473,6 @@
     
     
     <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【OC】UIButton 防止重复点击的3种方法</title>
-    <link href="https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91UIButton%E9%98%B2%E6%AD%A2%E9%87%8D%E5%A4%8D%E7%82%B9%E5%87%BB%E7%9A%843%E7%A7%8D%E6%96%B9%E6%B3%95/"/>
-    <id>https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91UIButton%E9%98%B2%E6%AD%A2%E9%87%8D%E5%A4%8D%E7%82%B9%E5%87%BB%E7%9A%843%E7%A7%8D%E6%96%B9%E6%B3%95/</id>
-    <published>2025-01-15T08:14:30.000Z</published>
-    <updated>2025-01-21T03:08:30.299Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;一、使用场景&quot;&gt;&lt;a href=&quot;#一、使用场景&quot; class=&quot;headerlink&quot; title=&quot;一、使用场景&quot;&gt;&lt;/a&gt;一、使用场景&lt;/h2&gt;&lt;p&gt;在实际应用过程中，有一些业务场景可能需要我们对 UIButton 响应事件的时间间隔进行控制，比如：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;当点击按钮来执行网络请求时，若请求耗时稍长，用户往往会多次点击。这样，就会执行多次请求，造成资源浪费&lt;/li&gt;
-&lt;li&gt;在移动终端设备性能较差时，连续点击按钮会执行多次事件 &lt;strong&gt;（比如 push 出来多个 viewController ）&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;防止暴力点击&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&quot;二、使用方法&quot;&gt;&lt;a href=&quot;#二、使用方法&quot; class=&quot;headerlink&quot; title=&quot;二、使用方法&quot;&gt;&lt;/a&gt;二、使用方法&lt;/h2&gt;</summary>
-    
-    
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/categories/iOS/"/>
-    
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-    <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
     
   </entry>
   
