@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="什么是 NSAttributedString？NSAttributedString（属性字符串）是 Foundation 框架中的一个类，它允许你在一个字符串中为不同的字符范围应用不同的属性（如字体、颜色、间距等）。与普通的 NSString 只能存储纯文本不同，NSAttributedString 可以存储富文本信息。 但是，NSAttributedString 是不可变的，一旦创建就不能再修改">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【OC】原生富文本 NSAttributedString 的使用">
+<meta property="og:url" content="https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91%E5%8E%9F%E7%94%9F%E5%AF%8C%E6%96%87%E6%9C%AC-NSAttributedString-%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="凤炎忻的个人笔记">
+<meta property="og:description" content="什么是 NSAttributedString？NSAttributedString（属性字符串）是 Foundation 框架中的一个类，它允许你在一个字符串中为不同的字符范围应用不同的属性（如字体、颜色、间距等）。与普通的 NSString 只能存储纯文本不同，NSAttributedString 可以存储富文本信息。 但是，NSAttributedString 是不可变的，一旦创建就不能再修改">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-04T02:33:36.000Z">
+<meta property="article:modified_time" content="2025-09-04T05:25:50.881Z">
+<meta property="article:author" content="凤炎忻">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="OC">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91%E5%8E%9F%E7%94%9F%E5%AF%8C%E6%96%87%E6%9C%AC-NSAttributedString-%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>【OC】原生富文本 NSAttributedString 的使用 | 凤炎忻的个人笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="凤炎忻的个人笔记" type="application/atom+xml">
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">凤炎忻的个人笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我有一壶酒，足以慰风尘！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section">标签<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section">分类<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">归档<span class="badge">40</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section">公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91%E5%8E%9F%E7%94%9F%E5%AF%8C%E6%96%87%E6%9C%AC-NSAttributedString-%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/flyingPig.jpeg">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【OC】原生富文本 NSAttributedString 的使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-09-04 10:33:36 / 修改时间：13:25:50" itemprop="dateCreated datePublished" datetime="2025-09-04T10:33:36+08:00">2025-09-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/iOS/%E3%80%90OC%E3%80%91%E5%8E%9F%E7%94%9F%E5%AF%8C%E6%96%87%E6%9C%AC-NSAttributedString-%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-meta-item leancloud_visitors" data-flag-title="【OC】原生富文本 NSAttributedString 的使用" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/iOS/%E3%80%90OC%E3%80%91%E5%8E%9F%E7%94%9F%E5%AF%8C%E6%96%87%E6%9C%AC-NSAttributedString-%E7%9A%84%E4%BD%BF%E7%94%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/iOS/%E3%80%90OC%E3%80%91%E5%8E%9F%E7%94%9F%E5%AF%8C%E6%96%87%E6%9C%AC-NSAttributedString-%E7%9A%84%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="什么是-NSAttributedString？"><a href="#什么是-NSAttributedString？" class="headerlink" title="什么是 NSAttributedString？"></a>什么是 NSAttributedString？</h2><p><code>NSAttributedString</code>（属性字符串）是 <code>Foundation</code> 框架中的一个类，它允许你在一个字符串中为不同的字符范围应用不同的属性（如字体、颜色、间距等）。与普通的 <code>NSString</code> 只能存储纯文本不同，<code>NSAttributedString</code> 可以存储富文本信息。</p>
+<p>但是，<code>NSAttributedString</code> 是不可变的，一旦创建就不能再修改。</p>
+<p>如果想要在创建富文本后，修改字符串的内容和属性，可以使用 <code>NSAttributedString</code> 的可变版本 <code>NSMutableAttributedString</code>，它给我们提供了丰富的 <code>API</code> 来进行自定义。</p>
+<span id="more"></span>
+
+<h2 id="创建和初始化"><a href="#创建和初始化" class="headerlink" title="创建和初始化"></a>创建和初始化</h2><h3 id="1-从字符串创建"><a href="#1-从字符串创建" class="headerlink" title="1. 从字符串创建"></a>1. 从字符串创建</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NSMutableAttributedString</span> <span class="operator">*</span>attributedString <span class="operator">=</span> [[<span class="type">NSMutableAttributedString</span> alloc] initWithString:@<span class="string">&quot;Hello World&quot;</span>];</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-从现有属性字符串创建"><a href="#2-从现有属性字符串创建" class="headerlink" title="2. 从现有属性字符串创建"></a>2. 从现有属性字符串创建</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NSAttributedString</span> <span class="operator">*</span>existingString <span class="operator">=</span> [[<span class="type">NSAttributedString</span> alloc] initWithString:@<span class="string">&quot;Existing&quot;</span>];</span><br><span class="line"><span class="type">NSMutableAttributedString</span> <span class="operator">*</span>mutableString <span class="operator">=</span> [[<span class="type">NSMutableAttributedString</span> alloc] initWithAttributedString:existingString];</span><br></pre></td></tr></table></figure>
+
+<h2 id="常用属性设置方法"><a href="#常用属性设置方法" class="headerlink" title="常用属性设置方法"></a>常用属性设置方法</h2><h3 id="1-设置字体"><a href="#1-设置字体" class="headerlink" title="1. 设置字体"></a>1. 设置字体</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NSDictionary</span> <span class="operator">*</span>attributes <span class="operator">=</span> @&#123;</span><br><span class="line">    <span class="type">NSFontAttributeName</span>: [<span class="type">UIFont</span> systemFontOfSize:<span class="number">18</span> weight:<span class="type">UIFontWeightBold</span>]</span><br><span class="line">&#125;;</span><br><span class="line">[attributedString addAttributes:attributes range:<span class="type">NSMakeRange</span>(<span class="number">0</span>, <span class="number">5</span>)];</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-设置文字颜色"><a href="#2-设置文字颜色" class="headerlink" title="2. 设置文字颜色"></a>2. 设置文字颜色</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[attributedString addAttribute:<span class="type">NSForegroundColorAttributeName</span> </span><br><span class="line">                         value:[<span class="type">UIColor</span> redColor] </span><br><span class="line">                         range:<span class="type">NSMakeRange</span>(<span class="number">6</span>, <span class="number">5</span>)];</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-设置背景色"><a href="#3-设置背景色" class="headerlink" title="3. 设置背景色"></a>3. 设置背景色</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[attributedString addAttribute:<span class="type">NSBackgroundColorAttributeName</span> </span><br><span class="line">                         value:[<span class="type">UIColor</span> yellowColor] </span><br><span class="line">                         range:<span class="type">NSMakeRange</span>(<span class="number">0</span>, <span class="number">5</span>)];</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-设置段落样式"><a href="#4-设置段落样式" class="headerlink" title="4. 设置段落样式"></a>4. 设置段落样式</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NSMutableParagraphStyle</span> <span class="operator">*</span>paragraphStyle <span class="operator">=</span> [[<span class="type">NSMutableParagraphStyle</span> alloc] <span class="keyword">init</span>];</span><br><span class="line">paragraphStyle.lineSpacing <span class="operator">=</span> <span class="number">8</span>;</span><br><span class="line">paragraphStyle.alignment <span class="operator">=</span> <span class="type">NSTextAlignmentCenter</span>;</span><br><span class="line"></span><br><span class="line">[attributedString addAttribute:<span class="type">NSParagraphStyleAttributeName</span> </span><br><span class="line">                         value:paragraphStyle </span><br><span class="line">                         range:<span class="type">NSMakeRange</span>(<span class="number">0</span>, attributedString.length)];</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-设置下划线"><a href="#5-设置下划线" class="headerlink" title="5. 设置下划线"></a>5. 设置下划线</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[attributedString addAttribute:<span class="type">NSUnderlineStyleAttributeName</span> </span><br><span class="line">                         value:@(<span class="type">NSUnderlineStyleSingle</span>) </span><br><span class="line">                         range:<span class="type">NSMakeRange</span>(<span class="number">0</span>, <span class="number">5</span>)];</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-设置删除线"><a href="#6-设置删除线" class="headerlink" title="6. 设置删除线"></a>6. 设置删除线</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[attributedString addAttribute:<span class="type">NSStrikethroughStyleAttributeName</span> </span><br><span class="line">                         value:@(<span class="type">NSUnderlineStyleSingle</span>) </span><br><span class="line">                         range:<span class="type">NSMakeRange</span>(<span class="number">6</span>, <span class="number">5</span>)];</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-设置字间距"><a href="#7-设置字间距" class="headerlink" title="7. 设置字间距"></a>7. 设置字间距</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[attributedString addAttribute:<span class="type">NSKernAttributeName</span> </span><br><span class="line">                         value:@(<span class="number">2.0</span>) </span><br><span class="line">                         range:<span class="type">NSMakeRange</span>(<span class="number">0</span>, attributedString.length)];</span><br></pre></td></tr></table></figure>
+
+<h2 id="常用操作方法"><a href="#常用操作方法" class="headerlink" title="常用操作方法"></a>常用操作方法</h2><h3 id="1-追加字符串"><a href="#1-追加字符串" class="headerlink" title="1. 追加字符串"></a>1. 追加字符串</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NSAttributedString</span> <span class="operator">*</span>appendString <span class="operator">=</span> [[<span class="type">NSAttributedString</span> alloc] initWithString:@<span class="string">&quot; Appended&quot;</span>];</span><br><span class="line">[attributedString appendAttributedString:appendString];</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-插入字符串"><a href="#2-插入字符串" class="headerlink" title="2. 插入字符串"></a>2. 插入字符串</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NSAttributedString</span> <span class="operator">*</span>insertString <span class="operator">=</span> [[<span class="type">NSAttributedString</span> alloc] initWithString:@<span class="string">&quot;Inserted &quot;</span>];</span><br><span class="line">[attributedString insertAttributedString:insertString atIndex:<span class="number">0</span>];</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-替换字符串"><a href="#3-替换字符串" class="headerlink" title="3. 替换字符串"></a>3. 替换字符串</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NSAttributedString</span> <span class="operator">*</span>replaceString <span class="operator">=</span> [[<span class="type">NSAttributedString</span> alloc] initWithString:@<span class="string">&quot;New&quot;</span>];</span><br><span class="line">[attributedString replaceCharactersInRange:<span class="type">NSMakeRange</span>(<span class="number">0</span>, <span class="number">5</span>) withAttributedString:replaceString];</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-删除字符串"><a href="#4-删除字符串" class="headerlink" title="4. 删除字符串"></a>4. 删除字符串</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[attributedString deleteCharactersInRange:<span class="type">NSMakeRange</span>(<span class="number">0</span>, <span class="number">5</span>)];</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-设置整个字符串的属性"><a href="#5-设置整个字符串的属性" class="headerlink" title="5. 设置整个字符串的属性"></a>5. 设置整个字符串的属性</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[attributedString setAttributes:@&#123;</span><br><span class="line">    <span class="type">NSFontAttributeName</span>: [<span class="type">UIFont</span> systemFontOfSize:<span class="number">16</span>],</span><br><span class="line">    <span class="type">NSForegroundColorAttributeName</span>: [<span class="type">UIColor</span> blueColor]</span><br><span class="line">&#125; range:<span class="type">NSMakeRange</span>(<span class="number">0</span>, attributedString.length)];</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-移除属性"><a href="#6-移除属性" class="headerlink" title="6. 移除属性"></a>6. 移除属性</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[attributedString removeAttribute:<span class="type">NSForegroundColorAttributeName</span> range:<span class="type">NSMakeRange</span>(<span class="number">0</span>, <span class="number">5</span>)];</span><br></pre></td></tr></table></figure>
+
+<h2 id="实用示例"><a href="#实用示例" class="headerlink" title="实用示例"></a>实用示例</h2><h3 id="示例1：创建富文本标签"><a href="#示例1：创建富文本标签" class="headerlink" title="示例1：创建富文本标签"></a>示例1：创建富文本标签</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">-</span> (void)setupAttributedLabel &#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>text <span class="operator">=</span> @<span class="string">&quot;价格: ¥199 原价: ¥299&quot;</span>;</span><br><span class="line">    <span class="type">NSMutableAttributedString</span> <span class="operator">*</span>attributedString <span class="operator">=</span> [[<span class="type">NSMutableAttributedString</span> alloc] initWithString:text];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置价格颜色和字体</span></span><br><span class="line">    [attributedString addAttributes:@&#123;</span><br><span class="line">        <span class="type">NSForegroundColorAttributeName</span>: [<span class="type">UIColor</span> redColor],</span><br><span class="line">        <span class="type">NSFontAttributeName</span>: [<span class="type">UIFont</span> boldSystemFontOfSize:<span class="number">18</span>]</span><br><span class="line">    &#125; range:[text rangeOfString:@<span class="string">&quot;¥199&quot;</span>]];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置原价删除线</span></span><br><span class="line">    [attributedString addAttributes:@&#123;</span><br><span class="line">        <span class="type">NSForegroundColorAttributeName</span>: [<span class="type">UIColor</span> grayColor],</span><br><span class="line">        <span class="type">NSStrikethroughStyleAttributeName</span>: @(<span class="type">NSUnderlineStyleSingle</span>),</span><br><span class="line">        <span class="type">NSStrikethroughColorAttributeName</span>: [<span class="type">UIColor</span> grayColor]</span><br><span class="line">    &#125; range:[text rangeOfString:@<span class="string">&quot;¥299&quot;</span>]];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">self</span>.priceLabel.attributedText <span class="operator">=</span> attributedString;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="示例2：按钮富文本"><a href="#示例2：按钮富文本" class="headerlink" title="示例2：按钮富文本"></a>示例2：按钮富文本</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">-</span> (void)setupAttributedButton &#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>text <span class="operator">=</span> @<span class="string">&quot;登录 即表示同意《用户协议》和《隐私政策》&quot;</span>;</span><br><span class="line">    <span class="type">NSMutableAttributedString</span> <span class="operator">*</span>attributedString <span class="operator">=</span> [[<span class="type">NSMutableAttributedString</span> alloc] initWithString:text];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置协议链接样式</span></span><br><span class="line">    [attributedString addAttributes:@&#123;</span><br><span class="line">        <span class="type">NSForegroundColorAttributeName</span>: [<span class="type">UIColor</span> blueColor],</span><br><span class="line">        <span class="type">NSUnderlineStyleAttributeName</span>: @(<span class="type">NSUnderlineStyleSingle</span>)</span><br><span class="line">    &#125; range:[text rangeOfString:@<span class="string">&quot;《用户协议》&quot;</span>]];</span><br><span class="line">    </span><br><span class="line">    [attributedString addAttributes:@&#123;</span><br><span class="line">        <span class="type">NSForegroundColorAttributeName</span>: [<span class="type">UIColor</span> blueColor],</span><br><span class="line">        <span class="type">NSUnderlineStyleAttributeName</span>: @(<span class="type">NSUnderlineStyleSingle</span>)</span><br><span class="line">    &#125; range:[text rangeOfString:@<span class="string">&quot;《隐私政策》&quot;</span>]];</span><br><span class="line">    </span><br><span class="line">    [<span class="keyword">self</span>.agreementButton setAttributedTitle:attributedString forState:<span class="type">UIControlStateNormal</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="示例3：多样式文本组合"><a href="#示例3：多样式文本组合" class="headerlink" title="示例3：多样式文本组合"></a>示例3：多样式文本组合</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">-</span> (<span class="type">NSAttributedString</span> <span class="operator">*</span>)createComplexAttributedString &#123;</span><br><span class="line">    <span class="type">NSMutableAttributedString</span> <span class="operator">*</span>result <span class="operator">=</span> [[<span class="type">NSMutableAttributedString</span> alloc] <span class="keyword">init</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 第一部分：图标+文字</span></span><br><span class="line">    <span class="type">NSTextAttachment</span> <span class="operator">*</span>attachment <span class="operator">=</span> [[<span class="type">NSTextAttachment</span> alloc] <span class="keyword">init</span>];</span><br><span class="line">    attachment.image <span class="operator">=</span> [<span class="type">UIImage</span> imageNamed:@<span class="string">&quot;icon_star&quot;</span>];</span><br><span class="line">    attachment.bounds <span class="operator">=</span> <span class="type">CGRectMake</span>(<span class="number">0</span>, <span class="operator">-</span><span class="number">2</span>, <span class="number">16</span>, <span class="number">16</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="type">NSAttributedString</span> <span class="operator">*</span>iconString <span class="operator">=</span> [<span class="type">NSAttributedString</span> attributedStringWithAttachment:attachment];</span><br><span class="line">    [result appendAttributedString:iconString];</span><br><span class="line">    </span><br><span class="line">    <span class="type">NSAttributedString</span> <span class="operator">*</span>spaceString <span class="operator">=</span> [[<span class="type">NSAttributedString</span> alloc] initWithString:@<span class="string">&quot; &quot;</span>];</span><br><span class="line">    [result appendAttributedString:spaceString];</span><br><span class="line">    </span><br><span class="line">    <span class="type">NSAttributedString</span> <span class="operator">*</span>textString <span class="operator">=</span> [[<span class="type">NSAttributedString</span> alloc] initWithString:@<span class="string">&quot;五星好评&quot;</span> attributes:@&#123;</span><br><span class="line">        <span class="type">NSFontAttributeName</span>: [<span class="type">UIFont</span> systemFontOfSize:<span class="number">14</span>],</span><br><span class="line">        <span class="type">NSForegroundColorAttributeName</span>: [<span class="type">UIColor</span> orangeColor]</span><br><span class="line">    &#125;];</span><br><span class="line">    [result appendAttributedString:textString];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 第二部分：换行</span></span><br><span class="line">    <span class="type">NSAttributedString</span> <span class="operator">*</span>newLineString <span class="operator">=</span> [[<span class="type">NSAttributedString</span> alloc] initWithString:@<span class="string">&quot;<span class="subst">\n</span>&quot;</span>];</span><br><span class="line">    [result appendAttributedString:newLineString];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 第三部分：描述文字</span></span><br><span class="line">    <span class="type">NSAttributedString</span> <span class="operator">*</span>descString <span class="operator">=</span> [[<span class="type">NSAttributedString</span> alloc] initWithString:@<span class="string">&quot;感谢您的支持！&quot;</span> attributes:@&#123;</span><br><span class="line">        <span class="type">NSFontAttributeName</span>: [<span class="type">UIFont</span> systemFontOfSize:<span class="number">12</span>],</span><br><span class="line">        <span class="type">NSForegroundColorAttributeName</span>: [<span class="type">UIColor</span> grayColor]</span><br><span class="line">    &#125;];</span><br><span class="line">    [result appendAttributedString:descString];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li>范围检查：确保 <code>NSMakeRange</code> 的范围不会超出字符串长度</li>
+<li>性能优化：批量使用 <code>addAttributes:</code> 而不是多次调用 <code>addAttribute:</code></li>
+<li>内存管理：大量的富文本操作可能影响性能</li>
+<li>复用：对于频繁使用的富文本，考虑缓存创建结果</li>
+</ol>
+<h2 id="常用属性键值列表"><a href="#常用属性键值列表" class="headerlink" title="常用属性键值列表"></a>常用属性键值列表</h2><table>
+<thead>
+<tr>
+<th align="center">属性键</th>
+<th align="center">描述</th>
+<th align="center">值类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">NSFontAttributeName</td>
+<td align="center">字体</td>
+<td align="center">UIFont</td>
+</tr>
+<tr>
+<td align="center">NSForegroundColorAttributeName</td>
+<td align="center">文字颜色</td>
+<td align="center">UIColor</td>
+</tr>
+<tr>
+<td align="center">NSBackgroundColorAttributeName</td>
+<td align="center">背景颜色</td>
+<td align="center">UIColor</td>
+</tr>
+<tr>
+<td align="center">NSParagraphStyleAttributeName</td>
+<td align="center">段落样式</td>
+<td align="center">NSParagraphStyle</td>
+</tr>
+<tr>
+<td align="center">NSKernAttributeName</td>
+<td align="center">字间距</td>
+<td align="center">NSNumber</td>
+</tr>
+<tr>
+<td align="center">NSStrikethroughStyleAttributeName</td>
+<td align="center">删除线样式</td>
+<td align="center">NSNumber</td>
+</tr>
+<tr>
+<td align="center">NSUnderlineStyleAttributeName</td>
+<td align="center">下划线样式</td>
+<td align="center">NSNumber</td>
+</tr>
+<tr>
+<td align="center">NSStrokeColorAttributeName</td>
+<td align="center">描边颜色</td>
+<td align="center">UIColor</td>
+</tr>
+<tr>
+<td align="center">NSStrokeWidthAttributeName</td>
+<td align="center">描边宽度</td>
+<td align="center">NSNumber</td>
+</tr>
+<tr>
+<td align="center">NSShadowAttributeName</td>
+<td align="center">阴影</td>
+<td align="center">NSShadow</td>
+</tr>
+<tr>
+<td align="center">NSLinkAttributeName</td>
+<td align="center">链接</td>
+<td align="center">NSURL/NSString</td>
+</tr>
+</tbody></table>
+<h2 id="设置段落样式扩展"><a href="#设置段落样式扩展" class="headerlink" title="设置段落样式扩展"></a>设置段落样式扩展</h2><h3 id="使用-NSMutableParagraphStyle"><a href="#使用-NSMutableParagraphStyle" class="headerlink" title="使用 NSMutableParagraphStyle"></a>使用 NSMutableParagraphStyle</h3><p><code>NSMutableParagraphStyle</code> 是专门用于设置段落样式的类，可以控制<em>行间距、段落间距、对齐方式</em>等。</p>
+<h4 id="1-基本设置方法"><a href="#1-基本设置方法" class="headerlink" title="1. 基本设置方法"></a>1. 基本设置方法</h4><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建段落样式</span></span><br><span class="line"><span class="type">NSMutableParagraphStyle</span> <span class="operator">*</span>paragraphStyle <span class="operator">=</span> [[<span class="type">NSMutableParagraphStyle</span> alloc] <span class="keyword">init</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置行间距</span></span><br><span class="line">paragraphStyle.lineSpacing <span class="operator">=</span> <span class="number">10</span>; <span class="comment">// 行间距10pt</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置段落间距</span></span><br><span class="line">paragraphStyle.paragraphSpacing <span class="operator">=</span> <span class="number">15</span>; <span class="comment">// 段落间距15pt</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 应用到属性字符串</span></span><br><span class="line"><span class="type">NSMutableAttributedString</span> <span class="operator">*</span>attributedString <span class="operator">=</span> [[<span class="type">NSMutableAttributedString</span> alloc] initWithString:@<span class="string">&quot;你的文本内容&quot;</span>];</span><br><span class="line">[attributedString addAttribute:<span class="type">NSParagraphStyleAttributeName</span> </span><br><span class="line">                         value:paragraphStyle </span><br><span class="line">                         range:<span class="type">NSMakeRange</span>(<span class="number">0</span>, attributedString.length)];</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-完整示例"><a href="#2-完整示例" class="headerlink" title="2. 完整示例"></a>2. 完整示例</h4><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">-</span> (void)setupTextWithLineAndParagraphSpacing &#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>text <span class="operator">=</span> @<span class="string">&quot;这是第一段文本。<span class="subst">\n</span>这是第二段文本，包含多行文字，用于演示行间距和段落间距的效果。<span class="subst">\n</span>这是第三段文本。&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="type">NSMutableAttributedString</span> <span class="operator">*</span>attributedString <span class="operator">=</span> [[<span class="type">NSMutableAttributedString</span> alloc] initWithString:text];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 创建段落样式</span></span><br><span class="line">    <span class="type">NSMutableParagraphStyle</span> <span class="operator">*</span>paragraphStyle <span class="operator">=</span> [[<span class="type">NSMutableParagraphStyle</span> alloc] <span class="keyword">init</span>];</span><br><span class="line">    paragraphStyle.lineSpacing <span class="operator">=</span> <span class="number">8</span>;          <span class="comment">// 行间距8pt</span></span><br><span class="line">    paragraphStyle.paragraphSpacing <span class="operator">=</span> <span class="number">16</span>;    <span class="comment">// 段落间距16pt</span></span><br><span class="line">    paragraphStyle.alignment <span class="operator">=</span> <span class="type">NSTextAlignmentLeft</span>; <span class="comment">// 左对齐</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 应用到整个文本</span></span><br><span class="line">    [attributedString addAttribute:<span class="type">NSParagraphStyleAttributeName</span> </span><br><span class="line">                             value:paragraphStyle </span><br><span class="line">                             range:<span class="type">NSMakeRange</span>(<span class="number">0</span>, attributedString.length)];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">self</span>.textLabel.attributedText <span class="operator">=</span> attributedString;</span><br><span class="line">    <span class="keyword">self</span>.textLabel.numberOfLines <span class="operator">=</span> <span class="number">0</span>; <span class="comment">// 多行显示</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="更多-NSMutableParagraphStyle-属性"><a href="#更多-NSMutableParagraphStyle-属性" class="headerlink" title="更多 NSMutableParagraphStyle 属性"></a>更多 NSMutableParagraphStyle 属性</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span> (<span class="type">NS_NONATOMIC_IOSONLY</span>) <span class="type">CGFloat</span> lineSpacing;</span><br><span class="line"><span class="meta">@property</span> (<span class="type">NS_NONATOMIC_IOSONLY</span>) <span class="type">CGFloat</span> paragraphSpacing;</span><br><span class="line"><span class="meta">@property</span> (<span class="type">NS_NONATOMIC_IOSONLY</span>) <span class="type">CGFloat</span> firstLineHeadIndent;</span><br><span class="line"><span class="meta">@property</span> (<span class="type">NS_NONATOMIC_IOSONLY</span>) <span class="type">CGFloat</span> headIndent;</span><br><span class="line"><span class="meta">@property</span> (<span class="type">NS_NONATOMIC_IOSONLY</span>) <span class="type">CGFloat</span> tailIndent;</span><br><span class="line"><span class="meta">@property</span> (<span class="type">NS_NONATOMIC_IOSONLY</span>) <span class="type">NSLineBreakMode</span> lineBreakMode;</span><br><span class="line"><span class="meta">@property</span> (<span class="type">NS_NONATOMIC_IOSONLY</span>) <span class="type">CGFloat</span> minimumLineHeight;</span><br><span class="line"><span class="meta">@property</span> (<span class="type">NS_NONATOMIC_IOSONLY</span>) <span class="type">CGFloat</span> maximumLineHeight;</span><br><span class="line"><span class="meta">@property</span> (<span class="type">NS_NONATOMIC_IOSONLY</span>) <span class="type">NSWritingDirection</span> baseWritingDirection;</span><br><span class="line"><span class="meta">@property</span> (<span class="type">NS_NONATOMIC_IOSONLY</span>) <span class="type">CGFloat</span> lineHeightMultiple;</span><br><span class="line"><span class="meta">@property</span> (<span class="type">NS_NONATOMIC_IOSONLY</span>) <span class="type">CGFloat</span> paragraphSpacingBefore;</span><br><span class="line"><span class="meta">@property</span> (<span class="type">NS_NONATOMIC_IOSONLY</span>) float hyphenationFactor;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-行间距和段落间距"><a href="#1-行间距和段落间距" class="headerlink" title="1. 行间距和段落间距"></a>1. 行间距和段落间距</h4><p><code>lineSpacing</code> - 行间距</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span> <span class="type">CGFloat</span> lineSpacing;</span><br></pre></td></tr></table></figure>
+
+<p>含义：行与行之间的垂直间距（单位为点）<br>效果：在每行文字之间添加额外的垂直空间</p>
+<p>示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paragraphStyle.lineSpacing <span class="operator">=</span> <span class="number">10</span>; <span class="comment">// 行间距10pt</span></span><br></pre></td></tr></table></figure>
+
+<p><code>paragraphSpacing</code> - 段落间距</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span> <span class="type">CGFloat</span> paragraphSpacing;</span><br></pre></td></tr></table></figure>
+
+<p>含义：段落之间的垂直间距（换行符 \n 后的间距）<br>效果：在段落之间添加额外的垂直空间</p>
+<p>示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paragraphStyle.paragraphSpacing <span class="operator">=</span> <span class="number">15</span>; <span class="comment">// 段落间距15pt</span></span><br></pre></td></tr></table></figure>
+
+<p><code>paragraphSpacingBefore</code> - 段前间距</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span> <span class="type">CGFloat</span> paragraphSpacingBefore;</span><br></pre></td></tr></table></figure>
+
+<p>含义：段落开始前的垂直间距<br>效果：在段落开始前添加额外的垂直空间</p>
+<p>示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paragraphStyle.paragraphSpacingBefore <span class="operator">=</span> <span class="number">10</span>; <span class="comment">// 段前间距10pt</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-缩进相关"><a href="#2-缩进相关" class="headerlink" title="2. 缩进相关"></a>2. 缩进相关</h4><p><code>firstLineHeadIndent</code> - 首行缩进</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span> <span class="type">CGFloat</span> firstLineHeadIndent;</span><br></pre></td></tr></table></figure>
+
+<p>含义：段落第一行的缩进量<br>效果：像中文段落那样首行缩进2个字符</p>
+<p>示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paragraphStyle.firstLineHeadIndent <span class="operator">=</span> <span class="number">20</span>; <span class="comment">// 首行缩进20pt</span></span><br></pre></td></tr></table></figure>
+
+<p><code>headIndent</code> - 头部缩进</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span> <span class="type">CGFloat</span> headIndent;</span><br></pre></td></tr></table></figure>
+
+<p>含义：除第一行外所有行的缩进量<br>效果：创建悬挂缩进效果</p>
+<p>示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paragraphStyle.headIndent <span class="operator">=</span> <span class="number">30</span>; <span class="comment">// 除首行外缩进30pt</span></span><br></pre></td></tr></table></figure>
+
+<p><code>tailIndent</code> - 尾部缩进</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span> <span class="type">CGFloat</span> tailIndent;</span><br></pre></td></tr></table></figure>
+
+<p>含义：文本行尾部的缩进量（正值向左缩进，负值向右扩展）<br>效果：控制文本右侧的边界</p>
+<p>示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paragraphStyle.tailIndent <span class="operator">=</span> <span class="operator">-</span><span class="number">20</span>; <span class="comment">// 向右扩展20pt</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-行高控制"><a href="#3-行高控制" class="headerlink" title="3. 行高控制"></a>3. 行高控制</h4><p><code>minimumLineHeight</code> - 最小行高</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span> <span class="type">CGFloat</span> minimumLineHeight;</span><br></pre></td></tr></table></figure>
+
+<p>含义：行的最小高度<br>效果：确保每行至少有这么高</p>
+<p>示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paragraphStyle.minimumLineHeight <span class="operator">=</span> <span class="number">25</span>; <span class="comment">// 最小行高25pt</span></span><br></pre></td></tr></table></figure>
+
+<p><code>maximumLineHeight</code> - 最大行高</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span> <span class="type">CGFloat</span> maximumLineHeight;</span><br></pre></td></tr></table></figure>
+
+<p>含义：行的最大高度<br>效果：限制每行的最大高度</p>
+<p>示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paragraphStyle.maximumLineHeight <span class="operator">=</span> <span class="number">30</span>; <span class="comment">// 最大行高30pt</span></span><br></pre></td></tr></table></figure>
+
+<p><code>lineHeightMultiple</code> - 行高倍数</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span> <span class="type">CGFloat</span> lineHeightMultiple;</span><br></pre></td></tr></table></figure>
+
+<p>含义：行高相对于字体大小的倍数<br>效果：<code>行高 = 字体大小 × lineHeightMultiple</code></p>
+<p>示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paragraphStyle.lineHeightMultiple <span class="operator">=</span> <span class="number">1.5</span>; <span class="comment">// 行高是字体的1.5倍</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="4-其他重要属性"><a href="#4-其他重要属性" class="headerlink" title="4. 其他重要属性"></a>4. 其他重要属性</h4><p><code>lineBreakMode</code> - 换行模式</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span> <span class="type">NSLineBreakMode</span> lineBreakMode;</span><br></pre></td></tr></table></figure>
+
+<p>含义：当文本超出边界时的换行方式<br>常用值：</p>
+<ul>
+<li><code>NSLineBreakByWordWrapping</code> - 按单词换行</li>
+<li><code>NSLineBreakByCharWrapping</code> - 按字符换行</li>
+<li><code>NSLineBreakByTruncatingTail</code> - 末尾显示省略号</li>
+<li><code>NSLineBreakByTruncatingMiddle</code> - 中间显示省略号</li>
+<li><code>NSLineBreakByTruncatingHead</code> - 开头显示省略号</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paragraphStyle.lineBreakMode <span class="operator">=</span> <span class="type">NSLineBreakByWordWrapping</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>baseWritingDirection</code> - 书写方向</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span> <span class="type">NSWritingDirection</span> baseWritingDirection;</span><br></pre></td></tr></table></figure>
+
+<p>含义：文本的书写方向<br>常用值：</p>
+<ul>
+<li><code>NSWritingDirectionNatural</code> - 自然方向（根据语言自动判断）</li>
+<li><code>NSWritingDirectionLeftToRight</code> - 从左到右</li>
+<li><code>NSWritingDirectionRightToLeft</code> - 从右到左</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paragraphStyle.baseWritingDirection <span class="operator">=</span> <span class="type">NSWritingDirectionLeftToRight</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>hyphenationFactor</code> - 连字符因子</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span> float hyphenationFactor;</span><br></pre></td></tr></table></figure>
+
+<p>含义：断字连接的概率（0.0-1.0）<br>效果：控制英文单词在行末是否使用连字符断开<br>示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paragraphStyle.hyphenationFactor <span class="operator">=</span> <span class="number">0.5</span>; <span class="comment">// 50%的概率使用连字符</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="完整示例"><a href="#完整示例" class="headerlink" title="完整示例"></a>完整示例</h4><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">-</span> (<span class="type">NSMutableParagraphStyle</span> <span class="operator">*</span>)createCompleteParagraphStyle &#123;</span><br><span class="line">    <span class="type">NSMutableParagraphStyle</span> <span class="operator">*</span>style <span class="operator">=</span> [[<span class="type">NSMutableParagraphStyle</span> alloc] <span class="keyword">init</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 间距设置</span></span><br><span class="line">    style.lineSpacing <span class="operator">=</span> <span class="number">8</span>;              <span class="comment">// 行间距8pt</span></span><br><span class="line">    style.paragraphSpacing <span class="operator">=</span> <span class="number">16</span>;        <span class="comment">// 段落间距16pt</span></span><br><span class="line">    style.paragraphSpacingBefore <span class="operator">=</span> <span class="number">8</span>;   <span class="comment">// 段前间距8pt</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 缩进设置</span></span><br><span class="line">    style.firstLineHeadIndent <span class="operator">=</span> <span class="number">20</span>;     <span class="comment">// 首行缩进20pt</span></span><br><span class="line">    style.headIndent <span class="operator">=</span> <span class="number">10</span>;              <span class="comment">// 其他行缩进10pt</span></span><br><span class="line">    style.tailIndent <span class="operator">=</span> <span class="operator">-</span><span class="number">10</span>;             <span class="comment">// 向右扩展10pt</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 行高控制</span></span><br><span class="line">    style.minimumLineHeight <span class="operator">=</span> <span class="number">20</span>;       <span class="comment">// 最小行高20pt</span></span><br><span class="line">    style.maximumLineHeight <span class="operator">=</span> <span class="number">30</span>;       <span class="comment">// 最大行高30pt</span></span><br><span class="line">    style.lineHeightMultiple <span class="operator">=</span> <span class="number">1.2</span>;     <span class="comment">// 行高是字体的1.2倍</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 其他设置</span></span><br><span class="line">    style.lineBreakMode <span class="operator">=</span> <span class="type">NSLineBreakByWordWrapping</span>; <span class="comment">// 按单词换行</span></span><br><span class="line">    style.baseWritingDirection <span class="operator">=</span> <span class="type">NSWritingDirectionLeftToRight</span>; <span class="comment">// 从左到右</span></span><br><span class="line">    style.hyphenationFactor <span class="operator">=</span> <span class="number">0.3</span>;      <span class="comment">// 30%概率使用连字符</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> style;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    
+    
+    
+
+    <div>
+       
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------<i class="fa fa-paw"></i> That's all！Best wishes for you !!! <i class="fa fa-paw"></i>-------------</div>
+    
+</div>
+
+       
+    </div><div class="post-widgets">
+    <div class="likely">
+        <div class="twitter">Tweet</div>
+        <div class="facebook">Share</div>
+        <div class="linkedin">Link</div>
+        <div class="gplus">Plus</div>
+        <div class="vkontakte">Share</div>
+        <div class="odnoklassniki">Class</div>
+        <div class="telegram">Send</div>
+        <div class="whatsapp">Send</div>
+        <div class="pinterest">Pin</div>
+    </div>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.js"></script><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>凤炎忻
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91%E5%8E%9F%E7%94%9F%E5%AF%8C%E6%96%87%E6%9C%AC-NSAttributedString-%E7%9A%84%E4%BD%BF%E7%94%A8/" title="【OC】原生富文本 NSAttributedString 的使用">https://fengyanxin.github.io/iOS/【OC】原生富文本-NSAttributedString-的使用/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/fengyanxin">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.zhihu.com/people/peng-he-34-93">
+            <span class="icon">
+              <i class="fab fa-zhihu"></i>
+            </span>
+
+            <span class="label">知乎</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065">
+            <span class="icon">
+              <i class="fa fa-toutiao"></i>
+            </span>
+
+            <span class="label">今日头条</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477">
+            <span class="icon">
+              <i class="fa fa-baidu1"></i>
+            </span>
+
+            <span class="label">百家号</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394">
+            <span class="icon">
+              <i class="fab fa-xiaohongshu1"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e">
+            <span class="icon">
+              <i class="fab fa-liblib1"></i>
+            </span>
+
+            <span class="label">LibLib</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+              <a href="/tags/OC/" rel="tag"><i class="fa fa-tag"></i> OC</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/iOS/%E3%80%90OC%E3%80%91Toast%E6%8F%90%E7%A4%BA/" rel="prev" title="【OC】Toast 提示">
+      <i class="fa fa-chevron-left"></i> 【OC】Toast 提示
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-NSAttributedString%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">什么是 NSAttributedString？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%92%8C%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">创建和初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BB%8E%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%9B%E5%BB%BA"><span class="nav-number">2.1.</span> <span class="nav-text">1. 从字符串创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BB%8E%E7%8E%B0%E6%9C%89%E5%B1%9E%E6%80%A7%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%9B%E5%BB%BA"><span class="nav-number">2.2.</span> <span class="nav-text">2. 从现有属性字符串创建</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">常用属性设置方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%AE%BE%E7%BD%AE%E5%AD%97%E4%BD%93"><span class="nav-number">3.1.</span> <span class="nav-text">1. 设置字体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%AE%BE%E7%BD%AE%E6%96%87%E5%AD%97%E9%A2%9C%E8%89%B2"><span class="nav-number">3.2.</span> <span class="nav-text">2. 设置文字颜色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%AE%BE%E7%BD%AE%E8%83%8C%E6%99%AF%E8%89%B2"><span class="nav-number">3.3.</span> <span class="nav-text">3. 设置背景色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%AE%BE%E7%BD%AE%E6%AE%B5%E8%90%BD%E6%A0%B7%E5%BC%8F"><span class="nav-number">3.4.</span> <span class="nav-text">4. 设置段落样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E8%AE%BE%E7%BD%AE%E4%B8%8B%E5%88%92%E7%BA%BF"><span class="nav-number">3.5.</span> <span class="nav-text">5. 设置下划线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E8%AE%BE%E7%BD%AE%E5%88%A0%E9%99%A4%E7%BA%BF"><span class="nav-number">3.6.</span> <span class="nav-text">6. 设置删除线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E8%AE%BE%E7%BD%AE%E5%AD%97%E9%97%B4%E8%B7%9D"><span class="nav-number">3.7.</span> <span class="nav-text">7. 设置字间距</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">常用操作方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%BF%BD%E5%8A%A0%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">4.1.</span> <span class="nav-text">1. 追加字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%8F%92%E5%85%A5%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">4.2.</span> <span class="nav-text">2. 插入字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%9B%BF%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">4.3.</span> <span class="nav-text">3. 替换字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%88%A0%E9%99%A4%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">4.4.</span> <span class="nav-text">4. 删除字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E8%AE%BE%E7%BD%AE%E6%95%B4%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-number">4.5.</span> <span class="nav-text">5. 设置整个字符串的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E7%A7%BB%E9%99%A4%E5%B1%9E%E6%80%A7"><span class="nav-number">4.6.</span> <span class="nav-text">6. 移除属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.</span> <span class="nav-text">实用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1%EF%BC%9A%E5%88%9B%E5%BB%BA%E5%AF%8C%E6%96%87%E6%9C%AC%E6%A0%87%E7%AD%BE"><span class="nav-number">5.1.</span> <span class="nav-text">示例1：创建富文本标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B2%EF%BC%9A%E6%8C%89%E9%92%AE%E5%AF%8C%E6%96%87%E6%9C%AC"><span class="nav-number">5.2.</span> <span class="nav-text">示例2：按钮富文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B3%EF%BC%9A%E5%A4%9A%E6%A0%B7%E5%BC%8F%E6%96%87%E6%9C%AC%E7%BB%84%E5%90%88"><span class="nav-number">5.3.</span> <span class="nav-text">示例3：多样式文本组合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">6.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7%E9%94%AE%E5%80%BC%E5%88%97%E8%A1%A8"><span class="nav-number">7.</span> <span class="nav-text">常用属性键值列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%AE%B5%E8%90%BD%E6%A0%B7%E5%BC%8F%E6%89%A9%E5%B1%95"><span class="nav-number">8.</span> <span class="nav-text">设置段落样式扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-NSMutableParagraphStyle"><span class="nav-number">8.1.</span> <span class="nav-text">使用 NSMutableParagraphStyle</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%9F%BA%E6%9C%AC%E8%AE%BE%E7%BD%AE%E6%96%B9%E6%B3%95"><span class="nav-number">8.1.1.</span> <span class="nav-text">1. 基本设置方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%AE%8C%E6%95%B4%E7%A4%BA%E4%BE%8B"><span class="nav-number">8.1.2.</span> <span class="nav-text">2. 完整示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A-NSMutableParagraphStyle-%E5%B1%9E%E6%80%A7"><span class="nav-number">8.2.</span> <span class="nav-text">更多 NSMutableParagraphStyle 属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%A1%8C%E9%97%B4%E8%B7%9D%E5%92%8C%E6%AE%B5%E8%90%BD%E9%97%B4%E8%B7%9D"><span class="nav-number">8.2.1.</span> <span class="nav-text">1. 行间距和段落间距</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%BC%A9%E8%BF%9B%E7%9B%B8%E5%85%B3"><span class="nav-number">8.2.2.</span> <span class="nav-text">2. 缩进相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E8%A1%8C%E9%AB%98%E6%8E%A7%E5%88%B6"><span class="nav-number">8.2.3.</span> <span class="nav-text">3. 行高控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%85%B6%E4%BB%96%E9%87%8D%E8%A6%81%E5%B1%9E%E6%80%A7"><span class="nav-number">8.2.4.</span> <span class="nav-text">4. 其他重要属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E7%A4%BA%E4%BE%8B"><span class="nav-number">8.2.5.</span> <span class="nav-text">完整示例</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="凤炎忻"
+      src="/images/flyingPig.jpeg">
+  <p class="site-author-name" itemprop="name">凤炎忻</p>
+  <div class="site-description" itemprop="description">性浮脱，难酬一道，广涉寡精，杂而不博</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengyanxin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengyanxin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ph18317192001@163.com" title="E-Mail → mailto:ph18317192001@163.com" rel="noopener" target="_blank"><i class="fab fa-mail fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065" title="今日头条 → https:&#x2F;&#x2F;profile.zjurl.cn&#x2F;rogue&#x2F;ugc&#x2F;profile&#x2F;?user_id&#x3D;51893718065" rel="noopener" target="_blank"><i class="fab fa-jinritoutiao fa-fw"></i>今日头条</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477" title="百家号 → https:&#x2F;&#x2F;author.baidu.com&#x2F;home?from&#x3D;bjh_article&amp;app_id&#x3D;1665765419554477" rel="noopener" target="_blank"><i class="fab fa-baidu fa-fw"></i>百家号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;642cb9650000000011023394" rel="noopener" target="_blank"><i class="fab fa-xiaohongshu fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e" title="LibLib → https:&#x2F;&#x2F;www.liblib.art&#x2F;userpage&#x2F;c7816525373d4fbca7e45c1940ead98e" rel="noopener" target="_blank"><i class="fab fa-liblib fa-fw"></i>LibLib</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">凤炎忻</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">89k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:22</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,255' opacity='0.95' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '7EJkVswo79CmfmbwincRPjrA-gzGzoHsz',
+      appKey     : 'v7t6DWozwkcL2qIDeSC5kupC',
+      placeholder: "说点什么吧！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

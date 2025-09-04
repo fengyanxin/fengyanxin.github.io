@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-09-03T09:04:37.424Z</updated>
+  <updated>2025-09-04T05:25:50.881Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【OC】原生富文本 NSAttributedString 的使用</title>
+    <link href="https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91%E5%8E%9F%E7%94%9F%E5%AF%8C%E6%96%87%E6%9C%AC-NSAttributedString-%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <id>https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91%E5%8E%9F%E7%94%9F%E5%AF%8C%E6%96%87%E6%9C%AC-NSAttributedString-%E7%9A%84%E4%BD%BF%E7%94%A8/</id>
+    <published>2025-09-04T02:33:36.000Z</published>
+    <updated>2025-09-04T05:25:50.881Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;什么是-NSAttributedString？&quot;&gt;&lt;a href=&quot;#什么是-NSAttributedString？&quot; class=&quot;headerlink&quot; title=&quot;什么是 NSAttributedString？&quot;&gt;&lt;/a&gt;什么是 NSAttributedString？&lt;/h2&gt;&lt;p&gt;&lt;code&gt;NSAttributedString&lt;/code&gt;（属性字符串）是 &lt;code&gt;Foundation&lt;/code&gt; 框架中的一个类，它允许你在一个字符串中为不同的字符范围应用不同的属性（如字体、颜色、间距等）。与普通的 &lt;code&gt;NSString&lt;/code&gt; 只能存储纯文本不同，&lt;code&gt;NSAttributedString&lt;/code&gt; 可以存储富文本信息。&lt;/p&gt;
+&lt;p&gt;但是，&lt;code&gt;NSAttributedString&lt;/code&gt; 是不可变的，一旦创建就不能再修改。&lt;/p&gt;
+&lt;p&gt;如果想要在创建富文本后，修改字符串的内容和属性，可以使用 &lt;code&gt;NSAttributedString&lt;/code&gt; 的可变版本 &lt;code&gt;NSMutableAttributedString&lt;/code&gt;，它给我们提供了丰富的 &lt;code&gt;API&lt;/code&gt; 来进行自定义。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/categories/iOS/"/>
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+    <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
+    
+  </entry>
   
   <entry>
     <title>【OC】Toast 提示</title>
@@ -422,50 +445,6 @@
     
     <summary type="html">&lt;h2 id=&quot;一、控制台打印-no-src-attr-skipped…&quot;&gt;&lt;a href=&quot;#一、控制台打印-no-src-attr-skipped…&quot; class=&quot;headerlink&quot; title=&quot;一、控制台打印 no src attr, skipped…&quot;&gt;&lt;/a&gt;一、控制台打印 no src attr, skipped…&lt;/h2&gt;&lt;p&gt;原因：这是因为 &lt;code&gt;hexo-asset-image&lt;/code&gt;插件没有捕捉到图片&lt;code&gt;src&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;解决：打开 &lt;code&gt;hexo/node_modules/hexo-asset-image/index.js&lt;/code&gt;，定位到相应代码:&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Hexo" scheme="https://fengyanxin.github.io/categories/Hexo/"/>
-    
-    
-    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【Hexo】Next 主题的使用与美化</title>
-    <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/"/>
-    <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Next-%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</id>
-    <published>2025-01-16T06:04:12.000Z</published>
-    <updated>2025-05-15T01:21:07.712Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;一、简介&quot;&gt;&lt;a href=&quot;#一、简介&quot; class=&quot;headerlink&quot; title=&quot;一、简介&quot;&gt;&lt;/a&gt;一、简介&lt;/h2&gt;&lt;p&gt;Next 主题是 &lt;a href=&quot;https://hexo.io/zh-cn&quot;&gt;Hexo&lt;/a&gt; 上使用最广，同时在 GitHub 上也是 Star 最多的主题，bug 修复和功能更新也比较快。当前博客就是使用 Hexo 配合 Next 主题搭建的&lt;/p&gt;
-&lt;h2 id=&quot;二、版本&quot;&gt;&lt;a href=&quot;#二、版本&quot; class=&quot;headerlink&quot; title=&quot;二、版本&quot;&gt;&lt;/a&gt;二、版本&lt;/h2&gt;&lt;p&gt;在 GitHub 上的 &lt;code&gt;Next&lt;/code&gt; 的官方文档：&lt;a href=&quot;https://github.com/next-theme/hexo-theme-next/issues/4&quot;&gt;【必读】更新说明及常见问题&lt;/a&gt; 中有相关说明，Next 一共有三个不同的仓库：&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&quot;center&quot;&gt;版本&lt;/th&gt;
-&lt;th align=&quot;center&quot;&gt;年份&lt;/th&gt;
-&lt;th align=&quot;center&quot;&gt;仓库&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;&lt;tr&gt;
-&lt;td align=&quot;center&quot;&gt;v5.1.4 或更低&lt;/td&gt;
-&lt;td align=&quot;center&quot;&gt;2014 ~ 2017&lt;/td&gt;
-&lt;td align=&quot;center&quot;&gt;&lt;a href=&quot;https://github.com/iissnan/hexo-theme-next&quot;&gt;iissnan/hexo-theme-next&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;center&quot;&gt;v6.0.0 ~ v7.8.0&lt;/td&gt;
-&lt;td align=&quot;center&quot;&gt;2018 ~ 2019&lt;/td&gt;
-&lt;td align=&quot;center&quot;&gt;&lt;a href=&quot;https://github.com/theme-next/hexo-theme-next&quot;&gt;theme-next/hexo-theme-next&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&quot;center&quot;&gt;v8.0.0 或更高&lt;/td&gt;
-&lt;td align=&quot;center&quot;&gt;2020&lt;/td&gt;
-&lt;td align=&quot;center&quot;&gt;&lt;a href=&quot;https://github.com/next-theme/hexo-theme-next&quot;&gt;next-theme/hexo-theme-next&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;</summary>
     
     
     
