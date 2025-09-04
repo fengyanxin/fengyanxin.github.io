@@ -326,7 +326,7 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/tags/index.html</loc>
+    <loc>https://fengyanxin.github.io/categories/index.html</loc>
     
     <lastmod>2025-01-21</lastmod>
     
@@ -335,7 +335,7 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/categories/index.html</loc>
+    <loc>https://fengyanxin.github.io/tags/index.html</loc>
     
     <lastmod>2025-01-21</lastmod>
     
@@ -430,7 +430,7 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/tags/Flutter/</loc>
+    <loc>https://fengyanxin.github.io/tags/GitHub/</loc>
     <lastmod>2025-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -444,7 +444,7 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/tags/GitHub/</loc>
+    <loc>https://fengyanxin.github.io/tags/Flutter/</loc>
     <lastmod>2025-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -488,7 +488,7 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/categories/Flutter/</loc>
+    <loc>https://fengyanxin.github.io/categories/GitHub/</loc>
     <lastmod>2025-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -502,7 +502,7 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/categories/GitHub/</loc>
+    <loc>https://fengyanxin.github.io/categories/Flutter/</loc>
     <lastmod>2025-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
