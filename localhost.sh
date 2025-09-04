@@ -2,7 +2,7 @@ hexo clean
 
 hexo g
 
-gulp
+#gulp
 
 hexo s 
 
