@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-09-04T05:25:50.881Z</updated>
+  <updated>2025-09-28T03:03:56.666Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【iOS 进阶】12 | 功能组件：如何设置多语言支持，为全球化做准备？</title>
+    <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%90iOS-%E8%BF%9B%E9%98%B6%E3%80%9112-%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/"/>
+    <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%90iOS-%E8%BF%9B%E9%98%B6%E3%80%9112-%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/</id>
+    <published>2025-09-28T02:38:12.000Z</published>
+    <updated>2025-09-28T03:03:56.666Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;如何设置多语言支持，为全球化做准备？&quot;&gt;&lt;a href=&quot;#如何设置多语言支持，为全球化做准备？&quot; class=&quot;headerlink&quot; title=&quot;如何设置多语言支持，为全球化做准备？&quot;&gt;&lt;/a&gt;如何设置多语言支持，为全球化做准备？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104137517.png&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="学习笔记" scheme="https://fengyanxin.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+  </entry>
   
   <entry>
     <title>【OC】原生富文本 NSAttributedString 的使用</title>
@@ -432,26 +453,6 @@
     <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【Hexo】踩坑记录</title>
-    <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/"/>
-    <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</id>
-    <published>2025-01-17T05:54:45.000Z</published>
-    <updated>2025-05-14T09:40:52.878Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;一、控制台打印-no-src-attr-skipped…&quot;&gt;&lt;a href=&quot;#一、控制台打印-no-src-attr-skipped…&quot; class=&quot;headerlink&quot; title=&quot;一、控制台打印 no src attr, skipped…&quot;&gt;&lt;/a&gt;一、控制台打印 no src attr, skipped…&lt;/h2&gt;&lt;p&gt;原因：这是因为 &lt;code&gt;hexo-asset-image&lt;/code&gt;插件没有捕捉到图片&lt;code&gt;src&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;解决：打开 &lt;code&gt;hexo/node_modules/hexo-asset-image/index.js&lt;/code&gt;，定位到相应代码:&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Hexo" scheme="https://fengyanxin.github.io/categories/Hexo/"/>
-    
-    
-    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
     
   </entry>
   
