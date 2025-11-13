@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-09-28T03:03:56.666Z</updated>
+  <updated>2025-11-13T08:22:58.148Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -17,9 +17,30 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>【iOS 进阶】13 | 功能组件：如何设置动态字体，提升视力辅助功能？</title>
+    <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/13%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%8A%A8%E6%80%81%E5%AD%97%E4%BD%93%EF%BC%8C%E6%8F%90%E5%8D%87%E8%A7%86%E5%8A%9B%E8%BE%85%E5%8A%A9%E5%8A%9F%E8%83%BD%EF%BC%9F/"/>
+    <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/13%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%8A%A8%E6%80%81%E5%AD%97%E4%BD%93%EF%BC%8C%E6%8F%90%E5%8D%87%E8%A7%86%E5%8A%9B%E8%BE%85%E5%8A%A9%E5%8A%9F%E8%83%BD%EF%BC%9F/</id>
+    <published>2025-11-13T08:01:13.000Z</published>
+    <updated>2025-11-13T08:22:58.148Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;如何设置动态字体，提升视力辅助功能？&quot;&gt;&lt;a href=&quot;#如何设置动态字体，提升视力辅助功能？&quot; class=&quot;headerlink&quot; title=&quot;如何设置动态字体，提升视力辅助功能？&quot;&gt;&lt;/a&gt;如何设置动态字体，提升视力辅助功能？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20251113160327408.png&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="学习笔记" scheme="https://fengyanxin.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
     <title>【iOS 进阶】12 | 功能组件：如何设置多语言支持，为全球化做准备？</title>
-    <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%90iOS-%E8%BF%9B%E9%98%B6%E3%80%9112-%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/"/>
-    <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%90iOS-%E8%BF%9B%E9%98%B6%E3%80%9112-%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/</id>
+    <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/"/>
+    <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/</id>
     <published>2025-09-28T02:38:12.000Z</published>
     <updated>2025-09-28T03:03:56.666Z</updated>
     
@@ -423,27 +444,6 @@
     
     
     <summary type="html">&lt;h1 id=&quot;DesignKit-组件桥接设计与开发规范&quot;&gt;&lt;a href=&quot;#DesignKit-组件桥接设计与开发规范&quot; class=&quot;headerlink&quot; title=&quot;DesignKit 组件桥接设计与开发规范&quot;&gt;&lt;/a&gt;DesignKit 组件桥接设计与开发规范&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17373431283113.jpg&quot;&gt;&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【iOS进阶】07 | 设计规范：如何统一设计规范，提高沟通效率？</title>
-    <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/"/>
-    <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/07%EF%BD%9C%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%9A%E5%A6%82%E4%BD%95%E7%BB%9F%E4%B8%80%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%EF%BC%8C%E6%8F%90%E9%AB%98%E6%B2%9F%E9%80%9A%E6%95%88%E7%8E%87%EF%BC%9F/</id>
-    <published>2025-01-17T06:17:26.000Z</published>
-    <updated>2025-05-15T02:01:48.560Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;如何统一设计规范，提高沟通效率？&quot;&gt;&lt;a href=&quot;#如何统一设计规范，提高沟通效率？&quot; class=&quot;headerlink&quot; title=&quot;如何统一设计规范，提高沟通效率？&quot;&gt;&lt;/a&gt;如何统一设计规范，提高沟通效率？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17370948031886.jpg&quot;&gt;&lt;/p&gt;</summary>
     
     
     
