@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="编程中的 六大基本原则（SOLID原则） 是面向对象设计和编程的核心准则，遵循这六大原则可以帮助我们创建更易维护、扩展和理解的代码。 下面就让我们来具体了解一下这六大原则，和它们在 iOS 中的应用： 一、单一职责原则（Single Responsibility Principle，SRP）定义： 一个类应该只有一个引起变化的原因，或者说一个类应该只有一个责任。 关键思想：  一个类应该专注于一种">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【iOS】设计模式6大原则在iOS中的应用">
+<meta property="og:url" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6%E5%A4%A7%E5%8E%9F%E5%88%99%E5%9C%A8iOS%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="凤炎忻的个人笔记">
+<meta property="og:description" content="编程中的 六大基本原则（SOLID原则） 是面向对象设计和编程的核心准则，遵循这六大原则可以帮助我们创建更易维护、扩展和理解的代码。 下面就让我们来具体了解一下这六大原则，和它们在 iOS 中的应用： 一、单一职责原则（Single Responsibility Principle，SRP）定义： 一个类应该只有一个引起变化的原因，或者说一个类应该只有一个责任。 关键思想：  一个类应该专注于一种">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-11-19T03:12:03.000Z">
+<meta property="article:modified_time" content="2025-11-19T06:23:54.260Z">
+<meta property="article:author" content="凤炎忻">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="OC">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6%E5%A4%A7%E5%8E%9F%E5%88%99%E5%9C%A8iOS%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>【iOS】设计模式6大原则在iOS中的应用 | 凤炎忻的个人笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="凤炎忻的个人笔记" type="application/atom+xml">
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">凤炎忻的个人笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我有一壶酒，足以慰风尘！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section">标签<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section">分类<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">归档<span class="badge">43</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section">公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6%E5%A4%A7%E5%8E%9F%E5%88%99%E5%9C%A8iOS%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/flyingPig.jpeg">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【iOS】设计模式6大原则在iOS中的应用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-11-19 11:12:03 / 修改时间：14:23:54" itemprop="dateCreated datePublished" datetime="2025-11-19T11:12:03+08:00">2025-11-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/iOS/%E3%80%90iOS%E3%80%91%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6%E5%A4%A7%E5%8E%9F%E5%88%99%E5%9C%A8iOS%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" class="post-meta-item leancloud_visitors" data-flag-title="【iOS】设计模式6大原则在iOS中的应用" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/iOS/%E3%80%90iOS%E3%80%91%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6%E5%A4%A7%E5%8E%9F%E5%88%99%E5%9C%A8iOS%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/iOS/%E3%80%90iOS%E3%80%91%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6%E5%A4%A7%E5%8E%9F%E5%88%99%E5%9C%A8iOS%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>编程中的 <strong>六大基本原则（SOLID原则）</strong> 是面向对象设计和编程的核心准则，遵循这六大原则可以帮助我们创建更易维护、扩展和理解的代码。</p>
+<p>下面就让我们来具体了解一下这六大原则，和它们在 iOS 中的应用：</p>
+<h2 id="一、单一职责原则（Single-Responsibility-Principle，SRP）"><a href="#一、单一职责原则（Single-Responsibility-Principle，SRP）" class="headerlink" title="一、单一职责原则（Single Responsibility Principle，SRP）"></a>一、单一职责原则（Single Responsibility Principle，SRP）</h2><p><strong>定义：</strong> 一个类应该只有一个引起变化的原因，或者说一个类应该只有一个责任。</p>
+<p><strong>关键思想：</strong></p>
+<ol>
+<li>一个类应该专注于一种类型的任务，只有一个责任；</li>
+<li>一个类应该只有一个原因引起它变化。</li>
+</ol>
+<span id="more"></span>
+
+<p><strong>优点：</strong> 提高代码可读性，降低修改风险，便于维护</p>
+<p><strong>下面是一个错误的例子：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@interface</span> <span class="type">Employee</span> : <span class="type">NSObject</span> <span class="comment">// 这是一个工人的基本信息的内容</span></span><br><span class="line"><span class="meta">@property</span> (nonatomic, strong) <span class="type">NSString</span><span class="operator">*</span> name;</span><br><span class="line"><span class="meta">@property</span> (nonatomic, assign) <span class="type">NSInteger</span> age;</span><br><span class="line"><span class="operator">-</span>(void)calculateSalary:(<span class="type">Employee</span><span class="operator">*</span>)employee; <span class="comment">// 计算了工人的薪资</span></span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line"></span><br><span class="line">#<span class="keyword">import</span> &quot;Employee.h&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">@implementation</span> <span class="type">Employee</span></span><br><span class="line"><span class="operator">-</span>(void)calculateSalary:(<span class="type">Employee</span> <span class="operator">*</span>)employee &#123;</span><br><span class="line">    <span class="type">NSLog</span>(@<span class="string">&quot;calcurlatSalry: name: %@, age : %ld&quot;</span>, employee.name, employee.age);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>这个案例我们可以看出我们这里出现了这个类包含了多个职能，这很显然不符合我们的单一职能原则，我们这个工人的类别就应该仅仅包含一个工人的一个基本信息，而不应该涉及计算薪资的一个内容。</p>
+<p><strong>这里我们给出一个正确的例子：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@interface</span> <span class="type">Employee</span> : <span class="type">NSObject</span></span><br><span class="line"><span class="meta">@property</span> (nonatomic, strong) <span class="type">NSString</span><span class="operator">*</span> name;</span><br><span class="line"><span class="meta">@property</span> (nonatomic, assign) <span class="type">NSInteger</span> age;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line"></span><br><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line"><span class="meta">@class</span> <span class="type">Employee</span>;</span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@interface</span> <span class="type">SalaryCaculator</span> : <span class="type">NSObject</span></span><br><span class="line"><span class="operator">-</span>(void)calculateSalary:(<span class="type">Employee</span><span class="operator">*</span>)employee;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line">  </span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line">#<span class="keyword">import</span> &quot;SalaryCaculator.h&quot;</span><br><span class="line">#<span class="keyword">import</span> &quot;Employee.h&quot;</span><br><span class="line"><span class="meta">@implementation</span> <span class="type">SalaryCaculator</span></span><br><span class="line"><span class="operator">-</span>(void)calculateSalary:(<span class="type">Employee</span> <span class="operator">*</span>)employee &#123;</span><br><span class="line">    <span class="type">NSLog</span>(@<span class="string">&quot;calcurlatSalry: name: %@, age : %ld&quot;</span>, employee.name, employee.age);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个案例中我们把两个内容分开了，创建了一个新的类来负责他对应的一个工作，从而保证了一个类只负责一个职能，符合我们的一个单一职能原则。</p>
+<p>遵循单一职责原则是一个重要的设计原则，可以帮助我们写出更加<strong>模块化、可维护和可扩展</strong>的代码。</p>
+<h2 id="二、开闭原则-Open-Closed-Principle-OCP"><a href="#二、开闭原则-Open-Closed-Principle-OCP" class="headerlink" title="二、开闭原则 (Open/Closed Principle - OCP)"></a>二、开闭原则 (Open/Closed Principle - OCP)</h2><p>开闭原则，是面向对象设计中的一个基本原则，它由勃兰特·梅耶（Bertrand Meyer）提出，并由罗伯特·C·马丁（Robert C. Martin）进一步发扬光大。</p>
+<p><strong>定义：</strong> 软件实体（类、模块、函数等）应该对扩展开放，对修改关闭。</p>
+<p><strong>解释：</strong> 这意味着一个软件实体可以通过扩展来应对新的行为需求，而不需要修改已有的代码。这可以通过抽象和接口实现，以确保对于新增功能的引入，不需要修改现有的代码，而是通过扩展来实现。</p>
+<p><strong>关键点：</strong></p>
+<ol>
+<li><strong>对扩展开放：</strong> 新的功能应该通过新增代码而不是修改已有代码的方式引入。</li>
+<li><strong>对修改关闭：</strong> 已有的代码在引入新的功能时不应该被修改，以确保稳定性。</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//下面是一个有关于Car的例子</span></span><br><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@interface</span> <span class="type">Car</span> : <span class="type">NSObject</span></span><br><span class="line"><span class="meta">@property</span> (nonatomic, strong) <span class="type">NSString</span><span class="operator">*</span> brand;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line"></span><br><span class="line">#<span class="keyword">import</span> &quot;Car.h&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">@implementation</span> <span class="type">Car</span></span><br><span class="line"><span class="operator">-</span> (void) startEngine &#123; <span class="comment">// 一个汽车启动的业务</span></span><br><span class="line">    <span class="type">NSLog</span>(@<span class="string">&quot;the car go to ran&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>根据我们这个原则的思想来说的话，我们如果想添加一个新的功能，比方说自动泊车，我们应该是添加一个方法，而不是在原先的方法上进行修改：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">#<span class="keyword">import</span> &quot;Car.h&quot;</span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"><span class="comment">//这里创建一个抽象类来实现，这个抽象类表示所有的一个汽车装饰器</span></span><br><span class="line"><span class="meta">@interface</span> <span class="type">CarDecorator</span> : <span class="type">Car</span></span><br><span class="line"><span class="meta">@property</span> (nonatomic, strong) <span class="type">Car</span><span class="operator">*</span> car;</span><br><span class="line"><span class="operator">-</span>(instancetype)initWithCar:(<span class="type">Car</span><span class="operator">*</span>)car;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line"></span><br><span class="line">#<span class="keyword">import</span> &quot;CarDecorator.h&quot;</span><br><span class="line"><span class="comment">//这里是这个抽象类的一个具体实现</span></span><br><span class="line"><span class="meta">@implementation</span> <span class="type">CarDecorator</span></span><br><span class="line"><span class="operator">-</span> (instancetype)initWithCar:(<span class="type">Car</span> <span class="operator">*</span>)car &#123;</span><br><span class="line">    <span class="keyword">if</span> ([<span class="keyword">super</span> <span class="keyword">init</span>]) &#123;</span><br><span class="line">        <span class="keyword">self</span>.car <span class="operator">=</span> car;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="operator">-</span> (void)startEngine &#123;</span><br><span class="line">    [<span class="keyword">self</span>.car startEngine];</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"><span class="comment">//下面是一个具体某一类别的实现：</span></span><br><span class="line">#<span class="keyword">import</span> &quot;CarDecorator.h&quot;</span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@interface</span> <span class="type">ElectricCarDecorator</span> : <span class="type">CarDecorator</span></span><br><span class="line"><span class="operator">-</span>(void)autoParking;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line">#<span class="keyword">import</span> &quot;ElectricCarDecorator.h&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">@implementation</span> <span class="type">ElectricCarDecorator</span></span><br><span class="line"><span class="operator">-</span>(void)autoParking &#123; <span class="comment">// 创建一个新的方法用于实现我们的一个自动泊车</span></span><br><span class="line">    <span class="type">NSLog</span>(@<span class="string">&quot;Auto Parking&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="operator">-</span> (void)startEngine &#123; <span class="comment">//在这里重写父类的方法，让这个方法在实现我们想要的自动泊车功</span></span><br><span class="line">    [<span class="keyword">super</span> startEngine];</span><br><span class="line">    [<span class="keyword">self</span> autoParking];</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>这上面的我们创建了一个新的抽象类来执行他新的一个方法，然后在子类中重写有关于父类的一个方法，既保证了代码不会被修改的同时，实现了一个新的功能，这就体现出了我们的一个开闭原则。</p>
+<h2 id="三、里氏替换原则-Liskov-Substitution-Principle-LSP"><a href="#三、里氏替换原则-Liskov-Substitution-Principle-LSP" class="headerlink" title="三、里氏替换原则 (Liskov Substitution Principle - LSP)"></a>三、里氏替换原则 (Liskov Substitution Principle - LSP)</h2><p><strong>定义：</strong> 子类型必须能够替换它们的父类型而不引起程序错误</p>
+<p><strong>关键思想：</strong> </p>
+<ol>
+<li>子类型必须能够替代基类型，而程序的行为不会发生变化。</li>
+<li>子类型应该继承基类型的行为，并且能够按照期望使用。</li>
+</ol>
+<p><strong>注意点：</strong> 子类不应强化前置条件或弱化后置条件</p>
+<p>这里我们可以看出这项原则一个核心是为来保证类的一个扩展是不会给已经存在的系统引入新的错误，防止我们采用多态的时候出现一个代码上的问题。</p>
+<p>下面给出一个经典的长方形不是正方形的一个例子：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@protocol</span> <span class="type">Shape</span> <span class="operator">&lt;</span><span class="type">NSObject</span><span class="operator">&gt;</span></span><br><span class="line"><span class="operator">-</span> (<span class="type">NSInteger</span>)calculateArea; <span class="comment">//定义一个协议方法，也就是一个公共的接口</span></span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line"></span><br><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#<span class="keyword">import</span> &quot;Shape.h&quot;</span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@interface</span> <span class="type">Squre</span> : <span class="type">NSObject</span>&lt;<span class="type">Shape</span>&gt; <span class="comment">//实现一个正方形类来实现对应的接口的内容</span></span><br><span class="line"><span class="meta">@property</span> (nonatomic, assign) <span class="type">NSInteger</span> length;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line"></span><br><span class="line">#<span class="keyword">import</span> &quot;Squre.h&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">@implementation</span> <span class="type">Squre</span></span><br><span class="line"><span class="operator">-</span> (<span class="type">NSInteger</span>)calculateArea &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.length <span class="operator">*</span> <span class="keyword">self</span>.length;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line">  </span><br><span class="line">#<span class="keyword">import</span> &quot;Shape.h&quot;</span><br><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@interface</span> <span class="type">Rectangle</span> : <span class="type">NSObject</span>&lt;<span class="type">Shape</span>&gt; <span class="comment">//实现长方形类来实现对应接口的内容</span></span><br><span class="line"><span class="meta">@property</span> (nonatomic, assign) <span class="type">NSInteger</span> width;</span><br><span class="line"><span class="meta">@property</span> (nonatomic, assign) <span class="type">NSInteger</span> height;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line"></span><br><span class="line">#<span class="keyword">import</span> &quot;Rectangle.h&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">@implementation</span> <span class="type">Rectangle</span></span><br><span class="line"><span class="operator">-</span> (<span class="type">NSInteger</span>)calculateArea &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.width <span class="operator">*</span> <span class="keyword">self</span>.height;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>这里我们把长方形和正方形分成两个不同的类别遵循不同的协议，这样才不会出现里氏替换原则中将正方形替换成长方形，然后设置长宽出现与预期的结果实际不符的一个情况。</p>
+<h2 id="四、接口隔离原则-Interface-Segregation-Principle-ISP"><a href="#四、接口隔离原则-Interface-Segregation-Principle-ISP" class="headerlink" title="四、接口隔离原则 (Interface Segregation Principle - ISP)"></a>四、接口隔离原则 (Interface Segregation Principle - ISP)</h2><p><strong>定义：</strong> 一个类不应该被迫依赖它们不使用的接口。具体来说，一个类对其他类的依赖关系应该建立在最小的接口集上。</p>
+<p><strong>关键点：</strong></p>
+<ol>
+<li>一个类不应该被迫依赖它不使用的接口。</li>
+<li>客户端不应该被迫依赖它不使用的方法。</li>
+</ol>
+<p><strong>优点：</strong> 这两点意味着接口设计应该精简，只包含客户端需要的方法，避免将不相关的方法强行放在同一个接口中。减少不必要的依赖，提高系统灵活性。</p>
+<p>这里我们举一个例子：假设我们设计一个多功能设备，里面可能包含了打印机和扫描仪，但是一般的设备可能不具备对应的一个扫描的一个功能，但是如果这个类遵循这个协议就会导致对应的一个问题，实现了一个他不具备的一个功能。</p>
+<p>下面是一个小而专的接口：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@protocol</span> <span class="type">Printable</span> <span class="operator">&lt;</span><span class="type">NSObject</span><span class="operator">&gt;</span> <span class="comment">//设置打印的接口</span></span><br><span class="line"><span class="operator">-</span> (void) printDoucment;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line"></span><br><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@protocol</span> <span class="type">Scanabel</span> <span class="operator">&lt;</span><span class="type">NSObject</span><span class="operator">&gt;</span> <span class="comment">//设置扫描的接口</span></span><br><span class="line"><span class="operator">-</span>(void) scanDoucment;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line">  </span><br><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#<span class="keyword">import</span> &quot;Printable.h&quot;</span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@interface</span> <span class="type">Printer</span> : <span class="type">NSObject</span> <span class="operator">&lt;</span><span class="type">Printable</span><span class="operator">&gt;</span> <span class="comment">//普通打印机的一个实现，如果是多功能则多遵循一个协议就可以了，</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">#<span class="keyword">import</span> &quot;Printer.h&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">@implementation</span> <span class="type">Printer</span></span><br><span class="line"><span class="operator">-</span>(void)printDoucment &#123;</span><br><span class="line">    <span class="type">NSLog</span>(<span class="operator">!</span><span class="string">&quot;common Printer&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="五、依赖倒置原则-Dependency-Inversion-Principle-DIP"><a href="#五、依赖倒置原则-Dependency-Inversion-Principle-DIP" class="headerlink" title="五、依赖倒置原则 (Dependency Inversion Principle - DIP)"></a>五、依赖倒置原则 (Dependency Inversion Principle - DIP)</h2><p><strong>定义：</strong></p>
+<ol>
+<li>高层模块不应该依赖于低层模块，两者都应该依赖于抽象。</li>
+<li>抽象不应该依赖于细节，细节应该依赖于抽象。</li>
+</ol>
+<p><strong>关键点：</strong></p>
+<ol>
+<li>高层次的模块（例如业务逻辑）不应该依赖于低层次的模块（例如具体实现），两者都应该依赖于抽象（接口或抽象类）。</li>
+<li>抽象不应该依赖于具体的实现，具体的实现应该依赖于抽象。</li>
+</ol>
+<p><strong>实现方式：</strong> 使用依赖注入和控制反转(IoC)</p>
+<p>例子：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@protocol</span> <span class="type">LoggerProtocol</span> <span class="operator">&lt;</span><span class="type">NSObject</span><span class="operator">&gt;</span> <span class="comment">// 一个抽象的接口</span></span><br><span class="line"><span class="operator">-</span>(void) log:(<span class="type">NSString</span><span class="operator">*</span>)message;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line"></span><br><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#<span class="keyword">import</span> &quot;LoggerProtocol.h&quot;</span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@interface</span> <span class="type">Logger</span> : <span class="type">NSObject</span>&lt;<span class="type">LoggerProtocol</span>&gt; <span class="comment">//这里是我们的一个具体的底层实现端</span></span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line"></span><br><span class="line">#<span class="keyword">import</span> &quot;Logger.h&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">@implementation</span> <span class="type">Logger</span></span><br><span class="line"><span class="operator">-</span> (void)log:(<span class="type">NSString</span><span class="operator">*</span>)message &#123; <span class="comment">// 底层实现一个抽象</span></span><br><span class="line">    <span class="type">NSLog</span>(@<span class="string">&quot;1234 %@&quot;</span>, message);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#<span class="keyword">import</span> &quot;Logger.h&quot;</span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@interface</span> <span class="type">MyClass</span> : <span class="type">NSObject</span> <span class="comment">// 这里是我们的高层调用端</span></span><br><span class="line"><span class="meta">@property</span> (nonatomic, strong) id<span class="operator">&lt;</span><span class="type">LoggerProtocol</span><span class="operator">&gt;</span> logger; <span class="comment">//高层调用这个接口</span></span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//使用的时候我们通过下面的方法来实现：</span></span><br><span class="line"><span class="comment">//  MyClass.logger = [[Logger alloc] init];在这里进行一个依赖注入</span></span><br><span class="line"><span class="comment">//  [MyClass.logger log:@&quot;123&quot;];</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="六、迪米特法则-最少知识原则-Law-of-Demeter-Least-Knowledge-Principle-LoD"><a href="#六、迪米特法则-最少知识原则-Law-of-Demeter-Least-Knowledge-Principle-LoD" class="headerlink" title="六、迪米特法则/最少知识原则 (Law of Demeter/Least Knowledge Principle - LoD)"></a>六、迪米特法则/最少知识原则 (Law of Demeter/Least Knowledge Principle - LoD)</h2><p>迪米特原则（Law of Demeter，LoD），也被称为最少知识原则（Principle of Least Knowledge，PLK）或者直接调用原则（Least Knowledge for Law of Demeter，LKP），是面向对象设计中的一个原则，其核心思想是降低类之间的耦合度，减少对象之间的相互依赖。</p>
+<p><strong>定义：</strong><br>一个对象应该对其他对象保持最少的了解。<br>具体来说，一个类不应该直接调用其他类的内部方法，而是通过它自己的方法或者通过传递给它的对象来完成某项操作。</p>
+<p><strong>关键点：</strong></p>
+<ol>
+<li>一个对象应该对其他对象有最少的了解。</li>
+<li>类与类之间应该尽量减少耦合。</li>
+<li>不要直接访问其他对象的内部成员，而应该通过该对象提供的公共方法来进行间接访问。</li>
+</ol>
+<p><strong>规则：</strong></p>
+<ul>
+<li>只调用属于自身的方法</li>
+<li>只调用作为参数传入的对象的方法</li>
+<li>只调用创建的对象的方法</li>
+<li>只调用自身持有的对象的方法</li>
+</ul>
+<p>直接调用原则的另一个表达方式是：<strong>只与直接的朋友通信。</strong></p>
+<p>类之间只要有耦合关系，就叫朋友关系。耦合分为依赖、关联、聚合、组合等。我们称出现为<strong>成员变量、方法参数、方法返回值</strong>中的类为直接朋友。<strong>局部变量、临时变量</strong>则不是直接的朋友。</p>
+<p>这里我们以购物车为例子：一个人去超市买东西主要分成三个部分，一个是我们的用户，一个是购物车，一个是商品，这里面我们如果要符合这个设计原则的话，这里的人应该和购物车进行交互，然后购物车和商品进行一个交互，这样符合我们的迪米特法则。</p>
+<p>下面给出一段代码示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@interface</span> <span class="type">Product</span> : <span class="type">NSObject</span> <span class="comment">// 这个是商品</span></span><br><span class="line"><span class="meta">@property</span> (nonatomic, assign) <span class="type">CGFloat</span> price;</span><br><span class="line"><span class="meta">@property</span> (nonatomic, strong) <span class="type">NSString</span><span class="operator">*</span> name;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line">  </span><br><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line"><span class="meta">@class</span> <span class="type">Product</span>;</span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@interface</span> <span class="type">ShopCart</span> : <span class="type">NSObject</span> <span class="comment">// 这个是购物车</span></span><br><span class="line"><span class="meta">@property</span> (nonatomic, strong) <span class="type">NSMutableArray</span>&lt;<span class="type">Product</span>*&gt;<span class="operator">*</span> products;</span><br><span class="line"><span class="operator">-</span>(void) addProduct:(<span class="type">Product</span><span class="operator">*</span>)product;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line"></span><br><span class="line">#<span class="keyword">import</span> &quot;ShopCart.h&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">@implementation</span> <span class="type">ShopCart</span> <span class="comment">//与商品发生直接关系</span></span><br><span class="line"><span class="operator">-</span> (void)addProduct:(<span class="type">Product</span> <span class="operator">*</span>)product &#123;</span><br><span class="line">    [<span class="keyword">self</span>.products addObject:product];</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line"><span class="meta">@class</span> <span class="type">ShopCart</span>;</span><br><span class="line"><span class="meta">@class</span> <span class="type">Product</span>;</span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@interface</span> <span class="type">User</span> : <span class="type">NSObject</span> <span class="comment">//用户</span></span><br><span class="line"><span class="meta">@property</span> (nonatomic, strong) <span class="type">ShopCart</span><span class="operator">*</span> shopCart;</span><br><span class="line"><span class="operator">-</span>(void)addToCart:(<span class="type">Product</span><span class="operator">*</span>)product;</span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"></span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line">  </span><br><span class="line">#<span class="keyword">import</span> &quot;User.h&quot;</span><br><span class="line">#<span class="keyword">import</span> &quot;ShopCart.h&quot;</span><br><span class="line"><span class="meta">@implementation</span> <span class="type">User</span></span><br><span class="line"><span class="operator">-</span> (void)addToCart:(<span class="type">Product</span> <span class="operator">*</span>)product &#123;</span><br><span class="line">    [<span class="keyword">self</span>.shopCart addProduct:product]; <span class="comment">// 与购物车发生直接关系</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>1、<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_73106050/article/details/144158234">【iOS】设计模式的六大原则</a></p>
+<p>2、<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45165610/article/details/136027921">程序设计-六大设计原则</a></p>
+
+    </div>
+
+    
+    
+    
+
+    
+    
+    
+
+    <div>
+       
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------<i class="fa fa-paw"></i> That's all！Best wishes for you !!! <i class="fa fa-paw"></i>-------------</div>
+    
+</div>
+
+       
+    </div><div class="post-widgets">
+    <div class="likely">
+        <div class="twitter">Tweet</div>
+        <div class="facebook">Share</div>
+        <div class="linkedin">Link</div>
+        <div class="gplus">Plus</div>
+        <div class="vkontakte">Share</div>
+        <div class="odnoklassniki">Class</div>
+        <div class="telegram">Send</div>
+        <div class="whatsapp">Send</div>
+        <div class="pinterest">Pin</div>
+    </div>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.js"></script><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>凤炎忻
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6%E5%A4%A7%E5%8E%9F%E5%88%99%E5%9C%A8iOS%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" title="【iOS】设计模式6大原则在iOS中的应用">https://fengyanxin.github.io/iOS/【iOS】设计模式6大原则在iOS中的应用/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/fengyanxin">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.zhihu.com/people/peng-he-34-93">
+            <span class="icon">
+              <i class="fab fa-zhihu"></i>
+            </span>
+
+            <span class="label">知乎</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065">
+            <span class="icon">
+              <i class="fa fa-toutiao"></i>
+            </span>
+
+            <span class="label">今日头条</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477">
+            <span class="icon">
+              <i class="fa fa-baidu1"></i>
+            </span>
+
+            <span class="label">百家号</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394">
+            <span class="icon">
+              <i class="fab fa-xiaohongshu1"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e">
+            <span class="icon">
+              <i class="fab fa-liblib1"></i>
+            </span>
+
+            <span class="label">LibLib</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+              <a href="/tags/OC/" rel="tag"><i class="fa fa-tag"></i> OC</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/13%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%8A%A8%E6%80%81%E5%AD%97%E4%BD%93%EF%BC%8C%E6%8F%90%E5%8D%87%E8%A7%86%E5%8A%9B%E8%BE%85%E5%8A%A9%E5%8A%9F%E8%83%BD%EF%BC%9F/" rel="prev" title="【iOS 进阶】13 | 功能组件：如何设置动态字体，提升视力辅助功能？">
+      <i class="fa fa-chevron-left"></i> 【iOS 进阶】13 | 功能组件：如何设置动态字体，提升视力辅助功能？
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%8D%95%E4%B8%80%E8%81%8C%E8%B4%A3%E5%8E%9F%E5%88%99%EF%BC%88Single-Responsibility-Principle%EF%BC%8CSRP%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">一、单一职责原则（Single Responsibility Principle，SRP）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%BC%80%E9%97%AD%E5%8E%9F%E5%88%99-Open-Closed-Principle-OCP"><span class="nav-number">2.</span> <span class="nav-text">二、开闭原则 (Open&#x2F;Closed Principle - OCP)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%88%99-Liskov-Substitution-Principle-LSP"><span class="nav-number">3.</span> <span class="nav-text">三、里氏替换原则 (Liskov Substitution Principle - LSP)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99-Interface-Segregation-Principle-ISP"><span class="nav-number">4.</span> <span class="nav-text">四、接口隔离原则 (Interface Segregation Principle - ISP)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99-Dependency-Inversion-Principle-DIP"><span class="nav-number">5.</span> <span class="nav-text">五、依赖倒置原则 (Dependency Inversion Principle - DIP)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99-%E6%9C%80%E5%B0%91%E7%9F%A5%E8%AF%86%E5%8E%9F%E5%88%99-Law-of-Demeter-Least-Knowledge-Principle-LoD"><span class="nav-number">6.</span> <span class="nav-text">六、迪米特法则&#x2F;最少知识原则 (Law of Demeter&#x2F;Least Knowledge Principle - LoD)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="凤炎忻"
+      src="/images/flyingPig.jpeg">
+  <p class="site-author-name" itemprop="name">凤炎忻</p>
+  <div class="site-description" itemprop="description">性浮脱，难酬一道，广涉寡精，杂而不博</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengyanxin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengyanxin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ph18317192001@163.com" title="E-Mail → mailto:ph18317192001@163.com" rel="noopener" target="_blank"><i class="fab fa-mail fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065" title="今日头条 → https:&#x2F;&#x2F;profile.zjurl.cn&#x2F;rogue&#x2F;ugc&#x2F;profile&#x2F;?user_id&#x3D;51893718065" rel="noopener" target="_blank"><i class="fab fa-jinritoutiao fa-fw"></i>今日头条</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477" title="百家号 → https:&#x2F;&#x2F;author.baidu.com&#x2F;home?from&#x3D;bjh_article&amp;app_id&#x3D;1665765419554477" rel="noopener" target="_blank"><i class="fab fa-baidu fa-fw"></i>百家号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;642cb9650000000011023394" rel="noopener" target="_blank"><i class="fab fa-xiaohongshu fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e" title="LibLib → https:&#x2F;&#x2F;www.liblib.art&#x2F;userpage&#x2F;c7816525373d4fbca7e45c1940ead98e" rel="noopener" target="_blank"><i class="fab fa-liblib fa-fw"></i>LibLib</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">凤炎忻</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">95k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:46</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,255' opacity='0.95' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '7EJkVswo79CmfmbwincRPjrA-gzGzoHsz',
+      appKey     : 'v7t6DWozwkcL2qIDeSC5kupC',
+      placeholder: "说点什么吧！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

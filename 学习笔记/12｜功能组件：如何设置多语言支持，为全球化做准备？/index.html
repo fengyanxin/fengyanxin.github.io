@@ -1,4 +1,535 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2"><link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png"><link rel="mask-icon" href="/images/logo.svg" color="#222"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css"><script src="/lib/pace/pace.min.js"></script><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={hostname:"fengyanxin.github.io",root:"/",scheme:"Gemini",version:"7.8.0",exturl:!1,sidebar:{position:"left",display:"post",padding:18,offset:12,onmobile:!1},copycode:{enable:!0,show_result:!0,style:"mac"},back2top:{enable:!0,sidebar:!1,scrollpercent:!0},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!0,mediumzoom:!1,lazyload:!0,pangu:!0,comments:{style:"tabs",active:null,storage:!0,lazyload:!1,nav:null},algolia:{hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},motion:{enable:!0,async:!0,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},path:"search.xml"}</script><meta name="description" content="如何设置多语言支持，为全球化做准备？"><meta property="og:type" content="article"><meta property="og:title" content="【iOS 进阶】12 | 功能组件：如何设置多语言支持，为全球化做准备？"><meta property="og:url" content="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/index.html"><meta property="og:site_name" content="凤炎忻的个人笔记"><meta property="og:description" content="如何设置多语言支持，为全球化做准备？"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104137517.png"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104523858.png"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104912594.png"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105216135.png"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105323651.png"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105432884.png"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105604673.png"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928110224034.png"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104137517.png"><meta property="article:published_time" content="2025-09-28T02:38:12.000Z"><meta property="article:modified_time" content="2025-09-28T03:03:56.666Z"><meta property="article:author" content="凤炎忻"><meta property="article:tag" content="学习笔记"><meta property="article:tag" content="iOS"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104137517.png"><link rel="canonical" href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,lang:"zh-CN"}</script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>#needsharebutton-postbottom{cursor:pointer;height:26px;margin-top:10px;position:relative}#needsharebutton-postbottom .btn{border:1px solid $btn-default-border-color;border-radius:3px;display:initial;padding:1px 4px}</style><title>【iOS 进阶】12 | 功能组件：如何设置多语言支持，为全球化做准备？ | 凤炎忻的个人笔记</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript><link rel="alternate" href="/atom.xml" title="凤炎忻的个人笔记" type="application/atom+xml"><style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head><body itemscope itemtype="http://schema.org/WebPage"><div class="container use-motion"><div class="headband"></div><header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-nav-toggle"><div class="toggle" aria-label="切换导航栏"><span class="toggle-line toggle-line-first"></span><span class="toggle-line toggle-line-middle"></span><span class="toggle-line toggle-line-last"></span></div></div><div class="site-meta"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span><h1 class="site-title">凤炎忻的个人笔记</h1><span class="logo-line-after"><i></i></span></a><p class="site-subtitle" itemprop="description">我有一壶酒，足以慰风尘！</p></div><div class="site-nav-right"><div class="toggle popup-trigger"><i class="fa fa-search fa-fw fa-lg"></i></div></div></div><nav class="site-nav"><ul id="menu" class="main-menu menu"><li class="menu-item menu-item-home"> <a href="/" rel="section">首页</a></li><li class="menu-item menu-item-tags"> <a href="/tags/" rel="section">标签<span class="badge">9</span></a></li><li class="menu-item menu-item-categories"> <a href="/categories/" rel="section">分类<span class="badge">7</span></a></li><li class="menu-item menu-item-archives"> <a href="/archives/" rel="section">归档<span class="badge">42</span></a></li><li class="menu-item menu-item-commonweal"> <a href="/404/" rel="section">公益 404</a></li><li class="menu-item menu-item-search"> <a role="button" class="popup-trigger">搜索</a></li></ul></nav><div class="search-pop-overlay"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"> <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"><div id="no-result"><i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i></div></div></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><main class="main"><div class="main-inner"><div class="content-wrap"><div class="content post posts-expand"><article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN"><link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="image" content="/images/flyingPig.jpeg"><meta itemprop="name" content="凤炎忻"><meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="凤炎忻的个人笔记"></span><header class="post-header"><h1 class="post-title" itemprop="name headline"> 【iOS 进阶】12 | 功能组件：如何设置多语言支持，为全球化做准备？</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-calendar"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建时间：2025-09-28 10:38:12 / 修改时间：11:03:56" itemprop="dateCreated datePublished" datetime="2025-09-28T10:38:12+08:00">2025-09-28</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-folder"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span></span><span id="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/" class="post-meta-item leancloud_visitors" data-flag-title="【iOS 进阶】12 | 功能组件：如何设置多语言支持，为全球化做准备？" title="阅读次数"><span class="post-meta-item-icon"><i class="fa fa-eye"></i></span> <span class="post-meta-item-text">阅读次数：</span><span class="leancloud-visitors-count"></span></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-comment"></i></span> <span class="post-meta-item-text">Valine：</span><a title="valine" href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/#valine-comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/" itemprop="commentCount"></span></a></span><br><span class="post-meta-item" title="本文字数"><span class="post-meta-item-icon"><i class="far fa-file-word"></i></span> <span class="post-meta-item-text">本文字数：</span> <span>1.7k</span></span><span class="post-meta-item" title="阅读时长"><span class="post-meta-item-icon"><i class="far fa-clock"></i></span> <span class="post-meta-item-text">阅读时长 &asymp;</span> <span>6 分钟</span></span></div></header><div class="post-body" itemprop="articleBody"><h1 id="如何设置多语言支持，为全球化做准备？"><a href="#如何设置多语言支持，为全球化做准备？" class="headerlink" title="如何设置多语言支持，为全球化做准备？"></a>如何设置多语言支持，为全球化做准备？</h1><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104137517.png"></p><span id="more"></span><p>作为 iOS 开发者，不知道你有没有遇到过这样的情况：每次增加一种新语言，都需要重新改一遍，特别是在 App 进入其他国家的市场时，需要修改整个 App 的代码才能加入新语言。这样是不是很麻烦？</p><p>其实这种情况完全可以通过多语言设置来解决。下面我就以 Moments App 为例，看看怎样支持多语言。</p><h2 id="安装-SwiftGen"><a href="#安装-SwiftGen" class="headerlink" title="安装 SwiftGen"></a>安装 SwiftGen</h2><p>Moments App 使用了 SwiftGen 来自动生成支持多语言常量字符串。为了保证整个团队所使用 SwiftGen 的版本都保持一致，我们使用 CocoaPods 来安装 SwiftGen。具体到 Moments App 项目，我们在 Podfile 文件中添加 SwiftGen Pod 即可。</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod &#x27;<span class="type">SwiftGen</span>&#x27;, &#x27;<span class="operator">=</span> <span class="number">6.4</span>.<span class="number">0</span>&#x27;, configurations: [&#x27;<span class="type">Debug</span>&#x27;]</span><br></pre></td></tr></table></figure><p>为了在每次编译代码的时候，SwiftGen 都会启动代码生成任务，我们需要在主 App TargetMoments 的 Build Phases 里面添加 Run SwiftGen 步骤，然后配置它执行 <code>&quot;$&#123;PODS_ROOT&#125;/SwiftGen/bin/swiftgen&quot;</code> 命令。</p><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104523858.png"></p><p>这里要注意，由于我们自己的源代码会使用到 SwiftGen 所生成的代码，因此必须把 Run SwiftGen 步骤放在 Compile Source 步骤之前。</p><h2 id="增加多语言支持"><a href="#增加多语言支持" class="headerlink" title="增加多语言支持"></a>增加多语言支持</h2><p>Xcode 使用 <code>.strings</code> 文件来支持多语言。那什么是 <code>.strings</code> 呢？<code>.strings</code> 文件是一个资源文件，用于存储各种语言的文本。该文件里面保存了一堆 Key-Value 信息，例子如下：</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;userNameKey&quot;</span> <span class="operator">=</span> <span class="string">&quot;User name&quot;</span>;</span><br></pre></td></tr></table></figure><p>其中 <code>userNameKey</code> 是 Key，而 <code>User name</code> 是具体的值。在 Swift 代码中，我们可以把 Key 传递给 <code>NSLocalizedString</code> 方法来取出 <code>.strings</code> 文件里配置的值。具体代码如下：</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> use rName <span class="operator">=</span> <span class="type">NSLocalizedString</span>(<span class="string">&quot;userNameKey&quot;</span>, comment: <span class="string">&quot;Label text for user name&quot;</span>)</span><br></pre></td></tr></table></figure><p>由于 Moments App 使用了纯代码的方式来呈现 UI，我们需要在 Xcode 里面建立一个名叫 <code>Localizable.strings</code> 的文件来存储 <code>Key-Value</code> 信息。该文件保存在 <code>Moments/Resources/en.lproj</code> 文件夹下面，其中 <code>en</code> 表示英文，因为 Moments App 的默认语言是英文，假如你的 App 的默认语言是简体中文，那么应该放在 <code>zh-Hans.lproj</code> 文件夹下面。</p><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104912594.png"></p><p>那怎样支持新语言呢？我们可以在 <code>Project Info</code> 配置里面的 <code>Localizations</code> 下面点击加号按钮 （+），然后选择需要添加的语言，如下图所示，我们添加了简体中文。</p><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105216135.png"></p><p>接着选择要增加简体中文支持的资源文件。在 Moments App 里面，我们使用了纯代码的方式来编写 UI，因此我们只选择刚才新建的 <code>Localizable.strings</code> 文件。</p><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105323651.png"></p><p>然后你会看到在 <code>Localizable.strings</code> 下多了一个 <code>Localizable.strings（Chinese, Simplified）</code> 文件用于保存简体中文的文本信息。</p><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105432884.png"></p><p>现在我们可以在 <code>Localizable.strings</code> 里面添加下面的 <code>Key-Value</code> 来让 App 显示中文了。</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;userNameKey&quot;</span> <span class="operator">=</span> <span class="string">&quot;用户名&quot;</span>;</span><br></pre></td></tr></table></figure><p>当用户在 iOS 的 Settings App 里面把语言选择为 <strong>简体中文</strong> 以后， App 里面的文本就会变成中文。我们也可以使用同样的办法来增加不同的语言支持。</p><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105604673.png"></p><h2 id="配置-swiftgen-yml-文件"><a href="#配置-swiftgen-yml-文件" class="headerlink" title="配置 swiftgen.yml 文件"></a>配置 swiftgen.yml 文件</h2><p>不知道你发现没有，调用 <code>NSLocalizedString</code> 方法来取出文本并不方便，一不小心就会把 Key 写错了。那么，有没有什么好的办法方便我们使用 <code>.strings</code> 文件里面的文本呢？有，那就是 <strong>使用 SwiftGen 来自动生成带类型信息的常量字符串</strong>。</p><p>为什么呢？因为 SwfitGen 在执行过程中会读取 <code>swiftgen.yml</code> 文件里面的信息，要知道， <code>swiftgen.yml</code> 文件就是用来告诉 SwiftGen 读取那些文件，使用哪个模版以及在哪里存放生成的文件。那么，如何配置该文件，让 SeiftGen 帮我们生成用于全球化和本地化的常量字符串呢？</p><p>做法非常简单，我们可以在 <code>swiftgen.yml</code> 文件添加以下一段代码。</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">strings:</span><br><span class="line">  inputs:</span><br><span class="line">    <span class="operator">-</span> <span class="type">Moments</span><span class="operator">/</span><span class="type">Resources</span><span class="operator">/</span>en.lproj</span><br><span class="line">  outputs:</span><br><span class="line">    <span class="operator">-</span> templateName: structured<span class="operator">-</span>swift5</span><br><span class="line">      output: <span class="type">Moments</span><span class="operator">/</span><span class="type">Generated</span><span class="operator">/</span><span class="type">Strings</span>.swift</span><br></pre></td></tr></table></figure><p>其中 <code>strings</code> 表示这是一个用户生成常量字符串的任务。<code>inputs</code> 用于指定 <code>.strings</code> 文件所在的位置，在我们的项目中，该文件位于 <code>Moments/Resources/en.lproj</code>。要注意的是，我们只需要指定一个语言的文件夹就行，它通常是默认开发语言的文件夹。</p><p><code>outputs.templateName</code> 表示生成文件所使用的模版，我们使用 <code>structured-swift5</code> 模版表示所生成的代码支持点号 (.) 分割 Swift 5 代码。<code>outputs.output</code> 表示所生成文件存放的位置。以下是生成的 <code>Moments/Generated/Strings.swift</code> ：</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">enum</span> <span class="title class_">L10n</span> &#123;</span><br><span class="line">  <span class="keyword">internal</span> <span class="keyword">enum</span> <span class="title class_">InternalMenu</span> &#123;</span><br><span class="line">    <span class="comment">/// Area 51</span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">let</span> area51 <span class="operator">=</span> <span class="type">L10n</span>.tr(<span class="string">&quot;Localizable&quot;</span>, <span class="string">&quot;internalMenu.area51&quot;</span>)</span><br><span class="line">    <span class="comment">/// Avatars</span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">let</span> generalInfo <span class="operator">=</span> <span class="type">L10n</span>.tr(<span class="string">&quot;Localizable&quot;</span>, <span class="string">&quot;internalMenu.generalInfo&quot;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>因为我们在 <code>Localizable.strings</code> 文件里定义 Key 的时候使用了点号，SwiftGen 会使用内嵌套枚举类型 (Nested enum) 来把各个常量字符串通过命名空间进行分组。下面是英文版本 <code>Localizable.strings</code> 文件的部分定义。</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Internal Menu</span></span><br><span class="line"><span class="string">&quot;internalMenu.area51&quot;</span> <span class="operator">=</span> <span class="string">&quot;Area 51&quot;</span>;</span><br><span class="line"><span class="string">&quot;internalMenu.generalInfo&quot;</span> <span class="operator">=</span> <span class="string">&quot;General Info&quot;</span>;</span><br><span class="line"><span class="comment">// Moments List</span></span><br><span class="line"><span class="string">&quot;momentsList.errorMessage&quot;</span> <span class="operator">=</span> <span class="string">&quot;Something went wrong, please try again later&quot;</span>;</span><br></pre></td></tr></table></figure><p>我们可以对比一下中文版本 <code>Localizable.strings</code> 文件的部分定义。</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Internal Menu</span></span><br><span class="line"><span class="string">&quot;internalMenu.area51&quot;</span> <span class="operator">=</span> <span class="string">&quot;51 区&quot;</span>;</span><br><span class="line"><span class="string">&quot;internalMenu.generalInfo&quot;</span> <span class="operator">=</span> <span class="string">&quot;通用信息&quot;</span>;</span><br><span class="line"><span class="comment">// Moments List</span></span><br><span class="line"><span class="string">&quot;momentsList.errorMessage&quot;</span> <span class="operator">=</span> <span class="string">&quot;出错啦，请稍后再试&quot;</span>;</span><br></pre></td></tr></table></figure><p>可以看到，我们在定义所有 Key 的时候，都使用了点号进行分割，这可以帮助我们分组各类文本的同时，保证不同语言的文本信息都使用同样的 Key。</p><h2 id="使用生成的字符串"><a href="#使用生成的字符串" class="headerlink" title="使用生成的字符串"></a>使用生成的字符串</h2><p>当 SwiftGen 自动生成那些常量字符串以后，我们就可以很方便地使用它们，下面的代码演示了如何调用这些字符串。</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> title <span class="operator">=</span> <span class="type">L10n</span>.<span class="type">InternalMenu</span>.area51</span><br><span class="line"><span class="keyword">let</span> infoSection <span class="operator">=</span> <span class="type">InternalMenuSection</span>(</span><br><span class="line">    title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.generalInfo,</span><br><span class="line">    items: [<span class="type">InternalMenuDescriptionItemViewModel</span>(title: appVersion)]</span><br><span class="line">)</span><br></pre></td></tr></table></figure><p>我们可以使用枚举类型 <code>L10n</code> 来取出相应的常量字符串。<code>L10n</code> 的扩展方法 （Extension method）会根据当前用户的语言选择来读取相应的 <code>Localizable.strings</code> 文件，并返回对应语言的字符串来显示给用户。<br>下面是 Moments App 在英文语言和中文语言环境下的显示。</p><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928110224034.png"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲，我介绍了如何使用 <code>.strings</code> 文件和 SwiftGen 来快速设置多语言支持。有了 <code>.strings</code> 文件，支持新的语言变得非常简单，甚至可以在没有程序员的情况下，由翻译人员来翻译并发布新的语言。另外，有了 SwiftGen 所生成的常量字符串，我们不会再把错误的 Key 传递给 <code>NSLocalizedString</code>，从而提高了代码的质量。可以说，这个设置是一本万利，哪怕目前你的 App 还没有支持多个语言，我还是建议你花一丁点时来设置多语言支持。</p><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104137517.png"></p></div><div><div><div style="text-align:center;color:#ccc;font-size:14px">-------------<i class="fa fa-paw"></i> That's all！Best wishes for you !!!<i class="fa fa-paw"></i> -------------</div></div></div><div class="post-widgets"><div class="likely"><div class="twitter">Tweet</div><div class="facebook">Share</div><div class="linkedin">Link</div><div class="gplus">Plus</div><div class="vkontakte">Share</div><div class="odnoklassniki">Class</div><div class="telegram">Send</div><div class="whatsapp">Send</div><div class="pinterest">Pin</div></div></div><script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.js"></script><div class="post-widgets"><div id="needsharebutton-postbottom"><span class="btn"><i class="fa fa-share-alt" aria-hidden="true"></i></span></div></div><div><ul class="post-copyright"><li class="post-copyright-author"> <strong>本文作者：</strong> 凤炎忻</li><li class="post-copyright-link"> <strong>本文链接：</strong> <a href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/" title="【iOS 进阶】12 | 功能组件：如何设置多语言支持，为全球化做准备？">https://fengyanxin.github.io/学习笔记/12｜功能组件：如何设置多语言支持，为全球化做准备？/</a></li><li class="post-copyright-license"> <strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><div class="followme"><p>欢迎关注我的其它发布渠道</p><div class="social-list"><div class="social-item"><a target="_blank" class="social-link" href="https://github.com/fengyanxin"><span class="icon"><i class="fab fa-github"></i></span> <span class="label">GitHub</span></a></div><div class="social-item"><a target="_blank" class="social-link" href="https://www.zhihu.com/people/peng-he-34-93"><span class="icon"><i class="fab fa-zhihu"></i></span> <span class="label">知乎</span></a></div><div class="social-item"><a target="_blank" class="social-link" href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065"><span class="icon"><i class="fa fa-toutiao"></i></span> <span class="label">今日头条</span></a></div><div class="social-item"><a target="_blank" class="social-link" href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477"><span class="icon"><i class="fa fa-baidu1"></i></span> <span class="label">百家号</span></a></div><div class="social-item"><a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394"><span class="icon"><i class="fab fa-xiaohongshu1"></i></span> <span class="label">小红书</span></a></div><div class="social-item"><a target="_blank" class="social-link" href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e"><span class="icon"><i class="fab fa-liblib1"></i></span> <span class="label">LibLib</span></a></div><div class="social-item"><a target="_blank" class="social-link" href="/atom.xml"><span class="icon"><i class="fa fa-rss"></i></span> <span class="label">RSS</span></a></div></div></div><footer class="post-footer"><div class="post-tags"><a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a><a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a></div><div class="post-nav"><div class="post-nav-item"><a href="/iOS/%E3%80%90OC%E3%80%91%E5%8E%9F%E7%94%9F%E5%AF%8C%E6%96%87%E6%9C%AC-NSAttributedString-%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="prev" title="【OC】原生富文本 NSAttributedString 的使用"><i class="fa fa-chevron-left"></i> 【OC】原生富文本 NSAttributedString 的使用</a></div><div class="post-nav-item"> <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/13%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%8A%A8%E6%80%81%E5%AD%97%E4%BD%93%EF%BC%8C%E6%8F%90%E5%8D%87%E8%A7%86%E5%8A%9B%E8%BE%85%E5%8A%A9%E5%8A%9F%E8%83%BD%EF%BC%9F/" rel="next" title="【iOS 进阶】13 | 功能组件：如何设置动态字体，提升视力辅助功能？">【iOS 进阶】13 | 功能组件：如何设置动态字体，提升视力辅助功能？<i class="fa fa-chevron-right"></i></a></div></div></footer></article></div><div class="comments" id="valine-comments"></div><script>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="如何设置多语言支持，为全球化做准备？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【iOS 进阶】12 | 功能组件：如何设置多语言支持，为全球化做准备？">
+<meta property="og:url" content="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/index.html">
+<meta property="og:site_name" content="凤炎忻的个人笔记">
+<meta property="og:description" content="如何设置多语言支持，为全球化做准备？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104137517.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104523858.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104912594.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105216135.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105323651.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105432884.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105604673.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928110224034.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104137517.png">
+<meta property="article:published_time" content="2025-09-28T02:38:12.000Z">
+<meta property="article:modified_time" content="2025-09-28T03:03:56.000Z">
+<meta property="article:author" content="凤炎忻">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104137517.png">
+
+<link rel="canonical" href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>【iOS 进阶】12 | 功能组件：如何设置多语言支持，为全球化做准备？ | 凤炎忻的个人笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="凤炎忻的个人笔记" type="application/atom+xml">
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">凤炎忻的个人笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我有一壶酒，足以慰风尘！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section">标签<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section">分类<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">归档<span class="badge">43</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section">公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/flyingPig.jpeg">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【iOS 进阶】12 | 功能组件：如何设置多语言支持，为全球化做准备？
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-09-28 10:38:12 / 修改时间：11:03:56" itemprop="dateCreated datePublished" datetime="2025-09-28T10:38:12+08:00">2025-09-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/" class="post-meta-item leancloud_visitors" data-flag-title="【iOS 进阶】12 | 功能组件：如何设置多语言支持，为全球化做准备？" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="如何设置多语言支持，为全球化做准备？"><a href="#如何设置多语言支持，为全球化做准备？" class="headerlink" title="如何设置多语言支持，为全球化做准备？"></a>如何设置多语言支持，为全球化做准备？</h1><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104137517.png"></p>
+<span id="more"></span>
+
+<p>作为 iOS 开发者，不知道你有没有遇到过这样的情况：每次增加一种新语言，都需要重新改一遍，特别是在 App 进入其他国家的市场时，需要修改整个 App 的代码才能加入新语言。这样是不是很麻烦？</p>
+<p>其实这种情况完全可以通过多语言设置来解决。下面我就以 Moments App 为例，看看怎样支持多语言。</p>
+<h2 id="安装-SwiftGen"><a href="#安装-SwiftGen" class="headerlink" title="安装 SwiftGen"></a>安装 SwiftGen</h2><p>Moments App 使用了 SwiftGen 来自动生成支持多语言常量字符串。为了保证整个团队所使用 SwiftGen 的版本都保持一致，我们使用 CocoaPods 来安装 SwiftGen。具体到 Moments App 项目，我们在 Podfile 文件中添加 SwiftGen Pod 即可。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod &#x27;<span class="type">SwiftGen</span>&#x27;, &#x27;<span class="operator">=</span> <span class="number">6.4</span>.<span class="number">0</span>&#x27;, configurations: [&#x27;<span class="type">Debug</span>&#x27;]</span><br></pre></td></tr></table></figure>
+
+<p>为了在每次编译代码的时候，SwiftGen 都会启动代码生成任务，我们需要在主 App TargetMoments 的 Build Phases 里面添加 Run SwiftGen 步骤，然后配置它执行 <code>&quot;$&#123;PODS_ROOT&#125;/SwiftGen/bin/swiftgen&quot;</code> 命令。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104523858.png"></p>
+<p>这里要注意，由于我们自己的源代码会使用到 SwiftGen 所生成的代码，因此必须把 Run SwiftGen 步骤放在 Compile Source 步骤之前。</p>
+<h2 id="增加多语言支持"><a href="#增加多语言支持" class="headerlink" title="增加多语言支持"></a>增加多语言支持</h2><p>Xcode 使用 <code>.strings</code> 文件来支持多语言。那什么是 <code>.strings</code> 呢？<code>.strings</code> 文件是一个资源文件，用于存储各种语言的文本。该文件里面保存了一堆 Key-Value 信息，例子如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;userNameKey&quot;</span> <span class="operator">=</span> <span class="string">&quot;User name&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>userNameKey</code> 是 Key，而 <code>User name</code> 是具体的值。在 Swift 代码中，我们可以把 Key 传递给 <code>NSLocalizedString</code> 方法来取出 <code>.strings</code> 文件里配置的值。具体代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> use rName <span class="operator">=</span> <span class="type">NSLocalizedString</span>(<span class="string">&quot;userNameKey&quot;</span>, comment: <span class="string">&quot;Label text for user name&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>由于 Moments App 使用了纯代码的方式来呈现 UI，我们需要在 Xcode 里面建立一个名叫 <code>Localizable.strings</code> 的文件来存储 <code>Key-Value</code> 信息。该文件保存在 <code>Moments/Resources/en.lproj</code> 文件夹下面，其中 <code>en</code> 表示英文，因为 Moments App 的默认语言是英文，假如你的 App 的默认语言是简体中文，那么应该放在 <code>zh-Hans.lproj</code> 文件夹下面。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104912594.png"></p>
+<p>那怎样支持新语言呢？我们可以在 <code>Project Info</code> 配置里面的 <code>Localizations</code> 下面点击加号按钮 （+），然后选择需要添加的语言，如下图所示，我们添加了简体中文。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105216135.png"></p>
+<p>接着选择要增加简体中文支持的资源文件。在 Moments App 里面，我们使用了纯代码的方式来编写 UI，因此我们只选择刚才新建的 <code>Localizable.strings</code> 文件。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105323651.png"></p>
+<p>然后你会看到在 <code>Localizable.strings</code> 下多了一个 <code>Localizable.strings（Chinese, Simplified）</code> 文件用于保存简体中文的文本信息。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105432884.png"></p>
+<p>现在我们可以在 <code>Localizable.strings</code> 里面添加下面的 <code>Key-Value</code> 来让 App 显示中文了。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;userNameKey&quot;</span> <span class="operator">=</span> <span class="string">&quot;用户名&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>当用户在 iOS 的 Settings App 里面把语言选择为 <strong>简体中文</strong> 以后， App 里面的文本就会变成中文。我们也可以使用同样的办法来增加不同的语言支持。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928105604673.png"></p>
+<h2 id="配置-swiftgen-yml-文件"><a href="#配置-swiftgen-yml-文件" class="headerlink" title="配置 swiftgen.yml 文件"></a>配置 swiftgen.yml 文件</h2><p>不知道你发现没有，调用 <code>NSLocalizedString</code> 方法来取出文本并不方便，一不小心就会把 Key 写错了。那么，有没有什么好的办法方便我们使用 <code>.strings</code> 文件里面的文本呢？有，那就是 <strong>使用 SwiftGen 来自动生成带类型信息的常量字符串</strong>。</p>
+<p>为什么呢？因为 SwfitGen 在执行过程中会读取 <code>swiftgen.yml</code> 文件里面的信息，要知道， <code>swiftgen.yml</code> 文件就是用来告诉 SwiftGen 读取那些文件，使用哪个模版以及在哪里存放生成的文件。那么，如何配置该文件，让 SeiftGen 帮我们生成用于全球化和本地化的常量字符串呢？</p>
+<p>做法非常简单，我们可以在 <code>swiftgen.yml</code> 文件添加以下一段代码。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">strings:</span><br><span class="line">  inputs:</span><br><span class="line">    <span class="operator">-</span> <span class="type">Moments</span><span class="operator">/</span><span class="type">Resources</span><span class="operator">/</span>en.lproj</span><br><span class="line">  outputs:</span><br><span class="line">    <span class="operator">-</span> templateName: structured<span class="operator">-</span>swift5</span><br><span class="line">      output: <span class="type">Moments</span><span class="operator">/</span><span class="type">Generated</span><span class="operator">/</span><span class="type">Strings</span>.swift</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>strings</code> 表示这是一个用户生成常量字符串的任务。<code>inputs</code> 用于指定 <code>.strings</code> 文件所在的位置，在我们的项目中，该文件位于 <code>Moments/Resources/en.lproj</code>。要注意的是，我们只需要指定一个语言的文件夹就行，它通常是默认开发语言的文件夹。</p>
+<p><code>outputs.templateName</code> 表示生成文件所使用的模版，我们使用 <code>structured-swift5</code> 模版表示所生成的代码支持点号 (.) 分割 Swift 5 代码。<code>outputs.output</code> 表示所生成文件存放的位置。以下是生成的 <code>Moments/Generated/Strings.swift</code> ：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">enum</span> <span class="title class_">L10n</span> &#123;</span><br><span class="line">  <span class="keyword">internal</span> <span class="keyword">enum</span> <span class="title class_">InternalMenu</span> &#123;</span><br><span class="line">    <span class="comment">/// Area 51</span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">let</span> area51 <span class="operator">=</span> <span class="type">L10n</span>.tr(<span class="string">&quot;Localizable&quot;</span>, <span class="string">&quot;internalMenu.area51&quot;</span>)</span><br><span class="line">    <span class="comment">/// Avatars</span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">let</span> generalInfo <span class="operator">=</span> <span class="type">L10n</span>.tr(<span class="string">&quot;Localizable&quot;</span>, <span class="string">&quot;internalMenu.generalInfo&quot;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为我们在 <code>Localizable.strings</code> 文件里定义 Key 的时候使用了点号，SwiftGen 会使用内嵌套枚举类型 (Nested enum) 来把各个常量字符串通过命名空间进行分组。下面是英文版本 <code>Localizable.strings</code> 文件的部分定义。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Internal Menu</span></span><br><span class="line"><span class="string">&quot;internalMenu.area51&quot;</span> <span class="operator">=</span> <span class="string">&quot;Area 51&quot;</span>;</span><br><span class="line"><span class="string">&quot;internalMenu.generalInfo&quot;</span> <span class="operator">=</span> <span class="string">&quot;General Info&quot;</span>;</span><br><span class="line"><span class="comment">// Moments List</span></span><br><span class="line"><span class="string">&quot;momentsList.errorMessage&quot;</span> <span class="operator">=</span> <span class="string">&quot;Something went wrong, please try again later&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以对比一下中文版本 <code>Localizable.strings</code> 文件的部分定义。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Internal Menu</span></span><br><span class="line"><span class="string">&quot;internalMenu.area51&quot;</span> <span class="operator">=</span> <span class="string">&quot;51 区&quot;</span>;</span><br><span class="line"><span class="string">&quot;internalMenu.generalInfo&quot;</span> <span class="operator">=</span> <span class="string">&quot;通用信息&quot;</span>;</span><br><span class="line"><span class="comment">// Moments List</span></span><br><span class="line"><span class="string">&quot;momentsList.errorMessage&quot;</span> <span class="operator">=</span> <span class="string">&quot;出错啦，请稍后再试&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，我们在定义所有 Key 的时候，都使用了点号进行分割，这可以帮助我们分组各类文本的同时，保证不同语言的文本信息都使用同样的 Key。</p>
+<h2 id="使用生成的字符串"><a href="#使用生成的字符串" class="headerlink" title="使用生成的字符串"></a>使用生成的字符串</h2><p>当 SwiftGen 自动生成那些常量字符串以后，我们就可以很方便地使用它们，下面的代码演示了如何调用这些字符串。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> title <span class="operator">=</span> <span class="type">L10n</span>.<span class="type">InternalMenu</span>.area51</span><br><span class="line"><span class="keyword">let</span> infoSection <span class="operator">=</span> <span class="type">InternalMenuSection</span>(</span><br><span class="line">    title: <span class="type">L10n</span>.<span class="type">InternalMenu</span>.generalInfo,</span><br><span class="line">    items: [<span class="type">InternalMenuDescriptionItemViewModel</span>(title: appVersion)]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>我们可以使用枚举类型 <code>L10n</code> 来取出相应的常量字符串。<code>L10n</code> 的扩展方法 （Extension method）会根据当前用户的语言选择来读取相应的 <code>Localizable.strings</code> 文件，并返回对应语言的字符串来显示给用户。<br>下面是 Moments App 在英文语言和中文语言环境下的显示。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928110224034.png"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲，我介绍了如何使用 <code>.strings</code> 文件和 SwiftGen 来快速设置多语言支持。有了 <code>.strings</code> 文件，支持新的语言变得非常简单，甚至可以在没有程序员的情况下，由翻译人员来翻译并发布新的语言。另外，有了 SwiftGen 所生成的常量字符串，我们不会再把错误的 Key 传递给 <code>NSLocalizedString</code>，从而提高了代码的质量。可以说，这个设置是一本万利，哪怕目前你的 App 还没有支持多个语言，我还是建议你花一丁点时来设置多语言支持。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/img/image-20250928104137517.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    
+    
+    
+
+    <div>
+       
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------<i class="fa fa-paw"></i> That's all！Best wishes for you !!! <i class="fa fa-paw"></i>-------------</div>
+    
+</div>
+
+       
+    </div><div class="post-widgets">
+    <div class="likely">
+        <div class="twitter">Tweet</div>
+        <div class="facebook">Share</div>
+        <div class="linkedin">Link</div>
+        <div class="gplus">Plus</div>
+        <div class="vkontakte">Share</div>
+        <div class="odnoklassniki">Class</div>
+        <div class="telegram">Send</div>
+        <div class="whatsapp">Send</div>
+        <div class="pinterest">Pin</div>
+    </div>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.js"></script><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>凤炎忻
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F/" title="【iOS 进阶】12 | 功能组件：如何设置多语言支持，为全球化做准备？">https://fengyanxin.github.io/学习笔记/12｜功能组件：如何设置多语言支持，为全球化做准备？/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/fengyanxin">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.zhihu.com/people/peng-he-34-93">
+            <span class="icon">
+              <i class="fab fa-zhihu"></i>
+            </span>
+
+            <span class="label">知乎</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065">
+            <span class="icon">
+              <i class="fa fa-toutiao"></i>
+            </span>
+
+            <span class="label">今日头条</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477">
+            <span class="icon">
+              <i class="fa fa-baidu1"></i>
+            </span>
+
+            <span class="label">百家号</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394">
+            <span class="icon">
+              <i class="fab fa-xiaohongshu1"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e">
+            <span class="icon">
+              <i class="fab fa-liblib1"></i>
+            </span>
+
+            <span class="label">LibLib</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+              <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/iOS/%E3%80%90OC%E3%80%91%E5%8E%9F%E7%94%9F%E5%AF%8C%E6%96%87%E6%9C%AC-NSAttributedString-%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="prev" title="【OC】原生富文本 NSAttributedString 的使用">
+      <i class="fa fa-chevron-left"></i> 【OC】原生富文本 NSAttributedString 的使用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/13%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%8A%A8%E6%80%81%E5%AD%97%E4%BD%93%EF%BC%8C%E6%8F%90%E5%8D%87%E8%A7%86%E5%8A%9B%E8%BE%85%E5%8A%A9%E5%8A%9F%E8%83%BD%EF%BC%9F/" rel="next" title="【iOS 进阶】13 | 功能组件：如何设置动态字体，提升视力辅助功能？">
+      【iOS 进阶】13 | 功能组件：如何设置动态字体，提升视力辅助功能？ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
   window.addEventListener('tabs:register', () => {
     let { activeClass } = CONFIG.comments;
     if (CONFIG.comments.storage) {
@@ -18,7 +549,192 @@
       localStorage.setItem('comments_active', commentClass);
     });
   }
-</script></div><div class="toggle sidebar-toggle"><span class="toggle-line toggle-line-first"></span><span class="toggle-line toggle-line-middle"></span><span class="toggle-line toggle-line-last"></span></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc"> 文章目录</li><li class="sidebar-nav-overview"> 站点概览</li></ul><div class="post-toc-wrap sidebar-panel"><div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">如何设置多语言支持，为全球化做准备？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-SwiftGen"><span class="nav-number">1.1.</span> <span class="nav-text">安装 SwiftGen</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A2%9E%E5%8A%A0%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81"><span class="nav-number">1.2.</span> <span class="nav-text">增加多语言支持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-swiftgen-yml-%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.</span> <span class="nav-text">配置 swiftgen.yml 文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%94%9F%E6%88%90%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">1.4.</span> <span class="nav-text">使用生成的字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"> <img class="site-author-image" itemprop="image" alt="凤炎忻" src="/images/flyingPig.jpeg"><p class="site-author-name" itemprop="name">凤炎忻</p><div class="site-description" itemprop="description">性浮脱，难酬一道，广涉寡精，杂而不博</div></div><div class="site-state-wrap motion-element"><nav class="site-state"><div class="site-state-item site-state-posts"> <a href="/archives/"><span class="site-state-item-count">42</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"> <a href="/categories/"><span class="site-state-item-count">7</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"> <a href="/tags/"><span class="site-state-item-count">9</span> <span class="site-state-item-name">标签</span></a></div></nav></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/fengyanxin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengyanxin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i> GitHub</a></span><span class="links-of-author-item"><a href="mailto:ph18317192001@163.com" title="E-Mail → mailto:ph18317192001@163.com" rel="noopener" target="_blank"><i class="fab fa-mail fa-fw"></i> E-Mail</a></span><span class="links-of-author-item"><a href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065" title="今日头条 → https:&#x2F;&#x2F;profile.zjurl.cn&#x2F;rogue&#x2F;ugc&#x2F;profile&#x2F;?user_id&#x3D;51893718065" rel="noopener" target="_blank"><i class="fab fa-jinritoutiao fa-fw"></i> 今日头条</a></span><span class="links-of-author-item"><a href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477" title="百家号 → https:&#x2F;&#x2F;author.baidu.com&#x2F;home?from&#x3D;bjh_article&amp;app_id&#x3D;1665765419554477" rel="noopener" target="_blank"><i class="fab fa-baidu fa-fw"></i> 百家号</a></span><span class="links-of-author-item"><a href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;642cb9650000000011023394" rel="noopener" target="_blank"><i class="fab fa-xiaohongshu fa-fw"></i> 小红书</a></span><span class="links-of-author-item"><a href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e" title="LibLib → https:&#x2F;&#x2F;www.liblib.art&#x2F;userpage&#x2F;c7816525373d4fbca7e45c1940ead98e" rel="noopener" target="_blank"><i class="fab fa-liblib fa-fw"></i> LibLib</a></span></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer class="footer"><div class="footer-inner"><div class="copyright"> &copy; 2020 – <span itemprop="copyrightYear">2025</span><span class="with-love"><i class="fa fa-heart"></i></span> <span class="author" itemprop="copyrightHolder">凤炎忻</span> <span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-chart-area"></i></span> <span class="post-meta-item-text">站点总字数：</span> <span title="站点总字数">92k</span> <span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-coffee"></i></span> <span class="post-meta-item-text">站点阅读时长 &asymp;</span> <span title="站点阅读时长">5:35</span></div><div class="addthis_inline_share_toolbox"><script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script></div></div></footer></div><script color="255,255,255" opacity="0.95" zindex="-1" count="150" src="/lib/canvas-nest/canvas-nest.min.js"></script><script src="/lib/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script><script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script><script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script><script src="/lib/velocity/velocity.min.js"></script><script src="/lib/velocity/velocity.ui.min.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/pisces.js"></script><script src="/js/next-boot.js"></script><script src="/js/local-search.js"></script><script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script><script>
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B8%BA%E5%85%A8%E7%90%83%E5%8C%96%E5%81%9A%E5%87%86%E5%A4%87%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">如何设置多语言支持，为全球化做准备？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-SwiftGen"><span class="nav-number">1.1.</span> <span class="nav-text">安装 SwiftGen</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A2%9E%E5%8A%A0%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81"><span class="nav-number">1.2.</span> <span class="nav-text">增加多语言支持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-swiftgen-yml-%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.</span> <span class="nav-text">配置 swiftgen.yml 文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%94%9F%E6%88%90%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">1.4.</span> <span class="nav-text">使用生成的字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="凤炎忻"
+      src="/images/flyingPig.jpeg">
+  <p class="site-author-name" itemprop="name">凤炎忻</p>
+  <div class="site-description" itemprop="description">性浮脱，难酬一道，广涉寡精，杂而不博</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengyanxin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengyanxin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ph18317192001@163.com" title="E-Mail → mailto:ph18317192001@163.com" rel="noopener" target="_blank"><i class="fab fa-mail fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065" title="今日头条 → https:&#x2F;&#x2F;profile.zjurl.cn&#x2F;rogue&#x2F;ugc&#x2F;profile&#x2F;?user_id&#x3D;51893718065" rel="noopener" target="_blank"><i class="fab fa-jinritoutiao fa-fw"></i>今日头条</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477" title="百家号 → https:&#x2F;&#x2F;author.baidu.com&#x2F;home?from&#x3D;bjh_article&amp;app_id&#x3D;1665765419554477" rel="noopener" target="_blank"><i class="fab fa-baidu fa-fw"></i>百家号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;642cb9650000000011023394" rel="noopener" target="_blank"><i class="fab fa-xiaohongshu fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e" title="LibLib → https:&#x2F;&#x2F;www.liblib.art&#x2F;userpage&#x2F;c7816525373d4fbca7e45c1940ead98e" rel="noopener" target="_blank"><i class="fab fa-liblib fa-fw"></i>LibLib</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">凤炎忻</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">95k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:46</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,255' opacity='0.95' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
 var options = {
   bottom: '64px',
   right: 'unset',
@@ -35,7 +751,19 @@ var options = {
 const darkmode = new Darkmode(options);
 window.darkmode = darkmode;
 darkmode.showWidget();
-</script><script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script><script>pbOptions={iconStyle:"box",boxForm:"horizontal",position:"bottomCenter",networks:"Weibo,Wechat,Douban,QQZone,Twitter,Facebook"},new needShareButton("#needsharebutton-postbottom",pbOptions)</script><script>
+</script>
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+
+<script>
 NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
   NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
     var GUEST = ['nick', 'mail', 'link'];
@@ -61,4 +789,7 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
     });
   }, window.Valine);
 });
-</script></body></html>
+</script>
+
+</body>
+</html>
