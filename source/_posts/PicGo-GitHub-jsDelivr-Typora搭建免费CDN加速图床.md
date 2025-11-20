@@ -9,6 +9,8 @@ categories:
 - Hexo
 ---
 
+![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/641-20251120180919441.jpeg)
+
 本文介绍如何通过 PicGo 上传图片，指定 GithHub 作为图床，并使用 jsDelivr 对 GitHub 上图片进行 CDN 加速。另外介绍 Typora 编辑器配置 PicGo 作为文件上传服务器。
 
 ## GitHub 设置
@@ -35,7 +37,7 @@ categories:
 
 下载：[https://github.com/Molunerfinn/PicGo](https://github.com/Molunerfinn/PicGo)
 
-![image-20251120165324695](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251120165324695.png)
+![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251120165324695.png)
 
 可以使用稳定版本，也可以选择体验新功能的 beta 版本
 
