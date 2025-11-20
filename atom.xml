@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-11-19T06:23:54.260Z</updated>
+  <updated>2025-11-20T09:59:56.643Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【Hexo】PicGo+GitHub+jsDelivr+Typora 搭建免费 CDN 加速图床</title>
+    <link href="https://fengyanxin.github.io/Hexo/PicGo-GitHub-jsDelivr-Typora%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9CDN%E5%8A%A0%E9%80%9F%E5%9B%BE%E5%BA%8A/"/>
+    <id>https://fengyanxin.github.io/Hexo/PicGo-GitHub-jsDelivr-Typora%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9CDN%E5%8A%A0%E9%80%9F%E5%9B%BE%E5%BA%8A/</id>
+    <published>2025-11-20T08:28:55.000Z</published>
+    <updated>2025-11-20T09:59:56.643Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;本文介绍如何通过 PicGo 上传图片，指定 GithHub 作为图床，并使用 jsDelivr 对 GitHub 上图片进行 CDN 加速。另外介绍 Typora 编辑器配置 PicGo 作为文件上传服务器。&lt;/p&gt;
+&lt;h2 id=&quot;GitHub-设置&quot;&gt;&lt;a href=&quot;#GitHub-设置&quot; class=&quot;headerlink&quot; title=&quot;GitHub 设置&quot;&gt;&lt;/a&gt;GitHub 设置&lt;/h2&gt;</summary>
+    
+    
+    
+    <category term="Hexo" scheme="https://fengyanxin.github.io/categories/Hexo/"/>
+    
+    
+    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
+    
+    <category term="GitHub" scheme="https://fengyanxin.github.io/tags/GitHub/"/>
+    
+  </entry>
   
   <entry>
     <title>【iOS】设计模式6大原则在iOS中的应用</title>
@@ -438,28 +462,6 @@
     <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【Hexo】Gitlab pages 的使用</title>
-    <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
-    <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91Gitlab-pages-%E7%9A%84%E4%BD%BF%E7%94%A8/</id>
-    <published>2025-01-21T07:32:12.000Z</published>
-    <updated>2025-05-14T09:49:04.000Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;因为自己的博客，有时候访问还是比较慢的，原因是我的代码是在 GitHub 上托管的，众所周知，GitHub 是国外的服务器，在国内访问就是特别慢，然后，我就想是否可以找到国内的既能实现代码托管，又能生成静态网页的平台，来实现 Hexo 双线部署。&lt;/p&gt;
-&lt;p&gt;于是，我找到了 Coding pages，但是它被腾讯从 Coding 下线了，放到了腾讯云上，开始收费了；然后，我又找到了 Gitee pages，但是它被阿里从 Gitee 下线了，放到了阿里云上，也开始收费了；那该怎么办呢？只能说功夫不负有心人，最后我找到了 Gitlab pages！&lt;/p&gt;
-&lt;/blockquote&gt;</summary>
-    
-    
-    
-    <category term="Hexo" scheme="https://fengyanxin.github.io/categories/Hexo/"/>
-    
-    
-    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
     
   </entry>
   
