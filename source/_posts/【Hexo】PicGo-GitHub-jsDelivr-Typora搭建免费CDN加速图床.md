@@ -9,7 +9,7 @@ categories:
 - Hexo
 ---
 
-![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/641-20251120180919441.jpeg)
+![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/github.jpeg)
 
 本文介绍如何通过 PicGo 上传图片，指定 GithHub 作为图床，并使用 jsDelivr 对 GitHub 上图片进行 CDN 加速。另外介绍 Typora 编辑器配置 PicGo 作为文件上传服务器。
 
