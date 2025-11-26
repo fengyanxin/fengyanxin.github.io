@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-11-20T10:09:44.852Z</updated>
+  <updated>2025-11-26T09:30:15.911Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -18,13 +18,13 @@
   
   <entry>
     <title>【Hexo】PicGo+GitHub+jsDelivr+Typora 搭建免费 CDN 加速图床</title>
-    <link href="https://fengyanxin.github.io/Hexo/PicGo-GitHub-jsDelivr-Typora%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9CDN%E5%8A%A0%E9%80%9F%E5%9B%BE%E5%BA%8A/"/>
-    <id>https://fengyanxin.github.io/Hexo/PicGo-GitHub-jsDelivr-Typora%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9CDN%E5%8A%A0%E9%80%9F%E5%9B%BE%E5%BA%8A/</id>
+    <link href="https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91PicGo-GitHub-jsDelivr-Typora%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9CDN%E5%8A%A0%E9%80%9F%E5%9B%BE%E5%BA%8A/"/>
+    <id>https://fengyanxin.github.io/Hexo/%E3%80%90Hexo%E3%80%91PicGo-GitHub-jsDelivr-Typora%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9CDN%E5%8A%A0%E9%80%9F%E5%9B%BE%E5%BA%8A/</id>
     <published>2025-11-20T08:28:55.000Z</published>
-    <updated>2025-11-20T10:09:44.852Z</updated>
+    <updated>2025-11-26T09:30:15.911Z</updated>
     
     
-    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/641-20251120180919441.jpeg&quot;&gt;&lt;/p&gt;
+    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/github.jpeg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;本文介绍如何通过 PicGo 上传图片，指定 GithHub 作为图床，并使用 jsDelivr 对 GitHub 上图片进行 CDN 加速。另外介绍 Typora 编辑器配置 PicGo 作为文件上传服务器。&lt;/p&gt;
 &lt;h2 id=&quot;GitHub-设置&quot;&gt;&lt;a href=&quot;#GitHub-设置&quot; class=&quot;headerlink&quot; title=&quot;GitHub 设置&quot;&gt;&lt;/a&gt;GitHub 设置&lt;/h2&gt;</summary>
     
@@ -35,9 +35,9 @@
     
     <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
-    
     <category term="GitHub" scheme="https://fengyanxin.github.io/tags/GitHub/"/>
+    
+    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
     
   </entry>
   
