@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="如何使用语义色，支持深色模式？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【iOS 进阶】14 | 功能组件：如何使用语义色，支持深色模式？">
+<meta property="og:url" content="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/14%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%AF%AD%E4%B9%89%E8%89%B2%EF%BC%8C%E6%94%AF%E6%8C%81%E6%B7%B1%E8%89%B2%E6%A8%A1%E5%BC%8F%EF%BC%9F/index.html">
+<meta property="og:site_name" content="凤炎忻的个人笔记">
+<meta property="og:description" content="如何使用语义色，支持深色模式？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203133846966.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203134454975.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203134817753.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203133846966.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203141758520.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203142207561.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203142402980.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203143136095.png">
+<meta property="article:published_time" content="2025-12-03T05:36:23.000Z">
+<meta property="article:modified_time" content="2025-12-03T06:37:55.933Z">
+<meta property="article:author" content="凤炎忻">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203133846966.png">
+
+<link rel="canonical" href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/14%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%AF%AD%E4%B9%89%E8%89%B2%EF%BC%8C%E6%94%AF%E6%8C%81%E6%B7%B1%E8%89%B2%E6%A8%A1%E5%BC%8F%EF%BC%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>【iOS 进阶】14 | 功能组件：如何使用语义色，支持深色模式？ | 凤炎忻的个人笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="凤炎忻的个人笔记" type="application/atom+xml">
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">凤炎忻的个人笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我有一壶酒，足以慰风尘！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section">标签<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section">分类<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">归档<span class="badge">45</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section">公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/14%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%AF%AD%E4%B9%89%E8%89%B2%EF%BC%8C%E6%94%AF%E6%8C%81%E6%B7%B1%E8%89%B2%E6%A8%A1%E5%BC%8F%EF%BC%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/flyingPig.jpeg">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【iOS 进阶】14 | 功能组件：如何使用语义色，支持深色模式？
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-12-03 13:36:23 / 修改时间：14:37:55" itemprop="dateCreated datePublished" datetime="2025-12-03T13:36:23+08:00">2025-12-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/14%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%AF%AD%E4%B9%89%E8%89%B2%EF%BC%8C%E6%94%AF%E6%8C%81%E6%B7%B1%E8%89%B2%E6%A8%A1%E5%BC%8F%EF%BC%9F/" class="post-meta-item leancloud_visitors" data-flag-title="【iOS 进阶】14 | 功能组件：如何使用语义色，支持深色模式？" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/14%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%AF%AD%E4%B9%89%E8%89%B2%EF%BC%8C%E6%94%AF%E6%8C%81%E6%B7%B1%E8%89%B2%E6%A8%A1%E5%BC%8F%EF%BC%9F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/14%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%AF%AD%E4%B9%89%E8%89%B2%EF%BC%8C%E6%94%AF%E6%8C%81%E6%B7%B1%E8%89%B2%E6%A8%A1%E5%BC%8F%EF%BC%9F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="如何使用语义色，支持深色模式？"><a href="#如何使用语义色，支持深色模式？" class="headerlink" title="如何使用语义色，支持深色模式？"></a>如何使用语义色，支持深色模式？</h1><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203133846966.png"></p>
+<span id="more"></span>
+
+<p>从 <code>iOS 13</code> 开始，用户可以从系统级别来把外观模式改成 <strong>深色模式（Dark mode）</strong>。与原有的 <strong>浅色模式（Light mode）</strong> 相比，使用深色模式具有以下几大优点：</p>
+<ol>
+<li><p>由于减少发光，使用深色模式能大幅减少电量的消耗，延长 iPhone 的续航能力；</p>
+</li>
+<li><p>对视力不佳或者与对强光敏感的用户更为友好，为他们提供更好的可视性；</p>
+</li>
+<li><p>在暗光环境下，让用户使用手机时更舒服。</p>
+</li>
+</ol>
+<p>那么，我们的 App 怎样才能在支持深色模式呢？下面我将结合咱们的项目案例 Moments App 来介绍下。</p>
+<h2 id="iOS-语义色"><a href="#iOS-语义色" class="headerlink" title="iOS 语义色"></a>iOS 语义色</h2><p>对于深色模式的支持，苹果推荐使用 <strong>语义化颜色（Semantic colors）</strong> 来进行适配。什么叫语义化颜色呢？语义化颜色是我们根据用途来定义颜色的名称，例如使用在背景上的颜色定义为 <code>background</code>，主文本和副文本的颜色分别定义为 <code>primaryText</code> 和 <code>secondaryText</code>。UI 可以通过语义色来灵活地适配用户所选择的外观模式，比如背景在浅色模式下显示为白色，而在深色模式下显示为黑色。</p>
+<p>为了简化深色模式的适配过程，苹果公司提供了具有语义的 <strong>系统色（System colors）</strong> 和 <strong>动态系统色（Dynamic system colors）</strong> 供我们使用。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203134454975.png"></p>
+<p>上图是苹果开发者网站提供的一个 iOS 系统色，有蓝色、绿色、靛蓝、橙色、黄色等，它们在浅色模式和深色模式下会使用到不同的颜色值。比如蓝色，在浅色模式下，它的 RGB 分别是 <code>0、122、255</code>，在深色模式下则分别为 <code>10、132、255</code>。这样就能保证系统蓝色在不同的外观模式的背景颜色上都能清晰显示。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203134817753.png"></p>
+<p>上图显示是 iOS 系统提供的动态系统色的定义。它们都是通过用途来定义各种颜色的名称。例如 <code>Label</code> 用于主标签文字的颜色，而 <code>Secondary label</code> 用于副标签文字的颜色，使用它们就能自动支持不同的外观模式了。</p>
+<h2 id="Moments-App-的语义色"><a href="#Moments-App-的语义色" class="headerlink" title="Moments App 的语义色"></a>Moments App 的语义色</h2><p>为了增强品牌效果，我们一般都会为 App 单独定义一组语义色。下面以 Moments App 为例看看如何在代码中定义语义色。</p>
+<p>根据 07 讲的设计规范，我们在 <code>DesignKit</code> 组件里面自定义了一组语义色，具体代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">extension</span> <span class="title class_">UIColor</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">let</span> designKit <span class="operator">=</span> <span class="type">DesignKitPalette</span>.<span class="keyword">self</span></span><br><span class="line">    <span class="keyword">enum</span> <span class="title class_">DesignKitPalette</span> &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> primary: <span class="type">UIColor</span> <span class="operator">=</span> dynamicColor(light: <span class="type">UIColor</span>(hex: <span class="number">0x0770e3</span>), dark: <span class="type">UIColor</span>(hex: <span class="number">0x6d9feb</span>))</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> background: <span class="type">UIColor</span> <span class="operator">=</span> dynamicColor(light: .white, dark: .black)</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> secondaryBackground: <span class="type">UIColor</span> <span class="operator">=</span> dynamicColor(light: <span class="type">UIColor</span>(hex: <span class="number">0xf1f2f8</span>), dark: <span class="type">UIColor</span>(hex: <span class="number">0x1D1B20</span>))</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> tertiaryBackground: <span class="type">UIColor</span> <span class="operator">=</span> dynamicColor(light: .white, dark: <span class="type">UIColor</span>(hex: <span class="number">0x2C2C2E</span>))</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> line: <span class="type">UIColor</span> <span class="operator">=</span> dynamicColor(light: <span class="type">UIColor</span>(hex: <span class="number">0xcdcdd7</span>), dark: <span class="type">UIColor</span>(hex: <span class="number">0x48484A</span>))</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> primaryText: <span class="type">UIColor</span> <span class="operator">=</span> dynamicColor(light: <span class="type">UIColor</span>(hex: <span class="number">0x111236</span>), dark: .white)</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> secondaryText: <span class="type">UIColor</span> <span class="operator">=</span> dynamicColor(light: <span class="type">UIColor</span>(hex: <span class="number">0x68697f</span>), dark: <span class="type">UIColor</span>(hex: <span class="number">0x8E8E93</span>))</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> tertiaryText: <span class="type">UIColor</span> <span class="operator">=</span> dynamicColor(light: <span class="type">UIColor</span>(hex: <span class="number">0x8f90a0</span>), dark: <span class="type">UIColor</span>(hex: <span class="number">0x8E8E93</span>))</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> quaternaryText: <span class="type">UIColor</span> <span class="operator">=</span> dynamicColor(light: <span class="type">UIColor</span>(hex: <span class="number">0xb2b2bf</span>), dark: <span class="type">UIColor</span>(hex: <span class="number">0x8E8E93</span>))</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">private</span> <span class="keyword">func</span> <span class="title function_">dynamicColor</span>(<span class="params">light</span>: <span class="type">UIColor</span>, <span class="params">dark</span>: <span class="type">UIColor</span>) -&gt; <span class="type">UIColor</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="type">UIColor</span> &#123; <span class="variable">$0</span>.userInterfaceStyle <span class="operator">==</span> .dark <span class="operator">?</span> dark : light &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">extension</span> <span class="title class_">UIColor</span> &#123;</span><br><span class="line">    <span class="keyword">convenience</span> <span class="keyword">init</span>(<span class="params">hex</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> components <span class="operator">=</span> (</span><br><span class="line">                R: <span class="type">CGFloat</span>((hex <span class="operator">&gt;&gt;</span> <span class="number">16</span>) <span class="operator">&amp;</span> <span class="number">0xff</span>) <span class="operator">/</span> <span class="number">255</span>,</span><br><span class="line">                G: <span class="type">CGFloat</span>((hex <span class="operator">&gt;&gt;</span> <span class="number">08</span>) <span class="operator">&amp;</span> <span class="number">0xff</span>) <span class="operator">/</span> <span class="number">255</span>,</span><br><span class="line">                B: <span class="type">CGFloat</span>((hex <span class="operator">&gt;&gt;</span> <span class="number">00</span>) <span class="operator">&amp;</span> <span class="number">0xff</span>) <span class="operator">/</span> <span class="number">255</span></span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">self</span>.<span class="keyword">init</span>(red: components.<span class="type">R</span>, green: components.<span class="type">G</span>, blue: components.<span class="type">B</span>, alpha: <span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们为 <code>UIColor</code> 定义了一个 <strong>类型扩展（Extension）</strong>。为了调用时具有命名空间，我们在这个扩展里定义了一个名叫 <code>DesignKitPalette</code> 的内嵌枚举类型（Nested enum），然后定义了一个静态属性来引用该枚举。</p>
+<p>首先，我们一起看看 <code>DesignKitPalette</code> 两个公用的方法。第一个是 <code>func dynamicColor(light: UIColor, dark: UIColor) -&gt; UIColor</code>，在该方法里面，我们根据用户当前选择的 <code>userInterfaceStyle</code>来返回对应的深色或者浅色。</p>
+<p>第二个方法是通过类型扩展来为 <code>UIColor</code> 类型添加了一个初始化函数（构造函数）。该初始化函数接收一个 <code>Int</code> 类型的参数，这个参数保存了一个十六进制的值。函数内部从 <code>hex</code> 里面取出分别表示红色、绿色和蓝色的R、G和B的值，例如传入的 <code>hex</code> 是 <code>0x0770e3</code>，那么R、G和B的值是分别是07、70和e3, 然后把这些值传递给原有的 <code>init(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)</code> 初始化函数来生成一个 <code>UIColor</code>的实例。</p>
+<p>有了这两个函数以后，我们就可以很方便地定义设计规范里面的各种颜色了。具体来说，只需要把浅色和深色传递给语义色的属性就可。比如，我们的语义色 <code>primary</code> 所对应的浅色和深色的十六进制分别是 <code>0x0770e3</code> 和 <code>0x6d9feb</code>，那么我们就可以通过这两个值来生成一个支持动态颜色的 <code>UIColor</code> 对象，代码如下所示。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> primary: <span class="type">UIColor</span> <span class="operator">=</span> dynamicColor(light: <span class="type">UIColor</span>(hex: <span class="number">0x0770e3</span>), dark: <span class="type">UIColor</span>(hex: <span class="number">0x6d9feb</span>))</span><br></pre></td></tr></table></figure>
+
+<p>有了这些定义以后，我们可以在代码中很方便地使用它们。代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">label.textColor <span class="operator">=</span> <span class="type">UIColor</span>.designKit.primaryText</span><br><span class="line">view.backgroundColor <span class="operator">=</span> <span class="type">UIColor</span>.designKit.background</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，我们可以通过 <code>UIColor.designKit</code> 取出相应的语义色并赋值给类型为 <code>UIColor</code> 的属性即可。</p>
+<h2 id="测试语义色"><a href="#测试语义色" class="headerlink" title="测试语义色"></a>测试语义色</h2><p>当我们的 App 使用了语义色以后，要经常在浅色和深色模式之间来回切换，加以测试，及时发现问题解决问题。要不然在开发过程中可能会因为不小心引入影响可读性的 Bug ，从而降低用户体验。幸运的是，iOS 的 Simulator 为我们提供了一组快捷键 <code>Command + Shift + A</code> 来快速切换外观模式。下面是 Moments App 在不同外观模式下运行的效果。</p>
+<p>从视频上你可以看到，当我按下快捷键 <code>Command + Shift + A</code> 的时候 Moments App 在浅色和深色模式之间自动来回切换。这样能帮我们快速检查界面上文本的可读性。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在这一讲中我介绍了如何通过语义色来灵活支持不同的外观模式，同时以 Moments App 为例子介绍了如何通过 <code>UIColor</code> 的扩展来自定义语义色。</p>
+<p>当我们的 App 使用了语义色以后，还需要注意以下几点。</p>
+<ol>
+<li><p>不要把深色模式等于黑夜模式或者夜间模式，支持深色模式的 App 在正常光线的环境下也要为用户提供良好的视觉舒适度。</p>
+</li>
+<li><p>App 应该从系统设置里面读取外观模式的信息，而不是让用户在 App 里面进行单独配置。</p>
+</li>
+<li><p>在开发过程中，要经常切换外观模式来测试 App。</p>
+</li>
+<li><p>要在<strong>设置 App-&gt;辅助功能-&gt;显示与字体大小</strong>页面中修改<strong>降低透明度</strong>和<strong>增强对比度</strong>开关，检查深色内容在黑色背景下的可读性。</p>
+</li>
+</ol>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203133846966.png"></p>
+<h1 id="学习笔记与扩展"><a href="#学习笔记与扩展" class="headerlink" title="学习笔记与扩展"></a>学习笔记与扩展</h1><h2 id="如何全局关闭暗黑模式？"><a href="#如何全局关闭暗黑模式？" class="headerlink" title="如何全局关闭暗黑模式？"></a>如何全局关闭暗黑模式？</h2><p>在 <code>Info.plist</code> 文件中，添加<code>UIUserInterfaceStyle</code> key 名字为 <code>User Interface Style</code> 值为String， 将UIUserInterfaceStyle key 的值设置为 <code>Light</code></p>
+<h2 id="如何让单个界面不遵循暗黑模式？"><a href="#如何让单个界面不遵循暗黑模式？" class="headerlink" title="如何让单个界面不遵循暗黑模式？"></a>如何让单个界面不遵循暗黑模式？</h2><p><code>UIViewController</code> 与 <code>UIView</code> 都新增一个属性 <code>overrideUserInterfaceStyle</code><br>将 <code>overrideUserInterfaceStyle</code> 设置为对应的模式，则强制限制该元素与其子元素以设置的模式进行展示，不跟随系统模式改变进行改变</p>
+<ol>
+<li>设置 ViewController 的该属性， 将会影响视图控制器的视图和子视图控制器采用该样式</li>
+<li>设置 View 的该属性， 将会影响视图及其所有子视图采用该样式</li>
+<li>设置 Window 的该属性， 将会影响窗口中的所有内容都采用样式，包括根视图控制器和在该窗口中显示内容的所有演示控制器（UIPresentationController）</li>
+</ol>
+<h2 id="如何将图片适配深色模式？"><a href="#如何将图片适配深色模式？" class="headerlink" title="如何将图片适配深色模式？"></a>如何将图片适配深色模式？</h2><p>1、打开 <code>Assets.xcassets</code>，新建一个 <code>Image set</code></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203141758520.png"></p>
+<p>2、打开右侧工具栏，点击最后一栏，找到 <code>Appearances</code>，选择 <code>Any,Light,Dark</code></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203142207561.png"></p>
+<p>3、将两种模式下不同的图片资源都拖进去</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203142402980.png"></p>
+<p>4、使用该图片</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="keyword">self</span>.logoImage setImage:[<span class="type">UIImage</span> imageNamed:@<span class="string">&quot;icon_logo&quot;</span>]];</span><br></pre></td></tr></table></figure>
+
+<p>相同的，我们也可以通过这种方式把颜色也适配一下，如图所示：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251203143136095.png"></p>
+<p>这种方式是不是非常简单，至此，图片和颜色的深色模式适配就都完成了。</p>
+
+    </div>
+
+    
+    
+    
+
+    
+    
+    
+
+    <div>
+       
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------<i class="fa fa-paw"></i> That's all！Best wishes for you !!! <i class="fa fa-paw"></i>-------------</div>
+    
+</div>
+
+       
+    </div><div class="post-widgets">
+    <div class="likely">
+        <div class="twitter">Tweet</div>
+        <div class="facebook">Share</div>
+        <div class="linkedin">Link</div>
+        <div class="gplus">Plus</div>
+        <div class="vkontakte">Share</div>
+        <div class="odnoklassniki">Class</div>
+        <div class="telegram">Send</div>
+        <div class="whatsapp">Send</div>
+        <div class="pinterest">Pin</div>
+    </div>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.js"></script><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>凤炎忻
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/14%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%AF%AD%E4%B9%89%E8%89%B2%EF%BC%8C%E6%94%AF%E6%8C%81%E6%B7%B1%E8%89%B2%E6%A8%A1%E5%BC%8F%EF%BC%9F/" title="【iOS 进阶】14 | 功能组件：如何使用语义色，支持深色模式？">https://fengyanxin.github.io/学习笔记/14｜功能组件：如何使用语义色，支持深色模式？/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/fengyanxin">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.zhihu.com/people/peng-he-34-93">
+            <span class="icon">
+              <i class="fab fa-zhihu"></i>
+            </span>
+
+            <span class="label">知乎</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065">
+            <span class="icon">
+              <i class="fa fa-toutiao"></i>
+            </span>
+
+            <span class="label">今日头条</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477">
+            <span class="icon">
+              <i class="fa fa-baidu1"></i>
+            </span>
+
+            <span class="label">百家号</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394">
+            <span class="icon">
+              <i class="fab fa-xiaohongshu1"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e">
+            <span class="icon">
+              <i class="fab fa-liblib1"></i>
+            </span>
+
+            <span class="label">LibLib</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+              <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Hexo/%E3%80%90Hexo%E3%80%91PicGo-GitHub-jsDelivr-Typora%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9CDN%E5%8A%A0%E9%80%9F%E5%9B%BE%E5%BA%8A/" rel="prev" title="【Hexo】PicGo+GitHub+jsDelivr+Typora 搭建免费 CDN 加速图床">
+      <i class="fa fa-chevron-left"></i> 【Hexo】PicGo+GitHub+jsDelivr+Typora 搭建免费 CDN 加速图床
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%AF%AD%E4%B9%89%E8%89%B2%EF%BC%8C%E6%94%AF%E6%8C%81%E6%B7%B1%E8%89%B2%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">如何使用语义色，支持深色模式？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS-%E8%AF%AD%E4%B9%89%E8%89%B2"><span class="nav-number">1.1.</span> <span class="nav-text">iOS 语义色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Moments-App-%E7%9A%84%E8%AF%AD%E4%B9%89%E8%89%B2"><span class="nav-number">1.2.</span> <span class="nav-text">Moments App 的语义色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E8%AF%AD%E4%B9%89%E8%89%B2"><span class="nav-number">1.3.</span> <span class="nav-text">测试语义色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%89%A9%E5%B1%95"><span class="nav-number">2.</span> <span class="nav-text">学习笔记与扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%85%A8%E5%B1%80%E5%85%B3%E9%97%AD%E6%9A%97%E9%BB%91%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="nav-number">2.1.</span> <span class="nav-text">如何全局关闭暗黑模式？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AE%A9%E5%8D%95%E4%B8%AA%E7%95%8C%E9%9D%A2%E4%B8%8D%E9%81%B5%E5%BE%AA%E6%9A%97%E9%BB%91%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="nav-number">2.2.</span> <span class="nav-text">如何让单个界面不遵循暗黑模式？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%B0%86%E5%9B%BE%E7%89%87%E9%80%82%E9%85%8D%E6%B7%B1%E8%89%B2%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="nav-number">2.3.</span> <span class="nav-text">如何将图片适配深色模式？</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="凤炎忻"
+      src="/images/flyingPig.jpeg">
+  <p class="site-author-name" itemprop="name">凤炎忻</p>
+  <div class="site-description" itemprop="description">性浮脱，难酬一道，广涉寡精，杂而不博</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengyanxin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengyanxin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ph18317192001@163.com" title="E-Mail → mailto:ph18317192001@163.com" rel="noopener" target="_blank"><i class="fab fa-mail fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065" title="今日头条 → https:&#x2F;&#x2F;profile.zjurl.cn&#x2F;rogue&#x2F;ugc&#x2F;profile&#x2F;?user_id&#x3D;51893718065" rel="noopener" target="_blank"><i class="fab fa-jinritoutiao fa-fw"></i>今日头条</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477" title="百家号 → https:&#x2F;&#x2F;author.baidu.com&#x2F;home?from&#x3D;bjh_article&amp;app_id&#x3D;1665765419554477" rel="noopener" target="_blank"><i class="fab fa-baidu fa-fw"></i>百家号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;642cb9650000000011023394" rel="noopener" target="_blank"><i class="fab fa-xiaohongshu fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e" title="LibLib → https:&#x2F;&#x2F;www.liblib.art&#x2F;userpage&#x2F;c7816525373d4fbca7e45c1940ead98e" rel="noopener" target="_blank"><i class="fab fa-liblib fa-fw"></i>LibLib</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">凤炎忻</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">98k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:56</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,255' opacity='0.95' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '7EJkVswo79CmfmbwincRPjrA-gzGzoHsz',
+      appKey     : 'v7t6DWozwkcL2qIDeSC5kupC',
+      placeholder: "说点什么吧！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
