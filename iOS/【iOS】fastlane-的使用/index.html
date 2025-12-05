@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="【iOS】fastlane 的使用">
+<meta property="og:url" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91fastlane-%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="凤炎忻的个人笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/fastlane_text.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251205142107552.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251205142437935.png">
+<meta property="article:published_time" content="2025-12-05T05:57:46.000Z">
+<meta property="article:modified_time" content="2025-12-05T07:10:21.940Z">
+<meta property="article:author" content="凤炎忻">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/fastlane_text.png">
+
+<link rel="canonical" href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91fastlane-%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>【iOS】fastlane 的使用 | 凤炎忻的个人笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="凤炎忻的个人笔记" type="application/atom+xml">
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">凤炎忻的个人笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我有一壶酒，足以慰风尘！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section">标签<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section">分类<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">归档<span class="badge">46</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section">公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91fastlane-%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/flyingPig.jpeg">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【iOS】fastlane 的使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-12-05 13:57:46 / 修改时间：15:10:21" itemprop="dateCreated datePublished" datetime="2025-12-05T13:57:46+08:00">2025-12-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/iOS/%E3%80%90iOS%E3%80%91fastlane-%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-meta-item leancloud_visitors" data-flag-title="【iOS】fastlane 的使用" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/iOS/%E3%80%90iOS%E3%80%91fastlane-%E7%9A%84%E4%BD%BF%E7%94%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/iOS/%E3%80%90iOS%E3%80%91fastlane-%E7%9A%84%E4%BD%BF%E7%94%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/fastlane_text.png"></p>
+<span id="more"></span>
+
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>我们在开发过程中总免不了需要经历发测、上传等环节。这些开发环节中，我们需要打不同环境的包，上传对应的分发后台 <strong>（例如“蒲公英”、TestFlight、iTunes Connect）</strong> 等。</p>
+<p>每次的手动打包的过程中，我们都要选择对应的环境、对应打包的证书、正确的 target 等工作。万一上述步骤哪一步选错了，轻者得重新走一遍上述的流程，更严重点还有可能会把测试服的数据传到正式服去了。仔细想想后患无穷。</p>
+<p>有没有一种方法可以在设置好一系列的任务流程后，只需要一句代码就可以自动帮我们完成上面提及的一些列操作。既减少我们手动操作的同时，还能减少选择环境证书导致错误的方法呢？</p>
+<p>有！fastlane 就能帮到你。</p>
+<h1 id="fastlane-使用"><a href="#fastlane-使用" class="headerlink" title="fastlane 使用"></a>fastlane 使用</h1><p>fastlane 是一个自动化构建工具，主要包含测试、打包、发布等功能，它内部是由 ruby 实现的，是一款自动化非常高的脚本工具。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>1、mac 自带的 ruby ，需要 sudo 权限：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gem install fastlane</span><br></pre></td></tr></table></figure>
+
+<p>2、使用 homebrew 安装：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install fastlane</span><br></pre></td></tr></table></figure>
+
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>在项目根目录（通俗一点就是跟你 .xcworkspace、Podfile 文件同级的t地方）下，初始化 Fastlane： </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastlane <span class="keyword">init</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251205142107552.png"></p>
+<p>选择对应需要的功能后完成初始化，这里我们选择 4。</p>
+<p>在初始化完成后我们看到在根目录下生成了一个 <code>fastlane</code> 的文件夹还有一个 <code>Gemfile</code> 文件</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251205142437935.png"></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">-</span>fastlane</span><br><span class="line">  <span class="operator">-</span><span class="type">Fastfile</span>(核心文件，主要用于 命令行调用和处理具体的流程，lane相对于一个方法或者函数)</span><br><span class="line">  <span class="operator">-</span><span class="type">Appfile</span>(存储有关开发者账号相关信息)</span><br><span class="line"><span class="operator">-</span><span class="type">Gemfile</span>(<span class="type">Gemfile是我们创建的一个用于描述gem之间依赖的文件</span><span class="operator">。</span>gem是一堆<span class="type">Ruby代码的集合，它能够为我们提供调用</span>)</span><br></pre></td></tr></table></figure>
+
+<p>至此我们完成了第一步，fastlans 的初始化。打开 <code>Fastfile</code> 我们就可以看见 fastlane 的核心文件了。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">default_platform(:ios)</span><br><span class="line"></span><br><span class="line">platform :ios <span class="keyword">do</span></span><br><span class="line">  desc <span class="string">&quot;Description of what the lane does&quot;</span></span><br><span class="line">  lane :custom_lane <span class="keyword">do</span></span><br><span class="line">    # add actions here: https:<span class="comment">//docs.fastlane.tools/actions</span></span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>我们只需要在命令行敲 <code>fastlane custom_lane</code> 就可以执行这个自定义的任务。但当然由于我们啥都没设置，他并不会有任何效果。</p>
+<h2 id="Fastfile-文件编写"><a href="#Fastfile-文件编写" class="headerlink" title="Fastfile 文件编写"></a>Fastfile 文件编写</h2><p>和我们 iOS 的 ViewController 一样，fastlane 也是有生命周期的。fastlane的生命周期为:</p>
+<table>
+<thead>
+<tr>
+<th align="left">执行顺序</th>
+<th align="left">方法名</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">before_all</td>
+<td align="left">在执行 lane 之前只执行一次</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">before_each</td>
+<td align="left">每次执行 lane 之前都会执行一次</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">lane</td>
+<td align="left">自定义的任务</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">after_each</td>
+<td align="left">每次执行 lane 之后都会执行一次</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">after_all</td>
+<td align="left">在执行 lane 成功结束之后执行一次</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left">error</td>
+<td align="left">在执行上述情况任意环境报错都会中止并执行一次</td>
+</tr>
+</tbody></table>
+<h3 id="lane"><a href="#lane" class="headerlink" title="lane"></a>lane</h3><p>lane 是 fastfile 中的方法定义标签，可以理解为函数。fastlane 都是基于 ruby，所以 fastfile 中也是使用 ruby 语法的。</p>
+<p>1、定义一个简单的无参 lane</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lane :noParam_lane</span><br><span class="line">    puts <span class="string">&quot;这是一个无参数的lane&quot;</span></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>调用方法 <code>fastlane noParam_lane</code></p>
+<p>2、定义一个带参的 lane</p>
+<p>在 <code>fastfile</code> 中 <code>option</code> 类似于一个字典集。我们可以通过  <code>option[:configuration]</code> 取其中 <code>value</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lane :param_lane <span class="keyword">do</span> <span class="operator">|</span>option<span class="operator">|</span> </span><br><span class="line">   param <span class="operator">=</span> option[:param]</span><br><span class="line">   puts <span class="string">&quot;这是一个有参数的lane&quot;</span></span><br><span class="line">   puts param</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>调用方法 <code>param_lane(param: &#39;我是参数&#39;)</code></p>
+<h3 id="Action"><a href="#Action" class="headerlink" title="Action"></a>Action</h3><p>除开我们自定义 fastfile 中的方法，fastlane 还提供了很多已经写好的独立的方法库，也就是 Actions。 常见的 action 可以查阅 Actions 或调用 fastlane 代码 <code>fastlane actions</code>。</p>
+<p>下面我们举一个简单的打包例子:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">APP_NAME</span> <span class="operator">=</span> <span class="string">&quot;XXX&quot;</span></span><br><span class="line"><span class="type">SCHEME</span> <span class="operator">=</span> <span class="string">&quot;XXX&quot;</span></span><br><span class="line"></span><br><span class="line">platform :ios <span class="keyword">do</span></span><br><span class="line">  #在执行lane前先跑一遍cocoapods</span><br><span class="line">  before_all <span class="keyword">do</span></span><br><span class="line">    cocoapods</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  #debug包</span><br><span class="line">  lane :iosDebug <span class="keyword">do</span></span><br><span class="line">    package(configuration: <span class="string">&quot;Debug&quot;</span>,method:<span class="string">&quot;development&quot;</span>)</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  #release包</span><br><span class="line">  lane :iosRelease <span class="keyword">do</span></span><br><span class="line">    package(configuration: <span class="string">&quot;Release&quot;</span>,method:<span class="string">&quot;ad-hoc&quot;</span>)</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">    #发布包</span><br><span class="line">  lane :iosAppStore <span class="keyword">do</span></span><br><span class="line">    package(configuration: <span class="string">&quot;Release&quot;</span>,method:<span class="string">&quot;app-store&quot;</span><span class="string">&quot;)</span></span><br><span class="line"><span class="string">  end</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  #打包函数</span></span><br><span class="line"><span class="string">  lane :package do |option|</span></span><br><span class="line"><span class="string">     #打包</span></span><br><span class="line"><span class="string">     gym(</span></span><br><span class="line"><span class="string">      scheme: &quot;</span>#&#123;<span class="type">SCHEME</span>&#125;<span class="string">&quot;,</span></span><br><span class="line"><span class="string">      export_method: option[:method],</span></span><br><span class="line"><span class="string">      configuration: option[:configuration],</span></span><br><span class="line"><span class="string">      include_symbols: true,</span></span><br><span class="line"><span class="string">      include_bitcode: false,</span></span><br><span class="line"><span class="string">      export_xcargs: &quot;</span><span class="operator">-</span>allowProvisioningUpdates<span class="string">&quot;</span></span><br><span class="line"><span class="string">      )</span></span><br><span class="line"><span class="string">  end</span></span><br></pre></td></tr></table></figure>
+
+<p>首先我们在 Fastfile 中全局定义了几个参数分别用于<strong>存储应用名、SCHEME</strong>等公用参数。在上一章节中我们说过 fastlane 的生命周期中有一个 <code>before_all</code>，我们在这个方法中先更新了一遍 <code>cocoaPods</code>。然后定义了3个 <code>lane</code>，分别对应我们开发过程中 <strong>测试服发测、正式服发测、以及上传appstore</strong> 的3种打包流程。在流程中通过对 <code>configuration</code> 和 <code>method</code> 的传参达到配置不同打包环境的效果。</p>
+<h3 id="switch-lane"><a href="#switch-lane" class="headerlink" title="switch lane"></a>switch lane</h3><p>我们可以从代码中看到，<code>iosDebug</code>、<code>iosRelease</code>、<code>iosAppStore</code> 3个 <code>lane</code> 最后都调用了一个公用的 <code>lane package</code>。这种在一个 <code>lane</code> 中调用另一个 <code>lane</code> 的使用方式我们把它命名为 <code>switch lane</code>。</p>
+<h3 id="gym"><a href="#gym" class="headerlink" title="gym"></a>gym</h3><p><code>gym</code> 其实是 <code>actionbuild_app</code> 的别名。按照他的官方的说法，使用 <code>gym</code> 来构建 <code>ipa</code> 文件，会比其他构建工具还要快30％（真香）。</p>
+<p><code>gym</code> 的参数有非常多取几个比较常用的来讲一下:</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数名</th>
+<th align="left">解释</th>
+<th align="left">默认值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">workspace</td>
+<td align="left">workspace文件的路径</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">project</td>
+<td align="left">project文件的路径</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">scheme</td>
+<td align="left">要打包项目的scheme</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">clean</td>
+<td align="left">打包前要不要clean一下（最好还是clean一下吧，这个默认值是不clean的）</td>
+<td align="left">false</td>
+</tr>
+<tr>
+<td align="left">output_directory</td>
+<td align="left">打包后导出的目录</td>
+<td align="left">.（项目根目录）</td>
+</tr>
+<tr>
+<td align="left">output_name</td>
+<td align="left">导出ipa的名字</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">configuration</td>
+<td align="left">打包的配置</td>
+<td align="left">‘Release’</td>
+</tr>
+<tr>
+<td align="left">include_symbols</td>
+<td align="left">ipa文件应包含符号表吗</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">include_bitcode</td>
+<td align="left">ipa文件应包含include_bitcode吗</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">export_method</td>
+<td align="left">导出有效值的方法，有效值包括：app-store, ad-hoc, package, enterprise, development, developer-id</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>其他详细的不常用的就不复制粘贴了大家可以看 <a target="_blank" rel="noopener" href="https://docs.fastlane.tools/actions/build_app/#parameters">build_app</a> 这里 。</p>
+<h3 id="执行打包"><a href="#执行打包" class="headerlink" title="执行打包"></a>执行打包</h3><p>有了上面对打包方法的封装，我们只需要根据不同的打包需求。测试服发测调用 iosDebug，正式服发测调用 iosRelease，打 appstore 包调用 iosAppStore 即可获得我们想要的不同环境的包了。</p>
+<h2 id="上传蒲公英"><a href="#上传蒲公英" class="headerlink" title="上传蒲公英"></a>上传蒲公英</h2><p>我们在发测过程中还有上传到软件分发后台的操作，这个功能 fastlane 同样帮我们封装成插件了。</p>
+<p>我们只需要在在终端中，输入以下命令，即可安装蒲公英的 fastlane 插件。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastlane add_plugin pgyer</span><br></pre></td></tr></table></figure>
+
+<p>安装完毕后，我们在 Fastfile 里需要上传到蒲公英的 lane 中加入相应的命令即可在得到 ipa 包后直接上传蒲公英。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#debug包</span><br><span class="line">lane :iosDebug <span class="keyword">do</span></span><br><span class="line">  package(configuration: <span class="string">&quot;Debug&quot;</span>,method:<span class="string">&quot;development&quot;</span>)</span><br><span class="line">  pgyer(api_key: <span class="string">&quot;7f15xxxxxxxxxxxxxxxxxx141&quot;</span>, user_key: <span class="string">&quot;4a5bcxxxxxxxxxxxxxxx3a9e&quot;</span>)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">#release包</span><br><span class="line">lane :iosRelease <span class="keyword">do</span></span><br><span class="line">  package(configuration: <span class="string">&quot;Release&quot;</span>,method:<span class="string">&quot;ad-hoc&quot;</span>)</span><br><span class="line">  pgyer(api_key: <span class="string">&quot;7f15xxxxxxxxxxxxxxxxxx141&quot;</span>, user_key: <span class="string">&quot;4a5bcxxxxxxxxxxxxxxx3a9e&quot;</span>)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>PS: <code>api_key</code> 和 <code>user_key</code> 在蒲公英的后台获取。</p>
+</blockquote>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p>1、<a target="_blank" rel="noopener" href="https://docs.fastlane.tools/">Fastlane官网</a><br>2、<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904197939281934">fastlane的使用及文件编写</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    
+    
+    
+
+    <div>
+       
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------<i class="fa fa-paw"></i> That's all！Best wishes for you !!! <i class="fa fa-paw"></i>-------------</div>
+    
+</div>
+
+       
+    </div><div class="post-widgets">
+    <div class="likely">
+        <div class="twitter">Tweet</div>
+        <div class="facebook">Share</div>
+        <div class="linkedin">Link</div>
+        <div class="gplus">Plus</div>
+        <div class="vkontakte">Share</div>
+        <div class="odnoklassniki">Class</div>
+        <div class="telegram">Send</div>
+        <div class="whatsapp">Send</div>
+        <div class="pinterest">Pin</div>
+    </div>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.js"></script><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>凤炎忻
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91fastlane-%E7%9A%84%E4%BD%BF%E7%94%A8/" title="【iOS】fastlane 的使用">https://fengyanxin.github.io/iOS/【iOS】fastlane-的使用/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/fengyanxin">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.zhihu.com/people/peng-he-34-93">
+            <span class="icon">
+              <i class="fab fa-zhihu"></i>
+            </span>
+
+            <span class="label">知乎</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065">
+            <span class="icon">
+              <i class="fa fa-toutiao"></i>
+            </span>
+
+            <span class="label">今日头条</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477">
+            <span class="icon">
+              <i class="fa fa-baidu1"></i>
+            </span>
+
+            <span class="label">百家号</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394">
+            <span class="icon">
+              <i class="fab fa-xiaohongshu1"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e">
+            <span class="icon">
+              <i class="fab fa-liblib1"></i>
+            </span>
+
+            <span class="label">LibLib</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/14%EF%BD%9C%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E8%AF%AD%E4%B9%89%E8%89%B2%EF%BC%8C%E6%94%AF%E6%8C%81%E6%B7%B1%E8%89%B2%E6%A8%A1%E5%BC%8F%EF%BC%9F/" rel="prev" title="【iOS 进阶】14 | 功能组件：如何使用语义色，支持深色模式？">
+      <i class="fa fa-chevron-left"></i> 【iOS 进阶】14 | 功能组件：如何使用语义色，支持深色模式？
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fastlane-%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">fastlane 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.2.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fastfile-%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99"><span class="nav-number">2.3.</span> <span class="nav-text">Fastfile 文件编写</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lane"><span class="nav-number">2.3.1.</span> <span class="nav-text">lane</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Action"><span class="nav-number">2.3.2.</span> <span class="nav-text">Action</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#switch-lane"><span class="nav-number">2.3.3.</span> <span class="nav-text">switch lane</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gym"><span class="nav-number">2.3.4.</span> <span class="nav-text">gym</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%89%93%E5%8C%85"><span class="nav-number">2.3.5.</span> <span class="nav-text">执行打包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E8%92%B2%E5%85%AC%E8%8B%B1"><span class="nav-number">2.4.</span> <span class="nav-text">上传蒲公英</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="凤炎忻"
+      src="/images/flyingPig.jpeg">
+  <p class="site-author-name" itemprop="name">凤炎忻</p>
+  <div class="site-description" itemprop="description">性浮脱，难酬一道，广涉寡精，杂而不博</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengyanxin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengyanxin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ph18317192001@163.com" title="E-Mail → mailto:ph18317192001@163.com" rel="noopener" target="_blank"><i class="fab fa-mail fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065" title="今日头条 → https:&#x2F;&#x2F;profile.zjurl.cn&#x2F;rogue&#x2F;ugc&#x2F;profile&#x2F;?user_id&#x3D;51893718065" rel="noopener" target="_blank"><i class="fab fa-jinritoutiao fa-fw"></i>今日头条</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477" title="百家号 → https:&#x2F;&#x2F;author.baidu.com&#x2F;home?from&#x3D;bjh_article&amp;app_id&#x3D;1665765419554477" rel="noopener" target="_blank"><i class="fab fa-baidu fa-fw"></i>百家号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;642cb9650000000011023394" rel="noopener" target="_blank"><i class="fab fa-xiaohongshu fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e" title="LibLib → https:&#x2F;&#x2F;www.liblib.art&#x2F;userpage&#x2F;c7816525373d4fbca7e45c1940ead98e" rel="noopener" target="_blank"><i class="fab fa-liblib fa-fw"></i>LibLib</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">凤炎忻</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">99k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:02</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,255' opacity='0.95' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '7EJkVswo79CmfmbwincRPjrA-gzGzoHsz',
+      appKey     : 'v7t6DWozwkcL2qIDeSC5kupC',
+      placeholder: "说点什么吧！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
