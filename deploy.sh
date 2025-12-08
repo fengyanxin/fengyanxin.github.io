@@ -8,7 +8,7 @@ hexo clean && hexo generate
 sleep 5
 
 # 压缩文件
-gulp 
+# gulp 
 sleep 5
 
 # Deploy
