@@ -23,23 +23,22 @@
     var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="前言工程中有个多层控制器时，调用 dismissViewControllerAnimated 时不时会不起作用。 原理我们都知道 dismissViewControllerAnimated:completion: 方法是针对被 present 出来的控制器的。 一般我们这样使用：在一个控制器中 present 另外一个控制器A，然后在A中执行 dismissViewControllerAnimat">
+  <meta name="description" content="正则表达式是什么？在编写处理字符串的程序或网页时，经常会有查找符合某些复杂规则的字符串的需要。正则表达式就是用于描述这些规则的工具。换句话说，正则表达式就是记录文本规则的代码。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【iOS】关于 dismissViewController">
-<meta property="og:url" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%85%B3%E4%BA%8EdismissViewController/index.html">
+<meta property="og:title" content="【Tips】正则表达式手册">
+<meta property="og:url" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%89%8B%E5%86%8C/index.html">
 <meta property="og:site_name" content="凤炎忻的个人笔记">
-<meta property="og:description" content="前言工程中有个多层控制器时，调用 dismissViewControllerAnimated 时不时会不起作用。 原理我们都知道 dismissViewControllerAnimated:completion: 方法是针对被 present 出来的控制器的。 一般我们这样使用：在一个控制器中 present 另外一个控制器A，然后在A中执行 dismissViewControllerAnimat">
+<meta property="og:description" content="正则表达式是什么？在编写处理字符串的程序或网页时，经常会有查找符合某些复杂规则的字符串的需要。正则表达式就是用于描述这些规则的工具。换句话说，正则表达式就是记录文本规则的代码。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17449556028643.jpg">
-<meta property="article:published_time" content="2025-04-18T05:38:22.000Z">
-<meta property="article:modified_time" content="2025-05-15T01:22:07.000Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/regex.webp">
+<meta property="article:published_time" content="2025-12-08T02:58:39.000Z">
+<meta property="article:modified_time" content="2025-12-08T05:42:22.593Z">
 <meta property="article:author" content="凤炎忻">
-<meta property="article:tag" content="iOS">
-<meta property="article:tag" content="OC">
+<meta property="article:tag" content="Tips">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17449556028643.jpg">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/regex.webp">
 
-<link rel="canonical" href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%85%B3%E4%BA%8EdismissViewController/">
+<link rel="canonical" href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%89%8B%E5%86%8C/">
 
 
 <script id="page-configurations">
@@ -65,7 +64,7 @@
   padding: 1px 4px;
 }
 </style>
-  <title>【iOS】关于 dismissViewController | 凤炎忻的个人笔记</title>
+  <title>【Tips】正则表达式手册 | 凤炎忻的个人笔记</title>
   
 
 
@@ -215,7 +214,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%85%B3%E4%BA%8EdismissViewController/">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%89%8B%E5%86%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/flyingPig.jpeg">
@@ -228,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【iOS】关于 dismissViewController
+          【Tips】正则表达式手册
         </h1>
 
         <div class="post-meta">
@@ -237,28 +236,22 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2025-04-18 13:38:22" itemprop="dateCreated datePublished" datetime="2025-04-18T13:38:22+08:00">2025-04-18</time>
+              <time title="创建时间：2025-12-08 10:58:39 / 修改时间：13:42:22" itemprop="dateCreated datePublished" datetime="2025-12-08T10:58:39+08:00">2025-12-08</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-05-15 09:22:07" itemprop="dateModified" datetime="2025-05-15T09:22:07+08:00">2025-05-15</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                  <a href="/categories/Tips/" itemprop="url" rel="index"><span itemprop="name">Tips</span></a>
                 </span>
             </span>
 
           
-            <span id="/iOS/%E3%80%90iOS%E3%80%91%E5%85%B3%E4%BA%8EdismissViewController/" class="post-meta-item leancloud_visitors" data-flag-title="【iOS】关于 dismissViewController" title="阅读次数">
+            <span id="/Tips/%E3%80%90Tips%E3%80%91%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%89%8B%E5%86%8C/" class="post-meta-item leancloud_visitors" data-flag-title="【Tips】正则表达式手册" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -273,8 +266,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/iOS/%E3%80%90iOS%E3%80%91%E5%85%B3%E4%BA%8EdismissViewController/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/iOS/%E3%80%90iOS%E3%80%91%E5%85%B3%E4%BA%8EdismissViewController/" itemprop="commentCount"></span>
+    <a title="valine" href="/Tips/%E3%80%90Tips%E3%80%91%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%89%8B%E5%86%8C/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Tips/%E3%80%90Tips%E3%80%91%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%89%8B%E5%86%8C/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -284,14 +277,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.2k</span>
+              <span>2.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>8 分钟</span>
             </span>
 
         </div>
@@ -303,49 +296,234 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>工程中有个多层控制器时，调用 <code>dismissViewControllerAnimated</code> 时不时会不起作用。</p>
-<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>我们都知道 <code>dismissViewControllerAnimated:completion:</code> 方法是针对被 <code>present</code> 出来的控制器的。</p>
-<p>一般我们这样使用：在一个控制器中 <code>present</code> 另外一个控制器A，然后在A中执行 <code>dismissViewControllerAnimated:completion:</code> 让自己消失。</p>
+        <p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/regex.webp"></p>
+<h2 id="正则表达式是什么？"><a href="#正则表达式是什么？" class="headerlink" title="正则表达式是什么？"></a>正则表达式是什么？</h2><p>在编写处理字符串的程序或网页时，经常会有查找符合某些复杂规则的字符串的需要。正则表达式就是用于描述这些规则的工具。换句话说，<strong>正则表达式就是记录文本规则的代码。</strong></p>
 <span id="more"></span>
 
-<p>在 <code>ViewController</code>中：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">AViewController</span> <span class="operator">*</span>av <span class="operator">=</span> [[<span class="type">AViewController</span> alloc] <span class="keyword">init</span>];</span><br><span class="line"><span class="type">UINavigationController</span> <span class="operator">*</span>nav <span class="operator">=</span> [[<span class="type">UINavigationController</span> alloc] initWithRootViewController:av];</span><br><span class="line">[<span class="keyword">self</span> presentViewController:nav animated:<span class="type">YES</span> completion:<span class="literal">nil</span>];</span><br></pre></td></tr></table></figure>
-
-<p>在 <code>AViewController</code> 中执行 <code>disimiss</code>：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="keyword">self</span> dismissViewControllerAnimated:<span class="type">YES</span> completion:<span class="literal">nil</span>];</span><br></pre></td></tr></table></figure>
-
-<p>对于上面这种常见的场景，这种用法完全没问题。</p>
-<p>但是对于复杂一点的场景，这种用法就有点苍白无力了，先举个稍微复杂一点点的例子：</p>
-<p><code>ViewController present AViewController</code>，<code>AViewController present BViewController</code>，在 <code>BViewController</code> 执行完某事件之后需要返回 <code>ViewControlle</code>。这个时候需要怎样做呢？如果在 <code>BViewController</code> 直接执行 <code>[self dismissViewControllerAnimated:YES completion:nil];</code> 的话，它只会将 <code>BViewController</code> 消失。</p>
-<p>这里你可能会想到通过其他方式拿到 <code>AViewController</code>，然后调用 <code>AViewController的[self dismissViewControllerAnimated:YES completion:nil];</code>。但是，场景再复杂一点，在执行完各种 <code>present</code> 和 <code>push</code> 之后，到达了 <code>XViewController</code>，在 <code>XViewController</code> 中执行成功任务之后需要回到 <code>ViewController</code>，这个时候怎么办呢？我们知道当前如果有被 <code>present</code> 出来的控制器的情况下，调用 <code>UINavigationController</code> 的 <code>popToRootViewControllerAnimated:</code> 是不起作用的。</p>
-<p>那么我们如何把这个流程中所有被 <code>present</code> 和 <code>push</code> 的控制器给销毁呢？笨一点的办法是回溯整个流程，判断哪些控制器需要 <code>dismiss</code>，哪些控制器需要 <code>pop</code>。但这种方式显然有点低效和难以控制，下面我们来看看到底该怎么使用 <code>dismissViewControllerAnimated:completion:</code>。</p>
-<p>我们先看看官方文档到底怎么讲的：</p>
+<p>很可能你使用过 Windows/Dos 下用于文件查找的通配符(wildcard)，也就是 <code>*</code> 和 <code>?</code>。如果你想查找某个目录下的所有的 Word 文档的话，你会搜索 <code>*.doc</code>。在这里，<code>*</code>会被解释成任意的字符串。和通配符类似，正则表达式也是用来进行文本匹配的工具，只不过比起通配符，它能更精确地描述你的需求——当然，代价就是更复杂——比如你可以编写一个正则表达式，用来查找所有以 <code>0</code> 开头，后面跟着 <code>2-3</code> 个数字，然后是一个连字号 <code>-</code>，最后是 <code>7</code> 或 <code>8</code> 位数字的字符串(像 <code>010-12345678</code> 或 <code>0376-7654321</code>)。</p>
 <blockquote>
-<p>Dismisses the view controller that was presented modally by the view controller.</p>
-<p>The presenting view controller is responsible for dismissing the view controller it presented. If you call this method on the presented view controller itself, UIKit asks the presenting view controller to handle the dismissal.</p>
-<p>If you present several view controllers in succession, thus building a stack of presented view controllers, calling this method on a view controller lower in the stack dismisses its immediate child view controller and all view controllers above that child on the stack. When this happens, only the top-most view is dismissed in an animated fashion; any intermediate view controllers are simply removed from the stack. The top-most view is dismissed using its modal transition style, which may differ from the styles used by other view controllers lower in the stack.</p>
+<p><em>注：字符是计算机软件处理文字时最基本的单位，可能是字母，数字，标点符号，空格，换行符，汉字等等。字符串是 0 个或更多个字符的序列。文本也就是文字，字符串。说某个字符串匹配某个正则表达式，通常是指这个字符串里有一部分（或几部分分别）能满足表达式给出的条件。</em></p>
 </blockquote>
-<p>可以简单归纳为两点：</p>
-<ol>
-<li>谁 <code>present</code> 出来的控制器，谁负责把它 <code>dismiss</code> 掉，但是如果你在被 <code>present</code> 出来的控制器中调用 <code>dismiss</code> 的话，UIKit会自动让它的 <code>presenting</code> 控制器（找到谁把它present出来的）去执行 <code>dismiss</code>。</li>
-<li>如果你 <code>present</code> 了一系列的控制器，那么系统会把被 <code>present</code> 出来的控制器放在一个栈中，当处在底层的控制器执行 <code>dismiss</code> 的时候，在它之后被 <code>present</code> 出来的控制器都会被移除，只有栈顶上的控制器会有 <code>dismiss</code> 动画。</li>
-</ol>
-<p>另外补充相关的两点：</p>
-<ol>
-<li><p>当被 <code>present</code> 出来的控制器的 <code>modalPresentationStyle = UIModalPresentationFullScreen</code> 时，执行当前 <code>present</code> 事件的控制器必须是一个全屏控制器，如果当前执行的控制器不是一个全屏的控制器，它将在视图层级结构中找到一个全屏的父类控制器去执行 <code>present</code> 事件。也就是说如果 <code>A</code> 执行 <code>present B</code>，那么 <code>B.presentingViewController</code> 不一定是 <code>A</code>。比如你当前的控制器 <code>A</code> 在导航 <code>nav</code> 中，<code>A present B</code> 之后，实际上 <code>B.presentingViewController</code> 指向的是 <code>nav</code> 而不是 <code>A</code>。</p>
-</li>
-<li><p><code>self.presentingViewController</code>，它指向的是把当前控制器 <code>present</code> 出来的控制器或者是把当前控制器的最上层的父类 <code>present</code> 出来的控制器。</p>
-</li>
-</ol>
-<p>通过上面的文档介绍，我们可以看到在本文刚开始介绍的最简单的使用场景下 <code>（ViewController present AViewController）</code>，在 <code>AViewController</code> 中执行 <code>[self dismissViewControllerAnimated:YES completion:nil]</code> 和在 <code>ViewController</code> 中执行 <code>[self dismissViewControllerAnimated:YES completion:nil]</code> 效果是一样的，这一点是因为系统帮我们处理好了（因为系统判判 <code>AViewController</code> 当前没有 <code>present</code> 出来任何控制器，所以系统会找到它的 <code>presentingViewController</code>，也就是 <code>ViewController</code> 来执行 <code>dismiss</code> 事件）。</p>
-<p>在复杂一点的情况下，比如我们要 <code>dismiss</code> 掉当前被 <code>present</code> 出来的控制器的话，我们就需要想办法拿到处在栈底的那个控制器，在这个控制器中执行 <code>[self dismissViewControllerAnimated:YES completion:nil]</code> 才行。</p>
-<p>那么很显然，执行 <code>[self dismissViewControllerAnimated:YES completion:nil]</code> 的流程是这样子的：</p>
-<p><img data-src="https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17449556028643.jpg"></p>
-<p>在我们上面讲的复杂场景下，我们怎么一次性把当前 <code>present</code> 出来的控制都 <code>dismiss</code> 掉呢？可以通过下面的方式来查找到最顶层的 <code>presentingViewController</code>（其实，通常是我们 <code>window</code> 的 <code>rootViewController</code>）让它来执行 <code>dismiss</code> 就好了，剩下的工作可能就是处理一下导航中的控制器了。</p>
-<p>比如我们在经过各种 <code>present</code> 和 <code>push</code> 之后才到达的 <code>XViewController</code> 页面中执行如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">UIViewController *presentingVc = self.presentingViewController;</span><br><span class="line">while (presentingVc.presentingViewController) &#123;</span><br><span class="line">    presentingVc = vc.presentingViewController;</span><br><span class="line">&#125;</span><br><span class="line">if(presentingVc)&#123;</span><br><span class="line">    [presentingVc dismissViewControllerAnimated:YES completion:nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ea5af4057d64">https://www.jianshu.com/p/ea5af4057d64</a></p>
+<h2 id="表达式全集"><a href="#表达式全集" class="headerlink" title="表达式全集"></a>表达式全集</h2><table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">\</td>
+<td align="left">将下一个字符标记为一个特殊字符、或一个原义字符、或一个向后引用、或一个八进制转义符。例如，“n”匹配字符“n”。“\n”匹配一个换行符。串行“\”匹配“\”而“(”则匹配“(”。</td>
+</tr>
+<tr>
+<td align="left">^</td>
+<td align="left">匹配输入字符串的开始位置。如果设置了RegExp对象的Multiline属性，^也匹配“\n”或“\r”之后的位置。</td>
+</tr>
+<tr>
+<td align="left">$</td>
+<td align="left">匹配输入字符串的结束位置。如果设置了RegExp对象的Multiline属性，$也匹配“\n”或“\r”之前的位置。</td>
+</tr>
+<tr>
+<td align="left">*</td>
+<td align="left">匹配前面的子表达式零次或多次。例如，zo<em>能匹配“z”以及“zoo”。</em>等价于{0,}。</td>
+</tr>
+<tr>
+<td align="left">+</td>
+<td align="left">匹配前面的子表达式一次或多次。例如，“zo+”能匹配“zo”以及“zoo”，但不能匹配“z”。+等价于{1,}。</td>
+</tr>
+<tr>
+<td align="left">?</td>
+<td align="left">匹配前面的子表达式零次或一次。例如，“do(es)?”可以匹配“does”或“does”中的“do”。?等价于{0,1}。</td>
+</tr>
+<tr>
+<td align="left">{n}</td>
+<td align="left">n是一个非负整数。匹配确定的n次。例如，“o{2}”不能匹配“Bob”中的“o”，但是能匹配“food”中的两个o。</td>
+</tr>
+<tr>
+<td align="left">{n,}</td>
+<td align="left">n是一个非负整数。至少匹配n次。例如，“o{2,}”不能匹配“Bob”中的“o”，但能匹配“foooood”中的所有o。“o{1,}”等价于“o+”。“o{0,}”则等价于“o*”。</td>
+</tr>
+<tr>
+<td align="left">{n,m}</td>
+<td align="left">m和n均为非负整数，其中n&lt;=m。最少匹配n次且最多匹配m次。例如，“o{1,3}”将匹配“fooooood”中的前三个o。“o{0,1}”等价于“o?”。请注意在逗号和两个数之间不能有空格。</td>
+</tr>
+<tr>
+<td align="left">?</td>
+<td align="left">当该字符紧跟在任何一个其他限制符（*,+,?，{n}，{n,}，{n,m}）后面时，匹配模式是非贪婪的。非贪婪模式尽可能少的匹配所搜索的字符串，而默认的贪婪模式则尽可能多的匹配所搜索的字符串。例如，对于字符串“oooo”，“o+?”将匹配单个“o”，而“o+”将匹配所有“o”。</td>
+</tr>
+<tr>
+<td align="left">.</td>
+<td align="left">匹配除“\n”之外的任何单个字符。要匹配包括“\n”在内的任何字符，请使用像“(.</td>
+</tr>
+<tr>
+<td align="left">(pattern)</td>
+<td align="left">匹配pattern并获取这一匹配。所获取的匹配可以从产生的Matches集合得到，在VBScript中使用SubMatches集合，在JScript中则使用$0…$9属性。要匹配圆括号字符，请使用“(”或“)”。</td>
+</tr>
+<tr>
+<td align="left">(?:pattern)</td>
+<td align="left">匹配pattern但不获取匹配结果，也就是说这是一个非获取匹配，不进行存储供以后使用。这在使用或字符“(</td>
+</tr>
+<tr>
+<td align="left">(?=pattern)</td>
+<td align="left">正向肯定预查，在任何匹配pattern的字符串开始处匹配查找字符串。这是一个非获取匹配，也就是说，该匹配不需要获取供以后使用。例如，“Windows(?=95</td>
+</tr>
+<tr>
+<td align="left">(?!pattern)</td>
+<td align="left">正向否定预查，在任何不匹配pattern的字符串开始处匹配查找字符串。这是一个非获取匹配，也就是说，该匹配不需要获取供以后使用。例如“Windows(?!95</td>
+</tr>
+<tr>
+<td align="left">(?&lt;=pattern)</td>
+<td align="left">反向肯定预查，与正向肯定预查类拟，只是方向相反。例如，“(?&lt;=95</td>
+</tr>
+<tr>
+<td align="left">(?&lt;!pattern)</td>
+<td align="left">反向否定预查，与正向否定预查类拟，只是方向相反。例如“(?&lt;!95</td>
+</tr>
+<tr>
+<td align="left">x｜y</td>
+<td align="left">匹配x或y。例如，“z｜food”能匹配“z”或“food”。“(z｜f)ood”则匹配“zood”或“food”。</td>
+</tr>
+<tr>
+<td align="left">[xyz]</td>
+<td align="left">字符集合。匹配所包含的任意一个字符。例如，“[abc]”可以匹配“plain”中的“a”。</td>
+</tr>
+<tr>
+<td align="left">[^xyz]</td>
+<td align="left">负值字符集合。匹配未包含的任意字符。例如，“[^abc]”可以匹配“plain”中的“p”。</td>
+</tr>
+<tr>
+<td align="left">[a-z]</td>
+<td align="left">字符范围。匹配指定范围内的任意字符。例如，“[a-z]”可以匹配“a”到“z”范围内的任意小写字母字符。</td>
+</tr>
+<tr>
+<td align="left">[^a-z]</td>
+<td align="left">负值字符范围。匹配任何不在指定范围内的任意字符。例如，“[^a-z]”可以匹配任何不在“a”到“z”范围内的任意字符。</td>
+</tr>
+<tr>
+<td align="left">\b</td>
+<td align="left">匹配一个单词边界，也就是指单词和空格间的位置。例如，“er\b”可以匹配“never”中的“er”，但不能匹配“verb”中的“er”。</td>
+</tr>
+<tr>
+<td align="left">\B</td>
+<td align="left">匹配非单词边界。“er\B”能匹配“verb”中的“er”，但不能匹配“never”中的“er”。</td>
+</tr>
+<tr>
+<td align="left">\cx</td>
+<td align="left">匹配由x指明的控制字符。例如，\cM匹配一个Control-M或回车符。x的值必须为A-Z或a-z之一。否则，将c视为一个原义的“c”字符。</td>
+</tr>
+<tr>
+<td align="left">\d</td>
+<td align="left">匹配一个数字字符。等价于[0-9]。</td>
+</tr>
+<tr>
+<td align="left">\D</td>
+<td align="left">匹配一个非数字字符。等价于[^0-9]。</td>
+</tr>
+<tr>
+<td align="left">\f</td>
+<td align="left">匹配一个换页符。等价于\x0c和\cL。</td>
+</tr>
+<tr>
+<td align="left">\n</td>
+<td align="left">匹配一个换行符。等价于\x0a和\cJ。</td>
+</tr>
+<tr>
+<td align="left">\r</td>
+<td align="left">匹配一个回车符。等价于\x0d和\cM。</td>
+</tr>
+<tr>
+<td align="left">\s</td>
+<td align="left">匹配任何空白字符，包括空格、制表符、换页符等等。等价于[ \f\n\r\t\v]。</td>
+</tr>
+<tr>
+<td align="left">\S</td>
+<td align="left">匹配任何非空白字符。等价于[^ \f\n\r\t\v]。</td>
+</tr>
+<tr>
+<td align="left">\t</td>
+<td align="left">匹配一个制表符。等价于\x09和\cI。</td>
+</tr>
+<tr>
+<td align="left">\v</td>
+<td align="left">匹配一个垂直制表符。等价于\x0b和\cK。</td>
+</tr>
+<tr>
+<td align="left">\w</td>
+<td align="left">匹配包括下划线的任何单词字符。等价于“[A-Za-z0-9_]”。</td>
+</tr>
+<tr>
+<td align="left">\W</td>
+<td align="left">匹配任何非单词字符。等价于“[^A-Za-z0-9_]”。</td>
+</tr>
+<tr>
+<td align="left">\xn</td>
+<td align="left">匹配n，其中n为十六进制转义值。十六进制转义值必须为确定的两个数字长。例如，“\x41”匹配“A”。“\x041”则等价于“\x04&amp;1”。正则表达式中可以使用ASCII编码。</td>
+</tr>
+<tr>
+<td align="left">\num</td>
+<td align="left">匹配num，其中num是一个正整数。对所获取的匹配的引用。例如，“(.)\1”匹配两个连续的相同字符。</td>
+</tr>
+<tr>
+<td align="left">\n</td>
+<td align="left">标识一个八进制转义值或一个向后引用。如果\n之前至少n个获取的子表达式，则n为向后引用。否则，如果n为八进制数字（0-7），则n为一个八进制转义值。</td>
+</tr>
+<tr>
+<td align="left">\nm</td>
+<td align="left">标识一个八进制转义值或一个向后引用。如果\nm之前至少有nm个获得子表达式，则nm为向后引用。如果\nm之前至少有n个获取，则n为一个后跟文字m的向后引用。如果前面的条件都不满足，若n和m均为八进制数字（0-7），则\nm将匹配八进制转义值nm。</td>
+</tr>
+<tr>
+<td align="left">\nml</td>
+<td align="left">如果n为八进制数字（0-3），且m和l均为八进制数字（0-7），则匹配八进制转义值nml。</td>
+</tr>
+<tr>
+<td align="left">\un</td>
+<td align="left">匹配n，其中n是一个用四个十六进制数字表示的Unicode字符。例如，\u00A9匹配版权符号（©）。</td>
+</tr>
+</tbody></table>
+<h2 id="常用正则表达式"><a href="#常用正则表达式" class="headerlink" title="常用正则表达式"></a>常用正则表达式</h2><table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">用户名</td>
+<td align="left">/^[a-z0-9_-]{3,16}$/</td>
+</tr>
+<tr>
+<td align="left">密码</td>
+<td align="left">/^[a-z0-9_-]{6,18}$/</td>
+</tr>
+<tr>
+<td align="left">十六进制值</td>
+<td align="left">/^#?([a-f0-9]{6}</td>
+</tr>
+<tr>
+<td align="left">电子邮箱</td>
+<td align="left">/^([a-z0-9_.-]+)@([\da-z.-]+).([a-z.]{2,6})$/<br>/^[a-z\d]+(.[a-z\d]+)*@(<a href="-%5B%5Cda-z%5D">\da-z</a>?)+(.{1,2}[a-z]+)+$/</td>
+</tr>
+<tr>
+<td align="left">URL</td>
+<td align="left">/^(https?://)?([\da-z.-]+).([a-z.]{2,6})([/\w .-]*)*/?$/</td>
+</tr>
+<tr>
+<td align="left">IP 地址</td>
+<td align="left">/((2[0-4]\d｜25[0-5]｜[01]?\d\d?).){3}(2[0-4]\d｜25[0-5]｜[01]?\d\d?)/<br>/^(?:(?:25[0-5]｜2[0-4][0-9]｜[01]?[0-9][0-9]?).){3}(?:25[0-5]｜2[0-4][0-9]｜[01]?[0-9][0-9]?)$/</td>
+</tr>
+<tr>
+<td align="left">HTML 标签</td>
+<td align="left">/^&lt;([a-z]+)([^&lt;+)<em>(?:&gt;(.</em>)&lt;/\1&gt;</td>
+</tr>
+<tr>
+<td align="left">删除代码\注释</td>
+<td align="left">(?&lt;!http:｜\S)//.*$</td>
+</tr>
+<tr>
+<td align="left">Unicode编码中的汉字范围</td>
+<td align="left">/^[\u2E80-\u9FFF]+$/</td>
+</tr>
+</tbody></table>
 
     </div>
 
@@ -395,7 +573,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%85%B3%E4%BA%8EdismissViewController/" title="【iOS】关于 dismissViewController">https://fengyanxin.github.io/iOS/【iOS】关于dismissViewController/</a>
+    <a href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%89%8B%E5%86%8C/" title="【Tips】正则表达式手册">https://fengyanxin.github.io/Tips/【Tips】正则表达式手册/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -486,8 +664,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
-              <a href="/tags/OC/" rel="tag"><i class="fa fa-tag"></i> OC</a>
+              <a href="/tags/Tips/" rel="tag"><i class="fa fa-tag"></i> Tips</a>
           </div>
 
         
@@ -496,13 +673,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/iOS/%E3%80%90iOS%E3%80%91%E5%A6%82%E4%BD%95%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E5%BA%93%E4%B8%AD%E7%9A%84%E5%9B%BE%E7%89%87%E3%80%81Xib%E8%B5%84%E6%BA%90/" rel="prev" title="【iOS】如何访问私有库中的图片、Xib资源">
-      <i class="fa fa-chevron-left"></i> 【iOS】如何访问私有库中的图片、Xib资源
+    <a href="/iOS/%E3%80%90iOS%E3%80%91fastlane-%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="prev" title="【iOS】fastlane 的使用">
+      <i class="fa fa-chevron-left"></i> 【iOS】fastlane 的使用
     </a></div>
-      <div class="post-nav-item">
-    <a href="/iOS/%E3%80%90iOS%E3%80%91-Runtime%E8%AF%A6%E8%A7%A3/" rel="next" title="【iOS】 Runtime 详解">
-      【iOS】 Runtime 详解 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -562,7 +736,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">正则表达式是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%85%A8%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">表达式全集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">常用正则表达式</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

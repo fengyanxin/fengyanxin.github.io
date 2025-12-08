@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-12-05T07:10:21.940Z</updated>
+  <updated>2025-12-08T05:42:22.593Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【Tips】正则表达式手册</title>
+    <link href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%89%8B%E5%86%8C/"/>
+    <id>https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%89%8B%E5%86%8C/</id>
+    <published>2025-12-08T02:58:39.000Z</published>
+    <updated>2025-12-08T05:42:22.593Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/regex.webp&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;正则表达式是什么？&quot;&gt;&lt;a href=&quot;#正则表达式是什么？&quot; class=&quot;headerlink&quot; title=&quot;正则表达式是什么？&quot;&gt;&lt;/a&gt;正则表达式是什么？&lt;/h2&gt;&lt;p&gt;在编写处理字符串的程序或网页时，经常会有查找符合某些复杂规则的字符串的需要。正则表达式就是用于描述这些规则的工具。换句话说，&lt;strong&gt;正则表达式就是记录文本规则的代码。&lt;/strong&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Tips" scheme="https://fengyanxin.github.io/categories/Tips/"/>
+    
+    
+    <category term="Tips" scheme="https://fengyanxin.github.io/tags/Tips/"/>
+    
+  </entry>
   
   <entry>
     <title>【iOS】fastlane 的使用</title>
@@ -441,28 +461,6 @@
     
     
     <category term="Tips" scheme="https://fengyanxin.github.io/tags/Tips/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>第一次与 DeepSeek 闲聊</title>
-    <link href="https://fengyanxin.github.io/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8E-DeepSeek-%E9%97%B2%E8%81%8A/"/>
-    <id>https://fengyanxin.github.io/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8E-DeepSeek-%E9%97%B2%E8%81%8A/</id>
-    <published>2025-02-13T07:46:09.000Z</published>
-    <updated>2025-05-15T02:21:03.000Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;第一次与-DeepSeek-闲聊&quot;&gt;&lt;a href=&quot;#第一次与-DeepSeek-闲聊&quot; class=&quot;headerlink&quot; title=&quot;第一次与 DeepSeek 闲聊&quot;&gt;&lt;/a&gt;第一次与 DeepSeek 闲聊&lt;/h1&gt;&lt;h2 id=&quot;认知&quot;&gt;&lt;a href=&quot;#认知&quot; class=&quot;headerlink&quot; title=&quot;认知&quot;&gt;&lt;/a&gt;认知&lt;/h2&gt;&lt;p&gt;问问他是谁？&lt;/p&gt;
-&lt;p&gt;&lt;img data-src=&quot;https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17394331659337.jpg&quot;&gt;&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="随笔" scheme="https://fengyanxin.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-    <category term="随笔" scheme="https://fengyanxin.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
-    
-    <category term="AI" scheme="https://fengyanxin.github.io/tags/AI/"/>
     
   </entry>
   
