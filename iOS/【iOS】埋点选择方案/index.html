@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="前言在移动互联网时代，对于每个公司、企业来说，用户的行为数据非常重要。重要到什么程度，用户在这个页面停留多久、点击了什么按钮、浏览了什么内容、什么手机、什么网络环境、App 什么版本等都需要清清楚楚。一些大厂的蛮多业务成果都是基于用户操作行为进行推荐后二次转换。另一方面是以日志的作用帮助开发者分析线上问题的一种辅助手段。 那么有了上述的诉求，那么技术人员如何满足这些需求？引出来了一个技术点-“埋点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【iOS】埋点方案">
+<meta property="og:url" content="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%9F%8B%E7%82%B9%E9%80%89%E6%8B%A9%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="凤炎忻的个人笔记">
+<meta property="og:description" content="前言在移动互联网时代，对于每个公司、企业来说，用户的行为数据非常重要。重要到什么程度，用户在这个页面停留多久、点击了什么按钮、浏览了什么内容、什么手机、什么网络环境、App 什么版本等都需要清清楚楚。一些大厂的蛮多业务成果都是基于用户操作行为进行推荐后二次转换。另一方面是以日志的作用帮助开发者分析线上问题的一种辅助手段。 那么有了上述的诉求，那么技术人员如何满足这些需求？引出来了一个技术点-“埋点">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211151539613.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211153128243.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211153739812.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211154513321.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211154950534.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211155141274.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211155725108.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211155434364.png">
+<meta property="article:published_time" content="2025-12-11T06:28:40.000Z">
+<meta property="article:modified_time" content="2025-12-11T08:07:25.595Z">
+<meta property="article:author" content="凤炎忻">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="OC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211151539613.png">
+
+<link rel="canonical" href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%9F%8B%E7%82%B9%E9%80%89%E6%8B%A9%E6%96%B9%E6%A1%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>【iOS】埋点方案 | 凤炎忻的个人笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="凤炎忻的个人笔记" type="application/atom+xml">
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">凤炎忻的个人笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我有一壶酒，足以慰风尘！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section">标签<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section">分类<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">归档<span class="badge">48</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section">公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%9F%8B%E7%82%B9%E9%80%89%E6%8B%A9%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/flyingPig.jpeg">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【iOS】埋点方案
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-12-11 14:28:40 / 修改时间：16:07:25" itemprop="dateCreated datePublished" datetime="2025-12-11T14:28:40+08:00">2025-12-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/iOS/%E3%80%90iOS%E3%80%91%E5%9F%8B%E7%82%B9%E9%80%89%E6%8B%A9%E6%96%B9%E6%A1%88/" class="post-meta-item leancloud_visitors" data-flag-title="【iOS】埋点方案" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/iOS/%E3%80%90iOS%E3%80%91%E5%9F%8B%E7%82%B9%E9%80%89%E6%8B%A9%E6%96%B9%E6%A1%88/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/iOS/%E3%80%90iOS%E3%80%91%E5%9F%8B%E7%82%B9%E9%80%89%E6%8B%A9%E6%96%B9%E6%A1%88/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>20 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在移动互联网时代，对于每个公司、企业来说，用户的行为数据非常重要。重要到什么程度，用户在这个页面停留多久、点击了什么按钮、浏览了什么内容、什么手机、什么网络环境、App 什么版本等都需要清清楚楚。一些大厂的蛮多业务成果都是基于用户操作行为进行推荐后二次转换。另一方面是以日志的作用帮助开发者分析线上问题的一种辅助手段。</p>
+<p>那么有了上述的诉求，那么技术人员如何满足这些需求？引出来了一个技术点-<strong>“埋点”</strong>。</p>
+<span id="more"></span>
+
+<h2 id="01-埋点手段"><a href="#01-埋点手段" class="headerlink" title="01. 埋点手段"></a>01. 埋点手段</h2><p>业界中对于代码埋点主要有3种主流的方案：<strong>代码手动埋点、可视化埋点、无痕埋点</strong>。简单说说这几种埋点方案：</p>
+<ul>
+<li><strong>代码手动埋点：</strong> 根据业务需求（运营、产品、开发多个角度出发）在需要埋点地方手动调用埋点接口，上传埋点数据。</li>
+<li><strong>可视化埋点：</strong> 通过可视化配置工具完成采集节点，在前端自动解析配置并上报埋点数据，从而实现可视化“无痕埋点”。</li>
+<li><strong>无痕埋点：</strong> 通过技术手段，完成对用户行为数据无差别的统计上传的工作。后期数据分析处理的时候通过技术手段筛选出合适的数据进行统计分析。</li>
+</ul>
+<h2 id="02-技术选型"><a href="#02-技术选型" class="headerlink" title="02. 技术选型"></a>02. 技术选型</h2><h3 id="1-代码手动埋点"><a href="#1-代码手动埋点" class="headerlink" title="1.代码手动埋点"></a>1.代码手动埋点</h3><p>该方案情况下，如果需要埋点，则需要在工程代码中，写埋点相关代码。因为侵入了业务代码，对业务代码产生了污染，显而易见的缺点是<strong>埋点的成本较高、且违背了单一原则</strong>。</p>
+<p>例1：假如你需要知道用户在点击“购买按钮”时的相关信息（手机型号、App版本、页面路径、停留时间、动作等等），那么就需要在按钮的点击事件里面去写埋点统计的代码。这样明显的弊端就是在之前业务逻辑的代码上面又多出了埋点的代码。由于埋点代码分散、埋点的工作量很大、代码维护成本较高、后期重构很头痛。</p>
+<p>例2：假如 App 采用了 Hybrid 架构，当 App 的第一版本发布的时候 H5 的关键业务逻辑统计是由 Native 定义好关键逻辑（比如H5调起了 Native 的分享功能，那么存在一个分享的埋点事件）的桥接。假如某天增加了一个扫一扫功能，未定义扫一扫的埋点桥接，那么 H5 页面变动的时候，Native 埋点代码不去更新的话，变动的 H5 的业务就未被精确统计。</p>
+<p><strong>优点：</strong> 产品、运营工作量少，对照业务映射表就可以还原出相关业务场景、数据精细无须大量的加工和处理。</p>
+<p><strong>缺点：</strong> 开发工作量大、前期需要和运营、产品指定的好业务标识，以便产品和运营进行数据统计分析。</p>
+<h3 id="2-可视化埋点"><a href="#2-可视化埋点" class="headerlink" title="2.可视化埋点"></a>2.可视化埋点</h3><p>可视化埋点的出现，是为解决代码埋点流程复杂、成本高、新开发的页面（H5、或者服务端下发的 json 去生成相应页面）不能及时拥有埋点能力。</p>
+<p>前端在「埋点编辑模式」下，以“可视化”的方式去配置、绑定关键业务模块的路径到前端可以唯一确定到 <code>view</code> 的 <code>xpath</code> 过程。</p>
+<p>用户每次操作的控件，都生成一个 xpath 字符串，然后通过接口将 xpath 字符串( view 在前端系统中的唯一定位。以 iOS 为例，App 名称、控制器名称、一层层 view、同类型 view 的序号：<code>GoodCell.21.RetailTableView.GoodsViewController.*App</code>) 到真正的业务模块（“*App-商城控制器-分销商品列表-第21个商品被点击了”）的映射关系上传到服务端。xpath 具体是什么在下文会有介绍。</p>
+<p>之后操作 App 就生成对应的 xpath 和埋点数据（开发者通过技术手段将从服务端获取的关键数据塞到前端的 UI 控件上。iOS 端为例， <code>UIView</code> 的 <code>accessibilityIdentifier</code> 属性可以设置我们从服务端获取的埋点数据）上传到服务端。</p>
+<p><strong>优点：</strong> 数据量相对准确、后期数据分析成本低。</p>
+<p><strong>缺点：</strong> 前期控件的唯一识别、定位都需要额外开发；可视化平台的开发成本较高；对于额外需求的分析可能会比较困难。</p>
+<h3 id="3-无痕埋点"><a href="#3-无痕埋点" class="headerlink" title="3.无痕埋点"></a>3.无痕埋点</h3><p>通过技术手段无差别地记录用户在前端页面上的行为。可以正确的获取 PV、UV、IP、Action、Time 等信息。</p>
+<p><strong>优点：</strong> 开发人员工作量小、数据全面、无遗漏、产品和运营按需分析、支持动态页面的统计分析。</p>
+<p><strong>缺点：</strong> 前期开发统计基础信息的技术产品成本较高、后期数据分析数据量很大、分析成本较高（大量数据传统的关系型数据库压力大）。</p>
+<h3 id="4-如何选择"><a href="#4-如何选择" class="headerlink" title="4.如何选择"></a>4.如何选择</h3><p>结合上述优缺点，我们选择了 <strong>无痕埋点+可视化埋点</strong> 结合的技术方案。</p>
+<p>怎么说呢？对于关键的业务开发结束上线后、通过可视化方案（类似于一个界面，想想看 <code>Dreamwaver</code>，你在界面上拖拖控件，简单编辑下就可以生成对应的 <code>HTML</code> 代码）点击一下绑定对应关系到服务端。</p>
+<p>那么这个对应关系是什么？我们需要唯一定位一个前端元素，那么想到的办法就是不管 Native 和 Web 前端，控件或者元素来说就是一个树形层级，DOM tree 或者 UI tree，所以我们通过技术手段定位到这个元素，以 Native iOS 为例子，假如点击商品详情页的加入购物车按钮会根据 UI 层级结构生成一个唯一标识 <code>addCartButton.GoodsViewController.GoodsView.*App</code> 。但是用户在使用 App 的时候，上传的是这串东西的 MD5 到服务端。</p>
+<p>这么做有2个原因：</p>
+<ul>
+<li>服务端数据库存储这串很长的东西不是很好；</li>
+<li>埋点数据被劫持的话直接看到明文不太好。所以 MD5 再上传。</li>
+</ul>
+<h2 id="03-操刀就干"><a href="#03-操刀就干" class="headerlink" title="03. 操刀就干"></a>03. 操刀就干</h2><h3 id="1-数据的收集"><a href="#1-数据的收集" class="headerlink" title="1.数据的收集"></a>1.数据的收集</h3><p>实现方案由以下几个关键指标：</p>
+<ul>
+<li>现有代码改动少、尽量不要侵入业务代码去实现拦截系统事件</li>
+<li>全量收集</li>
+<li>如何唯一标识一个控件元素</li>
+</ul>
+<h3 id="2-不侵入业务代码拦截系统事件"><a href="#2-不侵入业务代码拦截系统事件" class="headerlink" title="2.不侵入业务代码拦截系统事件"></a>2.不侵入业务代码拦截系统事件</h3><p>以 iOS 为例。我们会想到 <code>AOP（Aspect Oriented Programming）</code> 面向切面编程思想。动态地在函数调用前后插入相应的代码，在 <code>Objective-C</code> 中我们可以利用 <code>Runtime</code> 特性，用 <code>Method Swizzling</code> 来 <code>hook</code> 相应的函数。</p>
+<p>为了给所有类方便地 <code>hook</code>，我们可以给 <code>NSObject</code> 添加个 <code>Category</code>，名字叫做 <code>NSObject+MethodSwizzling</code>。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark <span class="operator">-</span> <span class="keyword">public</span> <span class="type">Method</span></span><br><span class="line"><span class="operator">+</span> (void)lbp_swizzleMethod:(<span class="type">SEL</span>)originalSelector swizzledSelector:(<span class="type">SEL</span>)swizzledSelector</span><br><span class="line">&#123;</span><br><span class="line">    class_swizzleInstanceMethod(<span class="keyword">self</span>, originalSelector, swizzledSelector);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="operator">+</span> (void)lbp_swizzleClassMethod:(<span class="type">SEL</span>)originalSelector swizzledSelector:(<span class="type">SEL</span>)swizzledSelector</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//类方法实际上是储存在类对象的类(即元类)中，即类方法相当于元类的实例方法,所以只需要把元类传入，其他逻辑和交互实例方法一样。</span></span><br><span class="line">    <span class="type">Class</span> class2 <span class="operator">=</span> object_getClass(<span class="keyword">self</span>);</span><br><span class="line">    class_swizzleInstanceMethod(class2, originalSelector, swizzledSelector);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">#pragma mark <span class="operator">-</span> <span class="keyword">private</span> method</span><br><span class="line"> </span><br><span class="line">void class_swizzleInstanceMethod(<span class="type">Class</span> <span class="keyword">class</span>, <span class="type">SEL</span> originalSEL, <span class="type">SEL</span> replacementSEL)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     Class class = [self class];</span></span><br><span class="line"><span class="comment">     //原有方法</span></span><br><span class="line"><span class="comment">     Method originalMethod = class_getInstanceMethod(class, originalSelector);</span></span><br><span class="line"><span class="comment">     //替换原有方法的新方法</span></span><br><span class="line"><span class="comment">     Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);</span></span><br><span class="line"><span class="comment">     //先尝试給源SEL添加IMP，这里是为了避免源SEL没有实现IMP的情况</span></span><br><span class="line"><span class="comment">     BOOL didAddMethod = class_addMethod(class,originalSelector,</span></span><br><span class="line"><span class="comment">     method_getImplementation(swizzledMethod),</span></span><br><span class="line"><span class="comment">     method_getTypeEncoding(swizzledMethod));</span></span><br><span class="line"><span class="comment">     if (didAddMethod) &#123;//添加成功：表明源SEL没有实现IMP，将源SEL的IMP替换到交换SEL的IMP</span></span><br><span class="line"><span class="comment">     class_replaceMethod(class,swizzledSelector,</span></span><br><span class="line"><span class="comment">     method_getImplementation(originalMethod),</span></span><br><span class="line"><span class="comment">     method_getTypeEncoding(originalMethod));</span></span><br><span class="line"><span class="comment">     &#125; else &#123;//添加失败：表明源SEL已经有IMP，直接将两个SEL的IMP交换即可</span></span><br><span class="line"><span class="comment">     method_exchangeImplementations(originalMethod, swizzledMethod);</span></span><br><span class="line"><span class="comment">     &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    </span><br><span class="line">    <span class="type">Method</span> originMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, originalSEL);</span><br><span class="line">    <span class="type">Method</span> replaceMethod <span class="operator">=</span> class_getInstanceMethod(<span class="keyword">class</span>, replacementSEL);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(class_addMethod(<span class="keyword">class</span>, originalSEL, method_getImplementation(replaceMethod),method_getTypeEncoding(replaceMethod)))</span><br><span class="line">    &#123;</span><br><span class="line">        class_replaceMethod(<span class="keyword">class</span>,replacementSEL, method_getImplementation(originMethod), method_getTypeEncoding(originMethod));</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        method_exchangeImplementations(originMethod, replaceMethod);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-全量收集"><a href="#3-全量收集" class="headerlink" title="3.全量收集"></a>3.全量收集</h3><p>我们会想到 hook AppDelegate 代理方法、UIViewController 生命周期方法、按钮点击事件、手势事件、各种系统控件的点击回调方法、应用状态切换等等。</p>
+<table>
+<thead>
+<tr>
+<th align="left">动作</th>
+<th align="left">事件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">App 状态的切换</td>
+<td align="left">给 Appdelegate 添加分类，hook 生命周期</td>
+</tr>
+<tr>
+<td align="left">UIViewController 生命周期函数</td>
+<td align="left">给 UIViewController 添加分类，hook 生命周期</td>
+</tr>
+<tr>
+<td align="left">UIButton 等的点击</td>
+<td align="left">UIButton 添加分类，hook 点击事件</td>
+</tr>
+<tr>
+<td align="left">UICollectionView、UITableView 等的</td>
+<td align="left">在对应的 Cell 添加分类，hook 点击事件</td>
+</tr>
+<tr>
+<td align="left">手势事件 UITapGestureRecognizer、UIControl、UIResponder</td>
+<td align="left">相应系统事件</td>
+</tr>
+</tbody></table>
+<p>以统计页面的打开时间和统计页面的打开、关闭的需求为例，我们对 <code>UIViewController</code> 进行 <code>hook</code> ：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> char <span class="operator">*</span>lbp_viewController_open_time <span class="operator">=</span> <span class="string">&quot;lbp_viewController_open_time&quot;</span>;</span><br><span class="line"><span class="keyword">static</span> char <span class="operator">*</span>lbp_viewController_close_time <span class="operator">=</span> <span class="string">&quot;lbp_viewController_close_time&quot;</span>;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@implementation</span> <span class="type">UIViewController</span> (lbpka)</span><br><span class="line"> </span><br><span class="line"><span class="comment">// load 方法里面添加 dispatch_once 是为了防止手动调用 load 方法。</span></span><br><span class="line"><span class="operator">+</span> (void)load &#123;</span><br><span class="line">    <span class="keyword">static</span> dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(<span class="operator">&amp;</span>onceToken, <span class="operator">^</span>&#123;</span><br><span class="line">        <span class="meta">@autoreleasepool</span> &#123;</span><br><span class="line">            [[<span class="keyword">self</span> <span class="keyword">class</span>] lbp_swizzleMethod:<span class="meta">@selector</span>(viewWillAppear:) swizzledSelector:<span class="meta">@selector</span>(lbp_viewWillAppear:)];</span><br><span class="line">            [[<span class="keyword">self</span> <span class="keyword">class</span>] lbp_swizzleMethod:<span class="meta">@selector</span>(viewWillDisappear:) swizzledSelector:<span class="meta">@selector</span>(lbp_viewWillDisappear:)];</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">#pragma mark <span class="operator">-</span> add prop</span><br><span class="line"> </span><br><span class="line"><span class="operator">-</span> (void)setOpenTime:(<span class="type">NSDate</span> <span class="operator">*</span>)openTime &#123;</span><br><span class="line">    objc_setAssociatedObject(<span class="keyword">self</span>,<span class="operator">&amp;</span>lbp_viewController_open_time, openTime, <span class="type">OBJC_ASSOCIATION_RETAIN_NONATOMIC</span>);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="operator">-</span> (<span class="type">NSDate</span> <span class="operator">*</span>)getOpenTime&#123;</span><br><span class="line">    <span class="keyword">return</span> objc_getAssociatedObject(<span class="keyword">self</span>, <span class="operator">&amp;</span>lbp_viewController_open_time);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="operator">-</span> (void)setCloseTime:(<span class="type">NSDate</span> <span class="operator">*</span>)closeTime &#123;</span><br><span class="line">    objc_setAssociatedObject(<span class="keyword">self</span>,<span class="operator">&amp;</span>lbp_viewController_close_time, closeTime, <span class="type">OBJC_ASSOCIATION_RETAIN_NONATOMIC</span>);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="operator">-</span> (<span class="type">NSDate</span> <span class="operator">*</span>)getCloseTime&#123;</span><br><span class="line">    <span class="keyword">return</span> objc_getAssociatedObject(<span class="keyword">self</span>, <span class="operator">&amp;</span>lbp_viewController_close_time);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="operator">-</span> (void)lbp_viewWillAppear:(<span class="type">BOOL</span>)animated &#123;</span><br><span class="line"> </span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>className <span class="operator">=</span> <span class="type">NSStringFromClass</span>([<span class="keyword">self</span> <span class="keyword">class</span>]);</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>refer <span class="operator">=</span> [<span class="type">NSString</span> string];</span><br><span class="line">    <span class="comment">//<span class="doctag">TODO:</span>TODO 是否只埋本地有url的page</span></span><br><span class="line">    <span class="keyword">if</span> ([<span class="keyword">self</span> getPageUrl:className]) &#123;</span><br><span class="line">        <span class="comment">//设置打开时间</span></span><br><span class="line">       [<span class="keyword">self</span> setOpenTime:[<span class="type">NSDate</span> dateWithTimeIntervalSinceNow:<span class="number">0</span>]];</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">self</span>.navigationController) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">self</span>.navigationController.viewControllers.count <span class="operator">&gt;=</span><span class="number">2</span>) &#123;</span><br><span class="line">                <span class="comment">//获取当前vc 栈中 上一个VC</span></span><br><span class="line">                <span class="type">UIViewController</span> <span class="operator">*</span>referVC <span class="operator">=</span>  <span class="keyword">self</span>.navigationController.viewControllers[<span class="keyword">self</span>.navigationController.viewControllers.count<span class="operator">-</span><span class="number">2</span>];</span><br><span class="line">                refer <span class="operator">=</span> [<span class="keyword">self</span> getPageUrl:<span class="type">NSStringFromClass</span>([referVC <span class="keyword">class</span>])];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="operator">!</span>refer <span class="operator">||</span> refer.length <span class="operator">==</span> <span class="number">0</span>) &#123;</span><br><span class="line">            refer <span class="operator">=</span> @<span class="string">&quot;unknown&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        [<span class="type">UserTrackDataCenter</span> openPage:[<span class="keyword">self</span> getPageUrl:className] fromPage:refer];</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    [<span class="keyword">self</span> lbp_viewWillAppear:animated];</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="operator">-</span> (void)lbp_viewWillDisappear:(<span class="type">BOOL</span>)animated &#123;</span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>className <span class="operator">=</span> <span class="type">NSStringFromClass</span>([<span class="keyword">self</span> <span class="keyword">class</span>]);</span><br><span class="line">    <span class="keyword">if</span> ([<span class="keyword">self</span> getPageUrl:className]) &#123;</span><br><span class="line">        [<span class="keyword">self</span> setCloseTime:[<span class="type">NSDate</span> dateWithTimeIntervalSinceNow:<span class="number">0</span>]];</span><br><span class="line">        [<span class="type">UserTrackDataCenter</span> leavePage:[<span class="keyword">self</span> getPageUrl:className] spendTime:[<span class="keyword">self</span> p_calculationTimeSpend]];</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="keyword">self</span> lbp_viewWillDisappear:animated];</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">#pragma mark <span class="operator">-</span> <span class="keyword">private</span> method</span><br><span class="line"> </span><br><span class="line"><span class="operator">-</span> (<span class="type">NSString</span> <span class="operator">*</span>)p_calculationTimeSpend &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">!</span>[<span class="keyword">self</span> getOpenTime] <span class="operator">||</span> <span class="operator">!</span>[<span class="keyword">self</span> getCloseTime]) &#123;</span><br><span class="line">        <span class="keyword">return</span> @<span class="string">&quot;unknown&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">NSTimeInterval</span> aTimer <span class="operator">=</span> [[<span class="keyword">self</span> getCloseTime] timeIntervalSinceDate:[<span class="keyword">self</span> getOpenTime]];</span><br><span class="line">    </span><br><span class="line">    int hour <span class="operator">=</span> (int)(aTimer<span class="operator">/</span><span class="number">3600</span>);</span><br><span class="line">    </span><br><span class="line">    int minute <span class="operator">=</span> (int)(aTimer <span class="operator">-</span> hour<span class="operator">*</span><span class="number">3600</span>)<span class="operator">/</span><span class="number">60</span>;</span><br><span class="line">    </span><br><span class="line">    int second <span class="operator">=</span> aTimer <span class="operator">-</span> hour<span class="operator">*</span><span class="number">3600</span> <span class="operator">-</span> minute<span class="operator">*</span><span class="number">60</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%d&quot;</span>,second];</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-如何唯一标识一个控件元素"><a href="#4-如何唯一标识一个控件元素" class="headerlink" title="4.如何唯一标识一个控件元素"></a>4.如何唯一标识一个控件元素</h3><p><code>xpath</code> 是移动端定义可操作区域的唯一标识。既然想通过一个字符串标识前端系统中可操作的控件，那么 xpath 需要2个指标：</p>
+<ul>
+<li>唯一性：在同一系统中不存在不同控件有着相同的 xpath</li>
+<li>稳定性：不同版本的系统中，在页面结构没有变动的情况下，不同版本的相同页面，相同的控件的 xpath 需要保持一致。</li>
+</ul>
+<p>我们想到 <code>Native</code>、<code>H5</code> 页面等系统渲染的时候都是以树形结构去绘制和渲染，所以我们以当前的 View 到系统的根元素之间的所有关键点（UIViewController、UIView、UIView容器（UITableView、UICollectionView等）、UIButton…）串联起来这样就唯一定位了控件元素。</p>
+<p>为了精确定位元素节点，参看下图：</p>
+<p>假设一个 UIView 中有三个子 view，先后顺序是：label、button1、button2，那么深度依次为： 0、1、2。假如用户做了某些操作将 label1 从父 view 中被移除了。此时 UIView 只有 2 个子view：button1、button2，而且深度变为了：0、1。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211151539613.png"></p>
+<p>可以看出仅仅由于其中某个子 <code>view</code> 的改变，却导致其它子 view 的深度都发生了变化。因此，在设计的时候需要注意，在新增/移除某一 view 时，尽量减少对已有 view 的深度的影响，调整了对节点的深度的计算方式：采用当前 view 位于其父 view 中的所有 与当前 view 同类型 子view 中的索引值。</p>
+<p>我们再看一下上面的这个例子，最初 label、button1、button2 的深度依次是：0、0、1。在 label 被移除后，button1、button2 的深度依次为：0、1。可以看出，在这个例子中，label 的移除并未对 button1、button2 的深度造成影响，这种调整后的计算方式在一定程度上增强了 xpath 的抗干扰性。</p>
+<p>另外，调整后的深度的计算方式是依赖于各节点的类型的，因此，此时必须要将各节点的名称放到viewPath中，而不再是仅仅为了增加可读性。</p>
+<p>在标识控件元素的层级时，需要知道「当前 view 位于其父 view 中的所有 与当前 view 同类型 子view 中的索引值」。参看上图，如果不是同类型的话，则唯一性得不到保证。</p>
+<h3 id="5-同类型的-view-的唯一定位问题"><a href="#5-同类型的-view-的唯一定位问题" class="headerlink" title="5.同类型的 view 的唯一定位问题"></a>5.同类型的 view 的唯一定位问题</h3><p>有个问题，比如我们点击的元素是 <code>UITableViewCell</code>，那么它虽然可以定位到类似于这个标示 <code>*App.GoodsViewController.GoodsTableView.GoodsCell</code>，同类型的 <code>Cell</code> 有多个，所以单凭借这个字符串是没有办法定位具体的那个 <code>Cell</code> 被点击了。</p>
+<p>当然有解决方案啦。</p>
+<p>找出当前元素在父层同类型元素中的索引。根据当前的元素遍历当前元素的父级元素的子元素，如果出现相同的元素，则需要判断当前元素是所在层级的第几个元素。</p>
+<p>对当前的控件元素的父视图的全部子视图进行遍历，如果存在和当前的控件元素同类型的控件，那么需要判断当前控件元素在同类型控件元素中的所处的位置，那么则可以唯一定位。举例：<code>GoodsCell-3.GoodsTableView.GoodsViewController.*App</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//UIResponder分类</span></span><br><span class="line"><span class="operator">-</span> (<span class="type">NSString</span> <span class="operator">*</span>)lbp_identifierKa</span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">//    if (self.xq_identifier_ka == nil) &#123;</span></span><br><span class="line">        <span class="keyword">if</span> ([<span class="keyword">self</span> isKindOfClass:[<span class="type">UIView</span> <span class="keyword">class</span>]]) &#123;</span><br><span class="line">            <span class="type">UIView</span> <span class="operator">*</span>view <span class="operator">=</span> (id)<span class="keyword">self</span>;</span><br><span class="line">            <span class="type">NSString</span> <span class="operator">*</span>sameViewTreeNode <span class="operator">=</span> [view obtainSameSuperViewSameClassViewTreeIndexPath];</span><br><span class="line">            <span class="type">NSMutableString</span> <span class="operator">*</span>str <span class="operator">=</span> [<span class="type">NSMutableString</span> string];</span><br><span class="line">            <span class="comment">//特殊的 加减购 因为带有spm但是要区分加减 需要带TreeNode</span></span><br><span class="line">            <span class="type">NSString</span> <span class="operator">*</span>className <span class="operator">=</span> [<span class="type">NSString</span> stringWithUTF8String:object_getClassName(view)];</span><br><span class="line">            <span class="keyword">if</span> (<span class="operator">!</span>view.accessibilityIdentifier <span class="operator">||</span> [className isEqualToString:@<span class="string">&quot;lbpButton&quot;</span>]) &#123;</span><br><span class="line">                [str appendString:sameViewTreeNode];</span><br><span class="line">                [str appendString:@<span class="string">&quot;,&quot;</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> (view.nextResponder) &#123;</span><br><span class="line">                [str appendFormat:@<span class="string">&quot;%@,&quot;</span>, <span class="type">NSStringFromClass</span>(view.class)];</span><br><span class="line">                <span class="keyword">if</span> ([view.class isSubclassOfClass:[<span class="type">UIViewController</span> <span class="keyword">class</span>]]) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                view <span class="operator">=</span> (id)view.nextResponder;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">self</span>.xq_identifier_ka <span class="operator">=</span> [<span class="keyword">self</span> md5String:[<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>,str]];</span><br><span class="line">            <span class="comment">//            self.xq_identifier_ka = [NSString stringWithFormat:@&quot;%@&quot;,str];</span></span><br><span class="line">        &#125;</span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.xq_identifier_ka;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// UIView 分类</span></span><br><span class="line"><span class="operator">-</span> (<span class="type">NSString</span> <span class="operator">*</span>)obtainSameSuperViewSameClassViewTreeIndexPat</span><br><span class="line">&#123;    </span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>classStr <span class="operator">=</span> <span class="type">NSStringFromClass</span>([<span class="keyword">self</span> <span class="keyword">class</span>]);</span><br><span class="line">    <span class="comment">//cell的子view</span></span><br><span class="line">    <span class="comment">//UITableView 特殊的superview (UITableViewContentView)</span></span><br><span class="line">    <span class="comment">//UICollectionViewCell</span></span><br><span class="line">    <span class="type">BOOL</span> shouldUseSuperView <span class="operator">=</span></span><br><span class="line">    ([classStr isEqualToString:@<span class="string">&quot;UITableViewCellContentView&quot;</span>]) <span class="operator">||</span></span><br><span class="line">    ([[<span class="keyword">self</span>.superview <span class="keyword">class</span>] isKindOfClass:[<span class="type">UITableViewCell</span> <span class="keyword">class</span>]])<span class="operator">||</span></span><br><span class="line">    ([[<span class="keyword">self</span>.superview <span class="keyword">class</span>] isKindOfClass:[<span class="type">UICollectionViewCell</span> <span class="keyword">class</span>]]);</span><br><span class="line">    <span class="keyword">if</span> (shouldUseSuperView) &#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="keyword">self</span> obtainIndexPathByView:<span class="keyword">self</span>.superview];</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="keyword">self</span> obtainIndexPathByView:<span class="keyword">self</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="operator">-</span> (<span class="type">NSString</span> <span class="operator">*</span>)obtainIndexPathByView:(<span class="type">UIView</span> <span class="operator">*</span>)view</span><br><span class="line">&#123;    </span><br><span class="line">    <span class="type">NSInteger</span> viewTreeNodeDepth <span class="operator">=</span> <span class="type">NSIntegerMin</span>;</span><br><span class="line">    <span class="type">NSInteger</span> sameViewTreeNodeDepth <span class="operator">=</span> <span class="type">NSIntegerMin</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="type">NSString</span> <span class="operator">*</span>classStr <span class="operator">=</span> <span class="type">NSStringFromClass</span>([view <span class="keyword">class</span>]);</span><br><span class="line">   </span><br><span class="line">    <span class="type">NSMutableArray</span> <span class="operator">*</span>sameClassArr <span class="operator">=</span> [[<span class="type">NSMutableArray</span> alloc]<span class="keyword">init</span>];</span><br><span class="line">    <span class="comment">//所处父view的全部subviews根节点深度</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">NSInteger</span> index <span class="operator">=</span><span class="number">0</span>; index <span class="operator">&lt;</span> view.superview.subviews.count; index <span class="operator">++</span>) &#123;</span><br><span class="line">        <span class="comment">//同类型</span></span><br><span class="line">        <span class="keyword">if</span>  ([classStr isEqualToString:<span class="type">NSStringFromClass</span>([view.superview.subviews[index] <span class="keyword">class</span>])])&#123;</span><br><span class="line">            [sameClassArr addObject:view.superview.subviews[index]];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (view <span class="operator">==</span> view.superview.subviews[index]) &#123;</span><br><span class="line">            viewTreeNodeDepth <span class="operator">=</span> index;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//所处父view的同类型subviews根节点深度</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">NSInteger</span> index <span class="operator">=</span><span class="number">0</span>; index <span class="operator">&lt;</span> sameClassArr.count; index <span class="operator">++</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (view <span class="operator">==</span> sameClassArr[index]) &#123;</span><br><span class="line">            sameViewTreeNodeDepth <span class="operator">=</span> index;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%ld&quot;</span>,sameViewTreeNodeDepth];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211153128243.png"></p>
+<h3 id="6-同类型的-view，但是点击的意义却不一样。如何唯一标识？"><a href="#6-同类型的-view，但是点击的意义却不一样。如何唯一标识？" class="headerlink" title="6.同类型的 view，但是点击的意义却不一样。如何唯一标识？"></a>6.同类型的 view，但是点击的意义却不一样。如何唯一标识？</h3><p>问题5说明的是在一个界面上有多个不同的 view，他们的类型是同一种（CycleBannerView，但是数据源不一样，那么当数据源长度大于1的时候会轮播，下面会展示 UIPageControl。如果数据源是1个，那么就不会轮播和展示 UIPageControl）。情况6是同一种类型的 View，但是根据展示的内容不一样，点击的意义也不一样。也就是运营需要去知道用户到底点击的是哪一个。如下图所示，「立即抢购」和「分享赚佣金」是同一种类型的 View，但是点击意义不一样，需要我们需要唯一标识出来。之前的方法通过 “viewPath 配合同类型的 view 去加索引值“ 的方式还是没有办法唯一标识出来。所以想到一个方案，给 NSObject 添加一个分类，在分类里面添加一个协议。让需要复用但需要唯一标识的 view 去实现协议方法，因为是给 NSObject 分类添加的协议，所以 view 不需要去指定遵循。</p>
+<p>关键步骤：</p>
+<ul>
+<li><p>添加 NSObject 的 Category，在分类里面声明唯一标识的协议。</p>
+</li>
+<li><p>在生成 viewPath 的地方去拿出当前 view 的唯一标识（view 调用协议方法），然后拼接之前拿出的 viewPath。</p>
+</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//NSObject+UniqueIdentify.h</span></span><br><span class="line">#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;</span><br><span class="line"> </span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">@class</span> <span class="type">NSObject</span>;</span><br><span class="line"><span class="meta">@protocol</span> <span class="type">UniqueIdentify</span>&lt;<span class="type">NSObject</span>&gt;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@optional</span></span><br><span class="line"><span class="operator">-</span> (<span class="type">NSString</span> <span class="operator">*</span>)setUniqueIdentifier;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">@interface</span> <span class="type">NSObject</span> (<span class="type">UniqueIdentify</span>)<span class="operator">&lt;</span><span class="type">UniqueIdentify</span><span class="operator">&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">@end</span></span><br><span class="line"> </span><br><span class="line"><span class="type">NS_ASSUME_NONNULL_END</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">//NSObject+UniqueIdentify.m</span></span><br><span class="line">#<span class="keyword">import</span> &quot;NSObject+UniqueIdentify.h&quot;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@implementation</span> <span class="type">NSObject</span> (<span class="type">UniqueIdentify</span>)</span><br><span class="line"><span class="meta">@end</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//MallTGoodTagView.h</span></span><br><span class="line"> </span><br><span class="line">extern <span class="type">NSString</span> <span class="operator">*</span> _Nonnull const <span class="type">ImmediateyPurchase</span>;</span><br><span class="line">extern <span class="type">NSString</span> <span class="operator">*</span> _Nonnull const <span class="type">ShareToAward</span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">//MallTGoodTagView.m</span></span><br><span class="line"><span class="type">NSString</span> <span class="operator">*</span>const <span class="type">ImmediateyPurchase</span> <span class="operator">=</span> @<span class="string">&quot;立即抢购&quot;</span>;</span><br><span class="line"><span class="type">NSString</span> <span class="operator">*</span>const <span class="type">ShareToAward</span> <span class="operator">=</span> @<span class="string">&quot;分享赚佣金&quot;</span>;</span><br><span class="line"> </span><br><span class="line"><span class="operator">-</span> (<span class="type">NSString</span> <span class="operator">*</span>)setUniqueIdentifier</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.tagString) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.tagString;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">NSStringFromClass</span>([<span class="keyword">self</span> <span class="keyword">class</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//UIResponder Category 生成 viewPath</span></span><br><span class="line"><span class="operator">-</span> (<span class="type">NSString</span> <span class="operator">*</span>)lbp_identifierKa</span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">//    if (self.xq_identifier_ka == nil) &#123;</span></span><br><span class="line">        <span class="keyword">if</span> ([<span class="keyword">self</span> isKindOfClass:[<span class="type">UIView</span> <span class="keyword">class</span>]]) &#123;</span><br><span class="line">            <span class="type">UIView</span> <span class="operator">*</span>view <span class="operator">=</span> (id)<span class="keyword">self</span>;</span><br><span class="line">            <span class="type">NSString</span> <span class="operator">*</span>sameViewTreeNode <span class="operator">=</span> [view obtainSameSuperViewSameClassViewTreeIndexPath];</span><br><span class="line">            <span class="type">NSMutableString</span> <span class="operator">*</span>str <span class="operator">=</span> [<span class="type">NSMutableString</span> string];</span><br><span class="line">            <span class="comment">//特殊的 加减购 因为带有spm但是要区分加减 需要带TreeNode</span></span><br><span class="line">            <span class="type">NSString</span> <span class="operator">*</span>className <span class="operator">=</span> [<span class="type">NSString</span> stringWithUTF8String:object_getClassName(view)];</span><br><span class="line">            <span class="keyword">if</span> (<span class="operator">!</span>view.accessibilityIdentifier <span class="operator">||</span> [className isEqualToString:@<span class="string">&quot;lbpButton&quot;</span>]) &#123;</span><br><span class="line">                [str appendString:sameViewTreeNode];</span><br><span class="line">                [str appendString:@<span class="string">&quot;,&quot;</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> (view.nextResponder) &#123;</span><br><span class="line">                 <span class="keyword">if</span> ([view respondsToSelector:<span class="meta">@selector</span>(setUniqueIdentifier)]) &#123;</span><br><span class="line">                    <span class="type">NSString</span> <span class="operator">*</span>unqiueIdentifier <span class="operator">=</span> [view setUniqueIdentifier];</span><br><span class="line">                    <span class="keyword">if</span> (unqiueIdentifier) &#123;</span><br><span class="line">                        [str appendFormat:@<span class="string">&quot;%@,&quot;</span>, unqiueIdentifier];</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;<span class="number">00</span></span><br><span class="line">                [str appendFormat:@<span class="string">&quot;%@,&quot;</span>, <span class="type">NSStringFromClass</span>(view.class)];</span><br><span class="line">                <span class="keyword">if</span> ([view.class isSubclassOfClass:[<span class="type">UIViewController</span> <span class="keyword">class</span>]]) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                view <span class="operator">=</span> (id)view.nextResponder;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">self</span>.xq_identifier_ka <span class="operator">=</span> [<span class="keyword">self</span> md5String:[<span class="type">NSString</span> stringWithFormat:@<span class="string">&quot;%@&quot;</span>,str]];</span><br><span class="line">            <span class="comment">//            self.xq_identifier_ka = [NSString stringWithFormat:@&quot;%@&quot;,str];</span></span><br><span class="line">        &#125;</span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.xq_identifier_ka;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211153739812.png"></p>
+<h3 id="7-数据如何处理"><a href="#7-数据如何处理" class="headerlink" title="7.数据如何处理"></a>7.数据如何处理</h3><h4 id="A-如何处理业务数据"><a href="#A-如何处理业务数据" class="headerlink" title="A. 如何处理业务数据"></a>A. 如何处理业务数据</h4><p>利用系统提供的 <code>accessibilityIdentifier</code> 官方给出的解释是标识用户界面元素的字符串。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">A string that identifies the user interface element.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">default == nil</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@property</span>(nullable, nonatomic, copy) <span class="type">NSString</span> <span class="operator">*</span>accessibilityIdentifier <span class="type">NS_AVAILABLE_IOS</span>(<span class="number">5_0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>服务端下发唯一标识</p>
+<p>接口获取的数据，里面有当前元素的唯一标识。比如在 UITableView 的界面去请求接口拿到数据，那么在在获取到的数据源里面会有一个字段，专门用来存储动态化的经常变动的业务数据。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cell.accessibilityIdentifier <span class="operator">=</span> [[[<span class="type">SDGGoodsCategoryServices</span> sharedInstance].categories[indexPath.section] children][indexPath.row].spmContent yy_modelToJSONString];</span><br></pre></td></tr></table></figure>
+
+<h4 id="B-基础数据"><a href="#B-基础数据" class="headerlink" title="B. 基础数据"></a>B. 基础数据</h4><p>设计上分为2个 pod 库，一个是 <code>TriggerKit</code>（专门用来 hook 机会需要的所有事件，页面停留时间、页面标识、view标识），另一个是 <code>Appmonitor</code>（专门用来提供基础数据、埋点数据的维护、上传机制）。所以在 Appmonitor 里面有个类叫做 <code>UserTrackDataCenter</code> 的类，专门提供一些基础数据（系统版本、操作系统、地理位置、网络等信息）。</p>
+<p>对外暴露出一些方法，用来将埋点数据交给 <code>Appmonitor</code> 去维护埋点数据，达到合适的“机制”再去上传埋点数据到服务端。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">+</span> (void)clickEventUuid:(<span class="type">NSString</span> <span class="operator">*</span>)uuid otherParam:(<span class="type">NSDictionary</span> <span class="operator">*</span>)otherParam spmContent:(<span class="type">NSDictionary</span> <span class="operator">*</span>)spmContent &#123;</span><br><span class="line">    <span class="keyword">if</span> (uuid) &#123;</span><br><span class="line">        <span class="type">NSMutableDictionary</span> <span class="operator">*</span>params <span class="operator">=</span> [[<span class="type">NSMutableDictionary</span> alloc] initWithDictionary:otherParam];</span><br><span class="line">        params[<span class="type">SDGStatisticEventtagKey</span>] <span class="operator">=</span> @<span class="string">&quot;clickMonitorV1&quot;</span>;</span><br><span class="line">        <span class="type">NSMutableDictionary</span> <span class="operator">*</span>valueDict <span class="operator">=</span> [[<span class="type">NSMutableDictionary</span> alloc] initWithDictionary:spmContent];</span><br><span class="line">        valueDict[@<span class="string">&quot;xpath&quot;</span>] <span class="operator">=</span> uuid<span class="operator">?</span>:@<span class="string">&quot;&quot;</span>;</span><br><span class="line">        params[<span class="type">SDGStatisticEventtagValue</span>] <span class="operator">=</span> valueDict<span class="operator">?</span>:@&#123;&#125;;</span><br><span class="line">        [[<span class="type">AppMonotior</span> shareInstance] traceEvent:[<span class="type">AMStatisticEvent</span> eventWithInfo:params]];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-数据的上报"><a href="#8-数据的上报" class="headerlink" title="8.数据的上报"></a>8.数据的上报</h3><p>数据通过上面的办法收集完了，那么如何及时、高效的上传到后端，给运营分析、处理呢？</p>
+<p>App 运行期间用户会点击非常多的数据，如果实时上传的话对于网络的利用率较低，所以需要考虑一个机制去控制用户产生的埋点数据的上传。</p>
+<p>思路是这样的。对外部暴露出一个接口，用来将产生的数据往数据中心存储。用户产生的数据会先保存到 <code>AppMonitor</code> 的内存中去，设置一个临界值（memoryEventMax = 50），如果存储的值达到设置的临界值 <code>memoryEventMax</code>，那么将内存中的数据写入文件系统，以 zip 的形式保存下来，然后上传到埋点系统。如果没有达到临界值但是存在一些 App 状态切换的情况，这时候需要及时保存数据到持久化。当下次打开 App 就去从本地持久化的地方读取是否有未上传的数据，如果有就上传日志信息，成功后删除本地的日志压缩包。</p>
+<p>App 应用状态的切换策略如下：</p>
+<ul>
+<li>didFinishLaunchWithOptions:内存日志信息写入硬盘</li>
+<li>didBecomeActive：上传</li>
+<li>willTerimate：内存日志信息写入硬盘</li>
+<li>didEnterBackground：内存日志信息写入硬盘</li>
+</ul>
+<p>下面的代码是 App 埋点数据的保存与上传：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将App日志信息写入到内存中。当内存中的数量到达一定规模（超过设置的内存中存储的数量）的时候就将内存中的日志存储到文件信息中</span></span><br><span class="line"><span class="operator">-</span> (void)joinEvent:(<span class="type">NSDictionary</span> <span class="operator">*</span>)dictionary</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (dictionary) &#123;</span><br><span class="line">        <span class="type">NSDictionary</span> <span class="operator">*</span>tmp <span class="operator">=</span> [<span class="keyword">self</span> createDicWithEvent:dictionary];</span><br><span class="line">        <span class="keyword">if</span> (<span class="operator">!</span>s_memoryArray) &#123;</span><br><span class="line">            s_memoryArray <span class="operator">=</span> [<span class="type">NSMutableArray</span> array];</span><br><span class="line">        &#125;</span><br><span class="line">        [s_memoryArray addObject:tmp];</span><br><span class="line">        <span class="keyword">if</span> ([s_memoryArray count] <span class="operator">&gt;=</span> s_flushNum) &#123;</span><br><span class="line">            [<span class="keyword">self</span> writeEventLogsInFilesCompletion:<span class="operator">^</span>&#123;</span><br><span class="line">                [<span class="keyword">self</span> startUploadLogFile];</span><br><span class="line">            &#125;];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 外界调用的数据传递入口（App埋点统计）</span></span><br><span class="line"><span class="operator">-</span> (void)traceEvent:(<span class="type">AMStatisticEvent</span> <span class="operator">*</span>)event</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 线程锁,防止多处调用产生并发问题</span></span><br><span class="line">    <span class="meta">@synchronized</span> (<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (event <span class="operator">&amp;&amp;</span> event.userInfo) &#123;</span><br><span class="line">            [<span class="keyword">self</span> joinEvent:event.userInfo];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 将内存中的数据写入到文件中，持久化存储</span></span><br><span class="line"><span class="operator">-</span> (void)writeEventLogsInFilesCompletion:(void(<span class="operator">^</span>)(void))completionBlock</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">NSArray</span> <span class="operator">*</span>tmp <span class="operator">=</span> <span class="literal">nil</span>;</span><br><span class="line">    <span class="meta">@synchronized</span> (<span class="keyword">self</span>) &#123;</span><br><span class="line">        tmp <span class="operator">=</span> s_memoryArray;</span><br><span class="line">        s_memoryArray <span class="operator">=</span> <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (tmp) &#123;</span><br><span class="line">        __weak typeof(<span class="keyword">self</span>) weakSelf <span class="operator">=</span> <span class="keyword">self</span>;</span><br><span class="line">        dispatch_async(dispatch_get_global_queue(<span class="type">DISPATCH_QUEUE_PRIORITY_DEFAULT</span>, <span class="number">0</span>), <span class="operator">^</span>&#123;</span><br><span class="line">            <span class="type">NSString</span> <span class="operator">*</span>jsonFilePath <span class="operator">=</span> [weakSelf createTraceJsonFile];</span><br><span class="line">            <span class="keyword">if</span> ([weakSelf writeArr:tmp toFilePath:jsonFilePath]) &#123;</span><br><span class="line">                <span class="type">NSString</span> <span class="operator">*</span>zipedFilePath <span class="operator">=</span> [weakSelf zipJsonFile:jsonFilePath];</span><br><span class="line">                <span class="keyword">if</span> (zipedFilePath) &#123;</span><br><span class="line">                    [<span class="type">AppMonotior</span> clearCacheFile:jsonFilePath];</span><br><span class="line">                    <span class="keyword">if</span> (completionBlock) &#123;</span><br><span class="line">                        completionBlock();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 从App埋点统计压缩包文件夹中的每个压缩包文件上传服务端，成功后就删除本地的日志压缩包</span></span><br><span class="line"><span class="operator">-</span> (void)startUploadLogFile</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">NSArray</span> <span class="operator">*</span>fList <span class="operator">=</span> [<span class="keyword">self</span> listFilesAtPath:[<span class="keyword">self</span> eventJsonPath]];</span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">!</span>fList <span class="operator">||</span> [fList count] <span class="operator">==</span> <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    [fList enumerateObjectsUsingBlock:<span class="operator">^</span>(id obj, <span class="type">NSUInteger</span> idx, <span class="type">BOOL</span> <span class="operator">*</span>stop) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="operator">!</span>[obj hasSuffix:@<span class="string">&quot;.zip&quot;</span>]) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="type">NSString</span> <span class="operator">*</span>zipedPath <span class="operator">=</span> obj;</span><br><span class="line">        unsigned long long fileSize <span class="operator">=</span> [[[<span class="type">NSFileManager</span> defaultManager] attributesOfItemAtPath:zipedPath error:<span class="literal">nil</span>] fileSize];</span><br><span class="line">        <span class="keyword">if</span> (<span class="operator">!</span>fileSize <span class="operator">||</span> fileSize <span class="operator">&lt;</span> <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 调用接口上传埋点数据</span></span><br><span class="line">        [<span class="keyword">self</span> uploadZipFileWithPath:zipedPath completion:<span class="operator">^</span>(<span class="type">NSString</span> <span class="operator">*</span>completionResult) &#123;</span><br><span class="line">            <span class="keyword">if</span> ([completionResult isEqual:@<span class="string">&quot;OK&quot;</span>]) &#123;</span><br><span class="line">                [<span class="type">AppMonotior</span> clearCacheFile:zipedPath];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用的时候就是在 <code>hook</code> 系统事件的时候，去调用统计页面上传数据:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//UIViewController</span></span><br><span class="line">[<span class="type">UserTrackDataCenter</span> openPage:[<span class="keyword">self</span> getPageUrl:className] fromPage:refer];  <span class="comment">// 页面出现</span></span><br><span class="line">[<span class="type">UserTrackDataCenter</span> leavePage:[<span class="keyword">self</span> getPageUrl:className] spendTime:[<span class="keyword">self</span> p_calculationTimeSpend]];    <span class="comment">//页面消失</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211154513321.png"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>总结下来关键步骤：</p>
+<ol>
+<li>hook 系统的各种事件（UIResponder、UITableView、UICollectionView代理事件、UIControl事件、UITapGestureRecognizers）、hook 应用程序、控制器生命周期。在做本来的逻辑之前添加额外的监控代码</li>
+<li>对于点击的元素按照视图树生成对应的唯一标识（addCartButton.GoodsView.GoodsViewController） 的 md5 值</li>
+<li>在业务开发完毕，进入埋点的编辑模式，将 md5 和关键的页面的关键事件（运营、产品想统计的关键模块：App层级、业务模块、关键页面、关键操作）给绑定起来。比如 addCartButton.GoodsView.GoodsViewController.tbApp 对应了 tbApp-商城模块-商品详情页-加入购物车功能。</li>
+<li>将所需要的数据存储下来</li>
+<li>设计机制等到合适的时机去上传数据</li>
+</ol>
+<h1 id="举例说明一个完整的埋点上报流程"><a href="#举例说明一个完整的埋点上报流程" class="headerlink" title="举例说明一个完整的埋点上报流程"></a>举例说明一个完整的埋点上报流程</h1><p>埋点模块分为2个pod组件库，<code>TriggerKit</code> 负责拦截系统事件，拿到埋点数据。<code>Appmonitor</code> 负责收集埋点数据，本地持久化或内存储存，等到合适时机去上传埋点数据。</p>
+<ol>
+<li>通过接口获取数据，给对应的 <code>view</code> 的 <code>accessibilityIdentifier</code> 属性绑定埋点数据</li>
+</ol>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211154950534.png"><br><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211155141274.png"></p>
+<ol start="2">
+<li><code>hook</code> 系统事件，点击拿到 <code>view</code>，获取 <code>accessibilityIdentifier</code> 属性值</li>
+</ol>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211155725108.png"></p>
+<ol start="3">
+<li>将数据向的数据中心发送，数据中心处理数据（埋点数据结合 App 基础信息，图上 <code>UserTrackDataCenter</code> 对象）。根据情况将数据存储到内存或者本地，等到合适的时机去上传</li>
+</ol>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20251211155434364.png"></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ef63a89cb697">iOS 最优无痕埋点方案</a></p>
+
+    </div>
+
+    
+    
+    
+
+    
+    
+    
+
+    <div>
+       
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------<i class="fa fa-paw"></i> That's all！Best wishes for you !!! <i class="fa fa-paw"></i>-------------</div>
+    
+</div>
+
+       
+    </div><div class="post-widgets">
+    <div class="likely">
+        <div class="twitter">Tweet</div>
+        <div class="facebook">Share</div>
+        <div class="linkedin">Link</div>
+        <div class="gplus">Plus</div>
+        <div class="vkontakte">Share</div>
+        <div class="odnoklassniki">Class</div>
+        <div class="telegram">Send</div>
+        <div class="whatsapp">Send</div>
+        <div class="pinterest">Pin</div>
+    </div>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.js"></script><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>凤炎忻
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%9F%8B%E7%82%B9%E9%80%89%E6%8B%A9%E6%96%B9%E6%A1%88/" title="【iOS】埋点方案">https://fengyanxin.github.io/iOS/【iOS】埋点选择方案/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/fengyanxin">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.zhihu.com/people/peng-he-34-93">
+            <span class="icon">
+              <i class="fab fa-zhihu"></i>
+            </span>
+
+            <span class="label">知乎</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065">
+            <span class="icon">
+              <i class="fa fa-toutiao"></i>
+            </span>
+
+            <span class="label">今日头条</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477">
+            <span class="icon">
+              <i class="fa fa-baidu1"></i>
+            </span>
+
+            <span class="label">百家号</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394">
+            <span class="icon">
+              <i class="fab fa-xiaohongshu1"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e">
+            <span class="icon">
+              <i class="fab fa-liblib1"></i>
+            </span>
+
+            <span class="label">LibLib</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+              <a href="/tags/OC/" rel="tag"><i class="fa fa-tag"></i> OC</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Tips/%E3%80%90Tips%E3%80%91%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%89%8B%E5%86%8C/" rel="prev" title="【Tips】正则表达式手册">
+      <i class="fa fa-chevron-left"></i> 【Tips】正则表达式手册
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#01-%E5%9F%8B%E7%82%B9%E6%89%8B%E6%AE%B5"><span class="nav-number">1.1.</span> <span class="nav-text">01. 埋点手段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#02-%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">02. 技术选型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BB%A3%E7%A0%81%E6%89%8B%E5%8A%A8%E5%9F%8B%E7%82%B9"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.代码手动埋点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%9F%8B%E7%82%B9"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.可视化埋点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%97%A0%E7%97%95%E5%9F%8B%E7%82%B9"><span class="nav-number">1.2.3.</span> <span class="nav-text">3.无痕埋点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9"><span class="nav-number">1.2.4.</span> <span class="nav-text">4.如何选择</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#03-%E6%93%8D%E5%88%80%E5%B0%B1%E5%B9%B2"><span class="nav-number">1.3.</span> <span class="nav-text">03. 操刀就干</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E7%9A%84%E6%94%B6%E9%9B%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.数据的收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%B8%8D%E4%BE%B5%E5%85%A5%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81%E6%8B%A6%E6%88%AA%E7%B3%BB%E7%BB%9F%E4%BA%8B%E4%BB%B6"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.不侵入业务代码拦截系统事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%85%A8%E9%87%8F%E6%94%B6%E9%9B%86"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.全量收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%A6%82%E4%BD%95%E5%94%AF%E4%B8%80%E6%A0%87%E8%AF%86%E4%B8%80%E4%B8%AA%E6%8E%A7%E4%BB%B6%E5%85%83%E7%B4%A0"><span class="nav-number">1.3.4.</span> <span class="nav-text">4.如何唯一标识一个控件元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%90%8C%E7%B1%BB%E5%9E%8B%E7%9A%84-view-%E7%9A%84%E5%94%AF%E4%B8%80%E5%AE%9A%E4%BD%8D%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.5.</span> <span class="nav-text">5.同类型的 view 的唯一定位问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%90%8C%E7%B1%BB%E5%9E%8B%E7%9A%84-view%EF%BC%8C%E4%BD%86%E6%98%AF%E7%82%B9%E5%87%BB%E7%9A%84%E6%84%8F%E4%B9%89%E5%8D%B4%E4%B8%8D%E4%B8%80%E6%A0%B7%E3%80%82%E5%A6%82%E4%BD%95%E5%94%AF%E4%B8%80%E6%A0%87%E8%AF%86%EF%BC%9F"><span class="nav-number">1.3.6.</span> <span class="nav-text">6.同类型的 view，但是点击的意义却不一样。如何唯一标识？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E6%95%B0%E6%8D%AE%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86"><span class="nav-number">1.3.7.</span> <span class="nav-text">7.数据如何处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#A-%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E4%B8%9A%E5%8A%A1%E6%95%B0%E6%8D%AE"><span class="nav-number">1.3.7.1.</span> <span class="nav-text">A. 如何处理业务数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE"><span class="nav-number">1.3.7.2.</span> <span class="nav-text">B. 基础数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%8A%E6%8A%A5"><span class="nav-number">1.3.8.</span> <span class="nav-text">8.数据的上报</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B%E8%AF%B4%E6%98%8E%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84%E5%9F%8B%E7%82%B9%E4%B8%8A%E6%8A%A5%E6%B5%81%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">举例说明一个完整的埋点上报流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="凤炎忻"
+      src="/images/flyingPig.jpeg">
+  <p class="site-author-name" itemprop="name">凤炎忻</p>
+  <div class="site-description" itemprop="description">性浮脱，难酬一道，广涉寡精，杂而不博</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengyanxin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengyanxin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ph18317192001@163.com" title="E-Mail → mailto:ph18317192001@163.com" rel="noopener" target="_blank"><i class="fab fa-mail fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065" title="今日头条 → https:&#x2F;&#x2F;profile.zjurl.cn&#x2F;rogue&#x2F;ugc&#x2F;profile&#x2F;?user_id&#x3D;51893718065" rel="noopener" target="_blank"><i class="fab fa-jinritoutiao fa-fw"></i>今日头条</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477" title="百家号 → https:&#x2F;&#x2F;author.baidu.com&#x2F;home?from&#x3D;bjh_article&amp;app_id&#x3D;1665765419554477" rel="noopener" target="_blank"><i class="fab fa-baidu fa-fw"></i>百家号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;642cb9650000000011023394" rel="noopener" target="_blank"><i class="fab fa-xiaohongshu fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e" title="LibLib → https:&#x2F;&#x2F;www.liblib.art&#x2F;userpage&#x2F;c7816525373d4fbca7e45c1940ead98e" rel="noopener" target="_blank"><i class="fab fa-liblib fa-fw"></i>LibLib</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">凤炎忻</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">107k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:30</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,255' opacity='0.95' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '7EJkVswo79CmfmbwincRPjrA-gzGzoHsz',
+      appKey     : 'v7t6DWozwkcL2qIDeSC5kupC',
+      placeholder: "说点什么吧！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-12-08T05:42:22.593Z</updated>
+  <updated>2025-12-11T08:07:25.595Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【iOS】埋点方案</title>
+    <link href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%9F%8B%E7%82%B9%E9%80%89%E6%8B%A9%E6%96%B9%E6%A1%88/"/>
+    <id>https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%9F%8B%E7%82%B9%E9%80%89%E6%8B%A9%E6%96%B9%E6%A1%88/</id>
+    <published>2025-12-11T06:28:40.000Z</published>
+    <updated>2025-12-11T08:07:25.595Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;在移动互联网时代，对于每个公司、企业来说，用户的行为数据非常重要。重要到什么程度，用户在这个页面停留多久、点击了什么按钮、浏览了什么内容、什么手机、什么网络环境、App 什么版本等都需要清清楚楚。一些大厂的蛮多业务成果都是基于用户操作行为进行推荐后二次转换。另一方面是以日志的作用帮助开发者分析线上问题的一种辅助手段。&lt;/p&gt;
+&lt;p&gt;那么有了上述的诉求，那么技术人员如何满足这些需求？引出来了一个技术点-&lt;strong&gt;“埋点”&lt;/strong&gt;。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/categories/iOS/"/>
+    
+    
+    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
+    
+    <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
+    
+  </entry>
   
   <entry>
     <title>【Tips】正则表达式手册</title>
@@ -95,9 +117,9 @@
     
     <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="GitHub" scheme="https://fengyanxin.github.io/tags/GitHub/"/>
-    
     <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
+    
+    <category term="GitHub" scheme="https://fengyanxin.github.io/tags/GitHub/"/>
     
   </entry>
   
@@ -434,26 +456,6 @@
 &lt;li&gt;&lt;strong&gt;客户端错误响应&lt;/strong&gt; (400–499)&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;服务端错误响应&lt;/strong&gt; (500–599)&lt;/li&gt;
 &lt;/ol&gt;</summary>
-    
-    
-    
-    <category term="Tips" scheme="https://fengyanxin.github.io/categories/Tips/"/>
-    
-    
-    <category term="Tips" scheme="https://fengyanxin.github.io/tags/Tips/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【Tips】Mac 如何取消 sudo 时输入密码的提示</title>
-    <link href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Mac-%E5%A6%82%E4%BD%95%E5%8F%96%E6%B6%88-sudo-%E6%97%B6%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81/"/>
-    <id>https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Mac-%E5%A6%82%E4%BD%95%E5%8F%96%E6%B6%88-sudo-%E6%97%B6%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81/</id>
-    <published>2025-02-17T01:29:15.000Z</published>
-    <updated>2025-02-17T01:45:24.000Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h2&gt;&lt;p&gt;由于我想访问 GitHub 速度更快一些，使用了 SwitchHosts 对系统 Hosts 文件进行实时读写，在每一次同步远端文件进行写入时都提示要输入 Sudo 密码。&lt;/p&gt;
-&lt;p&gt;然后，我就想如何才能不每次都提示。&lt;/p&gt;</summary>
     
     
     
