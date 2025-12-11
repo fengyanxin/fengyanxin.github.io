@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-12-11T08:07:25.595Z</updated>
+  <updated>2025-12-11T08:24:15.244Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -17,14 +17,15 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>【iOS】埋点方案</title>
+    <title>【iOS】埋点方案与选择</title>
     <link href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%9F%8B%E7%82%B9%E9%80%89%E6%8B%A9%E6%96%B9%E6%A1%88/"/>
     <id>https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%9F%8B%E7%82%B9%E9%80%89%E6%8B%A9%E6%96%B9%E6%A1%88/</id>
     <published>2025-12-11T06:28:40.000Z</published>
-    <updated>2025-12-11T08:07:25.595Z</updated>
+    <updated>2025-12-11T08:24:15.244Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;在移动互联网时代，对于每个公司、企业来说，用户的行为数据非常重要。重要到什么程度，用户在这个页面停留多久、点击了什么按钮、浏览了什么内容、什么手机、什么网络环境、App 什么版本等都需要清清楚楚。一些大厂的蛮多业务成果都是基于用户操作行为进行推荐后二次转换。另一方面是以日志的作用帮助开发者分析线上问题的一种辅助手段。&lt;/p&gt;
+    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/%E5%9F%8B%E7%82%B9.webp&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;在移动互联网时代，对于每个公司、企业来说，用户的行为数据非常重要。重要到什么程度，用户在这个页面停留多久、点击了什么按钮、浏览了什么内容、什么手机、什么网络环境、App 什么版本等都需要清清楚楚。一些大厂的蛮多业务成果都是基于用户操作行为进行推荐后二次转换。另一方面是以日志的作用帮助开发者分析线上问题的一种辅助手段。&lt;/p&gt;
 &lt;p&gt;那么有了上述的诉求，那么技术人员如何满足这些需求？引出来了一个技术点-&lt;strong&gt;“埋点”&lt;/strong&gt;。&lt;/p&gt;</summary>
     
     
@@ -117,9 +118,9 @@
     
     <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
-    
     <category term="GitHub" scheme="https://fengyanxin.github.io/tags/GitHub/"/>
+    
+    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
     
   </entry>
   
