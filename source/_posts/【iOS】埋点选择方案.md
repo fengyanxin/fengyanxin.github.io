@@ -1,5 +1,5 @@
 ---
-title: 【iOS】埋点方案
+title: 【iOS】埋点方案与选择
 date: 2025-12-11 14:28:40
 tags:
 - OC
@@ -7,6 +7,8 @@ tags:
 categories:
 - iOS
 ---
+
+![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/%E5%9F%8B%E7%82%B9.webp)
 
 # 前言
 
