@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-12-11T08:24:15.244Z</updated>
+  <updated>2025-12-29T08:45:02.179Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【Tips】Git Flow工作流</title>
+    <link href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Git-Flow%E5%B7%A5%E4%BD%9C%E6%B5%81/"/>
+    <id>https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Git-Flow%E5%B7%A5%E4%BD%9C%E6%B5%81/</id>
+    <published>2025-12-29T08:15:20.000Z</published>
+    <updated>2025-12-29T08:45:02.179Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Git-Flow&quot;&gt;&lt;a href=&quot;#Git-Flow&quot; class=&quot;headerlink&quot; title=&quot;Git Flow&quot;&gt;&lt;/a&gt;Git Flow&lt;/h1&gt;&lt;p&gt;Git Flow 是一种基于 Git 的分支模型，旨在帮助团队更好地管理和发布软件。&lt;/p&gt;
+&lt;p&gt;Git Flow 由 Vincent Driessen 在 2010 年提出，并通过一套标准的分支命名和工作流程，使开发、测试和发布过程更加有序和高效。&lt;/p&gt;
+&lt;p&gt;Git Flow 主要由以下几类分支组成：&lt;em&gt;master、develop、feature、release、hotfix。&lt;/em&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Tips" scheme="https://fengyanxin.github.io/categories/Tips/"/>
+    
+    
+    <category term="Tips" scheme="https://fengyanxin.github.io/tags/Tips/"/>
+    
+  </entry>
   
   <entry>
     <title>【iOS】埋点方案与选择</title>
@@ -118,9 +139,9 @@
     
     <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="GitHub" scheme="https://fengyanxin.github.io/tags/GitHub/"/>
-    
     <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
+    
+    <category term="GitHub" scheme="https://fengyanxin.github.io/tags/GitHub/"/>
     
   </entry>
   
@@ -438,32 +459,6 @@
     <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【Tips】HTTP 响应状态码</title>
-    <link href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91HTTP-%E5%93%8D%E5%BA%94%E7%8A%B6%E6%80%81%E7%A0%81/"/>
-    <id>https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91HTTP-%E5%93%8D%E5%BA%94%E7%8A%B6%E6%80%81%E7%A0%81/</id>
-    <published>2025-02-18T08:40:34.000Z</published>
-    <updated>2025-02-19T09:28:53.000Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;HTTP-响应状态码&quot;&gt;&lt;a href=&quot;#HTTP-响应状态码&quot; class=&quot;headerlink&quot; title=&quot;HTTP 响应状态码&quot;&gt;&lt;/a&gt;HTTP 响应状态码&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;HTTP&lt;/strong&gt; 响应状态码用来表明特定 &lt;a href=&quot;https://developer.mozilla.org/zh-CN/docs/Web/HTTP&quot;&gt;HTTP&lt;/a&gt; 请求是否成功完成。 响应被归为以下五大类：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;信息响应&lt;/strong&gt; (100–199)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;成功响应&lt;/strong&gt; (200–299)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;重定向消息&lt;/strong&gt; (300–399)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;客户端错误响应&lt;/strong&gt; (400–499)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;服务端错误响应&lt;/strong&gt; (500–599)&lt;/li&gt;
-&lt;/ol&gt;</summary>
-    
-    
-    
-    <category term="Tips" scheme="https://fengyanxin.github.io/categories/Tips/"/>
-    
-    
-    <category term="Tips" scheme="https://fengyanxin.github.io/tags/Tips/"/>
     
   </entry>
   
