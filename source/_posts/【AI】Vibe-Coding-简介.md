@@ -29,8 +29,6 @@ categories:
 
 值得注意的是，Karpathy 本人在 2025 年末又进一步提出了"agentic engineering"（代理工程）的概念，将 Vibe Coding 定位为一个阶段性节点，而非终点。
 
-这说明这一领域仍在快速演进中。
-
 ## 二、Vibe Coding 到底是什么？
 
 ### 1、核心概念
