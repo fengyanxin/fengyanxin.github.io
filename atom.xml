@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2025-12-29T08:45:02.179Z</updated>
+  <updated>2026-04-13T06:12:14.770Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【AI】Vibe Coding 简介</title>
+    <link href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Vibe-Coding-%E7%AE%80%E4%BB%8B/"/>
+    <id>https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Vibe-Coding-%E7%AE%80%E4%BB%8B/</id>
+    <published>2026-04-13T03:24:18.000Z</published>
+    <updated>2026-04-13T06:12:14.770Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260413113105515.png&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;一、Vibe-Coding-的诞生？&quot;&gt;&lt;a href=&quot;#一、Vibe-Coding-的诞生？&quot; class=&quot;headerlink&quot; title=&quot;一、Vibe Coding 的诞生？&quot;&gt;&lt;/a&gt;一、Vibe Coding 的诞生？&lt;/h2&gt;&lt;p&gt;2025 年 2 月，前 OpenAI 研究员、特斯拉 AI 总监 Andrej Karpathy 在 X（原 Twitter）上发了一条帖子，原文如下：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“There’s a new kind of coding I call ‘vibe coding’, where you fully give in to the vibes, embrace exponentials, and forget that the code even exists.”&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="AI" scheme="https://fengyanxin.github.io/categories/AI/"/>
+    
+    
+    <category term="AI" scheme="https://fengyanxin.github.io/tags/AI/"/>
+    
+    <category term="Vibe Coding" scheme="https://fengyanxin.github.io/tags/Vibe-Coding/"/>
+    
+  </entry>
   
   <entry>
     <title>【Tips】Git Flow工作流</title>
@@ -139,9 +164,9 @@
     
     <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
-    
     <category term="GitHub" scheme="https://fengyanxin.github.io/tags/GitHub/"/>
+    
+    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
     
   </entry>
   
@@ -429,27 +454,6 @@
     
     
     <summary type="html">&lt;h1 id=&quot;如何使用路由，支持多页面导航？&quot;&gt;&lt;a href=&quot;#如何使用路由，支持多页面导航？&quot; class=&quot;headerlink&quot; title=&quot;如何使用路由，支持多页面导航？&quot;&gt;&lt;/a&gt;如何使用路由，支持多页面导航？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17428840890690.jpg&quot;&gt;&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【iOS进阶】10 | 支撑组件：如何实现隐藏菜单，快速测试与验证？</title>
-    <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/"/>
-    <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10%EF%BD%9C%E6%94%AF%E6%92%91%E7%BB%84%E4%BB%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%9A%90%E8%97%8F%E8%8F%9C%E5%8D%95%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%B5%8B%E8%AF%95%E4%B8%8E%E9%AA%8C%E8%AF%81%EF%BC%9F/</id>
-    <published>2025-02-24T08:58:47.000Z</published>
-    <updated>2025-05-15T02:10:58.000Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;如何实现隐藏菜单，快速测试与验证？&quot;&gt;&lt;a href=&quot;#如何实现隐藏菜单，快速测试与验证？&quot; class=&quot;headerlink&quot; title=&quot;如何实现隐藏菜单，快速测试与验证？&quot;&gt;&lt;/a&gt;如何实现隐藏菜单，快速测试与验证？&lt;/h1&gt;&lt;p&gt;&lt;img data-src=&quot;https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17403876634367.jpg&quot;&gt;&lt;/p&gt;</summary>
     
     
     
