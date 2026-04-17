@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Claude Code 简介Claude Code 是 Anthropic 官方 CLI 级智能体工具。 Claude Code 定位不是聊天，而是 在本地代码仓库中执行高权限、可上下文感知的工程任务。  ⚠️ 注：Claude Code 是 Agent，不是 Chat。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【AI】Claude Code 入门教程">
+<meta property="og:url" content="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Claude-Code-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="凤炎忻的个人笔记">
+<meta property="og:description" content="Claude Code 简介Claude Code 是 Anthropic 官方 CLI 级智能体工具。 Claude Code 定位不是聊天，而是 在本地代码仓库中执行高权限、可上下文感知的工程任务。  ⚠️ 注：Claude Code 是 Agent，不是 Chat。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/whats-claude-code-v0-f1vrmqb645le1.webp">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/dabcedd3-5857-4090-870a-47805307e534.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/aebe4b0f-78f1-40fc-87ce-05f889af4c8e.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/6a97af64-c4a5-425b-99a0-3aaf9dc59dbd.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/d811c5e3-f30f-4c1b-9107-774db34b330c.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/5617ff6d-7997-4819-a2eb-300346548c61.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/98fa9dc0-efab-4afc-a100-350ad114937c.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/cc-runoob-1.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/cc-runoob-2.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/cc-runoob-3.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/cc-runoob-4.png">
+<meta property="article:published_time" content="2026-04-17T06:04:52.000Z">
+<meta property="article:modified_time" content="2026-04-17T07:13:44.624Z">
+<meta property="article:author" content="凤炎忻">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Vibe Coding">
+<meta property="article:tag" content="Claude Code">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/whats-claude-code-v0-f1vrmqb645le1.webp">
+
+<link rel="canonical" href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Claude-Code-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>【AI】Claude Code 入门教程 | 凤炎忻的个人笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="凤炎忻的个人笔记" type="application/atom+xml">
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">凤炎忻的个人笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我有一壶酒，足以慰风尘！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section">标签<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section">分类<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">归档<span class="badge">51</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section">公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Claude-Code-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/flyingPig.jpeg">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【AI】Claude Code 入门教程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-04-17 14:04:52 / 修改时间：15:13:44" itemprop="dateCreated datePublished" datetime="2026-04-17T14:04:52+08:00">2026-04-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/AI/%E3%80%90AI%E3%80%91Claude-Code-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" class="post-meta-item leancloud_visitors" data-flag-title="【AI】Claude Code 入门教程" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/AI/%E3%80%90AI%E3%80%91Claude-Code-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/AI/%E3%80%90AI%E3%80%91Claude-Code-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/whats-claude-code-v0-f1vrmqb645le1.webp"></p>
+<h2 id="Claude-Code-简介"><a href="#Claude-Code-简介" class="headerlink" title="Claude Code 简介"></a>Claude Code 简介</h2><p>Claude Code 是 Anthropic 官方 CLI 级智能体工具。</p>
+<p>Claude Code 定位不是聊天，而是 在本地代码仓库中执行高权限、可上下文感知的工程任务。</p>
+<blockquote>
+<p>⚠️ 注：Claude Code 是 Agent，不是 Chat。</p>
+</blockquote>
+<span id="more"></span>
+
+<p>核心能力：</p>
+<ul>
+<li>直接读取整个项目目录</li>
+<li>理解真实代码结构</li>
+<li>执行多文件修改</li>
+<li>严格遵循指令而非对话取悦</li>
+</ul>
+<h2 id="Claude-Code-使用"><a href="#Claude-Code-使用" class="headerlink" title="Claude Code 使用"></a>Claude Code 使用</h2><h3 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h3><p><strong>MacOS/Linux:</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl <span class="operator">-</span>fsSL https:<span class="comment">//claude.ai/install.sh | bash</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Homebrew (MacOS):</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install <span class="operator">--</span>cask claude<span class="operator">-</span>code</span><br></pre></td></tr></table></figure>
+
+<p><strong>Windows:</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">irm https:<span class="comment">//claude.ai/install.ps1 | iex</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>NPM:</strong></p>
+<p>使用 npm 安装 请确保你的系统的安装了 Node.js，版本需在 v18 或更高。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install <span class="operator">-</span>g <span class="meta">@anthropic</span><span class="operator">-</span>ai<span class="operator">/</span>claude<span class="operator">-</span>code</span><br></pre></td></tr></table></figure>
+
+<p><strong>接下来就可以开始进入你创建的项目目录，开始使用 Claude Code：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd your<span class="operator">-</span>project</span><br><span class="line">claude</span><br></pre></td></tr></table></figure>
+
+<h3 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h3><p>使用 claude 命令启动交互式会话时，您需要登录：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">claude</span><br><span class="line"># 首次使用时会提示您登录</span><br><span class="line"><span class="operator">/</span>login</span><br><span class="line"># 按照提示使用您的账户登录</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/dabcedd3-5857-4090-870a-47805307e534.png"></p>
+<p>如果你可以正常使用 Anthropic 的账号，就可以开始使用，如果没有，国内可以使用 DeepSeek 或 GLM 等。</p>
+<h3 id="接入-DeepSeek-模型"><a href="#接入-DeepSeek-模型" class="headerlink" title="接入 DeepSeek 模型"></a>接入 DeepSeek 模型</h3><p>安装 Claude Code 后，我们在终端中设置以下环境变量：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">export <span class="type">ANTHROPIC_BASE_URL</span><span class="operator">=</span>https:<span class="comment">//api.deepseek.com/anthropic</span></span><br><span class="line">export <span class="type">ANTHROPIC_AUTH_TOKEN</span><span class="operator">=</span>$&#123;<span class="type">DEEPSEEK_API_KEY</span>&#125; # 这里记得设置你申请的 <span class="type">API</span> key</span><br><span class="line">export <span class="type">API_TIMEOUT_MS</span><span class="operator">=</span><span class="number">600000</span></span><br><span class="line">export <span class="type">ANTHROPIC_MODEL</span><span class="operator">=</span>deepseek<span class="operator">-</span>chat</span><br><span class="line">export <span class="type">ANTHROPIC_SMALL_FAST_MODEL</span><span class="operator">=</span>deepseek<span class="operator">-</span>chat</span><br><span class="line">export <span class="type">CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC</span><span class="operator">=</span><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>参数说明：</strong></p>
+<ul>
+<li><strong>API_TIMEOUT_MS=600000：</strong> 设置 10 分钟超时，防止输出过长触发客户端超时</li>
+<li><strong>ANTHROPIC_MODEL：</strong> 指定使用 deepseek-chat 模型</li>
+<li><strong>CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1：</strong> 禁用非必要流量</li>
+</ul>
+<p>然后进入项目目录，执行 claude 命令，即可开始使用了。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd my<span class="operator">-</span>project</span><br><span class="line">claude</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/aebe4b0f-78f1-40fc-87ce-05f889af4c8e.png"></p>
+<p>参考文档：<a target="_blank" rel="noopener" href="https://api-docs.deepseek.com/zh-cn/guides/anthropic_api">https://api-docs.deepseek.com/zh-cn/guides/anthropic_api</a></p>
+<h3 id="接入-阿里百炼模型"><a href="#接入-阿里百炼模型" class="headerlink" title="接入 阿里百炼模型"></a>接入 阿里百炼模型</h3><p>阿里云百炼的通义千问系列模型支持 Anthropic API 兼容接口，通过修改以下参数，即可在 Claude Code 中调用通义千问系列模型。</p>
+<ul>
+<li><strong>ANTHROPIC_API_KEY（或 ANTHROPIC_AUTH_TOKEN）</strong>：替换为百炼 API Key，申请地址：<a target="_blank" rel="noopener" href="https://bailian.console.aliyun.com/cn-beijing/?tab=model#/api-key%E3%80%82">https://bailian.console.aliyun.com/cn-beijing/?tab=model#/api-key。</a></li>
+<li><strong>ANTHROPIC_BASE_URL</strong>：替换为百炼的兼容端点地址 <a target="_blank" rel="noopener" href="https://dashscope.aliyuncs.com/apps/anthropic%E3%80%82">https://dashscope.aliyuncs.com/apps/anthropic。</a></li>
+<li><strong>模型名称</strong>：替换为百炼支持的模型名称（例如 qwen3-max、qwen3-coder-plus等）</li>
+</ul>
+<p><strong>百炼的 Coding Plan 套餐</strong>：<br><a target="_blank" rel="noopener" href="https://www.aliyun.com/benefit/scene/codingplan">https://www.aliyun.com/benefit/scene/codingplan</a></p>
+<blockquote>
+<p><strong>兼容 Anthropic API 协议</strong>：</p>
+<ul>
+<li>Base URL：<a target="_blank" rel="noopener" href="https://coding.dashscope.aliyuncs.com/apps/anthropic">https://coding.dashscope.aliyuncs.com/apps/anthropic</a></li>
+<li>API Key：填入 Coding Plan 套餐专属 API Key</li>
+<li>Model：qwen3-coder-plus</li>
+</ul>
+</blockquote>
+<p><strong>macOS/Linux</strong>：</p>
+<p>创建并打开配置文件 <code>~/.claude/settings.json</code>。<br><code>~</code>代表用户主目录，如果 <code>.claude</code> 目录不存在，需要先行创建，可在终端执行 <code>mkdir -p ~/.claude</code> 来创建。<br>编辑配置文件：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim <span class="operator">~/</span>.claude<span class="operator">/</span>settings.json</span><br></pre></td></tr></table></figure>
+
+<p>将 YOUR_API_KEY 替换为 Coding Plan 套餐专属 API Key。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;env&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;ANTHROPIC_AUTH_TOKEN&quot;</span>: <span class="string">&quot;YOUR_API_KEY&quot;</span>,</span><br><span class="line">        <span class="string">&quot;ANTHROPIC_BASE_URL&quot;</span>: <span class="string">&quot;https://coding.dashscope.aliyuncs.com/apps/anthropic&quot;</span>,</span><br><span class="line">        <span class="string">&quot;ANTHROPIC_MODEL&quot;</span>: <span class="string">&quot;qwen3-coder-plus&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重新打开一个新的终端使环境变量配置生效。</p>
+<p><strong>Windows</strong>：</p>
+<p>在 CMD 中运行以下命令，设置环境变量：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setx <span class="type">ANTHROPIC_AUTH_TOKEN</span> <span class="string">&quot;YOUR_API_KEY&quot;</span></span><br><span class="line">setx <span class="type">ANTHROPIC_BASE_URL</span> <span class="string">&quot;https://coding.dashscope.aliyuncs.com/apps/anthropic&quot;</span></span><br><span class="line">setx <span class="type">ANTHROPIC_MODEL</span> <span class="string">&quot;qwen3-coder-plus&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>用套餐专属 API Key 替换 YOUR_API_KEY。</p>
+<p>打开一个新的 CMD 窗口，运行以下命令，检查环境变量是否生效。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo <span class="operator">%</span><span class="type">ANTHROPIC_AUTH_TOKEN</span><span class="operator">%</span></span><br><span class="line">echo <span class="operator">%</span><span class="type">ANTHROPIC_BASE_URL</span><span class="operator">%</span></span><br><span class="line">echo <span class="operator">%</span><span class="type">ANTHROPIC_MODEL</span><span class="operator">%</span></span><br></pre></td></tr></table></figure>
+
+<p>在 PowerShell 中运行以下命令，设置环境变量：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 用套餐专属 <span class="type">API</span> <span class="type">Key</span> 替换 <span class="type">YOUR_API_KEY</span></span><br><span class="line">[<span class="type">Environment</span>]::<span class="type">SetEnvironmentVariable</span>(<span class="string">&quot;ANTHROPIC_AUTH_TOKEN&quot;</span>, <span class="string">&quot;YOUR_API_KEY&quot;</span>, [<span class="type">EnvironmentVariableTarget</span>]::<span class="type">User</span>)</span><br><span class="line">[<span class="type">Environment</span>]::<span class="type">SetEnvironmentVariable</span>(<span class="string">&quot;ANTHROPIC_BASE_URL&quot;</span>, <span class="string">&quot;https://coding.dashscope.aliyuncs.com/apps/anthropic&quot;</span>, [<span class="type">EnvironmentVariableTarget</span>]::<span class="type">User</span>)</span><br><span class="line">[<span class="type">Environment</span>]::<span class="type">SetEnvironmentVariable</span>(<span class="string">&quot;ANTHROPIC_MODEL&quot;</span>, <span class="string">&quot;qwen3-coder-plus&quot;</span>, [<span class="type">EnvironmentVariableTarget</span>]::<span class="type">User</span>)</span><br></pre></td></tr></table></figure>
+
+<p>打开一个新的 PowerShell 窗口，运行以下命令，检查环境变量是否生效。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo <span class="variable">$env</span>:<span class="type">ANTHROPIC_AUTH_TOKEN</span></span><br><span class="line">echo <span class="variable">$env</span>:<span class="type">ANTHROPIC_BASE_URL</span></span><br><span class="line">echo <span class="variable">$env</span>:<span class="type">ANTHROPIC_MODEL</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>在 Claude Code 中接入通义千问系列模型</strong></p>
+<p>对话期间，执行 <code>/model &lt;模型名称&gt;</code> 命令切换模型。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">/</span>model qwen3<span class="operator">-</span>coder<span class="operator">-</span>plus</span><br></pre></td></tr></table></figure>
+
+<p>也可以在项目根目录创建 <code>.claude/settings.json</code> 文件中，并写入模型配置信息永久配置:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;env&quot;: &#123;</span><br><span class="line">    &quot;ANTHROPIC_MODEL&quot;: &quot;qwen3-coder-plus&quot;,</span><br><span class="line">    &quot;ANTHROPIC_SMALL_FAST_MODEL&quot;: &quot;qwen-flash&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/6a97af64-c4a5-425b-99a0-3aaf9dc59dbd.png"></p>
+<p>启动 Claude，可以看到配置信息：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/d811c5e3-f30f-4c1b-9107-774db34b330c.png"></p>
+<h3 id="接入-智谱大模型"><a href="#接入-智谱大模型" class="headerlink" title="接入 智谱大模型"></a>接入 智谱大模型</h3><p>这部分我们使用 <code>~/.claude/settings.json</code> 文件来配置大模型，开始前需要到官方平台获取 **API key：<a target="_blank" rel="noopener" href="https://www.bigmodel.cn/claude-code?ic=EMWK7IPUCE">GLM Coding Plan</a>**。<br>编辑或新增 Claude Code 配置文件 <code>~/.claude/settings.json</code> ，新增或修改里面的 <code>env</code> 字段</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 注意替换里面的your_zhipu_api_key 为您上一步获取到的 <span class="type">API</span> <span class="type">Key</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;env&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;ANTHROPIC_AUTH_TOKEN&quot;</span>: <span class="string">&quot;your_zhipu_api_key&quot;</span>,</span><br><span class="line">        <span class="string">&quot;ANTHROPIC_BASE_URL&quot;</span>: <span class="string">&quot;https://open.bigmodel.cn/api/anthropic&quot;</span>,</span><br><span class="line">        <span class="string">&quot;API_TIMEOUT_MS&quot;</span>: <span class="string">&quot;3000000&quot;</span>,</span><br><span class="line">        <span class="string">&quot;CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC&quot;</span>: <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行 claude 启动 Claude Code，输入 <code>/status</code> 确认模型状态：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/5617ff6d-7997-4819-a2eb-300346548c61.png"></p>
+<p>如果不是可以输入 <code>/config</code> 来切换模型。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/98fa9dc0-efab-4afc-a100-350ad114937c.png"></p>
+<h3 id="VS-Code-安装-Claude-Code"><a href="#VS-Code-安装-Claude-Code" class="headerlink" title="VS Code 安装 Claude Code"></a>VS Code 安装 Claude Code</h3><p>如果不喜欢使用 Claude Code 的命令行模型，我们可以在 VS Code 编辑器中安装 Claude Code。</p>
+<p>打开 VS Code，进入扩展市场，搜索 Claude Code 安装：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/cc-runoob-1.png"></p>
+<p>安装完成后，点击右上角 Claude Code 图标，即可进入 Claude Code 页面：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/cc-runoob-2.png"></p>
+<p>这样有账号的可以使用 <code>/login</code> 登录：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/cc-runoob-3.png"></p>
+<p>也可以在对话框输入 <code>/config</code> 进入设置，勾选 <code>Disable Login Prompt</code> 配置来关闭登录页面:</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/cc-runoob-4.png"></p>
+<h2 id="相关命令参考"><a href="#相关命令参考" class="headerlink" title="相关命令参考"></a>相关命令参考</h2><h3 id="Claude-Code-内置命令列表"><a href="#Claude-Code-内置命令列表" class="headerlink" title="Claude Code 内置命令列表"></a>Claude Code 内置命令列表</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>/add-dir</td>
+<td>添加额外的工作目录</td>
+</tr>
+<tr>
+<td>/agents</td>
+<td>管理专用 AI 子代理</td>
+</tr>
+<tr>
+<td>/bashes</td>
+<td>列出和管理后台任务</td>
+</tr>
+<tr>
+<td>/bug</td>
+<td>报告 bug(将对话发送给 Anthropic)</td>
+</tr>
+<tr>
+<td>/clear</td>
+<td>清除对话历史</td>
+</tr>
+<tr>
+<td>/compact [指令]</td>
+<td>压缩对话,可选择性添加重点指令</td>
+</tr>
+<tr>
+<td>/config</td>
+<td>打开设置界面(配置选项卡)</td>
+</tr>
+<tr>
+<td>/context</td>
+<td>以彩色网格可视化当前上下文使用情况</td>
+</tr>
+<tr>
+<td>/cost</td>
+<td>显示 token 使用统计</td>
+</tr>
+<tr>
+<td>/doctor</td>
+<td>检查 Claude Code 安装健康状况</td>
+</tr>
+<tr>
+<td>/exit</td>
+<td>退出 REPL</td>
+</tr>
+<tr>
+<td>/export [文件名]</td>
+<td>导出当前对话到文件或剪贴板</td>
+</tr>
+<tr>
+<td>/help</td>
+<td>获取使用帮助,显示所有可用命令</td>
+</tr>
+<tr>
+<td>/hooks</td>
+<td>管理工具事件的钩子配置</td>
+</tr>
+<tr>
+<td>/ide</td>
+<td>管理 IDE 集成并显示状态</td>
+</tr>
+<tr>
+<td>/init</td>
+<td>使用 CLAUDE.md 指南初始化项目</td>
+</tr>
+<tr>
+<td>/install-github-app</td>
+<td>为仓库设置 Claude GitHub Actions</td>
+</tr>
+<tr>
+<td>/login</td>
+<td>切换 Anthropic 账户</td>
+</tr>
+<tr>
+<td>/logout</td>
+<td>从 Anthropic 账户登出</td>
+</tr>
+<tr>
+<td>/mcp</td>
+<td>管理 MCP 服务器连接和 OAuth 认证</td>
+</tr>
+<tr>
+<td>/memory</td>
+<td>编辑 CLAUDE.md 记忆文件</td>
+</tr>
+<tr>
+<td>/model</td>
+<td>选择或更改 AI 模型</td>
+</tr>
+<tr>
+<td>/output-style [样式]</td>
+<td>直接设置输出样式或从选择菜单中选择</td>
+</tr>
+<tr>
+<td>/permissions</td>
+<td>查看或更新权限</td>
+</tr>
+<tr>
+<td>/plugin</td>
+<td>管理 Claude Code 插件</td>
+</tr>
+<tr>
+<td>/pr-comments</td>
+<td>查看 PR 评论</td>
+</tr>
+<tr>
+<td>/privacy-settings</td>
+<td>查看和更新隐私设置</td>
+</tr>
+<tr>
+<td>/release-notes</td>
+<td>查看发布说明</td>
+</tr>
+<tr>
+<td>/resume</td>
+<td>恢复对话</td>
+</tr>
+<tr>
+<td>/review</td>
+<td>请求代码审查</td>
+</tr>
+<tr>
+<td>/rewind</td>
+<td>回退对话和/或代码</td>
+</tr>
+<tr>
+<td>/sandbox</td>
+<td>启用沙盒 bash 工具,具有文件系统和网络隔离</td>
+</tr>
+<tr>
+<td>/security-review</td>
+<td>对当前分支的待处理更改进行安全审查</td>
+</tr>
+<tr>
+<td>/status</td>
+<td>打开设置界面(状态选项卡),显示版本、模型、账户和连接状态</td>
+</tr>
+<tr>
+<td>/statusline</td>
+<td>设置 Claude Code 的状态行 UI</td>
+</tr>
+<tr>
+<td>/terminal-setup</td>
+<td>安装 Shift+Enter 换行键绑定(仅限 iTerm2 和 VSCode)</td>
+</tr>
+<tr>
+<td>/todos</td>
+<td>列出当前待办事项</td>
+</tr>
+<tr>
+<td>/usage</td>
+<td>显示计划使用限制和速率限制状态(仅订阅计划)</td>
+</tr>
+<tr>
+<td>/vim</td>
+<td>进入 vim 模式,交替插入和命令模式</td>
+</tr>
+</tbody></table>
+<h3 id="自定义命令类型"><a href="#自定义命令类型" class="headerlink" title="自定义命令类型"></a>自定义命令类型</h3><table>
+<thead>
+<tr>
+<th>命令类型</th>
+<th>位置</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>项目命令</td>
+<td>.claude/commands/</td>
+<td>存储在仓库中,与团队共享</td>
+</tr>
+<tr>
+<td>个人命令</td>
+<td>~/.claude/commands/</td>
+<td>跨所有项目可用</td>
+</tr>
+<tr>
+<td>插件命令</td>
+<td>插件的 commands/ 目录</td>
+<td>通过插件市场分发</td>
+</tr>
+<tr>
+<td>MCP 命令</td>
+<td>由 MCP 服务器提供</td>
+<td>格式: /mcp__&lt;服务器名&gt;__&lt;提示名&gt;</td>
+</tr>
+</tbody></table>
+<h3 id="特殊功能"><a href="#特殊功能" class="headerlink" title="特殊功能"></a>特殊功能</h3><h4 id="自定义命令支持"><a href="#自定义命令支持" class="headerlink" title="自定义命令支持:"></a>自定义命令支持:</h4><ul>
+<li>$ARGUMENTS - 捕获所有参数</li>
+<li>$1, $2, $3… - 访问单个位置参数</li>
+<li>@文件名 - 引用文件内容</li>
+<li>!命令 - 执行 bash 命令并包含输出</li>
+</ul>
+<h4 id="命令前置元数据-Frontmatter"><a href="#命令前置元数据-Frontmatter" class="headerlink" title="命令前置元数据(Frontmatter):"></a>命令前置元数据(Frontmatter):</h4><ul>
+<li>allowed-tools - 命令可使用的工具列表</li>
+<li>argument-hint - 参数提示说明</li>
+<li>description - 命令简短描述</li>
+<li>model - 指定模型</li>
+<li>disable-model-invocation - 防止 SlashCommand 工具调用</li>
+</ul>
+<p>更多相关信息可以通过 <code>/help</code> 查看完整的可用命令列表(包括您自定义的命令)。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><ul>
+<li>Claude Code 教程：<a target="_blank" rel="noopener" href="https://www.runoob.com/claude-code/claude-code-tutorial.html">https://www.runoob.com/claude-code/claude-code-tutorial.html</a></li>
+<li>开源地址：<a target="_blank" rel="noopener" href="https://github.com/anthropics/claude-code">https://github.com/anthropics/claude-code</a></li>
+<li>官方文档：<a target="_blank" rel="noopener" href="https://code.claude.com/docs/zh-CN/overview">https://code.claude.com/docs/zh-CN/overview</a></li>
+<li>DeepSeek Anthropic API：<a target="_blank" rel="noopener" href="https://api-docs.deepseek.com/zh-cn/guides/anthropic_api">https://api-docs.deepseek.com/zh-cn/guides/anthropic_api</a></li>
+<li>智谱大模型接入 Claude Code 教程：<a target="_blank" rel="noopener" href="https://docs.bigmodel.cn/cn/coding-plan/tool/claude#claude-code">https://docs.bigmodel.cn/cn/coding-plan/tool/claude#claude-code</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    
+    
+    
+
+    <div>
+       
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------<i class="fa fa-paw"></i> That's all！Best wishes for you !!! <i class="fa fa-paw"></i>-------------</div>
+    
+</div>
+
+       
+    </div><div class="post-widgets">
+    <div class="likely">
+        <div class="twitter">Tweet</div>
+        <div class="facebook">Share</div>
+        <div class="linkedin">Link</div>
+        <div class="gplus">Plus</div>
+        <div class="vkontakte">Share</div>
+        <div class="odnoklassniki">Class</div>
+        <div class="telegram">Send</div>
+        <div class="whatsapp">Send</div>
+        <div class="pinterest">Pin</div>
+    </div>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.js"></script><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>凤炎忻
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Claude-Code-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" title="【AI】Claude Code 入门教程">https://fengyanxin.github.io/AI/【AI】Claude-Code-入门教程/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/fengyanxin">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.zhihu.com/people/peng-he-34-93">
+            <span class="icon">
+              <i class="fab fa-zhihu"></i>
+            </span>
+
+            <span class="label">知乎</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065">
+            <span class="icon">
+              <i class="fa fa-toutiao"></i>
+            </span>
+
+            <span class="label">今日头条</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477">
+            <span class="icon">
+              <i class="fa fa-baidu1"></i>
+            </span>
+
+            <span class="label">百家号</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394">
+            <span class="icon">
+              <i class="fab fa-xiaohongshu1"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e">
+            <span class="icon">
+              <i class="fab fa-liblib1"></i>
+            </span>
+
+            <span class="label">LibLib</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"><i class="fa fa-tag"></i> AI</a>
+              <a href="/tags/Vibe-Coding/" rel="tag"><i class="fa fa-tag"></i> Vibe Coding</a>
+              <a href="/tags/Claude-Code/" rel="tag"><i class="fa fa-tag"></i> Claude Code</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/AI/%E3%80%90AI%E3%80%91Vibe-Coding-%E7%AE%80%E4%BB%8B/" rel="prev" title="【AI】Vibe Coding 简介">
+      <i class="fa fa-chevron-left"></i> 【AI】Vibe Coding 简介
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Claude-Code-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">Claude Code 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Claude-Code-%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">Claude Code 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE"><span class="nav-number">2.1.</span> <span class="nav-text">安装配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BB%E5%BD%95"><span class="nav-number">2.2.</span> <span class="nav-text">登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5-DeepSeek-%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.3.</span> <span class="nav-text">接入 DeepSeek 模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5-%E9%98%BF%E9%87%8C%E7%99%BE%E7%82%BC%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.4.</span> <span class="nav-text">接入 阿里百炼模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5-%E6%99%BA%E8%B0%B1%E5%A4%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.5.</span> <span class="nav-text">接入 智谱大模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VS-Code-%E5%AE%89%E8%A3%85-Claude-Code"><span class="nav-number">2.6.</span> <span class="nav-text">VS Code 安装 Claude Code</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">相关命令参考</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Claude-Code-%E5%86%85%E7%BD%AE%E5%91%BD%E4%BB%A4%E5%88%97%E8%A1%A8"><span class="nav-number">3.1.</span> <span class="nav-text">Claude Code 内置命令列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%91%BD%E4%BB%A4%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">自定义命令类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E5%8A%9F%E8%83%BD"><span class="nav-number">3.3.</span> <span class="nav-text">特殊功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%91%BD%E4%BB%A4%E6%94%AF%E6%8C%81"><span class="nav-number">3.3.1.</span> <span class="nav-text">自定义命令支持:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E5%89%8D%E7%BD%AE%E5%85%83%E6%95%B0%E6%8D%AE-Frontmatter"><span class="nav-number">3.3.2.</span> <span class="nav-text">命令前置元数据(Frontmatter):</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90"><span class="nav-number">4.</span> <span class="nav-text">相关资源</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="凤炎忻"
+      src="/images/flyingPig.jpeg">
+  <p class="site-author-name" itemprop="name">凤炎忻</p>
+  <div class="site-description" itemprop="description">性浮脱，难酬一道，广涉寡精，杂而不博</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengyanxin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengyanxin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ph18317192001@163.com" title="E-Mail → mailto:ph18317192001@163.com" rel="noopener" target="_blank"><i class="fab fa-mail fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065" title="今日头条 → https:&#x2F;&#x2F;profile.zjurl.cn&#x2F;rogue&#x2F;ugc&#x2F;profile&#x2F;?user_id&#x3D;51893718065" rel="noopener" target="_blank"><i class="fab fa-jinritoutiao fa-fw"></i>今日头条</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477" title="百家号 → https:&#x2F;&#x2F;author.baidu.com&#x2F;home?from&#x3D;bjh_article&amp;app_id&#x3D;1665765419554477" rel="noopener" target="_blank"><i class="fab fa-baidu fa-fw"></i>百家号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;642cb9650000000011023394" rel="noopener" target="_blank"><i class="fab fa-xiaohongshu fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e" title="LibLib → https:&#x2F;&#x2F;www.liblib.art&#x2F;userpage&#x2F;c7816525373d4fbca7e45c1940ead98e" rel="noopener" target="_blank"><i class="fab fa-liblib fa-fw"></i>LibLib</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">凤炎忻</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">112k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:48</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,255' opacity='0.95' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '7EJkVswo79CmfmbwincRPjrA-gzGzoHsz',
+      appKey     : 'v7t6DWozwkcL2qIDeSC5kupC',
+      placeholder: "说点什么吧！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
