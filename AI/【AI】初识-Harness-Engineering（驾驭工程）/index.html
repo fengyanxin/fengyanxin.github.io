@@ -23,20 +23,27 @@
     var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="问题描述由于我想访问 GitHub 速度更快一些，使用了 SwitchHosts 对系统 Hosts 文件进行实时读写，在每一次同步远端文件进行写入时都提示要输入 Sudo 密码。 然后，我就想如何才能不每次都提示。">
+  <meta name="description" content="AI 模型已经能写出 100 万行代码。真正的挑战不再是让它写得更好，而是怎么驾驭它稳定、可靠、不失控地工作。这套围绕 AI 智能体构建约束、反馈与控制系统的方法论，就是 2026 年初迅速席卷工程圈的新范式 —— Harness Engineering（驾驭工程）。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Tips】Mac 如何取消 sudo 时输入密码的提示">
-<meta property="og:url" content="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Mac-%E5%A6%82%E4%BD%95%E5%8F%96%E6%B6%88-sudo-%E6%97%B6%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81/index.html">
+<meta property="og:title" content="【AI】初识 Harness Engineering（驾驭工程）">
+<meta property="og:url" content="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91%E5%88%9D%E8%AF%86-Harness-Engineering%EF%BC%88%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B%EF%BC%89/index.html">
 <meta property="og:site_name" content="凤炎忻的个人笔记">
-<meta property="og:description" content="问题描述由于我想访问 GitHub 速度更快一些，使用了 SwitchHosts 对系统 Hosts 文件进行实时读写，在每一次同步远端文件进行写入时都提示要输入 Sudo 密码。 然后，我就想如何才能不每次都提示。">
+<meta property="og:description" content="AI 模型已经能写出 100 万行代码。真正的挑战不再是让它写得更好，而是怎么驾驭它稳定、可靠、不失控地工作。这套围绕 AI 智能体构建约束、反馈与控制系统的方法论，就是 2026 年初迅速席卷工程圈的新范式 —— Harness Engineering（驾驭工程）。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-02-17T01:29:15.000Z">
-<meta property="article:modified_time" content="2025-02-17T01:45:24.000Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/%25E9%25A9%25BE%25E9%25A9%25AD%25E5%25B7%25A5%25E7%25A8%258B.webp">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260420164414313.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260420164550231.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260420165522625.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260420170304011.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260420170538917.png">
+<meta property="article:published_time" content="2026-04-20T08:36:38.000Z">
+<meta property="article:modified_time" content="2026-04-20T09:10:48.072Z">
 <meta property="article:author" content="凤炎忻">
-<meta property="article:tag" content="Tips">
+<meta property="article:tag" content="AI">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/%25E9%25A9%25BE%25E9%25A9%25AD%25E5%25B7%25A5%25E7%25A8%258B.webp">
 
-<link rel="canonical" href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Mac-%E5%A6%82%E4%BD%95%E5%8F%96%E6%B6%88-sudo-%E6%97%B6%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81/">
+<link rel="canonical" href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91%E5%88%9D%E8%AF%86-Harness-Engineering%EF%BC%88%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B%EF%BC%89/">
 
 
 <script id="page-configurations">
@@ -62,7 +69,7 @@
   padding: 1px 4px;
 }
 </style>
-  <title>【Tips】Mac 如何取消 sudo 时输入密码的提示 | 凤炎忻的个人笔记</title>
+  <title>【AI】初识 Harness Engineering（驾驭工程） | 凤炎忻的个人笔记</title>
   
 
 
@@ -212,7 +219,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Mac-%E5%A6%82%E4%BD%95%E5%8F%96%E6%B6%88-sudo-%E6%97%B6%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81/">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91%E5%88%9D%E8%AF%86-Harness-Engineering%EF%BC%88%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/flyingPig.jpeg">
@@ -225,7 +232,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【Tips】Mac 如何取消 sudo 时输入密码的提示
+          【AI】初识 Harness Engineering（驾驭工程）
         </h1>
 
         <div class="post-meta">
@@ -236,7 +243,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-02-17 09:29:15 / 修改时间：09:45:24" itemprop="dateCreated datePublished" datetime="2025-02-17T09:29:15+08:00">2025-02-17</time>
+              <time title="创建时间：2026-04-20 16:36:38 / 修改时间：17:10:48" itemprop="dateCreated datePublished" datetime="2026-04-20T16:36:38+08:00">2026-04-20</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -244,12 +251,12 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Tips/" itemprop="url" rel="index"><span itemprop="name">Tips</span></a>
+                  <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
                 </span>
             </span>
 
           
-            <span id="/Tips/%E3%80%90Tips%E3%80%91Mac-%E5%A6%82%E4%BD%95%E5%8F%96%E6%B6%88-sudo-%E6%97%B6%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81/" class="post-meta-item leancloud_visitors" data-flag-title="【Tips】Mac 如何取消 sudo 时输入密码的提示" title="阅读次数">
+            <span id="/AI/%E3%80%90AI%E3%80%91%E5%88%9D%E8%AF%86-Harness-Engineering%EF%BC%88%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B%EF%BC%89/" class="post-meta-item leancloud_visitors" data-flag-title="【AI】初识 Harness Engineering（驾驭工程）" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -264,8 +271,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/Tips/%E3%80%90Tips%E3%80%91Mac-%E5%A6%82%E4%BD%95%E5%8F%96%E6%B6%88-sudo-%E6%97%B6%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/Tips/%E3%80%90Tips%E3%80%91Mac-%E5%A6%82%E4%BD%95%E5%8F%96%E6%B6%88-sudo-%E6%97%B6%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81/" itemprop="commentCount"></span>
+    <a title="valine" href="/AI/%E3%80%90AI%E3%80%91%E5%88%9D%E8%AF%86-Harness-Engineering%EF%BC%88%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B%EF%BC%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/AI/%E3%80%90AI%E3%80%91%E5%88%9D%E8%AF%86-Harness-Engineering%EF%BC%88%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B%EF%BC%89/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -275,14 +282,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>191</span>
+              <span>2.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>9 分钟</span>
             </span>
 
         </div>
@@ -294,24 +301,133 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>由于我想访问 GitHub 速度更快一些，使用了 SwitchHosts 对系统 Hosts 文件进行实时读写，在每一次同步远端文件进行写入时都提示要输入 Sudo 密码。</p>
-<p>然后，我就想如何才能不每次都提示。</p>
+        <p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/%25E9%25A9%25BE%25E9%25A9%25AD%25E5%25B7%25A5%25E7%25A8%258B.webp"></p>
+<blockquote>
+<p>AI 模型已经能写出 100 万行代码。真正的挑战不再是让它写得更好，而是怎么驾驭它稳定、可靠、不失控地工作。这套围绕 AI 智能体构建约束、反馈与控制系统的方法论，就是 2026 年初迅速席卷工程圈的新范式 —— Harness Engineering（驾驭工程）。</p>
+</blockquote>
 <span id="more"></span>
 
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="确定自己的用户名"><a href="#确定自己的用户名" class="headerlink" title="确定自己的用户名"></a>确定自己的用户名</h3><p>打开终端，使用 <code>whoami</code> 命令查看自己的用户名: <code>&lt;user-account-name&gt;</code></p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whoami</span><br></pre></td></tr></table></figure>
-
-<h3 id="修改-sudoers-文件"><a href="#修改-sudoers-文件" class="headerlink" title="修改 sudoers 文件"></a>修改 sudoers 文件</h3><ol>
-<li>得到用户名称后就可以修改权限了</li>
-</ol>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">%</span> sudo vi <span class="operator">/</span>etc<span class="operator">/</span>sudoers</span><br><span class="line"><span class="type">Password</span>: </span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>输入密码后修改或增加用户权限</li>
-</ol>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># root and users <span class="keyword">in</span> group wheel can run anything on <span class="keyword">any</span> machine <span class="keyword">as</span> <span class="keyword">any</span> user</span><br><span class="line"><span class="operator">&lt;</span>user<span class="operator">-</span>account<span class="operator">-</span>name<span class="operator">&gt;</span>   <span class="type">ALL</span> <span class="operator">=</span> (<span class="type">ALL</span>)<span class="type">NOPASSWD</span>:<span class="type">ALL</span></span><br></pre></td></tr></table></figure>
-
-<p>保存即可，下次再用 sudo 命令就无需再输入密码了。</p>
+<h2 id="一、什么是-Harness-Engineering？"><a href="#一、什么是-Harness-Engineering？" class="headerlink" title="一、什么是 Harness Engineering？"></a>一、什么是 Harness Engineering？</h2><p><strong>Harness Engineering（驾驭工程）</strong> 是围绕 AI 智能体设计和构建<strong>约束机制、反馈回路、工作流控制和持续改进循环</strong>的系统工程实践。</p>
+<p>它不优化模型本身，而是优化模型运行的环境。核心哲学八个字：<strong>人类掌舵，智能体执行（Human Steer, Agent Execute）</strong>。</p>
+<p>Harness 一词来自马具——缰绳、马鞍、嚼子——这是一套引导强大但不可预测的动物的完整装备。<strong>驾驭工程不是去削弱 AI 的能力，而是为它打造一套黄金缰绳，让它跑得又快又稳</strong>。</p>
+<p>这个概念由 HashiCorp 联合创始人 Mitchell Hashimoto 在 2026 年 2 月 5 日首次提出，六天后 OpenAI 在百万行代码实验报告中正式采用这一术语，随后 Martin Fowler 撰文深度分析，一个月内成为开发者社区的高频词。</p>
+<blockquote>
+<p>harness engineering is the idea that anytime you find an agent makes a mistake, you take the time to engineer a solution such that the agent will not make that mistake again in the future.<br>—— Mitchell Hashimoto</p>
+</blockquote>
+<p>这句话的潜台词是：<strong>Agent 的每一次失败，都是环境设计不完善的信号</strong>。正确的回应不是换一个更强的模型，而是重新设计它运行的环境。</p>
+<h2 id="二、为什么需要驾驭工程？真实数据说话"><a href="#二、为什么需要驾驭工程？真实数据说话" class="headerlink" title="二、为什么需要驾驭工程？真实数据说话"></a>二、为什么需要驾驭工程？真实数据说话</h2><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260420164414313.png"></p>
+<p>LangChain 的案例尤其有说服力：底层模型一个参数都没动，仅仅通过优化外部驾驭环境（文档结构、验证回路、追踪系统），编码 Agent 在 Terminal Bench 2.0 的得分从 52.8% 飙升至 66.5%，全球排名从第 30 位跃升至第 5 位。</p>
+<p>五个独立团队也得出了相同结论：<strong>瓶颈不在模型智能，而在基础设施</strong>。</p>
+<h2 id="三、AI-工程范式的三次跃迁"><a href="#三、AI-工程范式的三次跃迁" class="headerlink" title="三、AI 工程范式的三次跃迁"></a>三、AI 工程范式的三次跃迁</h2><p>要理解驾驭工程为何重要，需要先看清楚我们是怎么一步步走到这里的。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260420164550231.png"></p>
+<table>
+<thead>
+<tr>
+<th>范式</th>
+<th>核心问题</th>
+<th>优化对象</th>
+<th>交互模式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>提示词工程</td>
+<td>怎么把话说清楚</td>
+<td>Prompt 的措辞、格式、示例</td>
+<td>一问一答</td>
+</tr>
+<tr>
+<td>上下文工程</td>
+<td>怎么给 AI 喂信息</td>
+<td>文档、代码片段、历史对话</td>
+<td>信息注入 → 生成</td>
+</tr>
+<tr>
+<td>驾驭工程</td>
+<td>怎么让 Agent 可靠工作</td>
+<td>约束、反馈回路、控制系统</td>
+<td>人类掌舵，Agent 执行</td>
+</tr>
+</tbody></table>
+<p>一个好记的类比：</p>
+<ul>
+<li>Prompt Engineering —— <strong>对马喊话的技巧</strong></li>
+<li>Context Engineering —— <strong>给马看的地图</strong></li>
+<li>Harness Engineering —— <strong>给马造一条高速公路，配上护栏、限速牌和加油站</strong></li>
+</ul>
+<h2 id="四、Agent-常见失败模式"><a href="#四、Agent-常见失败模式" class="headerlink" title="四、Agent 常见失败模式"></a>四、Agent 常见失败模式</h2><p>Anthropic 工程师在长时间运行 Agent 的过程中，总结了三种典型的翻车姿势，正是驾驭工程要解决的核心痛点：</p>
+<ul>
+<li><p><strong>失败模式 1：试图一步到位（One-shotting）</strong><br>Agent 倾向于在一个会话里把所有功能都做完。结果是上下文窗口耗尽，留下一堆没有文档的半成品代码，下一个会话启动时只能花大量时间猜测之前发生了什么。</p>
+</li>
+<li><p><strong>失败模式 2：过早宣布胜利</strong><br>在项目后期，当部分功能已经完成后，Agent 会环顾四周，看到已有进展就直接宣布任务完成——即使还有大量功能未实现。</p>
+</li>
+<li><p><strong>失败模式 3：过早标记功能完成</strong><br>在没有明确提示的情况下，Agent 写完代码就标记为完成，却没有做端到端测试。单元测试或 curl 命令通过了不代表功能真正可用。</p>
+</li>
+</ul>
+<p>此外，智能体还有一个危险特性：<strong>它非常擅长模式复制</strong>。代码库里有什么模式，它就忠实地复制并放大——包括坏模式和架构漂移。这意味着不加约束的 Agent 会以惊人的速度积累技术债务。</p>
+<h2 id="五、驾驭工程的四大护栏"><a href="#五、驾驭工程的四大护栏" class="headerlink" title="五、驾驭工程的四大护栏"></a>五、驾驭工程的四大护栏</h2><p>综合 OpenAI、Anthropic、LangChain 和 Martin Fowler 的实践，Harness 可以归纳为四个核心组件，即四根”护栏”：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260420165522625.png"></p>
+<h4 id="护栏一：上下文工程（Context-Engineering）——-新员工手册"><a href="#护栏一：上下文工程（Context-Engineering）——-新员工手册" class="headerlink" title="护栏一：上下文工程（Context Engineering）—— 新员工手册"></a>护栏一：上下文工程（Context Engineering）—— 新员工手册</h4><p>就像给新员工一本详细的工作手册，<strong>AGENTS.md</strong> 是 AI 智能体进入代码仓库时看到的第一份指南。但这不是一本静态的 1000 页说明书——上下文是稀缺资源，过多的指导反而会挤掉任务、代码和相关文档的空间，变成陈旧规则的坟场。</p>
+<p>更好的做法是：提供一个稳定、小巧的入口点，然后教 Agent 根据当前任务按需检索和拉取更多的上下文。Mitchell Hashimoto 的 Ghostty 项目 AGENTS.md 里每一行都对应一个历史 Agent 失败案例 —— 文档是活的反馈循环，不是静态制品。</p>
+<h4 id="护栏二：架构约束（Architecture-Constraints）——-缰绳"><a href="#护栏二：架构约束（Architecture-Constraints）——-缰绳" class="headerlink" title="护栏二：架构约束（Architecture Constraints）—— 缰绳"></a>护栏二：架构约束（Architecture Constraints）—— 缰绳</h4><p>OpenAI 团队建立了严格的层级依赖模型：</p>
+<p><strong>Types → Config → Repo → Service → Runtime → UI</strong></p>
+<p>下层不能反向依赖上层。所有架构规则被编码为自定义 Linter 规则，违反即 CI 阻止合并——无论代码是人写的还是 AI 写的。</p>
+<p>有个关键细节：Linter 的错误信息本身也是上下文工程。它不只说你违反了规则 X，而是解释为什么这个规则存在、正确做法是什么，这样 Agent 读到错误后就能自我理解并修正，不需要人类介入。</p>
+<h4 id="护栏三：反馈循环（Feedback-Loop）——-智能体审智能体"><a href="#护栏三：反馈循环（Feedback-Loop）——-智能体审智能体" class="headerlink" title="护栏三：反馈循环（Feedback Loop）—— 智能体审智能体"></a>护栏三：反馈循环（Feedback Loop）—— 智能体审智能体</h4><p>传统开发中，人类工程师负责代码审查（Code Review）。在驾驭工程中，这个工作变成了智能体对智能体的方式：Codex 在本地审核自身更改，请求额外审查，循环往复直到通过。</p>
+<p>反馈循环中的钩子可以运行预定义的测试套件，并在失败时带着错误信息循环回到模型，或者提示模型独立评估其代码。如果 AI 写的测试用例通过了带有 Bug 的代码，Harness 就会判定测试无效，强迫它重新思考测试边界。</p>
+<h4 id="护栏四：熵管理（Entropy-Management）——-垃圾回收"><a href="#护栏四：熵管理（Entropy-Management）——-垃圾回收" class="headerlink" title="护栏四：熵管理（Entropy Management）—— 垃圾回收"></a>护栏四：熵管理（Entropy Management）—— 垃圾回收</h4><p>随着时间推移，软件系统会逐渐混乱（熵增），技术债务会积累。OpenAI 采用持续小额偿还的策略，而不是等问题严重时集中处理 —— 他们把这个方法形象地称为<strong>垃圾回收</strong>，并认为技术债务就像高息贷款。</p>
+<p>具体措施：定期运行后台 Codex 任务扫描偏差、更新质量等级、发起针对性重构 PR。此外还有一个专门的 <strong>Doc-gardening Agent</strong>（文档园丁代理），在后台自动扫描文档与代码之间的不一致，发现过时内容就自动提交 PR 修复 —— Agent 为 Agent 维护文档。</p>
+<h2 id="六、六大行业共识"><a href="#六、六大行业共识" class="headerlink" title="六、六大行业共识"></a>六、六大行业共识</h2><p>综合 OpenAI、Anthropic、LangChain、Stripe、HashiCorp 等多个独立信息源，业界在以下六个方面已形成明确共识：</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>共识</th>
+<th>核心观点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>瓶颈在基础设施，不在模型智能</td>
+<td>五个独立团队得出相同结论。仅改变 Harness 工具格式，就能让模型得分从 6.7% 跳到 68.3%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>文档必须是活的反馈循环</td>
+<td>静态文档是坟场，动态文档才有价值。让后台 Agent 定期清理过时文档并提交 PR</td>
+</tr>
+<tr>
+<td>3</td>
+<td>思考与执行分离</td>
+<td>复杂任务不可能在单个上下文窗口内完成，需要 Orchestrator + Worker 分层架构，状态持久化到外部存储</td>
+</tr>
+<tr>
+<td>4</td>
+<td>上下文不是越多越好</td>
+<td>上下文是稀缺资源。巨大的指令文件会挤掉任务空间，应按需检索、动态注入</td>
+</tr>
+<tr>
+<td>5</td>
+<td>约束必须自动化</td>
+<td>人工 Review 是瓶颈。护栏要编码为 Linter、CI、类型系统，让机器来执行而非人</td>
+</tr>
+<tr>
+<td>6</td>
+<td>工程师角色在转变</td>
+<td>从代码的编写者变成环境的建筑师。最大的工程挑战是设计让 Agent 可靠工作的控制系统</td>
+</tr>
+</tbody></table>
+<h2 id="七、Harness-与传统框架的关系"><a href="#七、Harness-与传统框架的关系" class="headerlink" title="七、Harness 与传统框架的关系"></a>七、Harness 与传统框架的关系</h2><p>Harness 不是 SDK、脚手架或 Agent 框架的替代品，而是位于它们之上的一层：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260420170304011.png"></p>
+<p>传统框架解决的是：<strong>如何构建 AI 智能体</strong>，而驾驭层解决的是完全不同的问题：<strong>智能体如何可靠地运行</strong>。</p>
+<p>模型正在逐渐吸收框架约 80% 的功能（智能体定义、消息路由、任务生命周期……），但剩余 20% —— <strong>持久化、确定性重放、成本控制、可观测性、错误恢复</strong> —— 正是驾驭层存在的价值。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Harness Engineering 不是某一家公司的实验，而是整个行业正在经历的范式转移。</p>
+<blockquote>
+<p>Birgitta Böckeler 的总结最为精辟：</p>
+<p>为了获得更高的 AI 自主性，运行时必须受到更严格的约束。增加信任需要的不是更多自由，而是更多限制。<br>就像高速公路上的护栏 —— 正是因为有护栏，你才敢踩到 120 码。</p>
+</blockquote>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260420170538917.png"></p>
+<p>软件开发的未来，可能不再是关于我们能写多快多好的代码，而是关于<strong>我们能设计多聪明、多鲁棒的系统来驾驭 AI 代理的巨大能量</strong>。</p>
+<p>工程师的价值正在从执行者转变为赋能者和系统思考者 —— 从构建产品转向构建能够构建产品的工厂。</p>
 
     </div>
 
@@ -361,7 +477,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Mac-%E5%A6%82%E4%BD%95%E5%8F%96%E6%B6%88-sudo-%E6%97%B6%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81/" title="【Tips】Mac 如何取消 sudo 时输入密码的提示">https://fengyanxin.github.io/Tips/【Tips】Mac-如何取消-sudo-时输入密码/</a>
+    <a href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91%E5%88%9D%E8%AF%86-Harness-Engineering%EF%BC%88%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B%EF%BC%89/" title="【AI】初识 Harness Engineering（驾驭工程）">https://fengyanxin.github.io/AI/【AI】初识-Harness-Engineering（驾驭工程）/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -452,7 +568,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Tips/" rel="tag"><i class="fa fa-tag"></i> Tips</a>
+              <a href="/tags/AI/" rel="tag"><i class="fa fa-tag"></i> AI</a>
           </div>
 
         
@@ -461,13 +577,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/%E9%9A%8F%E7%AC%94/%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8E-DeepSeek-%E9%97%B2%E8%81%8A/" rel="prev" title="第一次与 DeepSeek 闲聊">
-      <i class="fa fa-chevron-left"></i> 第一次与 DeepSeek 闲聊
+    <a href="/AI/%E3%80%90AI%E3%80%91Claude-Code-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" rel="prev" title="【AI】Claude Code 入门教程">
+      <i class="fa fa-chevron-left"></i> 【AI】Claude Code 入门教程
     </a></div>
-      <div class="post-nav-item">
-    <a href="/Tips/%E3%80%90Tips%E3%80%91HTTP-%E5%93%8D%E5%BA%94%E7%8A%B6%E6%80%81%E7%A0%81/" rel="next" title="【Tips】HTTP 响应状态码">
-      【Tips】HTTP 响应状态码 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -527,7 +640,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AE%E5%AE%9A%E8%87%AA%E5%B7%B1%E7%9A%84%E7%94%A8%E6%88%B7%E5%90%8D"><span class="nav-number">2.1.</span> <span class="nav-text">确定自己的用户名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-sudoers-%E6%96%87%E4%BB%B6"><span class="nav-number">2.2.</span> <span class="nav-text">修改 sudoers 文件</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF-Harness-Engineering%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">一、什么是 Harness Engineering？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B%EF%BC%9F%E7%9C%9F%E5%AE%9E%E6%95%B0%E6%8D%AE%E8%AF%B4%E8%AF%9D"><span class="nav-number">2.</span> <span class="nav-text">二、为什么需要驾驭工程？真实数据说话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81AI-%E5%B7%A5%E7%A8%8B%E8%8C%83%E5%BC%8F%E7%9A%84%E4%B8%89%E6%AC%A1%E8%B7%83%E8%BF%81"><span class="nav-number">3.</span> <span class="nav-text">三、AI 工程范式的三次跃迁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81Agent-%E5%B8%B8%E8%A7%81%E5%A4%B1%E8%B4%A5%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">四、Agent 常见失败模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B%E7%9A%84%E5%9B%9B%E5%A4%A7%E6%8A%A4%E6%A0%8F"><span class="nav-number">5.</span> <span class="nav-text">五、驾驭工程的四大护栏</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%A4%E6%A0%8F%E4%B8%80%EF%BC%9A%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%88Context-Engineering%EF%BC%89%E2%80%94%E2%80%94-%E6%96%B0%E5%91%98%E5%B7%A5%E6%89%8B%E5%86%8C"><span class="nav-number">5.0.1.</span> <span class="nav-text">护栏一：上下文工程（Context Engineering）—— 新员工手册</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%A4%E6%A0%8F%E4%BA%8C%EF%BC%9A%E6%9E%B6%E6%9E%84%E7%BA%A6%E6%9D%9F%EF%BC%88Architecture-Constraints%EF%BC%89%E2%80%94%E2%80%94-%E7%BC%B0%E7%BB%B3"><span class="nav-number">5.0.2.</span> <span class="nav-text">护栏二：架构约束（Architecture Constraints）—— 缰绳</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%A4%E6%A0%8F%E4%B8%89%EF%BC%9A%E5%8F%8D%E9%A6%88%E5%BE%AA%E7%8E%AF%EF%BC%88Feedback-Loop%EF%BC%89%E2%80%94%E2%80%94-%E6%99%BA%E8%83%BD%E4%BD%93%E5%AE%A1%E6%99%BA%E8%83%BD%E4%BD%93"><span class="nav-number">5.0.3.</span> <span class="nav-text">护栏三：反馈循环（Feedback Loop）—— 智能体审智能体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%A4%E6%A0%8F%E5%9B%9B%EF%BC%9A%E7%86%B5%E7%AE%A1%E7%90%86%EF%BC%88Entropy-Management%EF%BC%89%E2%80%94%E2%80%94-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="nav-number">5.0.4.</span> <span class="nav-text">护栏四：熵管理（Entropy Management）—— 垃圾回收</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%85%AD%E5%A4%A7%E8%A1%8C%E4%B8%9A%E5%85%B1%E8%AF%86"><span class="nav-number">6.</span> <span class="nav-text">六、六大行业共识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81Harness-%E4%B8%8E%E4%BC%A0%E7%BB%9F%E6%A1%86%E6%9E%B6%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">7.</span> <span class="nav-text">七、Harness 与传统框架的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
