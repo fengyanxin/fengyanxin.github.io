@@ -7,7 +7,7 @@ categories:
 - AI
 ---
 
-![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/%25E9%25A9%25BE%25E9%25A9%25AD%25E5%25B7%25A5%25E7%25A8%258B.webp)
+![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260421090845490.png)
 
 > AI 模型已经能写出 100 万行代码。真正的挑战不再是让它写得更好，而是怎么驾驭它稳定、可靠、不失控地工作。这套围绕 AI 智能体构建约束、反馈与控制系统的方法论，就是 2026 年初迅速席卷工程圈的新范式 —— Harness Engineering（驾驭工程）。
 > 
