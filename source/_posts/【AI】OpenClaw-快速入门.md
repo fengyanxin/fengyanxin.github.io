@@ -8,7 +8,7 @@ categories:
 - AI
 ---
 
-![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/fe0e8572-f35b-4e20-8b00-7723e48ec498.png)
+![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260423170323711.png)
 
 ## 简介
 
@@ -401,11 +401,11 @@ OpenClaw 常用命令一览表：
 
 可以使用它们的镜像，一键安装：
 
-![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/c63833b3-74f7-4577-9f1c-17fd807859d8.png)
+![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260423171502213.png)
 
 使用腾讯云的轻量级服务器安装：
 
-![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/985526b6-d54a-4ed2-8111-0a19bc921963.png)
+![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260423170630317.png)
 
 ## 为什么“养龙虾”会火？
 
@@ -460,3 +460,7 @@ openclaw uninstall
 openclaw uninstall --all --yes --non-interactive
 npx -y openclaw uninstall --all --yes --non-interactive
 ```
+
+## 参考资料
+
+> 1、[OpenClaw (Clawdbot) 教程](https://www.runoob.com/ai-agent/openclaw-clawdbot-tutorial.html)
