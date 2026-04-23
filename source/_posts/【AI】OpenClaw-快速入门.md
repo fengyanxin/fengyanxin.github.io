@@ -118,21 +118,6 @@ pnpm openclaw onboard --install-daemon
 pnpm gateway:watch
 ```
 
-## 卸载
-
-**使用内置卸载程序：**
-
-``` swift
-openclaw uninstall
-```
-
-**非交互式（自动化 / npx）：**
-
-``` swift
-openclaw uninstall --all --yes --non-interactive
-npx -y openclaw uninstall --all --yes --non-interactive
-```
-
 ## 配置
 
 我们推荐使用一键脚本安装。
@@ -453,3 +438,25 @@ OpenClaw 常用命令一览表：
 | 工程级操作 | 强 | 强 | 中 |
 | 本地自动化 | 原生支持 | 较弱 | 较弱 |
 
+## 风险与局限
+
+- ‌安全隐患突出‌：因需授予‌高系统权限‌，若配置不当易导致端口暴露、信息泄露或设备被黑客控制；第三方插件存在“投毒”风险。‌‌
+‌‌
+- ‌可靠性不足‌：存在‌AI 幻觉‌问题，可能编造信息或误删文件，用于专利申请等严谨场景时可能引发不诚信申请风险。
+‌‌
+- 使用门槛较高‌：安装配置复杂，Token 消耗量大，普通用户需投入大量时间调试（即“养虾”），运维成本不容忽视。
+
+## 卸载
+
+**使用内置卸载程序：**
+
+``` swift
+openclaw uninstall
+```
+
+**非交互式（自动化 / npx）：**
+
+``` swift
+openclaw uninstall --all --yes --non-interactive
+npx -y openclaw uninstall --all --yes --non-interactive
+```
