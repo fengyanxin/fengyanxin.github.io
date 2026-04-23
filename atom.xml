@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2026-04-23T08:25:44.529Z</updated>
+  <updated>2026-04-23T09:17:55.236Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -21,10 +21,10 @@
     <link href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91OpenClaw-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/"/>
     <id>https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91OpenClaw-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</id>
     <published>2026-04-23T06:45:18.000Z</published>
-    <updated>2026-04-23T08:25:44.529Z</updated>
+    <updated>2026-04-23T09:17:55.236Z</updated>
     
     
-    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/fe0e8572-f35b-4e20-8b00-7723e48ec498.png&quot;&gt;&lt;/p&gt;
+    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260423170323711.png&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;OpenClaw（&lt;strong&gt;原名 Clawdbot，过渡名 Moltbot&lt;/strong&gt;）是 2026 年 1 月突然爆火的开源个人 AI 助手项目，由 Peter Steinberger（PSPDFKit 创始人）开发。&lt;/p&gt;
 &lt;p&gt;OpenClaw 是一个可执行任务的智能体，我们给指令，它不仅回答，还能主动操作系统、访问网页、处理邮件、整理文件、发起提醒甚至自动编写代码。&lt;/p&gt;
 &lt;p&gt;OpenClaw 是一个把 &lt;strong&gt;本地算力 + 大模型 Agent 自动化&lt;/strong&gt; 玩到极致的开发者效率工具。&lt;/p&gt;
@@ -239,9 +239,9 @@
     
     <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="GitHub" scheme="https://fengyanxin.github.io/tags/GitHub/"/>
-    
     <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
+    
+    <category term="GitHub" scheme="https://fengyanxin.github.io/tags/GitHub/"/>
     
   </entry>
   
