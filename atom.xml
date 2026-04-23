@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2026-04-21T01:10:30.284Z</updated>
+  <updated>2026-04-23T08:15:12.540Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【AI】OpenClaw 快速入门</title>
+    <link href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91OpenClaw-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/"/>
+    <id>https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91OpenClaw-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</id>
+    <published>2026-04-23T06:45:18.000Z</published>
+    <updated>2026-04-23T08:15:12.540Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/fe0e8572-f35b-4e20-8b00-7723e48ec498.png&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;OpenClaw（&lt;strong&gt;原名 Clawdbot，过渡名 Moltbot&lt;/strong&gt;）是 2026 年 1 月突然爆火的开源个人 AI 助手项目，由 Peter Steinberger（PSPDFKit 创始人）开发。&lt;/p&gt;
+&lt;p&gt;OpenClaw 是一个可执行任务的智能体，我们给指令，它不仅回答，还能主动操作系统、访问网页、处理邮件、整理文件、发起提醒甚至自动编写代码。&lt;/p&gt;
+&lt;p&gt;OpenClaw 是一个把 &lt;strong&gt;本地算力 + 大模型 Agent 自动化&lt;/strong&gt; 玩到极致的开发者效率工具。&lt;/p&gt;
+&lt;p&gt;OpenClaw 目标是让 AI 不只是给建议，而是直接完成完整工程任务。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="AI" scheme="https://fengyanxin.github.io/categories/AI/"/>
+    
+    
+    <category term="AI" scheme="https://fengyanxin.github.io/tags/AI/"/>
+    
+    <category term="OpenClaw" scheme="https://fengyanxin.github.io/tags/OpenClaw/"/>
+    
+  </entry>
   
   <entry>
     <title>【AI】初识 Harness Engineering（驾驭工程）</title>
@@ -439,27 +464,6 @@
     
     <summary type="html">&lt;p&gt;在 iOS 中，UILabel 常常需要计算高度来实现动态高度变化，以下是一些关于 label 字数和行数的计算方法总结，以备需要之时查看。&lt;/p&gt;
 &lt;h3 id=&quot;1、计算label行数：&quot;&gt;&lt;a href=&quot;#1、计算label行数：&quot; class=&quot;headerlink&quot; title=&quot;1、计算label行数：&quot;&gt;&lt;/a&gt;1、计算label行数：&lt;/h3&gt;&lt;figure class=&quot;highlight swift&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;operator&quot;&gt;-&lt;/span&gt; (&lt;span class=&quot;type&quot;&gt;NSUInteger&lt;/span&gt;)lineCount&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;span class=&quot;type&quot;&gt;CGSize&lt;/span&gt; size &lt;span class=&quot;operator&quot;&gt;=&lt;/span&gt; [&lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt; sizeThatFits:&lt;span class=&quot;type&quot;&gt;CGSizeMake&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;.frame.size.width, &lt;span class=&quot;type&quot;&gt;CGFLOAT_MAX&lt;/span&gt;)];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;MAX&lt;/span&gt;((int)(size.height &lt;span class=&quot;operator&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;.font.lineHeight), &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
-    
-    
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/categories/iOS/"/>
-    
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-    <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【iOS】view点击事件穿透</title>
-    <link href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91view%E7%82%B9%E5%87%BB%E4%BA%8B%E4%BB%B6%E7%A9%BF%E9%80%8F%E5%92%8C%E6%94%B9%E5%8F%98/"/>
-    <id>https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91view%E7%82%B9%E5%87%BB%E4%BA%8B%E4%BB%B6%E7%A9%BF%E9%80%8F%E5%92%8C%E6%94%B9%E5%8F%98/</id>
-    <published>2025-03-28T06:59:01.000Z</published>
-    <updated>2025-03-28T07:13:03.000Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;事件传递&quot;&gt;&lt;a href=&quot;#事件传递&quot; class=&quot;headerlink&quot; title=&quot;事件传递&quot;&gt;&lt;/a&gt;事件传递&lt;/h2&gt;&lt;p&gt;当触摸一个视图时，首先系统会捕捉此事件，并为此事件创建一个 UIEvent 对象，将此对象加入当前应用程序的事件队列中，然后由 UIApplication 对象从队列中，一个一个取出来进行分发，首先分发给 UIWindow 对象，然后由 UIWindow 对象分发给触摸的视图对象，也就是第一响应者对象。&lt;/p&gt;</summary>
     
     
     

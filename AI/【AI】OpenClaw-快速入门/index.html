@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="简介OpenClaw（原名 Clawdbot，过渡名 Moltbot）是 2026 年 1 月突然爆火的开源个人 AI 助手项目，由 Peter Steinberger（PSPDFKit 创始人）开发。 OpenClaw 是一个可执行任务的智能体，我们给指令，它不仅回答，还能主动操作系统、访问网页、处理邮件、整理文件、发起提醒甚至自动编写代码。 OpenClaw 是一个把 本地算力 + 大模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【AI】OpenClaw 快速入门">
+<meta property="og:url" content="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91OpenClaw-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="凤炎忻的个人笔记">
+<meta property="og:description" content="简介OpenClaw（原名 Clawdbot，过渡名 Moltbot）是 2026 年 1 月突然爆火的开源个人 AI 助手项目，由 Peter Steinberger（PSPDFKit 创始人）开发。 OpenClaw 是一个可执行任务的智能体，我们给指令，它不仅回答，还能主动操作系统、访问网页、处理邮件、整理文件、发起提醒甚至自动编写代码。 OpenClaw 是一个把 本地算力 + 大模型">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/fe0e8572-f35b-4e20-8b00-7723e48ec498.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/e1de4820-039c-42f8-9189-761ca9baa593.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/aca86b08-25b3-4b9b-80ae-efb6eced5252.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/78ba08f8-9c17-476d-9c01-fecf9741bc57.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/9a5a1c3e-2826-4349-8e80-2fa228b903f2.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/434ba7fb-a0c4-4168-9b9f-a89ed80021e2.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/4fddc7d3-e0c0-44fc-98f8-e81cd32faf5b.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/7d416638-34f9-4c7b-92a7-7b777040c83c.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/4ee2f8a3-f15b-49e7-91eb-aac75269080f.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/f0249b24-068d-472a-8182-594c35703c9b.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/176a410e-369c-46b3-8f07-49d384a80f8c.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/Moltbot-Clawdbot-runoob3.webp">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260423160115548.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/c63833b3-74f7-4577-9f1c-17fd807859d8.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/985526b6-d54a-4ed2-8111-0a19bc921963.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/Moltbot-Clawdbot-runoob2-20260423160856553.png">
+<meta property="article:published_time" content="2026-04-23T06:45:18.000Z">
+<meta property="article:modified_time" content="2026-04-23T08:15:12.540Z">
+<meta property="article:author" content="凤炎忻">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="OpenClaw">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/fe0e8572-f35b-4e20-8b00-7723e48ec498.png">
+
+<link rel="canonical" href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91OpenClaw-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>【AI】OpenClaw 快速入门 | 凤炎忻的个人笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="凤炎忻的个人笔记" type="application/atom+xml">
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">凤炎忻的个人笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我有一壶酒，足以慰风尘！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section">标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section">分类<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">归档<span class="badge">53</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section">公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91OpenClaw-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/flyingPig.jpeg">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【AI】OpenClaw 快速入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-04-23 14:45:18 / 修改时间：16:15:12" itemprop="dateCreated datePublished" datetime="2026-04-23T14:45:18+08:00">2026-04-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/AI/%E3%80%90AI%E3%80%91OpenClaw-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" class="post-meta-item leancloud_visitors" data-flag-title="【AI】OpenClaw 快速入门" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/AI/%E3%80%90AI%E3%80%91OpenClaw-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/AI/%E3%80%90AI%E3%80%91OpenClaw-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/fe0e8572-f35b-4e20-8b00-7723e48ec498.png"></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>OpenClaw（<strong>原名 Clawdbot，过渡名 Moltbot</strong>）是 2026 年 1 月突然爆火的开源个人 AI 助手项目，由 Peter Steinberger（PSPDFKit 创始人）开发。</p>
+<p>OpenClaw 是一个可执行任务的智能体，我们给指令，它不仅回答，还能主动操作系统、访问网页、处理邮件、整理文件、发起提醒甚至自动编写代码。</p>
+<p>OpenClaw 是一个把 <strong>本地算力 + 大模型 Agent 自动化</strong> 玩到极致的开发者效率工具。</p>
+<p>OpenClaw 目标是让 AI 不只是给建议，而是直接完成完整工程任务。</p>
+<span id="more"></span>
+
+<p>因为 Anthropic 在 1 月 27 日发律师函称 Clawd / Clawdbot与 Claude 太像，项目在当天紧急更名为 Moltbot（脱皮龙虾之意，吉祥物是小龙虾 Molty 🦞），但功能完全一致，旧命令 clawdbot 仍然兼容。</p>
+<p>Moltbot 是项目组为了应对侵权风险想出的过渡名字，OpenClaw 这是目前的最终官方名称。</p>
+<ul>
+<li>OpenClaw 官网: <a target="_blank" rel="noopener" href="https://openclaw.ai/">https://openclaw.ai/</a></li>
+<li>中文文档： <a target="_blank" rel="noopener" href="https://docs.openclaw.ai/zh-CN">https://docs.openclaw.ai/zh-CN</a></li>
+<li>Github 地址：<a target="_blank" rel="noopener" href="https://github.com/openclaw/openclaw">https://github.com/openclaw/openclaw</a></li>
+<li>OpenClaw 技能合集: <a target="_blank" rel="noopener" href="https://github.com/VoltAgent/awesome-openclaw-skills">https://github.com/VoltAgent/awesome-openclaw-skills</a></li>
+</ul>
+<h2 id="发展"><a href="#发展" class="headerlink" title="发展"></a>发展</h2><p>Clawbot、Moltbot 和 OpenClaw 其实是同一个开源项目，名字演进顺序为：</p>
+<blockquote>
+<p>Clawdbot → Moltbot → OpenClaw</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>时间线</th>
+<th>背景/原因</th>
+<th>本质关系</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Clawdbot / Clawbot</td>
+<td>2025 年末至 2026 年 1 月初</td>
+<td>最初项目名；灵感来自 Claude 和 claw（龙虾爪）梗</td>
+<td>原始名称，是最早出现在 GitHub 的身份</td>
+</tr>
+<tr>
+<td>Moltbot</td>
+<td>2026 年 1 月 27 日</td>
+<td>因 Anthropic 商标顾虑被要求更名</td>
+<td>中间过渡名字；功能、代码与 Clawdbot 一致</td>
+</tr>
+<tr>
+<td>OpenClaw</td>
+<td>2026 年 1 月 30 日之后</td>
+<td>抛弃版权冲突、强调开源性/长线品牌</td>
+<td>当前官方名称，也是今后文档、仓库等统一标识</td>
+</tr>
+</tbody></table>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>OpenClaw 的安装被设计得极为友好，即使是非开发者也能快速上手。</p>
+<p>系统要求（不一定 Mac mini）：</p>
+<ul>
+<li>硬件：极低，2GB RAM 即可运行。</li>
+<li>环境：支持 Mac, Windows, Linux，需要安装 Node.js (pnpm) 或使用 Docker。</li>
+</ul>
+<h3 id="1、推荐安装方式（一键脚本）："><a href="#1、推荐安装方式（一键脚本）：" class="headerlink" title="1、推荐安装方式（一键脚本）："></a>1、推荐安装方式（一键脚本）：</h3><p>直接通过终端，执行以下命令。</p>
+<p><strong>macOS/Linux 系统:</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl <span class="operator">-</span>fsSL https:<span class="comment">//openclaw.ai/install.sh | bash</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Windows 系统：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#<span class="type">PowerShell</span></span><br><span class="line">iwr <span class="operator">-</span>useb https:<span class="comment">//openclaw.ai/install.ps1 | iex</span></span><br><span class="line"></span><br><span class="line">#<span class="type">CMD</span></span><br><span class="line">curl <span class="operator">-</span>fsSL https:<span class="comment">//openclaw.ai/install.cmd -o install.cmd &amp;&amp; install.cmd &amp;&amp; del install.cmd</span></span><br></pre></td></tr></table></figure>
+
+<p>这会自动安装 Node.js（≥22）并完成基本配置。</p>
+<h3 id="2、手动安装"><a href="#2、手动安装" class="headerlink" title="2、手动安装"></a>2、手动安装</h3><p>需要 Node.js ≥22 并完成基本配置：</p>
+<p><strong>使用 npm：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm i <span class="operator">-</span>g openclaw</span><br><span class="line"></span><br><span class="line"># 如果速度慢可以指定国内镜像</span><br><span class="line">npm i <span class="operator">-</span>g openclaw <span class="operator">--</span>registry<span class="operator">=</span>https:<span class="comment">//registry.npmmirror.com</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>或使用 pnpm：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pnpm add <span class="operator">-</span>g openclaw</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，初始化并安装后台服务（launchd / systemd 用户服务）：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openclaw onboard</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、从源码安装（开发模式）"><a href="#3、从源码安装（开发模式）" class="headerlink" title="3、从源码安装（开发模式）"></a>3、从源码安装（开发模式）</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">git clone https:<span class="comment">//github.com/openclaw/openclaw.git</span></span><br><span class="line">cd openclaw</span><br><span class="line"></span><br><span class="line">pnpm install</span><br><span class="line"></span><br><span class="line">pnpm ui:build   # 首次运行会自动安装 <span class="type">UI</span> 相关依赖并构建前端界面</span><br><span class="line">pnpm build      # 构建整个项目（包含后端与相关模块）</span><br><span class="line"></span><br><span class="line"># 初始化 <span class="type">OpenClaw</span> 并安装为系统后台服务（开机自动运行）</span><br><span class="line">pnpm openclaw onboard <span class="operator">--</span>install<span class="operator">-</span>daemon</span><br><span class="line"></span><br><span class="line"># 开发模式：监听 <span class="type">TypeScript</span> 代码变更并自动重载网关服务</span><br><span class="line">pnpm gateway:watch</span><br></pre></td></tr></table></figure>
+
+<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2><p><strong>使用内置卸载程序：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openclaw uninstall</span><br></pre></td></tr></table></figure>
+
+<p><strong>非交互式（自动化 / npx）：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openclaw uninstall <span class="operator">--</span>all <span class="operator">--</span>yes <span class="operator">--</span>non<span class="operator">-</span>interactive</span><br><span class="line">npx <span class="operator">-</span>y openclaw uninstall <span class="operator">--</span>all <span class="operator">--</span>yes <span class="operator">--</span>non<span class="operator">-</span>interactive</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>我们推荐使用一键脚本安装。</p>
+<p><strong>macOS/Linux 系统:</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl <span class="operator">-</span>fsSL https:<span class="comment">//openclaw.ai/install.sh | bash</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Windows 系统：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#<span class="type">PowerShell</span></span><br><span class="line">iwr <span class="operator">-</span>useb https:<span class="comment">//openclaw.ai/install.ps1 | iex</span></span><br><span class="line"></span><br><span class="line">#<span class="type">CMD</span></span><br><span class="line">curl <span class="operator">-</span>fsSL https:<span class="comment">//openclaw.ai/install.cmd -o install.cmd &amp;&amp; install.cmd &amp;&amp; del install.cmd</span></span><br></pre></td></tr></table></figure>
+
+<p>它会完成环境检测，并且安装必要的依赖，还会启动 onboarding(设置向导) 流程。</p>
+<p><strong>后期要重新进入设置向导，可以执行以下命令：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openclaw onboard <span class="operator">--</span>install<span class="operator">-</span>daemon</span><br></pre></td></tr></table></figure>
+
+<p>结果如下图：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/e1de4820-039c-42f8-9189-761ca9baa593.png" alt="img"></p>
+<p>然后，会提醒你这个龙虾能力很强，当然风险也很大，我们选 <code>yes</code>（no 就不安装了） 就好了：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/aca86b08-25b3-4b9b-80ae-efb6eced5252.png"></p>
+<p>接下来我们就选快速启动 <code>QuickStart</code> 选项：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/78ba08f8-9c17-476d-9c01-fecf9741bc57.png"></p>
+<p>接下来我们需要配置一个大模型，<code>Model/Auth Provider</code> 选择 AI 供应商，国内外的供应商基本都支持。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/9a5a1c3e-2826-4349-8e80-2fa228b903f2.png"></p>
+<p>如果没有海外的账号，配置咱们国内的 Qwen、MiniMax、智谱的 API key 也是可以的，认证配置文件（OAuth + API 密钥）在<code>~/.openclaw/agents/&lt;agentId&gt;/agent/auth-profiles.json</code>，后期也可以在这个文件上修改。</p>
+<p>然后会出现选择聊天工具的选项，海外的一般都没有可以选最后一个：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/434ba7fb-a0c4-4168-9b9f-a89ed80021e2.png"></p>
+<p>其他配置，比如端口的设置 <code>Gateway Port</code>，按默认的 <code>18789</code> 即可，比如 <strong>Skills、包的安装管理器选 npm 或其他</strong>，可以一路 Yes 下去。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/4fddc7d3-e0c0-44fc-98f8-e81cd32faf5b.png"></p>
+<p>选一些自己喜欢的 <strong>skills</strong>，也可以直接跳过，使用 <code>空格</code> 按键选择：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/7d416638-34f9-4c7b-92a7-7b777040c83c.png"></p>
+<p>这些 <code>API key</code>，没有的直接选 <code>no</code>：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/4ee2f8a3-f15b-49e7-91eb-aac75269080f.png"></p>
+<p>最后这三个钩子可以开启，使用 <code>空格</code> 按键选择，主要做内容引导日志和会话记录：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/f0249b24-068d-472a-8182-594c35703c9b.png"></p>
+<p>选择 <code>Open the Web UI</code>，使用浏览器打开：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/176a410e-369c-46b3-8f07-49d384a80f8c.png"></p>
+<p>安装完后，就会自动访问 <code>http://127.0.0.1:18789/chat</code>，就可以打开聊天界面让它开始工作。</p>
+<p>比如搜索最新的科技新闻：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/Moltbot-Clawdbot-runoob3.webp"></p>
+<p>启动后，我们可以使用 <code>openclaw status</code> 命令查看状态：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openclaw status</span><br></pre></td></tr></table></figure>
+
+<p>如果你在新手引导期间安装了服务，Gateway 网关应该已经在运行：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openclaw gateway status</span><br></pre></td></tr></table></figure>
+
+<p>手动运行（前台）：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openclaw gateway <span class="operator">--</span>port <span class="number">18789</span> <span class="operator">--</span>verbose</span><br></pre></td></tr></table></figure>
+
+<p>安装后可以执行的命令：</p>
+<ul>
+<li>运行新手引导：<code>openclaw onboard --install-daemon</code></li>
+<li>快速检查：<code>openclaw doctor</code></li>
+<li>检查 Gateway 网关健康状态：<code>openclaw status + openclaw health</code></li>
+<li>打开仪表板：<code>openclaw dashboard</code></li>
+</ul>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="使用技能"><a href="#使用技能" class="headerlink" title="使用技能"></a>使用技能</h3><p>技能是包含 <code>SKILL.md</code> 文件的独立文件夹，想要为 OpenClaw 代理拓展新功能，ClawHub 是查找、安装技能的最优选择。</p>
+<ul>
+<li>ClawHub 技能仓库地址：<a target="_blank" rel="noopener" href="https://clawhub.ai/">https://clawhub.ai/</a></li>
+<li>ClawHub 国内镜像：<a target="_blank" rel="noopener" href="https://skillhub.tencent.com/">https://skillhub.tencent.com/</a></li>
+</ul>
+<p><strong>安装 ClawHub 工具：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 推荐方式（npx 无需全局安装）</span><br><span class="line">npx clawhub<span class="meta">@latest</span> <span class="operator">--</span>version</span><br><span class="line"></span><br><span class="line"># 或全局安装（方便以后直接用 clawhub 命令）</span><br><span class="line">npm install <span class="operator">-</span>g clawhub</span><br><span class="line"># 或者用 pnpm</span><br><span class="line">pnpm add <span class="operator">-</span>g clawhub</span><br></pre></td></tr></table></figure>
+
+<p><strong>登录：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clawhub login</span><br></pre></td></tr></table></figure>
+
+<p><strong>搜索技能：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clawhub search <span class="string">&quot;postgres backups&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>下载安装新技能：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clawhub install my<span class="operator">-</span>skill<span class="operator">-</span>pack</span><br></pre></td></tr></table></figure>
+
+<p><strong>批量更新已安装技能：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clawhub update <span class="operator">--</span>all</span><br></pre></td></tr></table></figure>
+
+<h3 id="插件管理"><a href="#插件管理" class="headerlink" title="插件管理"></a>插件管理</h3><p>插件是轻量代码模块，可通过新增命令、工具及 Gateway RPC 能力，为 OpenClaw 拓展额外功能。</p>
+<p><strong>查看已加载插件：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openclaw plugins list</span><br></pre></td></tr></table></figure>
+
+<p><strong>安装官方插件（示例：语音通话插件）：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openclaw plugins install <span class="meta">@openclaw</span><span class="operator">/</span>voice<span class="operator">-</span>call</span><br></pre></td></tr></table></figure>
+
+<p><strong>插件安装后重启网关生效：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openclaw gateway restart</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><p>OpenClaw 常用命令一览表：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>分类</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>openclaw onboard</td>
+<td>初始化与安装</td>
+<td>交互式向导（配置模型、通道、网关、工作区）</td>
+</tr>
+<tr>
+<td>openclaw setup</td>
+<td>初始化与安装</td>
+<td>初始化配置 + 工作区（非交互版）</td>
+</tr>
+<tr>
+<td>openclaw configure</td>
+<td>初始化与安装</td>
+<td>交互式配置向导（模型、通道、技能）</td>
+</tr>
+<tr>
+<td>openclaw gateway status</td>
+<td>网关管理</td>
+<td>查看网关服务状态 + RPC 探活</td>
+</tr>
+<tr>
+<td>openclaw gateway start</td>
+<td>网关管理</td>
+<td>启动网关服务</td>
+</tr>
+<tr>
+<td>openclaw gateway stop</td>
+<td>网关管理</td>
+<td>停止网关服务</td>
+</tr>
+<tr>
+<td>openclaw gateway restart</td>
+<td>网关管理</td>
+<td>重启网关服务</td>
+</tr>
+<tr>
+<td>openclaw gateway run</td>
+<td>网关管理</td>
+<td>直接在前台运行网关（调试用）</td>
+</tr>
+<tr>
+<td>openclaw gateway health</td>
+<td>网关管理</td>
+<td>获取网关健康信息</td>
+</tr>
+<tr>
+<td>openclaw config file</td>
+<td>配置管理</td>
+<td>显示当前配置文件完整路径</td>
+</tr>
+<tr>
+<td>openclaw config get <path></path></td>
+<td>配置管理</td>
+<td>读取配置项</td>
+</tr>
+<tr>
+<td>openclaw config set <path></path> <value></value></td>
+<td>配置管理</td>
+<td>修改配置项</td>
+</tr>
+<tr>
+<td>openclaw config validate</td>
+<td>配置管理</td>
+<td>校验配置文件是否合法</td>
+</tr>
+<tr>
+<td>openclaw doctor</td>
+<td>诊断与状态</td>
+<td>一键健康检查 + 自动修复</td>
+</tr>
+<tr>
+<td>openclaw status</td>
+<td>诊断与状态</td>
+<td>显示会话健康状态和最近联系人</td>
+</tr>
+<tr>
+<td>openclaw health</td>
+<td>诊断与状态</td>
+<td>从运行中的网关拉取健康数据</td>
+</tr>
+<tr>
+<td>openclaw logs</td>
+<td>诊断与状态</td>
+<td>实时查看网关日志</td>
+</tr>
+<tr>
+<td>openclaw dashboard</td>
+<td>其他高频操作</td>
+<td>打开网页控制面板</td>
+</tr>
+<tr>
+<td>openclaw channels status</td>
+<td>其他高频操作</td>
+<td>查看已连接的聊天通道</td>
+</tr>
+<tr>
+<td>openclaw agent run</td>
+<td>其他高频操作</td>
+<td>手动触发一次代理运行</td>
+</tr>
+</tbody></table>
+<p>改完配置后记得运行 <code>openclaw gateway restart</code> 让改动生效～ 🦞</p>
+<h3 id="通道管理"><a href="#通道管理" class="headerlink" title="通道管理"></a>通道管理</h3><ul>
+<li><strong>WhatsApp</strong>：openclaw channels login（或扫描 QR）</li>
+<li><strong>Telegram</strong>：openclaw channels add –channel telegram（需 Bot Token）</li>
+<li><strong>Discord</strong>：openclaw channels add –channel discord（需 Bot Token）</li>
+<li><strong>iMessage</strong>：macOS 原生桥接</li>
+<li><strong>Slack</strong>：openclaw channels add –channel slack（需 Bot Token）</li>
+</ul>
+<h3 id="工作区结构（Workspace-Anatomy）"><a href="#工作区结构（Workspace-Anatomy）" class="headerlink" title="工作区结构（Workspace Anatomy）"></a>工作区结构（Workspace Anatomy）</h3><ul>
+<li><strong>AGENTS.md</strong>：指令说明</li>
+<li><strong>USER.md</strong>：偏好设置</li>
+<li><strong>MEMORY.md</strong>：长期记忆</li>
+<li><strong>HEARTBEAT.md</strong>：检查清单</li>
+<li><strong>SOUL.md</strong>：人格/语气</li>
+<li><strong>IDENTITY.md</strong>：名称/主题</li>
+<li><strong>BOOT.md</strong>：启动配置</li>
+<li><strong>根目录</strong>：~/.openclaw/workspace</li>
+</ul>
+<h3 id="聊天内斜杠命令"><a href="#聊天内斜杠命令" class="headerlink" title="聊天内斜杠命令"></a>聊天内斜杠命令</h3><ul>
+<li><code>/status</code>：健康 + 上下文</li>
+<li><code>/context list</code>：上下文贡献者</li>
+<li><code>/model &lt;m&gt;</code>：切换模型</li>
+<li><code>/compact</code>：释放窗口空间</li>
+<li><code>/new</code>：全新会话</li>
+<li><code>/stop</code>：中止当前运行</li>
+<li><code>/tts on|off</code>：切换语音</li>
+<li><code>/think</code>：切换推理模式</li>
+</ul>
+<h3 id="关键路径映射（Essential-Path-Map）"><a href="#关键路径映射（Essential-Path-Map）" class="headerlink" title="关键路径映射（Essential Path Map）"></a>关键路径映射（Essential Path Map）</h3><ul>
+<li><strong>主配置</strong>：~/.openclaw/openclaw.json</li>
+<li><strong>默认工作区</strong>：~/.openclaw/workspace/</li>
+<li><strong>智能体状态目录</strong>：~/.openclaw/agents/<cid>/</cid></li>
+<li><strong>OAuth &amp; API 密钥</strong>：<del>/.openclaw/agents/<agentId>/agent/auth-profiles.json，如果是旧版本的在</agentId></del>/.openclaw/credentials/</li>
+<li><strong>向量索引存储</strong>：~/.openclaw/memory/<cid>.sqlite</cid></li>
+<li><strong>全局共享技能</strong>：~/.openclaw/skills/</li>
+<li><strong>网关文件日志</strong>：/tmp/openclaw/*.log</li>
+</ul>
+<h3 id="语音与-TTS"><a href="#语音与-TTS" class="headerlink" title="语音与 TTS"></a>语音与 TTS</h3><ul>
+<li><strong>付费</strong>：OpenAI / ElevenLabs</li>
+<li><strong>免费</strong>：Edge TTS（无需 API Key）</li>
+<li><strong>自动 TTS</strong>：messages.tts.auto: “always”</li>
+</ul>
+<h3 id="内存与模型"><a href="#内存与模型" class="headerlink" title="内存与模型"></a>内存与模型</h3><ul>
+<li><strong>向量搜索</strong>：memory search “X”</li>
+<li><strong>模型切换</strong>：models set <model></model></li>
+<li><strong>认证设置</strong>：models auth setup</li>
+<li><strong>日志</strong>：memory/YYYY-MM-DD.md</li>
+</ul>
+<h3 id="Hooks-与技能"><a href="#Hooks-与技能" class="headerlink" title="Hooks 与技能"></a>Hooks 与技能</h3><ul>
+<li><strong>ClawHub</strong>：clawhub install <slug></slug></li>
+<li><strong>Hook 列表</strong>：openclaw hooks list</li>
+</ul>
+<h3 id="故障排除"><a href="#故障排除" class="headerlink" title="故障排除"></a>故障排除</h3><ul>
+<li>无 DM 回复 → 配对列表 → 批准</li>
+<li>群组中静音 → 检查提及模式配置</li>
+<li>认证过期 → models auth setup-token</li>
+<li>网关关闭 → doctor –deep</li>
+<li>内存 Bug → 重建内存索引</li>
+</ul>
+<h3 id="自动化与研究"><a href="#自动化与研究" class="headerlink" title="自动化与研究"></a>自动化与研究</h3><ul>
+<li><strong>浏览器</strong>：browser start/screenshot</li>
+<li><strong>子代理</strong>：/subagents list/info</li>
+<li><strong>定时任务</strong>：cron list/run <cid></cid></li>
+<li><strong>心跳</strong>：heartbeat.every: “30m”</li>
+</ul>
+<h2 id="通过第三方云直接安装配置"><a href="#通过第三方云直接安装配置" class="headerlink" title="通过第三方云直接安装配置"></a>通过第三方云直接安装配置</h2><p>现在各大平台都已经支持这个智能体，如果不想安装在本机，可以一键部署云上OpenClaw：</p>
+<ul>
+<li>阿里云：<a target="_blank" rel="noopener" href="https://www.aliyun.com/activity/ecs/clawdbot">https://www.aliyun.com/activity/ecs/clawdbot</a></li>
+<li>腾讯云：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2624973">https://cloud.tencent.com/developer/article/2624973</a></li>
+</ul>
+<p>使用阿里云的轻量级服务器安装：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260423160115548.png"></p>
+<p>可以使用它们的镜像，一键安装：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/c63833b3-74f7-4577-9f1c-17fd807859d8.png"></p>
+<p>使用腾讯云的轻量级服务器安装：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/985526b6-d54a-4ed2-8111-0a19bc921963.png"></p>
+<h2 id="为什么“养龙虾”会火？"><a href="#为什么“养龙虾”会火？" class="headerlink" title="为什么“养龙虾”会火？"></a>为什么“养龙虾”会火？</h2><ul>
+<li>真正做到了”像JARVIS一样”：能读写文件、跑终端命令、操作浏览器、收发邮件、日历、写代码、订机票、清空收件箱……</li>
+<li>本地优先 + 长期记忆：所有对话跨平台共享上下文，USER.md 和 memory/ 目录会越用越聪明</li>
+<li>支持几乎所有大模型：Claude、Gemini、OpenAI、Ollama 本地模型、Pi 等</li>
+<li>社区技能生态爆炸：ClawdHub 上已有 500+ 社区技能（Slack、Discord、GitHub、浏览器控制、macOS UI 自动化……）</li>
+<li>安装简单像 npm install，实际能力却很 spicy （开发者原话）</li>
+</ul>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/Moltbot-Clawdbot-runoob2-20260423160856553.png"></p>
+<p>其核心能力包括：</p>
+<ul>
+<li>将自然语言目标拆解为可执行步骤</li>
+<li>自动调用终端命令</li>
+<li>创建与修改项目文件</li>
+<li>运行代码并检测结果</li>
+<li>根据报错自动修复</li>
+</ul>
+<p>相比 Claude Code/OpenCode 这种代码补全工具，OpenClaw 更接近一个具备执行权限的工程型智能体。</p>
+<ul>
+<li>Claude Code 与 OpenCode等 强在代码质量与理解</li>
+<li>OpenClaw 强在自动完成整个工程流程</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>能力维度</th>
+<th>OpenClaw</th>
+<th>Claude Code</th>
+<th>OpenCode</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>任务规划</td>
+<td>强</td>
+<td>中</td>
+<td>中</td>
+</tr>
+<tr>
+<td>自动执行</td>
+<td>完整</td>
+<td>部分</td>
+<td>部分</td>
+</tr>
+<tr>
+<td>自我修复</td>
+<td>有</td>
+<td>无</td>
+<td>无</td>
+</tr>
+<tr>
+<td>工程级操作</td>
+<td>强</td>
+<td>强</td>
+<td>中</td>
+</tr>
+<tr>
+<td>本地自动化</td>
+<td>原生支持</td>
+<td>较弱</td>
+<td>较弱</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+    
+    
+    
+
+    <div>
+       
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------<i class="fa fa-paw"></i> That's all！Best wishes for you !!! <i class="fa fa-paw"></i>-------------</div>
+    
+</div>
+
+       
+    </div><div class="post-widgets">
+    <div class="likely">
+        <div class="twitter">Tweet</div>
+        <div class="facebook">Share</div>
+        <div class="linkedin">Link</div>
+        <div class="gplus">Plus</div>
+        <div class="vkontakte">Share</div>
+        <div class="odnoklassniki">Class</div>
+        <div class="telegram">Send</div>
+        <div class="whatsapp">Send</div>
+        <div class="pinterest">Pin</div>
+    </div>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.js"></script><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>凤炎忻
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91OpenClaw-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" title="【AI】OpenClaw 快速入门">https://fengyanxin.github.io/AI/【AI】OpenClaw-快速入门/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/fengyanxin">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.zhihu.com/people/peng-he-34-93">
+            <span class="icon">
+              <i class="fab fa-zhihu"></i>
+            </span>
+
+            <span class="label">知乎</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065">
+            <span class="icon">
+              <i class="fa fa-toutiao"></i>
+            </span>
+
+            <span class="label">今日头条</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477">
+            <span class="icon">
+              <i class="fa fa-baidu1"></i>
+            </span>
+
+            <span class="label">百家号</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394">
+            <span class="icon">
+              <i class="fab fa-xiaohongshu1"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e">
+            <span class="icon">
+              <i class="fab fa-liblib1"></i>
+            </span>
+
+            <span class="label">LibLib</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"><i class="fa fa-tag"></i> AI</a>
+              <a href="/tags/OpenClaw/" rel="tag"><i class="fa fa-tag"></i> OpenClaw</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/AI/%E3%80%90AI%E3%80%91%E5%88%9D%E8%AF%86-Harness-Engineering%EF%BC%88%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B%EF%BC%89/" rel="prev" title="【AI】初识 Harness Engineering（驾驭工程）">
+      <i class="fa fa-chevron-left"></i> 【AI】初识 Harness Engineering（驾驭工程）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E5%B1%95"><span class="nav-number">2.</span> <span class="nav-text">发展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">3.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%8E%A8%E8%8D%90%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F%EF%BC%88%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%EF%BC%89%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">1、推荐安装方式（一键脚本）：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85"><span class="nav-number">3.2.</span> <span class="nav-text">2、手动安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E4%BB%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85%EF%BC%88%E5%BC%80%E5%8F%91%E6%A8%A1%E5%BC%8F%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">3、从源码安装（开发模式）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%B8%E8%BD%BD"><span class="nav-number">4.</span> <span class="nav-text">卸载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">5.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8A%80%E8%83%BD"><span class="nav-number">6.1.</span> <span class="nav-text">使用技能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="nav-number">6.2.</span> <span class="nav-text">插件管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">6.3.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E9%81%93%E7%AE%A1%E7%90%86"><span class="nav-number">6.4.</span> <span class="nav-text">通道管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%8C%BA%E7%BB%93%E6%9E%84%EF%BC%88Workspace-Anatomy%EF%BC%89"><span class="nav-number">6.5.</span> <span class="nav-text">工作区结构（Workspace Anatomy）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%8A%E5%A4%A9%E5%86%85%E6%96%9C%E6%9D%A0%E5%91%BD%E4%BB%A4"><span class="nav-number">6.6.</span> <span class="nav-text">聊天内斜杠命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E8%B7%AF%E5%BE%84%E6%98%A0%E5%B0%84%EF%BC%88Essential-Path-Map%EF%BC%89"><span class="nav-number">6.7.</span> <span class="nav-text">关键路径映射（Essential Path Map）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E9%9F%B3%E4%B8%8E-TTS"><span class="nav-number">6.8.</span> <span class="nav-text">语音与 TTS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E4%B8%8E%E6%A8%A1%E5%9E%8B"><span class="nav-number">6.9.</span> <span class="nav-text">内存与模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hooks-%E4%B8%8E%E6%8A%80%E8%83%BD"><span class="nav-number">6.10.</span> <span class="nav-text">Hooks 与技能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4"><span class="nav-number">6.11.</span> <span class="nav-text">故障排除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E4%B8%8E%E7%A0%94%E7%A9%B6"><span class="nav-number">6.12.</span> <span class="nav-text">自动化与研究</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E7%AC%AC%E4%B8%89%E6%96%B9%E4%BA%91%E7%9B%B4%E6%8E%A5%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE"><span class="nav-number">7.</span> <span class="nav-text">通过第三方云直接安装配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E2%80%9C%E5%85%BB%E9%BE%99%E8%99%BE%E2%80%9D%E4%BC%9A%E7%81%AB%EF%BC%9F"><span class="nav-number">8.</span> <span class="nav-text">为什么“养龙虾”会火？</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="凤炎忻"
+      src="/images/flyingPig.jpeg">
+  <p class="site-author-name" itemprop="name">凤炎忻</p>
+  <div class="site-description" itemprop="description">性浮脱，难酬一道，广涉寡精，杂而不博</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengyanxin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengyanxin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ph18317192001@163.com" title="E-Mail → mailto:ph18317192001@163.com" rel="noopener" target="_blank"><i class="fab fa-mail fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065" title="今日头条 → https:&#x2F;&#x2F;profile.zjurl.cn&#x2F;rogue&#x2F;ugc&#x2F;profile&#x2F;?user_id&#x3D;51893718065" rel="noopener" target="_blank"><i class="fab fa-jinritoutiao fa-fw"></i>今日头条</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477" title="百家号 → https:&#x2F;&#x2F;author.baidu.com&#x2F;home?from&#x3D;bjh_article&amp;app_id&#x3D;1665765419554477" rel="noopener" target="_blank"><i class="fab fa-baidu fa-fw"></i>百家号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;642cb9650000000011023394" rel="noopener" target="_blank"><i class="fab fa-xiaohongshu fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e" title="LibLib → https:&#x2F;&#x2F;www.liblib.art&#x2F;userpage&#x2F;c7816525373d4fbca7e45c1940ead98e" rel="noopener" target="_blank"><i class="fab fa-liblib fa-fw"></i>LibLib</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">凤炎忻</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">117k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">7:06</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,255' opacity='0.95' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '7EJkVswo79CmfmbwincRPjrA-gzGzoHsz',
+      appKey     : 'v7t6DWozwkcL2qIDeSC5kupC',
+      placeholder: "说点什么吧！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
