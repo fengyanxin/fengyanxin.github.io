@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="什么是 Cursor CLI ?Cursor CLI 是 Cursor 提供的终端 AI 编程助手。你可以在命令行中：  与 AI Agent 对话，编写、审查、修改代码 在 CI&#x2F;CD 流水线中自动化代码审查、修复、生成 通过 MCP 扩展工具能力（数据库、浏览器、API 等） 在不打开 IDE 的情况下完成大部分开发任务  CLI 的核心命令是 agent（部分系统也支持 cursor ag">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【AI】Cursor CLI 快速入门">
+<meta property="og:url" content="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Cursor-CLI-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="凤炎忻的个人笔记">
+<meta property="og:description" content="什么是 Cursor CLI ?Cursor CLI 是 Cursor 提供的终端 AI 编程助手。你可以在命令行中：  与 AI Agent 对话，编写、审查、修改代码 在 CI&#x2F;CD 流水线中自动化代码审查、修复、生成 通过 MCP 扩展工具能力（数据库、浏览器、API 等） 在不打开 IDE 的情况下完成大部分开发任务  CLI 的核心命令是 agent（部分系统也支持 cursor ag">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260525172529182.png">
+<meta property="article:published_time" content="2026-05-25T09:07:22.000Z">
+<meta property="article:modified_time" content="2026-05-25T09:30:40.935Z">
+<meta property="article:author" content="凤炎忻">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="OpenClaw">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260525172529182.png">
+
+<link rel="canonical" href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Cursor-CLI-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>【AI】Cursor CLI 快速入门 | 凤炎忻的个人笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="凤炎忻的个人笔记" type="application/atom+xml">
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">凤炎忻的个人笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我有一壶酒，足以慰风尘！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section">标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section">分类<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">归档<span class="badge">54</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section">公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Cursor-CLI-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/flyingPig.jpeg">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【AI】Cursor CLI 快速入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-05-25 17:07:22 / 修改时间：17:30:40" itemprop="dateCreated datePublished" datetime="2026-05-25T17:07:22+08:00">2026-05-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/AI/%E3%80%90AI%E3%80%91Cursor-CLI-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" class="post-meta-item leancloud_visitors" data-flag-title="【AI】Cursor CLI 快速入门" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/AI/%E3%80%90AI%E3%80%91Cursor-CLI-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/AI/%E3%80%90AI%E3%80%91Cursor-CLI-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260525172529182.png"></p>
+<h2 id="什么是-Cursor-CLI"><a href="#什么是-Cursor-CLI" class="headerlink" title="什么是 Cursor CLI ?"></a>什么是 Cursor CLI ?</h2><p>Cursor CLI 是 Cursor 提供的<strong>终端 AI 编程助手</strong>。你可以在命令行中：</p>
+<ul>
+<li>与 AI Agent 对话，编写、审查、修改代码</li>
+<li>在 CI/CD 流水线中自动化代码审查、修复、生成</li>
+<li>通过 MCP 扩展工具能力（数据库、浏览器、API 等）</li>
+<li>在不打开 IDE 的情况下完成大部分开发任务</li>
+</ul>
+<p>CLI 的核心命令是 <code>agent</code>（部分系统也支持 <code>cursor agent</code>）。</p>
+<span id="more"></span>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="macOS-Linux-WSL"><a href="#macOS-Linux-WSL" class="headerlink" title="macOS / Linux / WSL"></a>macOS / Linux / WSL</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://cursor.com/install -fsS | bash</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，确保 <code>~/.local/bin</code> 或 <code>~/.cursor/bin</code> 在 PATH 中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加到 ~/.zshrc 或 ~/.bashrc</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="string">&quot;<span class="variable">$HOME</span>/.local/bin:<span class="variable">$PATH</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Windows（PowerShell）"><a href="#Windows（PowerShell）" class="headerlink" title="Windows（PowerShell）"></a>Windows（PowerShell）</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">irm</span> <span class="string">&#x27;https://cursor.com/install?win32=true&#x27;</span> | <span class="built_in">iex</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="验证安装"><a href="#验证安装" class="headerlink" title="验证安装"></a>验证安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">agent --version</span><br><span class="line">agent about</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装-Shell-集成（可选）"><a href="#安装-Shell-集成（可选）" class="headerlink" title="安装 Shell 集成（可选）"></a>安装 Shell 集成（可选）</h3><p>在终端中快速启动 Agent：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">agent install-shell-integration</span><br></pre></td></tr></table></figure>
+
+<p>卸载：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">agent uninstall-shell-integration</span><br></pre></td></tr></table></figure>
+
+<h3 id="更新-CLI"><a href="#更新-CLI" class="headerlink" title="更新 CLI"></a>更新 CLI</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">agent update</span><br></pre></td></tr></table></figure>
+
+<h2 id="登录与认证"><a href="#登录与认证" class="headerlink" title="登录与认证"></a>登录与认证</h2><h3 id="浏览器登录（推荐）"><a href="#浏览器登录（推荐）" class="headerlink" title="浏览器登录（推荐）"></a>浏览器登录（推荐）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">agent login</span><br></pre></td></tr></table></figure>
+
+<p>会打开浏览器完成 OAuth 认证。若不想自动打开浏览器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NO_OPEN_BROWSER=1 agent login</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看登录状态"><a href="#查看登录状态" class="headerlink" title="查看登录状态"></a>查看登录状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">agent status</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">agent <span class="built_in">whoami</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="API-Key-认证（适合-CI-脚本）"><a href="#API-Key-认证（适合-CI-脚本）" class="headerlink" title="API Key 认证（适合 CI / 脚本）"></a>API Key 认证（适合 CI / 脚本）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> CURSOR_API_KEY=<span class="string">&quot;your_api_key_here&quot;</span></span><br><span class="line">agent -p <span class="string">&quot;review this code&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>也可通过参数传入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">agent --api-key <span class="string">&quot;your_api_key_here&quot;</span> -p <span class="string">&quot;fix lint errors&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="退出登录"><a href="#退出登录" class="headerlink" title="退出登录"></a>退出登录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">agent <span class="built_in">logout</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h2><h3 id="进入项目目录"><a href="#进入项目目录" class="headerlink" title="进入项目目录"></a>进入项目目录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /path/to/your/project</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动交互式-Agent"><a href="#启动交互式-Agent" class="headerlink" title="启动交互式 Agent"></a>启动交互式 Agent</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">agent</span><br></pre></td></tr></table></figure>
+
+<h3 id="带初始提示启动"><a href="#带初始提示启动" class="headerlink" title="带初始提示启动"></a>带初始提示启动</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">agent <span class="string">&quot;重构 auth 模块，改用 JWT&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="指定工作区"><a href="#指定工作区" class="headerlink" title="指定工作区"></a>指定工作区</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">agent --workspace ~/projects/my-app <span class="string">&quot;添加单元测试&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="交互模式"><a href="#交互模式" class="headerlink" title="交互模式"></a>交互模式</h2><p>交互模式适合探索性开发、多轮对话和需要人工确认的场景。</p>
+<h3 id="启动方式"><a href="#启动方式" class="headerlink" title="启动方式"></a>启动方式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">agent</span><br><span class="line">agent <span class="string">&quot;帮我分析这个项目的架构&quot;</span></span><br><span class="line">agent --plan <span class="string">&quot;设计新的缓存层方案&quot;</span></span><br><span class="line">agent --mode ask <span class="string">&quot;解释一下这段代码的作用&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="常用斜杠命令"><a href="#常用斜杠命令" class="headerlink" title="常用斜杠命令"></a>常用斜杠命令</h3><p>在交互会话中输入 <code>/</code> 可查看可用命令，常见包括：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/help</code></td>
+<td>查看帮助</td>
+</tr>
+<tr>
+<td><code>/model &lt;name&gt;</code></td>
+<td>切换模型，如 <code>/model auto</code>、<code>/model gpt-5.2</code></td>
+</tr>
+<tr>
+<td><code>/sandbox</code></td>
+<td>配置沙箱模式与网络访问</td>
+</tr>
+<tr>
+<td><code>/mcp</code></td>
+<td>管理 MCP 服务器</td>
+</tr>
+</tbody></table>
+<h3 id="键盘快捷键"><a href="#键盘快捷键" class="headerlink" title="键盘快捷键"></a>键盘快捷键</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>↑</code></td>
+<td>浏览上一条输入</td>
+</tr>
+<tr>
+<td><code>Shift + Tab</code></td>
+<td>切换运行模式（Agent / Plan / Ask）</td>
+</tr>
+<tr>
+<td><code>Shift + Enter</code></td>
+<td>插入换行（多行输入）</td>
+</tr>
+<tr>
+<td><code>Ctrl + J</code> / <code>Ctrl + Enter</code></td>
+<td>插入换行（通用替代）</td>
+</tr>
+<tr>
+<td><code>Ctrl + D</code></td>
+<td>退出 CLI</td>
+</tr>
+</tbody></table>
+<h3 id="会话管理"><a href="#会话管理" class="headerlink" title="会话管理"></a>会话管理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出历史会话</span></span><br><span class="line">agent <span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复最近一次会话</span></span><br><span class="line">agent resume</span><br><span class="line"></span><br><span class="line"><span class="comment"># 继续上一次会话</span></span><br><span class="line">agent --<span class="built_in">continue</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复指定会话</span></span><br><span class="line">agent --resume=<span class="string">&quot;chat-id-here&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="非交互模式（脚本-CI）"><a href="#非交互模式（脚本-CI）" class="headerlink" title="非交互模式（脚本 / CI）"></a>非交互模式（脚本 / CI）</h2><p>使用 <code>-p</code> / <code>--print</code> 标志以非交互方式运行，输出直接打印到终端，适合脚本和自动化流水线。</p>
+<h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">agent -p <span class="string">&quot;查找并修复性能问题&quot;</span> --model <span class="string">&quot;gpt-5.2&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 纯文本（默认，适合脚本解析）</span></span><br><span class="line">agent -p <span class="string">&quot;review these changes&quot;</span> --output-format text</span><br><span class="line"></span><br><span class="line"><span class="comment"># JSON 格式</span></span><br><span class="line">agent -p <span class="string">&quot;analyze codebase&quot;</span> --output-format json</span><br><span class="line"></span><br><span class="line"><span class="comment"># 流式 JSON（配合 --stream-partial-output）</span></span><br><span class="line">agent -p <span class="string">&quot;generate report&quot;</span> --output-format stream-json --stream-partial-output</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用参数组合"><a href="#常用参数组合" class="headerlink" title="常用参数组合"></a>常用参数组合</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自动批准所有工具调用（谨慎使用）</span></span><br><span class="line">agent -p <span class="string">&quot;fix all lint errors&quot;</span> --force</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">agent -p <span class="string">&quot;fix all lint errors&quot;</span> --yolo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 信任工作区（headless 模式，跳过确认）</span></span><br><span class="line">agent -p <span class="string">&quot;run tests and fix failures&quot;</span> --trust</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自动批准 MCP 服务器</span></span><br><span class="line">agent -p <span class="string">&quot;query database for errors&quot;</span> --approve-mcps</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用沙箱</span></span><br><span class="line">agent -p <span class="string">&quot;refactor utils&quot;</span> --sandbox enabled</span><br></pre></td></tr></table></figure>
+
+<h3 id="脚本示例"><a href="#脚本示例" class="headerlink" title="脚本示例"></a>脚本示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">set</span> -e</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /path/to/project</span><br><span class="line"></span><br><span class="line">RESULT=$(agent -p <span class="string">&quot;运行测试，若有失败则修复并说明改动&quot;</span> \</span><br><span class="line">  --output-format text \</span><br><span class="line">  --trust)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$RESULT</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="常用命令参考"><a href="#常用命令参考" class="headerlink" title="常用命令参考"></a>常用命令参考</h2><h3 id="全局选项"><a href="#全局选项" class="headerlink" title="全局选项"></a>全局选项</h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-v, --version</code></td>
+<td>显示版本</td>
+</tr>
+<tr>
+<td><code>-p, --print</code></td>
+<td>非交互模式，输出到终端</td>
+</tr>
+<tr>
+<td><code>--output-format</code></td>
+<td>输出格式：<code>text</code> / <code>json</code> / <code>stream-json</code></td>
+</tr>
+<tr>
+<td><code>--mode</code></td>
+<td>启动模式：<code>plan</code> / <code>ask</code></td>
+</tr>
+<tr>
+<td><code>--plan</code></td>
+<td>等同于 <code>--mode=plan</code></td>
+</tr>
+<tr>
+<td><code>--model</code></td>
+<td>指定模型</td>
+</tr>
+<tr>
+<td><code>--list-models</code></td>
+<td>列出可用模型</td>
+</tr>
+<tr>
+<td><code>-f, --force</code> / <code>--yolo</code></td>
+<td>自动批准工具调用</td>
+</tr>
+<tr>
+<td><code>--sandbox</code></td>
+<td>沙箱：<code>enabled</code> / <code>disabled</code></td>
+</tr>
+<tr>
+<td><code>--approve-mcps</code></td>
+<td>自动批准 MCP</td>
+</tr>
+<tr>
+<td><code>--trust</code></td>
+<td>信任工作区（仅 headless）</td>
+</tr>
+<tr>
+<td><code>--workspace</code></td>
+<td>指定工作目录</td>
+</tr>
+<tr>
+<td><code>--worktree</code></td>
+<td>在隔离 git worktree 中运行</td>
+</tr>
+<tr>
+<td><code>--resume</code></td>
+<td>恢复指定会话</td>
+</tr>
+<tr>
+<td><code>--continue</code></td>
+<td>继续上次会话</td>
+</tr>
+</tbody></table>
+<h3 id="子命令"><a href="#子命令" class="headerlink" title="子命令"></a>子命令</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>agent login</code></td>
+<td>登录</td>
+</tr>
+<tr>
+<td><code>agent logout</code></td>
+<td>退出</td>
+</tr>
+<tr>
+<td><code>agent status</code></td>
+<td>查看认证状态</td>
+</tr>
+<tr>
+<td><code>agent about</code></td>
+<td>版本、系统、账户信息</td>
+</tr>
+<tr>
+<td><code>agent models</code></td>
+<td>列出可用模型</td>
+</tr>
+<tr>
+<td><code>agent update</code></td>
+<td>更新 CLI</td>
+</tr>
+<tr>
+<td><code>agent ls</code></td>
+<td>列出历史会话</td>
+</tr>
+<tr>
+<td><code>agent resume</code></td>
+<td>恢复最近会话</td>
+</tr>
+<tr>
+<td><code>agent create-chat</code></td>
+<td>创建新会话并返回 ID</td>
+</tr>
+<tr>
+<td><code>agent generate-rule</code></td>
+<td>交互式生成 Cursor Rule</td>
+</tr>
+<tr>
+<td><code>agent mcp</code></td>
+<td>管理 MCP 服务器</td>
+</tr>
+<tr>
+<td><code>agent worker</code></td>
+<td>启动私有云 Worker</td>
+</tr>
+</tbody></table>
+<h2 id="运行模式"><a href="#运行模式" class="headerlink" title="运行模式"></a>运行模式</h2><p>Cursor CLI 支持三种主要模式：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>启动方式</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Agent</strong></td>
+<td><code>agent</code>（默认）</td>
+<td>可读写文件、执行命令、完整工具权限</td>
+</tr>
+<tr>
+<td><strong>Plan</strong></td>
+<td><code>agent --plan</code> 或 <code>--mode plan</code></td>
+<td>只读，用于分析、设计方案，不直接改代码</td>
+</tr>
+<tr>
+<td><strong>Ask</strong></td>
+<td><code>agent --mode ask</code></td>
+<td>只读 Q&amp;A，适合解释代码、回答问题</td>
+</tr>
+</tbody></table>
+<p>在交互模式中，可用 <code>Shift + Tab</code> 快速切换。</p>
+<h2 id="配置文件详解"><a href="#配置文件详解" class="headerlink" title="配置文件详解"></a>配置文件详解</h2><h3 id="全局配置"><a href="#全局配置" class="headerlink" title="全局配置"></a>全局配置</h3><p>路径：<code>~/.cursor/cli-config.json</code></p>
+<p>修改后需<strong>重启 CLI</strong> 生效。</p>
+<h3 id="项目级配置"><a href="#项目级配置" class="headerlink" title="项目级配置"></a>项目级配置</h3><p>项目可在 <code>.cursor/cli.json</code> 中覆盖部分设置。CLI 会从 git 根目录到当前目录逐层合并，<strong>深层配置优先级更高</strong>。项目配置仅影响当前会话，不会写回全局配置。</p>
+<h3 id="常用配置项"><a href="#常用配置项" class="headerlink" title="常用配置项"></a>常用配置项</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;permissions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;allow&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;Shell(git)&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Read(src/**/*.ts)&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Write(src/**)&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;deny&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;Shell(rm)&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Read(.env*)&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Write(**/*.key)&quot;</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;editor&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;vimMode&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;defaultBehavior&quot;</span><span class="punctuation">:</span> <span class="string">&quot;agent&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;display&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;showLineNumbers&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;showThinkingBlocks&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;showStatusIndicators&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;approvalMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;allowlist&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;sandbox&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;mode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;disabled&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;networkAccess&quot;</span><span class="punctuation">:</span> <span class="string">&quot;user_config_with_defaults&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;networkAllowlist&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;maxMode&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;attribution&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;attributeCommitsToAgent&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;attributePRsToAgent&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;webFetchDomainAllowlist&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;docs.github.com&quot;</span><span class="punctuation">,</span> <span class="string">&quot;*.example.com&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="配置项说明"><a href="#配置项说明" class="headerlink" title="配置项说明"></a>配置项说明</h3><table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>permissions.allow</code> / <code>deny</code></td>
+<td>工具权限白名单 / 黑名单</td>
+</tr>
+<tr>
+<td><code>approvalMode</code></td>
+<td><code>allowlist</code>（默认，需确认）或 <code>unrestricted</code>（自动批准）</td>
+</tr>
+<tr>
+<td><code>sandbox.mode</code></td>
+<td><code>disabled</code> / <code>enabled</code></td>
+</tr>
+<tr>
+<td><code>sandbox.networkAccess</code></td>
+<td>沙箱网络访问策略</td>
+</tr>
+<tr>
+<td><code>editor.vimMode</code></td>
+<td>启用 Vim 键位</td>
+</tr>
+<tr>
+<td><code>maxMode</code></td>
+<td>启用 Max Mode 高质量响应</td>
+</tr>
+<tr>
+<td><code>attribution</code></td>
+<td>Agent 提交/PR 是否署名</td>
+</tr>
+<tr>
+<td><code>webFetchDomainAllowlist</code></td>
+<td>Web Fetch 工具允许的域名</td>
+</tr>
+</tbody></table>
+<h3 id="不建议手动修改的字段"><a href="#不建议手动修改的字段" class="headerlink" title="不建议手动修改的字段"></a>不建议手动修改的字段</h3><p>以下字段由 CLI 内部管理，请勿手动编辑：</p>
+<ul>
+<li><code>version</code>、<code>model</code>、<code>selectedModel</code>、<code>modelParameters</code></li>
+<li><code>privacyCache</code>、<code>authInfo</code></li>
+<li><code>conversationClassificationScoredConversations</code></li>
+</ul>
+<h2 id="权限与安全"><a href="#权限与安全" class="headerlink" title="权限与安全"></a>权限与安全</h2><h3 id="权限模式"><a href="#权限模式" class="headerlink" title="权限模式"></a>权限模式</h3><p>CLI 通过 <code>permissions</code> 控制 Agent 可调用的工具：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;permissions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;allow&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;Shell(ls)&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;Shell(git)&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;Read(src/**/*.ts)&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;Write(docs/**/*)&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;WebFetch(docs.github.com)&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;Mcp(playwright:*)&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;deny&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;Shell(rm)&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;Read(.env*)&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;Write(**/*.key)&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;WebFetch(malicious-site.com)&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="权限模式语法"><a href="#权限模式语法" class="headerlink" title="权限模式语法"></a>权限模式语法</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Shell 命令</td>
+<td><code>Shell(git)</code>、<code>Shell(npm)</code></td>
+</tr>
+<tr>
+<td>读文件</td>
+<td><code>Read(src/**/*.ts)</code>、<code>Read(.env*)</code></td>
+</tr>
+<tr>
+<td>写文件</td>
+<td><code>Write(package.json)</code>、<code>Write(docs/**)</code></td>
+</tr>
+<tr>
+<td>网页抓取</td>
+<td><code>WebFetch(*.github.com)</code></td>
+</tr>
+<tr>
+<td>MCP 工具</td>
+<td><code>Mcp(server-name:tool-name)</code>、<code>Mcp(datadog:*)</code></td>
+</tr>
+</tbody></table>
+<h3 id="审批模式"><a href="#审批模式" class="headerlink" title="审批模式"></a>审批模式</h3><ul>
+<li><strong><code>allowlist</code>（默认）</strong>：不在 allow 列表中的工具需人工确认</li>
+<li>**<code>unrestricted</code>**：自动批准所有工具（等同 <code>--yolo</code>，生产环境慎用）</li>
+</ul>
+<h3 id="沙箱"><a href="#沙箱" class="headerlink" title="沙箱"></a>沙箱</h3><p>沙箱限制 Agent 执行的 Shell 命令和网络访问：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 交互式配置</span></span><br><span class="line">/sandbox</span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令行启用</span></span><br><span class="line">agent --sandbox enabled -p <span class="string">&quot;run tests&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置示例：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;sandbox&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;mode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;enabled&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;networkAccess&quot;</span><span class="punctuation">:</span> <span class="string">&quot;user_config_only&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;networkAllowlist&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;api.github.com&quot;</span><span class="punctuation">,</span> <span class="string">&quot;pypi.org&quot;</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="MCP-服务器管理"><a href="#MCP-服务器管理" class="headerlink" title="MCP 服务器管理"></a>MCP 服务器管理</h2><p>MCP（Model Context Protocol）让 Agent 连接外部工具和服务。</p>
+<h3 id="配置文件位置"><a href="#配置文件位置" class="headerlink" title="配置文件位置"></a>配置文件位置</h3><ul>
+<li>全局：<code>~/.cursor/mcp.json</code></li>
+<li>项目：<code>.cursor/mcp.json</code></li>
+</ul>
+<h3 id="CLI-管理命令"><a href="#CLI-管理命令" class="headerlink" title="CLI 管理命令"></a>CLI 管理命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出已配置的 MCP 及状态</span></span><br><span class="line">agent mcp list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看某 MCP 提供的工具</span></span><br><span class="line">agent mcp list-tools playwright</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用 MCP</span></span><br><span class="line">agent mcp <span class="built_in">enable</span> &lt;identifier&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁用 MCP</span></span><br><span class="line">agent mcp <span class="built_in">disable</span> &lt;identifier&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># MCP 认证</span></span><br><span class="line">agent mcp login &lt;identifier&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="在-Agent-中使用-MCP"><a href="#在-Agent-中使用-MCP" class="headerlink" title="在 Agent 中使用 MCP"></a>在 Agent 中使用 MCP</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Agent 会在需要时自动调用 MCP 工具</span></span><br><span class="line">agent -p <span class="string">&quot;打开 google.com 并截图&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 非交互模式自动批准 MCP</span></span><br><span class="line">agent --approve-mcps -p <span class="string">&quot;查询数据库最近错误&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="MCP-配置示例"><a href="#MCP-配置示例" class="headerlink" title="MCP 配置示例"></a>MCP 配置示例</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;mcpServers&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;playwright&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npx&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;@playwright/mcp@latest&quot;</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;lanhu&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://localhost:8000/mcp?role=Developer&amp;name=YourName&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Git-Worktree-隔离开发"><a href="#Git-Worktree-隔离开发" class="headerlink" title="Git Worktree 隔离开发"></a>Git Worktree 隔离开发</h2><p>使用 <code>--worktree</code> 在<strong>临时 git worktree</strong> 中运行 Agent，改动与当前工作区隔离。Worktree 由 Cursor 管理，位于 <code>~/.cursor/worktrees/</code>。</p>
+<h3 id="基本用法-1"><a href="#基本用法-1" class="headerlink" title="基本用法"></a>基本用法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从当前仓库创建临时 worktree</span></span><br><span class="line">agent --worktree <span class="string">&quot;升级测试框架并修复失败的快照&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定 worktree 名称</span></span><br><span class="line">agent --worktree my-feature <span class="string">&quot;实现用户认证&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定基准分支</span></span><br><span class="line">agent --worktree --worktree-base main <span class="string">&quot;修复 flaky 测试&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 跳过 worktree 初始化脚本</span></span><br><span class="line">agent --worktree --skip-worktree-setup <span class="string">&quot;quick fix&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="跨目录指定项目"><a href="#跨目录指定项目" class="headerlink" title="跨目录指定项目"></a>跨目录指定项目</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">agent --workspace ~/src/my-app --worktree <span class="string">&quot;修复 auth 测试并开 PR&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>适合：并行实验、高风险重构、不想污染当前分支时使用。</p>
+<h2 id="Rules、Skills-与-Hooks"><a href="#Rules、Skills-与-Hooks" class="headerlink" title="Rules、Skills 与 Hooks"></a>Rules、Skills 与 Hooks</h2><h3 id="Cursor-Rules"><a href="#Cursor-Rules" class="headerlink" title="Cursor Rules"></a>Cursor Rules</h3><p>Rules 为 Agent 提供持久化项目规范。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 交互式生成 Rule</span></span><br><span class="line">agent generate-rule</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">agent rule</span><br></pre></td></tr></table></figure>
+
+<p>Rule 文件通常放在：</p>
+<ul>
+<li>项目：<code>.cursor/rules/</code> 或 <code>AGENTS.md</code></li>
+<li>用户：<code>~/.cursor/rules/</code></li>
+</ul>
+<h3 id="Skills"><a href="#Skills" class="headerlink" title="Skills"></a>Skills</h3><p>Skills 是可复用的 Agent 能力包，存放在：</p>
+<ul>
+<li>用户：<code>~/.cursor/skills-cursor/</code>、<code>~/.claude/skills/</code></li>
+<li>项目：<code>.cursor/skills/</code></li>
+</ul>
+<p>Agent 会根据任务描述自动匹配相关 Skill。</p>
+<h3 id="Hooks"><a href="#Hooks" class="headerlink" title="Hooks"></a>Hooks</h3><p>Hooks 在 Agent 生命周期事件前后执行自定义逻辑（审计、拦截、格式化等）。</p>
+<p><strong>项目级</strong>：<code>.cursor/hooks.json</code> + <code>.cursor/hooks/*</code><br><strong>用户级</strong>：<code>~/.cursor/hooks.json</code> + <code>~/.cursor/hooks/*</code></p>
+<p>示例：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;hooks&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;beforeShellExecution&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;.cursor/hooks/audit-shell.sh&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;afterFileEdit&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;.cursor/hooks/format.sh&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>常用事件：</p>
+<table>
+<thead>
+<tr>
+<th>事件</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>beforeShellExecution</code></td>
+<td>拦截 / 审计 Shell 命令</td>
+</tr>
+<tr>
+<td><code>afterShellExecution</code></td>
+<td>审计命令输出</td>
+</tr>
+<tr>
+<td><code>beforeMCPExecution</code></td>
+<td>拦截 MCP 调用</td>
+</tr>
+<tr>
+<td><code>beforeReadFile</code></td>
+<td>控制文件读取</td>
+</tr>
+<tr>
+<td><code>afterFileEdit</code></td>
+<td>编辑后格式化</td>
+</tr>
+<tr>
+<td><code>beforeSubmitPrompt</code></td>
+<td>提交前校验 Prompt</td>
+</tr>
+<tr>
+<td><code>stop</code></td>
+<td>Agent 完成后的后续动作</td>
+</tr>
+</tbody></table>
+<h2 id="自定义状态栏"><a href="#自定义状态栏" class="headerlink" title="自定义状态栏"></a>自定义状态栏</h2><p>CLI 支持在输入框上方显示自定义状态栏，类似 Claude Code 的 status line。</p>
+<p>在 <code>~/.cursor/cli-config.json</code> 中添加：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;statusLine&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;command&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;~/.cursor/statusline.sh&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;padding&quot;</span><span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;updateIntervalMs&quot;</span><span class="punctuation">:</span> <span class="number">300</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;timeoutMs&quot;</span><span class="punctuation">:</span> <span class="number">2000</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>状态栏脚本通过 <strong>stdin</strong> 接收 JSON 会话信息（模型、上下文用量、工作目录等），<strong>stdout</strong> 输出要显示的文本。</p>
+<p>示例脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># ~/.cursor/statusline.sh</span></span><br><span class="line">INPUT=$(<span class="built_in">cat</span>)</span><br><span class="line">MODEL=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$INPUT</span>&quot;</span> | jq -r <span class="string">&#x27;.model.display_name // &quot;unknown&quot;&#x27;</span>)</span><br><span class="line">CWD=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$INPUT</span>&quot;</span> | jq -r <span class="string">&#x27;.cwd // &quot;.&quot;&#x27;</span>)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[<span class="variable">$MODEL</span>] <span class="variable">$CWD</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="CI-GitHub-Actions-集成"><a href="#CI-GitHub-Actions-集成" class="headerlink" title="CI / GitHub Actions 集成"></a>CI / GitHub Actions 集成</h2><h3 id="GitHub-Actions-示例"><a href="#GitHub-Actions-示例" class="headerlink" title="GitHub Actions 示例"></a>GitHub Actions 示例</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Cursor</span> <span class="string">Agent</span> <span class="string">Review</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">pull_request:</span></span><br><span class="line">    <span class="attr">types:</span> [<span class="string">opened</span>, <span class="string">synchronize</span>]</span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">review:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v4</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">Cursor</span> <span class="string">CLI</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          curl https://cursor.com/install -fsS | bash</span></span><br><span class="line"><span class="string">          echo &quot;$HOME/.cursor/bin&quot; &gt;&gt; $GITHUB_PATH</span></span><br><span class="line"><span class="string"></span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Run</span> <span class="string">Cursor</span> <span class="string">Agent</span></span><br><span class="line">        <span class="attr">env:</span></span><br><span class="line">          <span class="attr">CURSOR_API_KEY:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.CURSOR_API_KEY</span> <span class="string">&#125;&#125;</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          agent -p &quot;Review these PR changes for security and correctness&quot; \</span></span><br><span class="line"><span class="string">            --output-format text \</span></span><br><span class="line"><span class="string">            --trust</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="CI-最佳实践"><a href="#CI-最佳实践" class="headerlink" title="CI 最佳实践"></a>CI 最佳实践</h3><ol>
+<li>使用 <code>CURSOR_API_KEY</code> 而非交互式登录</li>
+<li>配合 <code>--trust</code> 跳过工作区确认</li>
+<li>用 <code>--output-format text</code> 或 <code>json</code> 便于解析</li>
+<li>通过 <code>permissions.deny</code> 限制危险操作</li>
+<li>敏感仓库建议启用 <code>--sandbox enabled</code></li>
+</ol>
+<h2 id="实用技巧"><a href="#实用技巧" class="headerlink" title="实用技巧"></a>实用技巧</h2><h3 id="切换模型"><a href="#切换模型" class="headerlink" title="切换模型"></a>切换模型</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 命令行指定</span></span><br><span class="line">agent --model sonnet-4 -p <span class="string">&quot;refactor module&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出可用模型</span></span><br><span class="line">agent models</span><br><span class="line">agent --list-models</span><br><span class="line"></span><br><span class="line"><span class="comment"># 交互模式中</span></span><br><span class="line">/model auto</span><br><span class="line">/model gpt-5.2</span><br></pre></td></tr></table></figure>
+
+<h3 id="循环任务（-loop）"><a href="#循环任务（-loop）" class="headerlink" title="循环任务（/loop）"></a>循环任务（/loop）</h3><p>在交互模式中可用 <code>/loop</code> 定时重复执行 Prompt，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/loop 5m 检查部署状态</span><br><span class="line">/loop 每 10 分钟运行测试</span><br></pre></td></tr></table></figure>
+
+<h3 id="插件目录"><a href="#插件目录" class="headerlink" title="插件目录"></a>插件目录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">agent --plugin-dir ~/.cursor/my-plugin -p <span class="string">&quot;use custom tools&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CURSOR_API_KEY</code></td>
+<td>API Key 认证</td>
+</tr>
+<tr>
+<td><code>NO_OPEN_BROWSER</code></td>
+<td>登录时不打开浏览器</td>
+</tr>
+</tbody></table>
+<h3 id="与-IDE-的关系"><a href="#与-IDE-的关系" class="headerlink" title="与 IDE 的关系"></a>与 IDE 的关系</h3><ul>
+<li><code>cursor</code> 命令：打开 Cursor IDE（需已安装桌面版）</li>
+<li><code>agent</code> 命令：运行终端 Agent（<strong>无需安装 IDE</strong>）</li>
+</ul>
+<p>若仅安装了 CLI，直接使用 <code>agent</code> 即可。</p>
+<h2 id="故障排查"><a href="#故障排查" class="headerlink" title="故障排查"></a>故障排查</h2><h3 id="CLI-找不到"><a href="#CLI-找不到" class="headerlink" title="CLI 找不到"></a>CLI 找不到</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> agent</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 确保 ~/.local/bin 在 PATH 中</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="未登录-认证失败"><a href="#未登录-认证失败" class="headerlink" title="未登录 / 认证失败"></a>未登录 / 认证失败</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">agent status</span><br><span class="line">agent <span class="built_in">logout</span> &amp;&amp; agent login</span><br><span class="line"><span class="comment"># CI 环境检查 CURSOR_API_KEY</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="工具调用被拦截"><a href="#工具调用被拦截" class="headerlink" title="工具调用被拦截"></a>工具调用被拦截</h3><ol>
+<li>检查 <code>~/.cursor/cli-config.json</code> 中的 <code>permissions</code></li>
+<li>确认 <code>approvalMode</code> 设置</li>
+<li>临时使用 <code>--force</code>（谨慎）</li>
+</ol>
+<h3 id="MCP-无法连接"><a href="#MCP-无法连接" class="headerlink" title="MCP 无法连接"></a>MCP 无法连接</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">agent mcp list</span><br><span class="line">agent mcp <span class="built_in">enable</span> &lt;name&gt;</span><br><span class="line"><span class="comment"># 检查 ~/.cursor/mcp.json 配置</span></span><br><span class="line"><span class="comment"># HTTP MCP 确认服务已启动且 URL 正确</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="网络-代理问题"><a href="#网络-代理问题" class="headerlink" title="网络 / 代理问题"></a>网络 / 代理问题</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;network&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;useHttp1ForAgent&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>若 HTTP/2 连接不稳定，可启用 HTTP/1.1（SSE 流式）。</p>
+<h3 id="更新到最新版"><a href="#更新到最新版" class="headerlink" title="更新到最新版"></a>更新到最新版</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">agent update</span><br><span class="line">agent about</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取帮助"><a href="#获取帮助" class="headerlink" title="获取帮助"></a>获取帮助</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">agent --<span class="built_in">help</span></span><br><span class="line">agent <span class="built_in">help</span> mcp</span><br><span class="line">agent <span class="built_in">help</span> login</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p>官方文档：<a target="_blank" rel="noopener" href="https://cursor.com/docs/cli">https://cursor.com/docs/cli</a><br>问题反馈：<a target="_blank" rel="noopener" href="https://forum.cursor.com/">https://forum.cursor.com</a></p>
+<h2 id="附录：一分钟上手清单"><a href="#附录：一分钟上手清单" class="headerlink" title="附录：一分钟上手清单"></a>附录：一分钟上手清单</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 安装</span></span><br><span class="line">curl https://cursor.com/install -fsS | bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 登录</span></span><br><span class="line">agent login</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 进入项目</span></span><br><span class="line"><span class="built_in">cd</span> ~/projects/my-app</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 交互使用</span></span><br><span class="line">agent</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 脚本使用</span></span><br><span class="line">agent -p <span class="string">&quot;fix lint and run tests&quot;</span> --trust</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. 查看状态</span></span><br><span class="line">agent about</span><br><span class="line">agent status</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    
+    
+    
+
+    <div>
+       
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------<i class="fa fa-paw"></i> That's all！Best wishes for you !!! <i class="fa fa-paw"></i>-------------</div>
+    
+</div>
+
+       
+    </div><div class="post-widgets">
+    <div class="likely">
+        <div class="twitter">Tweet</div>
+        <div class="facebook">Share</div>
+        <div class="linkedin">Link</div>
+        <div class="gplus">Plus</div>
+        <div class="vkontakte">Share</div>
+        <div class="odnoklassniki">Class</div>
+        <div class="telegram">Send</div>
+        <div class="whatsapp">Send</div>
+        <div class="pinterest">Pin</div>
+    </div>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.js"></script><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>凤炎忻
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Cursor-CLI-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" title="【AI】Cursor CLI 快速入门">https://fengyanxin.github.io/AI/【AI】Cursor-CLI-快速入门/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/fengyanxin">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.zhihu.com/people/peng-he-34-93">
+            <span class="icon">
+              <i class="fab fa-zhihu"></i>
+            </span>
+
+            <span class="label">知乎</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065">
+            <span class="icon">
+              <i class="fa fa-toutiao"></i>
+            </span>
+
+            <span class="label">今日头条</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477">
+            <span class="icon">
+              <i class="fa fa-baidu1"></i>
+            </span>
+
+            <span class="label">百家号</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394">
+            <span class="icon">
+              <i class="fab fa-xiaohongshu1"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e">
+            <span class="icon">
+              <i class="fab fa-liblib1"></i>
+            </span>
+
+            <span class="label">LibLib</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"><i class="fa fa-tag"></i> AI</a>
+              <a href="/tags/OpenClaw/" rel="tag"><i class="fa fa-tag"></i> OpenClaw</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/AI/%E3%80%90AI%E3%80%91OpenClaw-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" rel="prev" title="【AI】OpenClaw 快速入门">
+      <i class="fa fa-chevron-left"></i> 【AI】OpenClaw 快速入门
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-Cursor-CLI"><span class="nav-number">1.</span> <span class="nav-text">什么是 Cursor CLI ?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#macOS-Linux-WSL"><span class="nav-number">2.1.</span> <span class="nav-text">macOS &#x2F; Linux &#x2F; WSL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows%EF%BC%88PowerShell%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">Windows（PowerShell）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E5%AE%89%E8%A3%85"><span class="nav-number">2.3.</span> <span class="nav-text">验证安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-Shell-%E9%9B%86%E6%88%90%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">安装 Shell 集成（可选）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0-CLI"><span class="nav-number">2.5.</span> <span class="nav-text">更新 CLI</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%99%BB%E5%BD%95%E4%B8%8E%E8%AE%A4%E8%AF%81"><span class="nav-number">3.</span> <span class="nav-text">登录与认证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%99%BB%E5%BD%95%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">浏览器登录（推荐）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%99%BB%E5%BD%95%E7%8A%B6%E6%80%81"><span class="nav-number">3.2.</span> <span class="nav-text">查看登录状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API-Key-%E8%AE%A4%E8%AF%81%EF%BC%88%E9%80%82%E5%90%88-CI-%E8%84%9A%E6%9C%AC%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">API Key 认证（适合 CI &#x2F; 脚本）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95"><span class="nav-number">3.4.</span> <span class="nav-text">退出登录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"><span class="nav-number">4.</span> <span class="nav-text">快速上手</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E5%85%A5%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95"><span class="nav-number">4.1.</span> <span class="nav-text">进入项目目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%BA%A4%E4%BA%92%E5%BC%8F-Agent"><span class="nav-number">4.2.</span> <span class="nav-text">启动交互式 Agent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%A6%E5%88%9D%E5%A7%8B%E6%8F%90%E7%A4%BA%E5%90%AF%E5%8A%A8"><span class="nav-number">4.3.</span> <span class="nav-text">带初始提示启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E5%B7%A5%E4%BD%9C%E5%8C%BA"><span class="nav-number">4.4.</span> <span class="nav-text">指定工作区</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E4%BA%92%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">交互模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">5.1.</span> <span class="nav-text">启动方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%96%9C%E6%9D%A0%E5%91%BD%E4%BB%A4"><span class="nav-number">5.2.</span> <span class="nav-text">常用斜杠命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%AE%E7%9B%98%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-number">5.3.</span> <span class="nav-text">键盘快捷键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86"><span class="nav-number">5.4.</span> <span class="nav-text">会话管理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9E%E4%BA%A4%E4%BA%92%E6%A8%A1%E5%BC%8F%EF%BC%88%E8%84%9A%E6%9C%AC-CI%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">非交互模式（脚本 &#x2F; CI）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">6.1.</span> <span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%A0%BC%E5%BC%8F"><span class="nav-number">6.2.</span> <span class="nav-text">输出格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0%E7%BB%84%E5%90%88"><span class="nav-number">6.3.</span> <span class="nav-text">常用参数组合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E7%A4%BA%E4%BE%8B"><span class="nav-number">6.4.</span> <span class="nav-text">脚本示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%82%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">常用命令参考</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E9%80%89%E9%A1%B9"><span class="nav-number">7.1.</span> <span class="nav-text">全局选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E5%91%BD%E4%BB%A4"><span class="nav-number">7.2.</span> <span class="nav-text">子命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="nav-number">8.</span> <span class="nav-text">运行模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%A6%E8%A7%A3"><span class="nav-number">9.</span> <span class="nav-text">配置文件详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE"><span class="nav-number">9.1.</span> <span class="nav-text">全局配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BA%A7%E9%85%8D%E7%BD%AE"><span class="nav-number">9.2.</span> <span class="nav-text">项目级配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE%E9%A1%B9"><span class="nav-number">9.3.</span> <span class="nav-text">常用配置项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E9%A1%B9%E8%AF%B4%E6%98%8E"><span class="nav-number">9.4.</span> <span class="nav-text">配置项说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%BB%BA%E8%AE%AE%E6%89%8B%E5%8A%A8%E4%BF%AE%E6%94%B9%E7%9A%84%E5%AD%97%E6%AE%B5"><span class="nav-number">9.5.</span> <span class="nav-text">不建议手动修改的字段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E4%B8%8E%E5%AE%89%E5%85%A8"><span class="nav-number">10.</span> <span class="nav-text">权限与安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E6%A8%A1%E5%BC%8F"><span class="nav-number">10.1.</span> <span class="nav-text">权限模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E6%A8%A1%E5%BC%8F%E8%AF%AD%E6%B3%95"><span class="nav-number">10.2.</span> <span class="nav-text">权限模式语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A1%E6%89%B9%E6%A8%A1%E5%BC%8F"><span class="nav-number">10.3.</span> <span class="nav-text">审批模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B2%99%E7%AE%B1"><span class="nav-number">10.4.</span> <span class="nav-text">沙箱</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MCP-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%A1%E7%90%86"><span class="nav-number">11.</span> <span class="nav-text">MCP 服务器管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE"><span class="nav-number">11.1.</span> <span class="nav-text">配置文件位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CLI-%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4"><span class="nav-number">11.2.</span> <span class="nav-text">CLI 管理命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-Agent-%E4%B8%AD%E4%BD%BF%E7%94%A8-MCP"><span class="nav-number">11.3.</span> <span class="nav-text">在 Agent 中使用 MCP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MCP-%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B"><span class="nav-number">11.4.</span> <span class="nav-text">MCP 配置示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-Worktree-%E9%9A%94%E7%A6%BB%E5%BC%80%E5%8F%91"><span class="nav-number">12.</span> <span class="nav-text">Git Worktree 隔离开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95-1"><span class="nav-number">12.1.</span> <span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%A8%E7%9B%AE%E5%BD%95%E6%8C%87%E5%AE%9A%E9%A1%B9%E7%9B%AE"><span class="nav-number">12.2.</span> <span class="nav-text">跨目录指定项目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rules%E3%80%81Skills-%E4%B8%8E-Hooks"><span class="nav-number">13.</span> <span class="nav-text">Rules、Skills 与 Hooks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cursor-Rules"><span class="nav-number">13.1.</span> <span class="nav-text">Cursor Rules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Skills"><span class="nav-number">13.2.</span> <span class="nav-text">Skills</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hooks"><span class="nav-number">13.3.</span> <span class="nav-text">Hooks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%8A%B6%E6%80%81%E6%A0%8F"><span class="nav-number">14.</span> <span class="nav-text">自定义状态栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CI-GitHub-Actions-%E9%9B%86%E6%88%90"><span class="nav-number">15.</span> <span class="nav-text">CI &#x2F; GitHub Actions 集成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub-Actions-%E7%A4%BA%E4%BE%8B"><span class="nav-number">15.1.</span> <span class="nav-text">GitHub Actions 示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CI-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">15.2.</span> <span class="nav-text">CI 最佳实践</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="nav-number">16.</span> <span class="nav-text">实用技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%87%E6%8D%A2%E6%A8%A1%E5%9E%8B"><span class="nav-number">16.1.</span> <span class="nav-text">切换模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E4%BB%BB%E5%8A%A1%EF%BC%88-loop%EF%BC%89"><span class="nav-number">16.2.</span> <span class="nav-text">循环任务（&#x2F;loop）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%9B%AE%E5%BD%95"><span class="nav-number">16.3.</span> <span class="nav-text">插件目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">16.4.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E-IDE-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">16.5.</span> <span class="nav-text">与 IDE 的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5"><span class="nav-number">17.</span> <span class="nav-text">故障排查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CLI-%E6%89%BE%E4%B8%8D%E5%88%B0"><span class="nav-number">17.1.</span> <span class="nav-text">CLI 找不到</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AA%E7%99%BB%E5%BD%95-%E8%AE%A4%E8%AF%81%E5%A4%B1%E8%B4%A5"><span class="nav-number">17.2.</span> <span class="nav-text">未登录 &#x2F; 认证失败</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8%E8%A2%AB%E6%8B%A6%E6%88%AA"><span class="nav-number">17.3.</span> <span class="nav-text">工具调用被拦截</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MCP-%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5"><span class="nav-number">17.4.</span> <span class="nav-text">MCP 无法连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C-%E4%BB%A3%E7%90%86%E9%97%AE%E9%A2%98"><span class="nav-number">17.5.</span> <span class="nav-text">网络 &#x2F; 代理问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E5%88%B0%E6%9C%80%E6%96%B0%E7%89%88"><span class="nav-number">17.6.</span> <span class="nav-text">更新到最新版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%B8%AE%E5%8A%A9"><span class="nav-number">17.7.</span> <span class="nav-text">获取帮助</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-number">18.</span> <span class="nav-text">参考文档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E5%BD%95%EF%BC%9A%E4%B8%80%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8B%E6%B8%85%E5%8D%95"><span class="nav-number">19.</span> <span class="nav-text">附录：一分钟上手清单</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="凤炎忻"
+      src="/images/flyingPig.jpeg">
+  <p class="site-author-name" itemprop="name">凤炎忻</p>
+  <div class="site-description" itemprop="description">性浮脱，难酬一道，广涉寡精，杂而不博</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengyanxin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengyanxin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ph18317192001@163.com" title="E-Mail → mailto:ph18317192001@163.com" rel="noopener" target="_blank"><i class="fab fa-mail fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065" title="今日头条 → https:&#x2F;&#x2F;profile.zjurl.cn&#x2F;rogue&#x2F;ugc&#x2F;profile&#x2F;?user_id&#x3D;51893718065" rel="noopener" target="_blank"><i class="fab fa-jinritoutiao fa-fw"></i>今日头条</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477" title="百家号 → https:&#x2F;&#x2F;author.baidu.com&#x2F;home?from&#x3D;bjh_article&amp;app_id&#x3D;1665765419554477" rel="noopener" target="_blank"><i class="fab fa-baidu fa-fw"></i>百家号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;642cb9650000000011023394" rel="noopener" target="_blank"><i class="fab fa-xiaohongshu fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e" title="LibLib → https:&#x2F;&#x2F;www.liblib.art&#x2F;userpage&#x2F;c7816525373d4fbca7e45c1940ead98e" rel="noopener" target="_blank"><i class="fab fa-liblib fa-fw"></i>LibLib</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">凤炎忻</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">120k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">7:17</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,255' opacity='0.95' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '7EJkVswo79CmfmbwincRPjrA-gzGzoHsz',
+      appKey     : 'v7t6DWozwkcL2qIDeSC5kupC',
+      placeholder: "说点什么吧！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
