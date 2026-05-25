@@ -3,7 +3,7 @@ title: 【AI】Cursor CLI 快速入门
 date: 2026-05-25 17:07:22
 tags:
 - AI
-- OpenClaw
+- Cursor
 categories:
 - AI
 ---
