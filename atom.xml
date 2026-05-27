@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2026-05-27T05:41:44.047Z</updated>
+  <updated>2026-05-27T06:47:07.210Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【AI】Hermes Agent 快速入门</title>
+    <link href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Hermes-Agent-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/"/>
+    <id>https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Hermes-Agent-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</id>
+    <published>2026-05-27T06:29:13.000Z</published>
+    <updated>2026-05-27T06:47:07.210Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/banner.png&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;一、Hermes-Agent-是什么？&quot;&gt;&lt;a href=&quot;#一、Hermes-Agent-是什么？&quot; class=&quot;headerlink&quot; title=&quot;一、Hermes Agent 是什么？&quot;&gt;&lt;/a&gt;一、Hermes Agent 是什么？&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Hermes Agent&lt;/strong&gt; 是由 &lt;a href=&quot;https://nousresearch.com/&quot;&gt;Nous Research&lt;/a&gt; 构建的&lt;strong&gt;自改进 AI 智能体&lt;/strong&gt;（开源，MIT 许可证）。它不是绑定在 IDE 上的编程副驾驶，也不是单一 API 的聊天封装——而是一个&lt;strong&gt;自主智能体&lt;/strong&gt;：运行时间越长，能力越强。&lt;/p&gt;
+&lt;p&gt;官方核心卖点：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;唯一内置学习循环的智能体——从经验中创建 Skill、在使用过程中持续改进、主动提示自身持久化知识，并在会话间不断深化对你的建模。&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="AI" scheme="https://fengyanxin.github.io/categories/AI/"/>
+    
+    
+    <category term="AI" scheme="https://fengyanxin.github.io/tags/AI/"/>
+    
+    <category term="Hermes" scheme="https://fengyanxin.github.io/tags/Hermes/"/>
+    
+  </entry>
   
   <entry>
     <title>【AI】Trellis 快速入门：让 AI 按你的规范写代码</title>
@@ -295,9 +321,9 @@
     
     <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
-    
     <category term="GitHub" scheme="https://fengyanxin.github.io/tags/GitHub/"/>
+    
+    <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
     
   </entry>
   
@@ -450,29 +476,6 @@
     <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://raw.githubusercontent.com/fengyanxin/YXBlogPic/main/17459141483680.jpg&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;一、Runtime-介绍&quot;&gt;&lt;a href=&quot;#一、Runtime-介绍&quot; class=&quot;headerlink&quot; title=&quot;一、Runtime 介绍&quot;&gt;&lt;/a&gt;一、Runtime 介绍&lt;/h2&gt;&lt;p&gt;&lt;code&gt;Objective-C&lt;/code&gt; 扩展了 &lt;code&gt;C&lt;/code&gt; 语言，并加入了面向对象特性和 &lt;code&gt;Smalltalk&lt;/code&gt; 式的消息传递机制。而这个扩展的核心是一个用 &lt;code&gt;C&lt;/code&gt; 和 编译语言 写的 &lt;code&gt;Runtime&lt;/code&gt; 库。它是 &lt;code&gt;Objective-C&lt;/code&gt; 面向对象和动态机制的基石。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Objective-C&lt;/code&gt; 是一个动态语言，这意味着它不仅需要一个编译器，也需要一个运行时系统来动态得创建类和对象、进行消息传递和转发。理解 &lt;code&gt;Objective-C&lt;/code&gt; 的 &lt;code&gt;Runtime&lt;/code&gt; 机制可以帮我们更好的了解这个语言，适当的时候还能对语言进行扩展，从系统层面解决项目中的一些设计或技术问题。了解 &lt;code&gt;Runtime&lt;/code&gt; ，要先了解它的核心 - &lt;code&gt;消息传递 （Messaging）&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/categories/iOS/"/>
-    
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-    <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【iOS】关于 dismissViewController</title>
-    <link href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%85%B3%E4%BA%8EdismissViewController/"/>
-    <id>https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%85%B3%E4%BA%8EdismissViewController/</id>
-    <published>2025-04-18T05:38:22.000Z</published>
-    <updated>2025-05-15T01:22:07.000Z</updated>
-    
-    
-    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;工程中有个多层控制器时，调用 &lt;code&gt;dismissViewControllerAnimated&lt;/code&gt; 时不时会不起作用。&lt;/p&gt;
-&lt;h3 id=&quot;原理&quot;&gt;&lt;a href=&quot;#原理&quot; class=&quot;headerlink&quot; title=&quot;原理&quot;&gt;&lt;/a&gt;原理&lt;/h3&gt;&lt;p&gt;我们都知道 &lt;code&gt;dismissViewControllerAnimated:completion:&lt;/code&gt; 方法是针对被 &lt;code&gt;present&lt;/code&gt; 出来的控制器的。&lt;/p&gt;
-&lt;p&gt;一般我们这样使用：在一个控制器中 &lt;code&gt;present&lt;/code&gt; 另外一个控制器A，然后在A中执行 &lt;code&gt;dismissViewControllerAnimated:completion:&lt;/code&gt; 让自己消失。&lt;/p&gt;</summary>
     
     
     
