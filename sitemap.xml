@@ -581,13 +581,6 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/tags/Cursor/</loc>
-    <lastmod>2026-05-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://fengyanxin.github.io/tags/Vibe-Coding/</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
@@ -602,14 +595,7 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/tags/Hermes/</loc>
-    <lastmod>2026-05-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://fengyanxin.github.io/tags/Trellis/</loc>
+    <loc>https://fengyanxin.github.io/tags/Cursor/</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -630,6 +616,20 @@
   </url>
   
   <url>
+    <loc>https://fengyanxin.github.io/tags/Hexo/</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://fengyanxin.github.io/tags/Hermes/</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://fengyanxin.github.io/tags/GitHub/</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
@@ -637,7 +637,7 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/tags/Hexo/</loc>
+    <loc>https://fengyanxin.github.io/tags/Trellis/</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -688,14 +688,14 @@
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/categories/GitHub/</loc>
+    <loc>https://fengyanxin.github.io/categories/Hexo/</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://fengyanxin.github.io/categories/Hexo/</loc>
+    <loc>https://fengyanxin.github.io/categories/GitHub/</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
