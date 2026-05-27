@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2026-05-25T09:33:33.744Z</updated>
+  <updated>2026-05-27T05:41:44.047Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【AI】Trellis 快速入门：让 AI 按你的规范写代码</title>
+    <link href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Trellis-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%9A%E8%AE%A9-AI-%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E8%8C%83%E5%86%99%E4%BB%A3%E7%A0%81/"/>
+    <id>https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Trellis-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%9A%E8%AE%A9-AI-%E6%8C%89%E4%BD%A0%E7%9A%84%E8%A7%84%E8%8C%83%E5%86%99%E4%BB%A3%E7%A0%81/</id>
+    <published>2026-05-27T05:33:33.000Z</published>
+    <updated>2026-05-27T05:41:44.047Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/trellis.png&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;一、Trellis-是什么？&quot;&gt;&lt;a href=&quot;#一、Trellis-是什么？&quot; class=&quot;headerlink&quot; title=&quot;一、Trellis 是什么？&quot;&gt;&lt;/a&gt;一、Trellis 是什么？&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Trellis&lt;/strong&gt; 是一个面向 AI 编程助手的&lt;strong&gt;团队级 Agent 框架与工具集&lt;/strong&gt;，支持 Claude Code、Cursor、OpenCode、Codex、Gemini CLI、GitHub Copilot 等 &lt;strong&gt;14+ 平台&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;官方用一句话概括：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;AI 的能力像藤蔓一样旺盛，却容易四处蔓延。Trellis 是为 AI 搭的脚手架，把它引向你团队的规范路径。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;更直白地说：&lt;strong&gt;Trellis 是 AI 编程助手的「训练轮」&lt;/strong&gt;—— 它会在每次会话中自动注入项目规范（Spec），让 AI 按你的标准写代码，而不是每次即兴发挥。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="AI" scheme="https://fengyanxin.github.io/categories/AI/"/>
+    
+    
+    <category term="AI" scheme="https://fengyanxin.github.io/tags/AI/"/>
+    
+    <category term="Trellis" scheme="https://fengyanxin.github.io/tags/Trellis/"/>
+    
+  </entry>
   
   <entry>
     <title>【AI】Cursor CLI 快速入门</title>
@@ -268,9 +295,9 @@
     
     <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="GitHub" scheme="https://fengyanxin.github.io/tags/GitHub/"/>
-    
     <category term="Hexo" scheme="https://fengyanxin.github.io/tags/Hexo/"/>
+    
+    <category term="GitHub" scheme="https://fengyanxin.github.io/tags/GitHub/"/>
     
   </entry>
   
@@ -446,31 +473,6 @@
     <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;工程中有个多层控制器时，调用 &lt;code&gt;dismissViewControllerAnimated&lt;/code&gt; 时不时会不起作用。&lt;/p&gt;
 &lt;h3 id=&quot;原理&quot;&gt;&lt;a href=&quot;#原理&quot; class=&quot;headerlink&quot; title=&quot;原理&quot;&gt;&lt;/a&gt;原理&lt;/h3&gt;&lt;p&gt;我们都知道 &lt;code&gt;dismissViewControllerAnimated:completion:&lt;/code&gt; 方法是针对被 &lt;code&gt;present&lt;/code&gt; 出来的控制器的。&lt;/p&gt;
 &lt;p&gt;一般我们这样使用：在一个控制器中 &lt;code&gt;present&lt;/code&gt; 另外一个控制器A，然后在A中执行 &lt;code&gt;dismissViewControllerAnimated:completion:&lt;/code&gt; 让自己消失。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/categories/iOS/"/>
-    
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-    <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【iOS】如何访问私有库中的图片、Xib资源</title>
-    <link href="https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%A6%82%E4%BD%95%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E5%BA%93%E4%B8%AD%E7%9A%84%E5%9B%BE%E7%89%87%E3%80%81Xib%E8%B5%84%E6%BA%90/"/>
-    <id>https://fengyanxin.github.io/iOS/%E3%80%90iOS%E3%80%91%E5%A6%82%E4%BD%95%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E5%BA%93%E4%B8%AD%E7%9A%84%E5%9B%BE%E7%89%87%E3%80%81Xib%E8%B5%84%E6%BA%90/</id>
-    <published>2025-04-15T05:27:35.000Z</published>
-    <updated>2025-04-15T05:39:38.000Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;我们制作私有库时，若要在私有库中使用图片，需要在podSpec文件中指定图片来源。&lt;/p&gt;
-&lt;figure class=&quot;highlight swift&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;s.resource_bundles &lt;span class=&quot;operator&quot;&gt;=&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#x27;&lt;span class=&quot;type&quot;&gt;KDIBaseUI&lt;/span&gt;&amp;#x27; &lt;span class=&quot;operator&quot;&gt;=&amp;gt;&lt;/span&gt; [&amp;#x27;&lt;span class=&quot;type&quot;&gt;KDIBaseUI&lt;/span&gt;&lt;span class=&quot;operator&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;type&quot;&gt;Assets&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;/*&amp;#x27;]&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;p&gt;这样，图片会放在一个&lt;code&gt;资源bundle&lt;/code&gt;中。&lt;/p&gt;
-&lt;p&gt;对于私有库工程来说，直接通过 &lt;code&gt;[UIImage imageNamed:@&amp;quot;xxx&amp;quot;]&lt;/code&gt; 的形式访问即可。比较麻烦的是，从其他工程访问私有库图片的情况。&lt;/p&gt;</summary>
     
     
     
