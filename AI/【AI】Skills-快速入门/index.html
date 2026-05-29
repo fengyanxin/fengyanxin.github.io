@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="什么是 Skills？Skills 本质上就是教 AI 按固定流程做事的操作说明书，一旦写好，就能像函数一样反复调用。 我们可以把 Skills 看成把「某类事情应该怎么专业做」这件事，封装成一个可复用、可自动触发的能力模块。 Skills 以 Markdown 文件形式存在，不执行功能，而是通过按需、渐进式加载，实现高效且可复用的经验传递。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【AI】Skills 快速入门：AI Agent 技能机制基础指南">
+<meta property="og:url" content="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Skills-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="凤炎忻的个人笔记">
+<meta property="og:description" content="什么是 Skills？Skills 本质上就是教 AI 按固定流程做事的操作说明书，一旦写好，就能像函数一样反复调用。 我们可以把 Skills 看成把「某类事情应该怎么专业做」这件事，封装成一个可复用、可自动触发的能力模块。 Skills 以 Markdown 文件形式存在，不执行功能，而是通过按需、渐进式加载，实现高效且可复用的经验传递。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/02-skill-core-structure.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260529164024777.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/02-skill-core-structure.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260529164318064.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/04-project-structure.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/05-claude-code-demo.png">
+<meta property="article:published_time" content="2026-05-29T08:35:59.000Z">
+<meta property="article:modified_time" content="2026-05-29T09:12:47.074Z">
+<meta property="article:author" content="凤炎忻">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Skills">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/02-skill-core-structure.png">
+
+<link rel="canonical" href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Skills-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>【AI】Skills 快速入门：AI Agent 技能机制基础指南 | 凤炎忻的个人笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="凤炎忻的个人笔记" type="application/atom+xml">
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">凤炎忻的个人笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我有一壶酒，足以慰风尘！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section">标签<span class="badge">16</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section">分类<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">归档<span class="badge">57</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section">公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Skills-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/flyingPig.jpeg">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【AI】Skills 快速入门：AI Agent 技能机制基础指南
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-05-29 16:35:59 / 修改时间：17:12:47" itemprop="dateCreated datePublished" datetime="2026-05-29T16:35:59+08:00">2026-05-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/AI/%E3%80%90AI%E3%80%91Skills-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" class="post-meta-item leancloud_visitors" data-flag-title="【AI】Skills 快速入门：AI Agent 技能机制基础指南" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/AI/%E3%80%90AI%E3%80%91Skills-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/AI/%E3%80%90AI%E3%80%91Skills-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>13 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/02-skill-core-structure.png"></p>
+<h2 id="什么是-Skills？"><a href="#什么是-Skills？" class="headerlink" title="什么是 Skills？"></a>什么是 Skills？</h2><p>Skills 本质上就是教 AI 按固定流程做事的操作说明书，一旦写好，就能像函数一样反复调用。</p>
+<p>我们可以把 Skills 看成把「某类事情应该怎么专业做」这件事，封装成一个可复用、可自动触发的能力模块。</p>
+<p>Skills 以 Markdown 文件形式存在，不执行功能，而是通过<strong>按需、渐进式加载</strong>，实现高效且可复用的经验传递。</p>
+<span id="more"></span>
+
+<h3 id="普通-Prompt-vs-Skills-机制"><a href="#普通-Prompt-vs-Skills-机制" class="headerlink" title="普通 Prompt vs Skills 机制"></a>普通 Prompt vs Skills 机制</h3><p>Skills 和传统 Prompt 最大的区别是：<strong>按需加载 + 渐进式披露</strong>（只在需要时才把厚厚的 SOP 塞进上下文，极大节省 token）。</p>
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>普通 Prompt</th>
+<th>Skills 机制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>每次都要重新描述</td>
+<td>是</td>
+<td>否（只描述一次）</td>
+</tr>
+<tr>
+<td>上下文长度占用</td>
+<td>每次全量塞入</td>
+<td>渐进式加载（只在触发时才读完整内容）</td>
+</tr>
+<tr>
+<td>一致性</td>
+<td>依赖每次 prompt 质量</td>
+<td>高（固定 SOP + 模板）</td>
+</tr>
+<tr>
+<td>复用性</td>
+<td>手动复制粘贴</td>
+<td>自动匹配 / slash 命令 / 项目共享</td>
+</tr>
+<tr>
+<td>维护方式</td>
+<td>改一次 prompt 就要重新发</td>
+<td>修改 SKILL.md 文件，全局/项目生效</td>
+</tr>
+</tbody></table>
+<h3 id="实际对比示例"><a href="#实际对比示例" class="headerlink" title="实际对比示例"></a>实际对比示例</h3><p><strong>没有 Skills 之前</strong>，每次写文章都要重复说：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">帮我总结文章 → 翻译 → 改成公众号风格 → 加标题 → 输出 Markdown</span><br></pre></td></tr></table></figure>
+
+<p><strong>有了 Skills 之后</strong>，只需一句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用「技术文章转公众号」Skill</span><br></pre></td></tr></table></figure>
+
+<p>AI 会自动按你设定的步骤执行。</p>
+<h3 id="形象理解：AI-是刚入职的实习生"><a href="#形象理解：AI-是刚入职的实习生" class="headerlink" title="形象理解：AI 是刚入职的实习生"></a>形象理解：AI 是刚入职的实习生</h3><p>把 AI 想象成一个刚毕业的聪明但没经验的实习生：</p>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>类比</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>普通 Prompt</strong></td>
+<td>你每次都要从头教他怎么做事（今天教一遍，明天还得重新教）</td>
+</tr>
+<tr>
+<td><strong>Rule / 记忆</strong></td>
+<td>你给他贴一张「公司行为守则」在工位上（一直生效，但只能管态度和格式）</td>
+</tr>
+<tr>
+<td><strong>MCP / Tools</strong></td>
+<td>你给他电脑装了一堆软件和 API（他能调用外部工具，但不知道什么时候该用、怎么组合用）</td>
+</tr>
+<tr>
+<td><strong>Skills</strong></td>
+<td>你直接给他一整套「岗位培训大礼包」（PDF + 流程图 + SOP + 话术模板 + 常用脚本），告诉他：「当老板让你做这类事情时，就按这个文件夹里的方法来做」</td>
+</tr>
+</tbody></table>
+<h2 id="核心优势"><a href="#核心优势" class="headerlink" title="核心优势"></a>核心优势</h2><h3 id="1-Token-效率"><a href="#1-Token-效率" class="headerlink" title="1.Token 效率"></a>1.Token 效率</h3><p>Skills 使用延迟加载来节省 token 和成本：</p>
+<ul>
+<li>Claude 最初只看到 skill 的名称和描述</li>
+<li>仅当与当前任务相关时才加载完整内容</li>
+<li>未使用的 skills 不会消耗对话中的 token</li>
+</ul>
+<h3 id="2-领域专业知识"><a href="#2-领域专业知识" class="headerlink" title="2.领域专业知识"></a>2.领域专业知识</h3><p>Skills 提供多种方式来注入专业知识：</p>
+<ul>
+<li>专业知识注入 - 最佳实践直接写入 SKILL.md</li>
+<li>操作一致性 - 确保每次都有稳定的质量</li>
+<li>参考文档 - 详细文档在 references/ 目录，需要时加载</li>
+<li>资源文件 - assets/ 目录中的模板和资源</li>
+</ul>
+<h2 id="支持-Skills-的主流客户端"><a href="#支持-Skills-的主流客户端" class="headerlink" title="支持 Skills 的主流客户端"></a>支持 Skills 的主流客户端</h2><table>
+<thead>
+<tr>
+<th>排序</th>
+<th>工具名</th>
+<th>是否免费使用 Skills</th>
+<th>推荐人群</th>
+<th>技能存放默认路径</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Claude Code</td>
+<td>是（官方）</td>
+<td>所有人</td>
+<td><code>~/.claude/skills</code></td>
+<td>标准制定者，生态最全</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Cursor</td>
+<td>是</td>
+<td>写代码最常用</td>
+<td><code>~/.cursor/skills</code></td>
+<td>几乎无缝兼容 Claude Skills</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Trae / OpenCode</td>
+<td>是</td>
+<td>追求性价比</td>
+<td>看工具设置</td>
+<td>国内用户较多</td>
+</tr>
+<tr>
+<td>4</td>
+<td>VS Code + 插件</td>
+<td>部分支持</td>
+<td>已经深度用 VS Code</td>
+<td>插件设置里配置</td>
+<td>正在快速跟进</td>
+</tr>
+<tr>
+<td>5</td>
+<td>扣子/其他国内平台</td>
+<td>部分支持</td>
+<td>喜欢网页版</td>
+<td>平台自带技能市场</td>
+<td>有的要会员</td>
+</tr>
+</tbody></table>
+<h2 id="Skills-与-MCP-的区别"><a href="#Skills-与-MCP-的区别" class="headerlink" title="Skills 与 MCP 的区别"></a>Skills 与 MCP 的区别</h2><p><strong>Skills 用于知识复用，MCP 用于能力扩展。</strong></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260529164024777.png"></p>
+<h3 id="Skills-—-知识复用"><a href="#Skills-—-知识复用" class="headerlink" title="Skills — 知识复用"></a>Skills — 知识复用</h3><ul>
+<li>知识分享：经验、最佳实践、工作流程</li>
+<li>基于简单的 Markdown 文件，任何人都可以创建</li>
+<li>渐进式加载，Token 使用效率高</li>
+<li>无需服务器或后端设置</li>
+<li>适用于 Web / Desktop / CLI</li>
+</ul>
+<h3 id="MCP-—-能力扩展"><a href="#MCP-—-能力扩展" class="headerlink" title="MCP — 能力扩展"></a>MCP — 能力扩展</h3><ul>
+<li>功能扩展：连接 API、数据库、外部工具</li>
+<li>需要编码能力和服务器端配置</li>
+<li>启动时加载全部工具定义</li>
+<li>对外部系统集成能力强</li>
+<li>更高的 Token 消耗与复杂度</li>
+</ul>
+<p>Skills 和 MCP 是互补的。用 Skills 分享知识，用 MCP 扩展功能。它们可以很好地协同工作！</p>
+<h2 id="Skill-的核心结构"><a href="#Skill-的核心结构" class="headerlink" title="Skill 的核心结构"></a>Skill 的核心结构</h2><p>Skills 的核心就是：<strong>一个文件夹 + 一个 SKILL.md 文件</strong>。</p>
+<p>SKILL.md 文件包含：</p>
+<ul>
+<li>元数据（至少要有名称和描述）</li>
+<li>告诉 AI 如何完成某一特定任务的指令</li>
+</ul>
+<p>一个 Skill 本质上就是一个 Markdown 文件（文件名固定为 <code>SKILL.md</code>）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">my-skill/</span><br><span class="line">└── SKILL.md   （唯一必需）</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/02-skill-core-structure.png"></p>
+<h3 id="SKILL-md-基本模板"><a href="#SKILL-md-基本模板" class="headerlink" title="SKILL.md 基本模板"></a>SKILL.md 基本模板</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: pdf-processing</span><br><span class="line"><span class="section">description: 从 PDF 中提取文本和表格，填写表单，并合并文档</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section"># PDF 处理</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 使用场景</span></span><br><span class="line">当需要对 PDF 文件进行操作时使用，例如：</span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> 提取 PDF 文本或表格数据</span><br><span class="line"><span class="bullet">-</span> 填写 PDF 表单</span><br><span class="line"><span class="bullet">-</span> 合并多个 PDF 文件</span><br><span class="line"></span><br><span class="line"><span class="section">## 提取文本</span></span><br><span class="line"><span class="bullet">-</span> 使用 <span class="code">`pdfplumber`</span> 提取文本型 PDF 内容  </span><br><span class="line"><span class="bullet">-</span> 扫描版 PDF 需配合 OCR 工具  </span><br><span class="line"></span><br><span class="line"><span class="section">## 填写表单</span></span><br><span class="line"><span class="bullet">-</span> 读取 PDF 表单字段  </span><br><span class="line"><span class="bullet">-</span> 按输入数据填充并生成新文件  </span><br></pre></td></tr></table></figure>
+
+<h3 id="最小必填示例"><a href="#最小必填示例" class="headerlink" title="最小必填示例"></a>最小必填示例</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">skill-name</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">说明该</span> <span class="string">Skill</span> <span class="string">的功能以及适用场景</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="含可选字段示例"><a href="#含可选字段示例" class="headerlink" title="含可选字段示例"></a>含可选字段示例</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">pdf-processing</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">从</span> <span class="string">PDF</span> <span class="string">中提取文本和表格，填写表单，并合并文档</span></span><br><span class="line"><span class="attr">license:</span> <span class="string">Apache-2.0</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">author:</span> <span class="string">example-org</span></span><br><span class="line">  <span class="attr">version:</span> <span class="string">&quot;1.0&quot;</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="元数据字段说明"><a href="#元数据字段说明" class="headerlink" title="元数据字段说明"></a>元数据字段说明</h3><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>必需</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>name</td>
+<td>是</td>
+<td>Skill 名称，最长 64 字符，只能使用小写字母、数字和 <code>-</code>，且不能以 <code>-</code> 开头或结尾</td>
+</tr>
+<tr>
+<td>description</td>
+<td>是</td>
+<td>功能与使用场景说明，最长 1024 字符，不能为空</td>
+</tr>
+<tr>
+<td>license</td>
+<td>否</td>
+<td>许可证名称或指向随 Skill 附带的许可证文件</td>
+</tr>
+<tr>
+<td>compatibility</td>
+<td>否</td>
+<td>环境与依赖说明（产品、系统包、网络权限等），最长 500 字符</td>
+</tr>
+<tr>
+<td>metadata</td>
+<td>否</td>
+<td>自定义键值对，用于扩展元数据（如作者、版本号）</td>
+</tr>
+<tr>
+<td>allowed-tools</td>
+<td>否</td>
+<td>允许使用的工具列表（空格分隔，实验性功能）</td>
+</tr>
+</tbody></table>
+<h3 id="复杂-Skill-目录结构"><a href="#复杂-Skill-目录结构" class="headerlink" title="复杂 Skill 目录结构"></a>复杂 Skill 目录结构</h3><p>如果需要参考资料、实例或执行脚本，可以使用更复杂的目录结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">my-skill/</span><br><span class="line">├── SKILL.md      # 必需：指令 + 元数据</span><br><span class="line">├── scripts/      # 可选：可执行代码</span><br><span class="line">├── references/   # 可选：文档资料</span><br><span class="line">└── assets/       # 可选：模板、资源</span><br></pre></td></tr></table></figure>
+
+<h3 id="技能如何工作"><a href="#技能如何工作" class="headerlink" title="技能如何工作"></a>技能如何工作</h3><p>技能用<strong>渐进式加载</strong>来高效管理上下文：</p>
+<ol>
+<li><strong>发现</strong>：启动时，AI 只加载每个技能的名称和描述，只保留最基本的识别信息。</li>
+<li><strong>激活</strong>：当任务匹配某个技能的描述时，AI 才把完整的 SKILL.md 指令读入上下文。</li>
+<li><strong>执行</strong>：AI 按照指令执行，按需加载参考文件或运行代码。</li>
+</ol>
+<p>这种设计让 AI 保持快速，同时能按需获取更多信息。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260529164318064.png"></p>
+<h2 id="Claude-Code-Skills-详解"><a href="#Claude-Code-Skills-详解" class="headerlink" title="Claude Code Skills 详解"></a>Claude Code Skills 详解</h2><p>以 Claude Code 为例来制作一个简单的 Skill。</p>
+<h3 id="Skill-加载优先级"><a href="#Skill-加载优先级" class="headerlink" title="Skill 加载优先级"></a>Skill 加载优先级</h3><p>Claude Code 按以下顺序查找并加载 Skill（越具体的位置优先级越高）：</p>
+<table>
+<thead>
+<tr>
+<th>级别</th>
+<th>路径</th>
+<th>生效范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>企业级</td>
+<td>通过管理控制台配置（managed settings）</td>
+<td>组织内所有用户</td>
+</tr>
+<tr>
+<td>个人级</td>
+<td><code>~/.claude/skills/&lt;skill-name&gt;/SKILL.md</code></td>
+<td>你所有项目</td>
+</tr>
+<tr>
+<td>项目级</td>
+<td><code>.claude/skills/&lt;skill-name&gt;/SKILL.md</code></td>
+<td>仅当前项目</td>
+</tr>
+<tr>
+<td>插件级</td>
+<td><code>&lt;plugin&gt;/skills/&lt;skill-name&gt;/SKILL.md</code></td>
+<td>启用该插件的环境</td>
+</tr>
+</tbody></table>
+<p>每个 Skill 就是一个文件夹，文件夹名即技能标识（推荐 kebab-case 小写+连字符）。</p>
+<p>最简结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">~/.claude/skills/</span><br><span class="line">  └── code-comment-expert/          # 技能文件夹名</span><br><span class="line">      └── SKILL.md                  # 唯一必填文件（必须全大写 + .md 小写）</span><br></pre></td></tr></table></figure>
+
+<h3 id="SKILL-md-完整格式示例"><a href="#SKILL-md-完整格式示例" class="headerlink" title="SKILL.md 完整格式示例"></a>SKILL.md 完整格式示例</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">---                                 # YAML frontmatter 开始（顶格）</span><br><span class="line">name: code-comment-expert           # 必填：技能名（也是 /slash 命令名）</span><br><span class="line">description: &gt;-                     # 必填：最关键一行！Claude 靠它判断是否加载</span><br><span class="line">  为代码添加专业、清晰的中英双语注释。</span><br><span class="line">  适合缺少文档、可读性差、需要分享审查的代码。</span><br><span class="line">  常见触发场景：加注释、注释一下、加文档、explain this、improve readability</span><br><span class="line"></span><br><span class="line">trigger<span class="emphasis">_keywords:                   # 强烈推荐（大幅提升自动触发率）</span></span><br><span class="line"><span class="emphasis">  - 加注释</span></span><br><span class="line"><span class="emphasis">  - 注释</span></span><br><span class="line"><span class="emphasis">  - 加文档</span></span><br><span class="line"><span class="emphasis">  - explain code</span></span><br><span class="line"><span class="emphasis">  - document</span></span><br><span class="line"><span class="emphasis">  - comment this</span></span><br><span class="line"><span class="emphasis">  - readability</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">version: 1.0                        # 可选</span></span><br><span class="line"><span class="emphasis">author: yourname                    # 可选</span></span><br><span class="line"><span class="emphasis">---                                 # YAML 结束</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"># 这里开始是正文（Markdown）—— Claude 真正执行时的指令</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">你现在是「专业代码注释专家」。</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## 核心原则</span></span><br><span class="line"><span class="emphasis">- 只在缺少注释或可读性明显不足处添加</span></span><br><span class="line"><span class="emphasis">- 优先使用英文 JSDoc / TSDoc 风格</span></span><br><span class="line"><span class="emphasis">- 复杂逻辑 / 非明显意图处额外加一行中文解释</span></span><br><span class="line"><span class="emphasis">- 注释精炼，每行不超过 80 字符</span></span><br><span class="line"><span class="emphasis">- 绝不修改原有逻辑</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## 输出格式（严格遵守）</span></span><br><span class="line"><span class="emphasis">1. 先输出完整修改后的代码块（用 ```语言 包裹）</span></span><br><span class="line"><span class="emphasis">2. 再用 diff 形式展示只改动注释的部分</span></span><br><span class="line"><span class="emphasis">3. 最后说明加了哪些注释、理由</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">现在直接开始处理用户提供的代码，不要闲聊。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="进阶文件结构"><a href="#进阶文件结构" class="headerlink" title="进阶文件结构"></a>进阶文件结构</h3><p>当技能超过 500–800 行，或需要模板/脚本/参考资料时，推荐以下组织方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">~/.claude/skills/react-component-review/</span><br><span class="line">  ├── SKILL.md                  # 核心指令 + 元数据（建议控制在 400 行内）</span><br><span class="line">  │</span><br><span class="line">  ├── templates/                # 常用模板（Claude 按需读取）</span><br><span class="line">  │   ├── functional.tsx.md</span><br><span class="line">  │   └── class-component.md</span><br><span class="line">  │</span><br><span class="line">  ├── examples/                 # 优秀/反例（给 Claude 看标准）</span><br><span class="line">  │   ├── good.md</span><br><span class="line">  │   └── anti-pattern.md</span><br><span class="line">  │</span><br><span class="line">  ├── references/               # 规范、规则、禁用词表</span><br><span class="line">  │   ├── hooks-rules.md</span><br><span class="line">  │   └── naming-convention.md</span><br><span class="line">  │</span><br><span class="line">  └── scripts/                  # 可执行脚本（需开启 code execution）</span><br><span class="line">      ├── validate-props.py</span><br><span class="line">      └── check-cycle-deps.sh</span><br></pre></td></tr></table></figure>
+
+<p>在 SKILL.md 中引用方式示例：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">需要给出标准函数组件时，参考 templates/functional.tsx.md 的结构。</span><br><span class="line"></span><br><span class="line">如果违反 Hooks 规则，对照 references/hooks-rules.md 第 3–5 条说明。</span><br><span class="line"></span><br><span class="line">如需校验 propTypes，可执行 scripts/validate-props.py &quot;&#123;代码片段&#125;&quot;。</span><br></pre></td></tr></table></figure>
+
+<p>Claude 看到路径引用后，会按需加载对应文件，而不是一次性全部塞入上下文，极大节省 token。</p>
+<h2 id="动手创建第一个-Skill"><a href="#动手创建第一个-Skill" class="headerlink" title="动手创建第一个 Skill"></a>动手创建第一个 Skill</h2><p>先从使用一个现成的 Skill 开始，感受它带来的便利。</p>
+<h3 id="1-创建-Skill-目录"><a href="#1-创建-Skill-目录" class="headerlink" title="1. 创建 Skill 目录"></a>1. 创建 Skill 目录</h3><p>Skills 存放在 <code>~/.claude/skills/</code>（个人全局）或项目目录下的 <code>.claude/skills/</code>（项目专用）。</p>
+<p>在项目目录下测试，先创建目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> claude-test</span><br><span class="line"><span class="built_in">cd</span> claude-test</span><br><span class="line"><span class="built_in">mkdir</span> -p .claude/skills/python-naming-standard</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-编写-SKILL-md"><a href="#2-编写-SKILL-md" class="headerlink" title="2. 编写 SKILL.md"></a>2. 编写 SKILL.md</h3><p>在目录下创建 <code>SKILL.md</code>，这是 Skill 的大脑，告诉 Claude 什么时候用它：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: python-naming-standard</span><br><span class="line"><span class="section">description: 当用户要求重构、审查或编写 Python 代码时，请参考此规范。</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 指令</span></span><br><span class="line"><span class="bullet">1.</span> 所有的内部辅助函数必须以 <span class="code">`_internal_`</span> 前缀命名。</span><br><span class="line"><span class="bullet">2.</span> 如果发现不符合此规则的代码，请自动提出修改建议。</span><br><span class="line"><span class="bullet">3.</span> 在执行 <span class="code">`claude commit`</span> 前，必须检查此规范。</span><br><span class="line"></span><br><span class="line"><span class="section">## 参考示例</span></span><br><span class="line"><span class="bullet">-</span> 正确：<span class="code">`def _internal_calculate_risk():`</span></span><br><span class="line"><span class="bullet">-</span> 错误：<span class="code">`def _calculate_risk():`</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>字段要求：</strong></p>
+<ul>
+<li><code>name</code>：必须仅使用小写字母、数字和连字符（最多 64 个字符）</li>
+<li><code>description</code>：Skill 的简要描述及其使用时机（最多 1024 个字符）</li>
+</ul>
+<h3 id="3-项目结构"><a href="#3-项目结构" class="headerlink" title="3. 项目结构"></a>3. 项目结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">my-project/</span><br><span class="line">├─ src/</span><br><span class="line">│  └─ test.py              # 项目源码</span><br><span class="line">├─ .claude/</span><br><span class="line">│  ├─ skills/</span><br><span class="line">│  │  └─ python-naming-standard/</span><br><span class="line">│  │     └─ SKILL.md       # Skill 定义（YAML + Instructions）</span><br><span class="line">│  └─ config.yml           # Claude 项目级配置（可选）</span><br><span class="line">├─ .gitignore</span><br><span class="line">└─ README.md               # 项目整体说明</span><br></pre></td></tr></table></figure>
+
+<p>如下图所示：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/04-project-structure.png"></p>
+<h3 id="4-启动并使用"><a href="#4-启动并使用" class="headerlink" title="4. 启动并使用"></a>4. 启动并使用</h3><p>在终端执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">claude</span><br></pre></td></tr></table></figure>
+
+<p>输入任务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">帮我写一个计算用户折扣的函数</span><br></pre></td></tr></table></figure>
+
+<p>Claude 会扫描已安装的 Skills，发现你的请求涉及「Python 代码编写」，匹配了 <code>python-naming-standard</code>。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/05-claude-code-demo.png"></p>
+<p>它会根据 <code>SKILL.md</code> 中的要求生成如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">_internal_get_discount</span>(<span class="params">user_score</span>):</span><br><span class="line">    <span class="comment"># 计算逻辑...</span></span><br><span class="line">    <span class="keyword">return</span> discount</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-添加资源文件（可选）"><a href="#5-添加资源文件（可选）" class="headerlink" title="5. 添加资源文件（可选）"></a>5. 添加资源文件（可选）</h3><p>可以在 <code>.claude/skills/</code> 下添加以下目录：</p>
+<ul>
+<li><code>examples/</code>：存放示例文件</li>
+<li><code>references/</code>：存放参考文档</li>
+<li><code>scripts/</code>：存放可执行脚本（例如 Python 处理 PDF）</li>
+</ul>
+<p>然后在 SKILL.md 中引用：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">查看示例 commit：./examples/good-commit.txt</span><br><span class="line">运行脚本：使用工具执行 ./scripts/process.py</span><br></pre></td></tr></table></figure>
+
+<h2 id="Agent-Skills-相关资源"><a href="#Agent-Skills-相关资源" class="headerlink" title="Agent Skills 相关资源"></a>Agent Skills 相关资源</h2><h3 id="资源链接"><a href="#资源链接" class="headerlink" title="资源链接"></a>资源链接</h3><table>
+<thead>
+<tr>
+<th>资源说明</th>
+<th>链接</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Skill 聚合入口</td>
+<td><a target="_blank" rel="noopener" href="https://skills.sh/">https://skills.sh/</a></td>
+</tr>
+<tr>
+<td>Skills 市场（中文界面）</td>
+<td><a target="_blank" rel="noopener" href="https://skillsmp.com/zh">https://skillsmp.com/zh</a></td>
+</tr>
+<tr>
+<td>腾讯家的 Skills 市场</td>
+<td><a target="_blank" rel="noopener" href="https://skillhub.tencent.com/">https://skillhub.tencent.com/</a></td>
+</tr>
+<tr>
+<td>Agent Skills 官方标准站点</td>
+<td><a target="_blank" rel="noopener" href="https://agentskills.io/">https://agentskills.io</a></td>
+</tr>
+<tr>
+<td>Anthropic 官方工程文章</td>
+<td><a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills</a></td>
+</tr>
+<tr>
+<td>VS Code Copilot Agent Skills 文档</td>
+<td><a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/copilot/customization/agent-skills">https://code.visualstudio.com/docs/copilot/customization/agent-skills</a></td>
+</tr>
+<tr>
+<td>Anthropic 官方 Skills GitHub 仓库</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/anthropics/skills">https://github.com/anthropics/skills</a></td>
+</tr>
+<tr>
+<td>Claude 技能精选列表（Awesome 系列）</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/ComposioHQ/awesome-claude-skills">https://github.com/ComposioHQ/awesome-claude-skills</a></td>
+</tr>
+<tr>
+<td>软件开发自动化工作流 Skills 集合</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/obra/superpowers">https://github.com/obra/superpowers</a></td>
+</tr>
+<tr>
+<td>自动生成 Skill 的 Skill（官方示例）</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/anthropics/skills/tree/main/skills/skill-creator">https://github.com/anthropics/skills/tree/main/skills/skill-creator</a></td>
+</tr>
+</tbody></table>
+<h3 id="推荐-Skills"><a href="#推荐-Skills" class="headerlink" title="推荐 Skills"></a>推荐 Skills</h3><table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>核心作用</th>
+<th>安装命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>find-skills (vercel-labs)</td>
+<td>技能搜索与推荐中心</td>
+<td><code>npx skills add vercel-labs/skills</code></td>
+</tr>
+<tr>
+<td>vercel-react-best-practices</td>
+<td>React / Next 性能优化规范</td>
+<td><code>npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices</code></td>
+</tr>
+<tr>
+<td>frontend-design (anthropics)</td>
+<td>高质量 UI 设计能力</td>
+<td><code>npx skills add anthropics/skills --skill frontend-design</code></td>
+</tr>
+<tr>
+<td>web-design-guidelines</td>
+<td>Web 可访问性与 UX 规范</td>
+<td><code>npx skills add vercel-labs/agent-skills --skill web-design-guidelines</code></td>
+</tr>
+<tr>
+<td>remotion-best-practices</td>
+<td>React 视频制作最佳实践</td>
+<td><code>npx skills add remotion-dev/skills --skill remotion-best-practices</code></td>
+</tr>
+<tr>
+<td>brainstorming (superpowers)</td>
+<td>结构化思考与规划能力</td>
+<td><code>npx skills add obra/superpowers --skill brainstorming</code></td>
+</tr>
+<tr>
+<td>agent-browser</td>
+<td>浏览器自动化控制</td>
+<td><code>npx skills add vercel-labs/agent-browser</code></td>
+</tr>
+<tr>
+<td>browser-use</td>
+<td>高性能浏览器交互</td>
+<td><code>npx skills add browser-use/browser-use</code></td>
+</tr>
+<tr>
+<td>supabase-postgres-best-practices</td>
+<td>Supabase / PostgreSQL 优化</td>
+<td><code>npx skills add supabase/agent-skills --skill supabase-postgres-best-practices</code></td>
+</tr>
+<tr>
+<td>azure-cost-optimization</td>
+<td>Azure 云成本优化</td>
+<td><code>npx skills add microsoft/github-copilot-for-azure --skill azure-cost-optimization</code></td>
+</tr>
+<tr>
+<td>cloudflare/skills</td>
+<td>Workers 与边缘计算实践</td>
+<td><code>npx skills add cloudflare/skills</code></td>
+</tr>
+<tr>
+<td>redis/agent-skills</td>
+<td>Redis 高级模式与反模式</td>
+<td><code>npx skills add redis/agent-skills</code></td>
+</tr>
+<tr>
+<td>vercel-composition-patterns</td>
+<td>React 组合模式规范</td>
+<td><code>npx skills add vercel-labs/agent-skills --skill vercel-composition-patterns</code></td>
+</tr>
+<tr>
+<td>vercel-react-native-skills</td>
+<td>React Native 官方最佳实践</td>
+<td><code>npx skills add vercel-labs/agent-skills --skill vercel-react-native-skills</code></td>
+</tr>
+<tr>
+<td>sleek-design-mobile-apps</td>
+<td>现代移动 App 设计指南</td>
+<td><code>npx skills add sleekdotdesign/agent-skills --skill sleek-design-mobile-apps</code></td>
+</tr>
+<tr>
+<td>ui-skills</td>
+<td>设计师级 UI 与交互实践</td>
+<td><code>npx skills add ibelick/ui-skills</code></td>
+</tr>
+<tr>
+<td>pdf (anthropics)</td>
+<td>PDF 生成与解析能力</td>
+<td><code>npx skills add anthropics/skills --skill pdf</code></td>
+</tr>
+<tr>
+<td>seo-audit</td>
+<td>SEO 审计与优化</td>
+<td><code>npx skills add coreyhaines31/marketingskills --skill seo-audit</code></td>
+</tr>
+<tr>
+<td>skill-creator</td>
+<td>自定义 Skill 构建能力</td>
+<td><code>npx skills add anthropics/skills --skill skill-creator</code></td>
+</tr>
+<tr>
+<td>code-review-expert</td>
+<td>专业级代码审查能力</td>
+<td><code>npx skills add sanyuan0704/code-review-expert</code></td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Skills 是 AI Agent 时代知识复用的核心机制：</p>
+<ol>
+<li><strong>一次编写，反复调用</strong> — 告别每次重复描述工作流程</li>
+<li><strong>渐进式加载</strong> — 节省 Token，保持上下文高效</li>
+<li><strong>标准化格式</strong> — 基于 Markdown，易于创建和维护</li>
+<li><strong>生态丰富</strong> — Claude Code、Cursor 等主流工具均已支持</li>
+</ol>
+<p>从创建一个简单的 <code>SKILL.md</code> 开始，逐步构建你的 AI 技能库，让 AI 真正成为懂业务、有流程的专业助手。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/ai-agent/skills-agent.html">菜鸟教程 - Skills 教程</a><br><a target="_blank" rel="noopener" href="https://skillsmp.com/zh/docs">Skills 市场文档：关于发现和使用 agent skills 的一切</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    
+    
+    
+
+    <div>
+       
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------<i class="fa fa-paw"></i> That's all！Best wishes for you !!! <i class="fa fa-paw"></i>-------------</div>
+    
+</div>
+
+       
+    </div><div class="post-widgets">
+    <div class="likely">
+        <div class="twitter">Tweet</div>
+        <div class="facebook">Share</div>
+        <div class="linkedin">Link</div>
+        <div class="gplus">Plus</div>
+        <div class="vkontakte">Share</div>
+        <div class="odnoklassniki">Class</div>
+        <div class="telegram">Send</div>
+        <div class="whatsapp">Send</div>
+        <div class="pinterest">Pin</div>
+    </div>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.js"></script><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>凤炎忻
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91Skills-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" title="【AI】Skills 快速入门：AI Agent 技能机制基础指南">https://fengyanxin.github.io/AI/【AI】Skills-快速入门/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/fengyanxin">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.zhihu.com/people/peng-he-34-93">
+            <span class="icon">
+              <i class="fab fa-zhihu"></i>
+            </span>
+
+            <span class="label">知乎</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065">
+            <span class="icon">
+              <i class="fa fa-toutiao"></i>
+            </span>
+
+            <span class="label">今日头条</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477">
+            <span class="icon">
+              <i class="fa fa-baidu1"></i>
+            </span>
+
+            <span class="label">百家号</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394">
+            <span class="icon">
+              <i class="fab fa-xiaohongshu1"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e">
+            <span class="icon">
+              <i class="fab fa-liblib1"></i>
+            </span>
+
+            <span class="label">LibLib</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"><i class="fa fa-tag"></i> AI</a>
+              <a href="/tags/Skills/" rel="tag"><i class="fa fa-tag"></i> Skills</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/AI/%E3%80%90AI%E3%80%91Hermes-Agent-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" rel="prev" title="【AI】Hermes Agent 快速入门">
+      <i class="fa fa-chevron-left"></i> 【AI】Hermes Agent 快速入门
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-Skills%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">什么是 Skills？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%AE%E9%80%9A-Prompt-vs-Skills-%E6%9C%BA%E5%88%B6"><span class="nav-number">1.1.</span> <span class="nav-text">普通 Prompt vs Skills 机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E5%AF%B9%E6%AF%94%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.2.</span> <span class="nav-text">实际对比示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%A2%E8%B1%A1%E7%90%86%E8%A7%A3%EF%BC%9AAI-%E6%98%AF%E5%88%9A%E5%85%A5%E8%81%8C%E7%9A%84%E5%AE%9E%E4%B9%A0%E7%94%9F"><span class="nav-number">1.3.</span> <span class="nav-text">形象理解：AI 是刚入职的实习生</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E4%BC%98%E5%8A%BF"><span class="nav-number">2.</span> <span class="nav-text">核心优势</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Token-%E6%95%88%E7%8E%87"><span class="nav-number">2.1.</span> <span class="nav-text">1.Token 效率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%A2%86%E5%9F%9F%E4%B8%93%E4%B8%9A%E7%9F%A5%E8%AF%86"><span class="nav-number">2.2.</span> <span class="nav-text">2.领域专业知识</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81-Skills-%E7%9A%84%E4%B8%BB%E6%B5%81%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">3.</span> <span class="nav-text">支持 Skills 的主流客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Skills-%E4%B8%8E-MCP-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">4.</span> <span class="nav-text">Skills 与 MCP 的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Skills-%E2%80%94-%E7%9F%A5%E8%AF%86%E5%A4%8D%E7%94%A8"><span class="nav-number">4.1.</span> <span class="nav-text">Skills — 知识复用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MCP-%E2%80%94-%E8%83%BD%E5%8A%9B%E6%89%A9%E5%B1%95"><span class="nav-number">4.2.</span> <span class="nav-text">MCP — 能力扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Skill-%E7%9A%84%E6%A0%B8%E5%BF%83%E7%BB%93%E6%9E%84"><span class="nav-number">5.</span> <span class="nav-text">Skill 的核心结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SKILL-md-%E5%9F%BA%E6%9C%AC%E6%A8%A1%E6%9D%BF"><span class="nav-number">5.1.</span> <span class="nav-text">SKILL.md 基本模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E5%BF%85%E5%A1%AB%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.2.</span> <span class="nav-text">最小必填示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AB%E5%8F%AF%E9%80%89%E5%AD%97%E6%AE%B5%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.3.</span> <span class="nav-text">含可选字段示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E6%95%B0%E6%8D%AE%E5%AD%97%E6%AE%B5%E8%AF%B4%E6%98%8E"><span class="nav-number">5.4.</span> <span class="nav-text">元数据字段说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E6%9D%82-Skill-%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">5.5.</span> <span class="nav-text">复杂 Skill 目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%80%E8%83%BD%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C"><span class="nav-number">5.6.</span> <span class="nav-text">技能如何工作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Claude-Code-Skills-%E8%AF%A6%E8%A7%A3"><span class="nav-number">6.</span> <span class="nav-text">Claude Code Skills 详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Skill-%E5%8A%A0%E8%BD%BD%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">6.1.</span> <span class="nav-text">Skill 加载优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SKILL-md-%E5%AE%8C%E6%95%B4%E6%A0%BC%E5%BC%8F%E7%A4%BA%E4%BE%8B"><span class="nav-number">6.2.</span> <span class="nav-text">SKILL.md 完整格式示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">6.3.</span> <span class="nav-text">进阶文件结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%89%8B%E5%88%9B%E5%BB%BA%E7%AC%AC%E4%B8%80%E4%B8%AA-Skill"><span class="nav-number">7.</span> <span class="nav-text">动手创建第一个 Skill</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BA-Skill-%E7%9B%AE%E5%BD%95"><span class="nav-number">7.1.</span> <span class="nav-text">1. 创建 Skill 目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BC%96%E5%86%99-SKILL-md"><span class="nav-number">7.2.</span> <span class="nav-text">2. 编写 SKILL.md</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="nav-number">7.3.</span> <span class="nav-text">3. 项目结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%90%AF%E5%8A%A8%E5%B9%B6%E4%BD%BF%E7%94%A8"><span class="nav-number">7.4.</span> <span class="nav-text">4. 启动并使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%B7%BB%E5%8A%A0%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="nav-number">7.5.</span> <span class="nav-text">5. 添加资源文件（可选）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Agent-Skills-%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90"><span class="nav-number">8.</span> <span class="nav-text">Agent Skills 相关资源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E9%93%BE%E6%8E%A5"><span class="nav-number">8.1.</span> <span class="nav-text">资源链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E8%8D%90-Skills"><span class="nav-number">8.2.</span> <span class="nav-text">推荐 Skills</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">10.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="凤炎忻"
+      src="/images/flyingPig.jpeg">
+  <p class="site-author-name" itemprop="name">凤炎忻</p>
+  <div class="site-description" itemprop="description">性浮脱，难酬一道，广涉寡精，杂而不博</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengyanxin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengyanxin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ph18317192001@163.com" title="E-Mail → mailto:ph18317192001@163.com" rel="noopener" target="_blank"><i class="fab fa-mail fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065" title="今日头条 → https:&#x2F;&#x2F;profile.zjurl.cn&#x2F;rogue&#x2F;ugc&#x2F;profile&#x2F;?user_id&#x3D;51893718065" rel="noopener" target="_blank"><i class="fab fa-jinritoutiao fa-fw"></i>今日头条</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477" title="百家号 → https:&#x2F;&#x2F;author.baidu.com&#x2F;home?from&#x3D;bjh_article&amp;app_id&#x3D;1665765419554477" rel="noopener" target="_blank"><i class="fab fa-baidu fa-fw"></i>百家号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;642cb9650000000011023394" rel="noopener" target="_blank"><i class="fab fa-xiaohongshu fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e" title="LibLib → https:&#x2F;&#x2F;www.liblib.art&#x2F;userpage&#x2F;c7816525373d4fbca7e45c1940ead98e" rel="noopener" target="_blank"><i class="fab fa-liblib fa-fw"></i>LibLib</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">凤炎忻</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">131k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">7:55</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,255' opacity='0.95' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '7EJkVswo79CmfmbwincRPjrA-gzGzoHsz',
+      appKey     : 'v7t6DWozwkcL2qIDeSC5kupC',
+      placeholder: "说点什么吧！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
