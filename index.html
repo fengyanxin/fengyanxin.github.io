@@ -147,7 +147,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section">归档<span class="badge">58</span></a>
+    <a href="/archives/" rel="section">归档<span class="badge">59</span></a>
 
   </li>
         <li class="menu-item menu-item-commonweal">
@@ -205,6 +205,129 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-Prompt-Engineering%EF%BC%88%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/flyingPig.jpeg">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-Prompt-Engineering%EF%BC%88%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%EF%BC%89/" class="post-title-link" itemprop="url">【AI】粗识 Prompt Engineering（提示词工程）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-06-01 16:05:09 / 修改时间：16:49:53" itemprop="dateCreated datePublished" datetime="2026-06-01T16:05:09+08:00">2026-06-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-Prompt-Engineering%EF%BC%88%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%EF%BC%89/" class="post-meta-item leancloud_visitors" data-flag-title="【AI】粗识 Prompt Engineering（提示词工程）" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-Prompt-Engineering%EF%BC%88%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%EF%BC%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-Prompt-Engineering%EF%BC%88%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>26 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260601160902643.png"></p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>你有没有遇到过这种情况：明明给了 AI 一个问题，得到的回答却空泛、跑题、毫无用处？</p>
+<p>这不是 AI 的问题，往往是<strong>提问方式</strong>的问题。</p>
+</blockquote>
+<p><strong>提示词工程</strong>（Prompt Engineering）是一门关于如何构造和精炼提示词的艺术和科学，目的是最大化 AI 模型的性能，让它产出更符合需求、高质量的输出。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-Prompt-Engineering%EF%BC%88%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%EF%BC%89/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    
+    
+    
+
+    <div>
+       
+    </div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1313,126 +1436,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/Tips/%E3%80%90Tips%E3%80%91Git-Flow%E5%B7%A5%E4%BD%9C%E6%B5%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/flyingPig.jpeg">
-      <meta itemprop="name" content="凤炎忻">
-      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="凤炎忻的个人笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/Tips/%E3%80%90Tips%E3%80%91Git-Flow%E5%B7%A5%E4%BD%9C%E6%B5%81/" class="post-title-link" itemprop="url">【Tips】Git Flow工作流</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-12-29 16:15:20 / 修改时间：16:45:02" itemprop="dateCreated datePublished" datetime="2025-12-29T16:15:20+08:00">2025-12-29</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Tips/" itemprop="url" rel="index"><span itemprop="name">Tips</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/Tips/%E3%80%90Tips%E3%80%91Git-Flow%E5%B7%A5%E4%BD%9C%E6%B5%81/" class="post-meta-item leancloud_visitors" data-flag-title="【Tips】Git Flow工作流" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/Tips/%E3%80%90Tips%E3%80%91Git-Flow%E5%B7%A5%E4%BD%9C%E6%B5%81/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/Tips/%E3%80%90Tips%E3%80%91Git-Flow%E5%B7%A5%E4%BD%9C%E6%B5%81/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Git-Flow"><a href="#Git-Flow" class="headerlink" title="Git Flow"></a>Git Flow</h1><p>Git Flow 是一种基于 Git 的分支模型，旨在帮助团队更好地管理和发布软件。</p>
-<p>Git Flow 由 Vincent Driessen 在 2010 年提出，并通过一套标准的分支命名和工作流程，使开发、测试和发布过程更加有序和高效。</p>
-<p>Git Flow 主要由以下几类分支组成：<em>master、develop、feature、release、hotfix。</em></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/Tips/%E3%80%90Tips%E3%80%91Git-Flow%E5%B7%A5%E4%BD%9C%E6%B5%81/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    
-    
-    
-
-    <div>
-       
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1504,7 +1507,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1574,13 +1577,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">133k</span>
+    <span title="站点总字数">140k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">8:03</span>
+    <span title="站点阅读时长">8:29</span>
 </div>
   <div class="addthis_inline_share_toolbox">
     <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script>
