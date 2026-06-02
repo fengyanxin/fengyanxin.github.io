@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="什么是 AI Workflow（AI 工作流）AI Workflow（AI 工作流）是将多个 AI 模型调用、工具使用、数据处理步骤有序组合成一条自动化流水线的系统。 单独调用一次 LLM 能回答问题，但现实任务往往需要：查网页 → 提取信息 → 分析 → 写报告 → 发送邮件。 AI Workflow 就是把这些步骤串起来，让 AI 自动完成完整任务，而不只是回答一句话。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【AI】粗识 AI Workflow（AI 工作流）">
+<meta property="og:url" content="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-AI-Workflow%EF%BC%88AI-%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%89/index.html">
+<meta property="og:site_name" content="凤炎忻的个人笔记">
+<meta property="og:description" content="什么是 AI Workflow（AI 工作流）AI Workflow（AI 工作流）是将多个 AI 模型调用、工具使用、数据处理步骤有序组合成一条自动化流水线的系统。 单独调用一次 LLM 能回答问题，但现实任务往往需要：查网页 → 提取信息 → 分析 → 写报告 → 发送邮件。 AI Workflow 就是把这些步骤串起来，让 AI 自动完成完整任务，而不只是回答一句话。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602172112392.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602171909927.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602172019595.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602172112392.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602172207194.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602172355736.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/ai-workflow-runoob.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602171231774.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602171330694.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602171436017.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602171528039.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602171649194.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602171747825.png">
+<meta property="article:published_time" content="2026-06-02T08:50:43.000Z">
+<meta property="article:modified_time" content="2026-06-02T09:42:37.644Z">
+<meta property="article:author" content="凤炎忻">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Agent">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602172112392.png">
+
+<link rel="canonical" href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-AI-Workflow%EF%BC%88AI-%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>【AI】粗识 AI Workflow（AI 工作流） | 凤炎忻的个人笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="凤炎忻的个人笔记" type="application/atom+xml">
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">凤炎忻的个人笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我有一壶酒，足以慰风尘！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section">标签<span class="badge">17</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section">分类<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">归档<span class="badge">60</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section">公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-AI-Workflow%EF%BC%88AI-%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/flyingPig.jpeg">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【AI】粗识 AI Workflow（AI 工作流）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-06-02 16:50:43 / 修改时间：17:42:37" itemprop="dateCreated datePublished" datetime="2026-06-02T16:50:43+08:00">2026-06-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-AI-Workflow%EF%BC%88AI-%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%89/" class="post-meta-item leancloud_visitors" data-flag-title="【AI】粗识 AI Workflow（AI 工作流）" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-AI-Workflow%EF%BC%88AI-%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-AI-Workflow%EF%BC%88AI-%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>16 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602172112392.png"></p>
+<h2 id="什么是-AI-Workflow（AI-工作流）"><a href="#什么是-AI-Workflow（AI-工作流）" class="headerlink" title="什么是 AI Workflow（AI 工作流）"></a>什么是 AI Workflow（AI 工作流）</h2><p>AI Workflow（AI 工作流）是将多个 AI 模型调用、工具使用、数据处理步骤有序组合成一条自动化流水线的系统。</p>
+<p>单独调用一次 LLM 能回答问题，但现实任务往往需要：<code>查网页 → 提取信息 → 分析 → 写报告 → 发送邮件</code>。</p>
+<p>AI Workflow 就是把这些步骤串起来，让 AI 自动完成完整任务，而不只是回答一句话。</p>
+<span id="more"></span>
+
+<h3 id="一个直观的类比"><a href="#一个直观的类比" class="headerlink" title="一个直观的类比"></a>一个直观的类比</h3><p>想象一个装配流水线：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>类比</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单次 LLM 调用</td>
+<td>像一个工匠</td>
+<td>给他一块铁，他还给你一把剑</td>
+</tr>
+<tr>
+<td>AI Workflow</td>
+<td>像整条流水线</td>
+<td>原料进去，自动经过冶炼 → 锻造 → 淬火 → 打磨 → 包装，成品出来</td>
+</tr>
+</tbody></table>
+<p>每个步骤可以是 AI 模型、代码函数、外部 API，或者人工审核节点。</p>
+<h3 id="从问答到做事的进化"><a href="#从问答到做事的进化" class="headerlink" title="从问答到做事的进化"></a>从问答到做事的进化</h3><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602171909927.png"></p>
+<h2 id="为什么需要-AI-Workflow"><a href="#为什么需要-AI-Workflow" class="headerlink" title="为什么需要 AI Workflow"></a>为什么需要 AI Workflow</h2><h3 id="单次调用的局限"><a href="#单次调用的局限" class="headerlink" title="单次调用的局限"></a>单次调用的局限</h3><p>一次 LLM 调用能完成的事情非常有限：</p>
+<ul>
+<li>上下文窗口有限：无法一次读完一本书</li>
+<li>无法访问实时信息：训练数据有截止日期</li>
+<li>无法执行操作：不能真正发邮件、写代码并运行</li>
+<li>无法自我校验：生成错误后无法意识到并修正</li>
+<li>复杂任务容易出错：一步做太多事情导致质量下降</li>
+</ul>
+<h3 id="AI-Workflow-解决的五大核心问题"><a href="#AI-Workflow-解决的五大核心问题" class="headerlink" title="AI Workflow 解决的五大核心问题"></a>AI Workflow 解决的五大核心问题</h3><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602172019595.png"></p>
+<h2 id="AI-Workflow-的核心组成要素"><a href="#AI-Workflow-的核心组成要素" class="headerlink" title="AI Workflow 的核心组成要素"></a>AI Workflow 的核心组成要素</h2><p>一个完整的 AI Workflow 由以下核心要素构成。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602172112392.png"></p>
+<h3 id="各要素详解"><a href="#各要素详解" class="headerlink" title="各要素详解"></a>各要素详解</h3><p><strong>LLM（大语言模型）</strong> - Workflow 的”大脑”，负责推理、生成、决策。常用：GPT-4o、Claude 3.5、Gemini 1.5、本地 Llama 3。</p>
+<p><strong>工具（Tools）</strong> - 让 AI 能与外部世界交互的接口，包括：搜索引擎（Tavily、Serper、Bing）、代码执行器（Python REPL、沙箱环境）、数据库查询（SQL、向量 DB）、外部 API（天气、股票、邮件、日历）、文件操作（读写、解析 PDF/Excel）。</p>
+<p><strong>记忆（Memory）</strong> - 短期记忆存储当前会话对话历史（存在 prompt 里），长期记忆通过向量数据库 + RAG 实现跨会话持久存储，工作记忆维护任务执行中的中间状态。</p>
+<p><strong>状态（State）</strong> - 任务在各步骤之间传递的信息载体，如同接力棒，每一步都能读取前步结果并写入新结果。</p>
+<p><strong>路由/条件（Router）</strong> - 根据前一步输出动态决定下一步走向，实现分支、循环、跳转等复杂流程控制。</p>
+<p><strong>人工介入（Human in the Loop）</strong> - 在关键节点暂停等待人工确认，适用于高风险操作（如删除数据、发送邮件、财务操作）。</p>
+<h2 id="六大常见-Workflow-模式"><a href="#六大常见-Workflow-模式" class="headerlink" title="六大常见 Workflow 模式"></a>六大常见 Workflow 模式</h2><p>以下是 AI Workflow 中最常用的六种设计模式，从简单到复杂，适用于不同场景。</p>
+<h3 id="模式一：顺序链（Sequential-Chain）"><a href="#模式一：顺序链（Sequential-Chain）" class="headerlink" title="模式一：顺序链（Sequential Chain）"></a>模式一：顺序链（Sequential Chain）</h3><p>最基础的模式，步骤 A → B → C 线性执行，上一步输出是下一步输入。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602172207194.png"></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>适用场景</td>
+<td>文档处理流水线、内容生成、数据转换</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>简单、可预测</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>僵硬，无法根据内容动态调整</td>
+</tr>
+</tbody></table>
+<h3 id="模式二：条件路由（Conditional-Routing）"><a href="#模式二：条件路由（Conditional-Routing）" class="headerlink" title="模式二：条件路由（Conditional Routing）"></a>模式二：条件路由（Conditional Routing）</h3><p>根据某一步的输出内容，动态选择不同的后续路径。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602172355736.png"></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>适用场景</td>
+<td>智能客服、多功能助手、问题分类处理</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>灵活，资源利用率高</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>路由逻辑需要精心设计，分类错误影响全流程</td>
+</tr>
+</tbody></table>
+<h3 id="模式三：并行执行（Parallel-Execution）"><a href="#模式三：并行执行（Parallel-Execution）" class="headerlink" title="模式三：并行执行（Parallel Execution）"></a>模式三：并行执行（Parallel Execution）</h3><p>多个子任务同时运行，最后汇总结果。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/ai-workflow-runoob.png" alt="ai-workflow-runoob"></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>适用场景</td>
+<td>多维度分析、批量处理、独立子任务</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>速度大幅提升</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>需要处理并发控制和结果合并逻辑</td>
+</tr>
+</tbody></table>
+<h3 id="模式四：ReAct-循环（Reason-Act）"><a href="#模式四：ReAct-循环（Reason-Act）" class="headerlink" title="模式四：ReAct 循环（Reason + Act）"></a>模式四：ReAct 循环（Reason + Act）</h3><p>AI 先推理决定做什么，再行动调用工具，根据结果继续推理，循环直到任务完成。这是 AI Agent 的核心模式。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602171231774.png"></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>适用场景</td>
+<td>AI Agent、复杂任务执行、开放式问题求解</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>动态灵活，可处理未知情况</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>循环次数不可控，需要设定最大步数防止死循环</td>
+</tr>
+</tbody></table>
+<h3 id="模式五：Plan-amp-Execute（规划后执行）"><a href="#模式五：Plan-amp-Execute（规划后执行）" class="headerlink" title="模式五：Plan &amp; Execute（规划后执行）"></a>模式五：Plan &amp; Execute（规划后执行）</h3><p>先让 LLM 制定完整计划，再按计划逐步执行。与 ReAct 的区别是”先想清楚，再行动”。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602171330694.png"></p>
+<h3 id="模式六：多智能体协作（Multi-Agent）"><a href="#模式六：多智能体协作（Multi-Agent）" class="headerlink" title="模式六：多智能体协作（Multi-Agent）"></a>模式六：多智能体协作（Multi-Agent）</h3><p>多个专职 Agent 分工合作，每个 Agent 有自己的角色和工具集。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602171436017.png"></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>适用场景</td>
+<td>复杂软件开发、科研辅助、企业自动化</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>专职专用，质量更高，易于扩展</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>系统复杂度高，Agent 间通信需要精心设计</td>
+</tr>
+</tbody></table>
+<h2 id="AI-Workflow-的主流框架与工具对比"><a href="#AI-Workflow-的主流框架与工具对比" class="headerlink" title="AI Workflow 的主流框架与工具对比"></a>AI Workflow 的主流框架与工具对比</h2><p>以下是当前最主流的 AI Workflow 框架全景对比，帮助你根据自身情况做出选择。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602171528039.png"></p>
+<h3 id="框架选型决策树"><a href="#框架选型决策树" class="headerlink" title="框架选型决策树"></a>框架选型决策树</h3><p>根据你的具体情况，按照以下决策树选择合适的框架：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">你的情况是什么？</span><br><span class="line">│</span><br><span class="line">├─── 没有编程基础，想用可视化工具搭建</span><br><span class="line">│    ├─── 主要是 AI 应用（问答、生成）→ Dify（首选）</span><br><span class="line">│    └─── 需要连接 Slack/邮件等 SaaS 系统 → n8n</span><br><span class="line">│</span><br><span class="line">├─── 有 Python 基础，代码优先</span><br><span class="line">│    ├─── 做知识库 / RAG 系统 → LlamaIndex</span><br><span class="line">│    ├─── 做多 Agent 协作，想快速上手 → CrewAI</span><br><span class="line">│    ├─── 需要复杂有状态流程控制 → LangGraph</span><br><span class="line">│    └─── 通用场景，想要最大生态 → LangChain</span><br><span class="line">│</span><br><span class="line">└─── 已有明确场景，生产级要求</span><br><span class="line">     ├─── 高并发、精细控制 → LangGraph + LangSmith</span><br><span class="line">     └─── 企业部署、私有化 → Dify 自托管</span><br></pre></td></tr></table></figure>
+
+<h2 id="快速上手：Python-代码示例"><a href="#快速上手：Python-代码示例" class="headerlink" title="快速上手：Python 代码示例"></a>快速上手：Python 代码示例</h2><p>以下示例从最简单的顺序链到复杂的多 Agent 协作，逐步演示 AI Workflow 的实现方式。</p>
+<h3 id="LangChain-顺序链"><a href="#LangChain-顺序链" class="headerlink" title="LangChain 顺序链"></a>LangChain 顺序链</h3><p>最基础的 Workflow 模式，用管道操作符 | 串联多个 LLM 调用步骤。</p>
+<p>安装依赖包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install langchain langchain-openai</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain_core.prompts <span class="keyword">import</span> ChatPromptTemplate</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain_core.output_parsers <span class="keyword">import</span> StrOutputParser</span><br><span class="line"></span><br><span class="line">llm = ChatOpenAI(model=<span class="string">&quot;gpt-4o-mini&quot;</span>, api_key=<span class="string">&quot;your-api-key&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 定义三个步骤 ────────────────────────────────────────────</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 1：将文章翻译成中文</span></span><br><span class="line"></span><br><span class="line">translate_prompt = ChatPromptTemplate.from_template(</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;将下面的英文文章翻译成中文，保持原意：\n\n&#123;article&#125;&quot;</span></span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 2：提取摘要</span></span><br><span class="line"></span><br><span class="line">summarize_prompt = ChatPromptTemplate.from_template(</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;请将以下文章提炼成 3 个要点，每点一句话：\n\n&#123;translated&#125;&quot;</span></span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 3：生成标题</span></span><br><span class="line"></span><br><span class="line">title_prompt = ChatPromptTemplate.from_template(</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;根据以下摘要，生成一个吸引人的中文标题（15字以内）：\n\n&#123;summary&#125;&quot;</span></span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">parser = StrOutputParser()</span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 用 | 操作符链接成流水线 ─────────────────────────────────</span></span><br><span class="line"></span><br><span class="line">chain = (</span><br><span class="line"></span><br><span class="line">    &#123;<span class="string">&quot;translated&quot;</span>: translate_prompt | llm | parser&#125;</span><br><span class="line"></span><br><span class="line">    | &#123;<span class="string">&quot;summary&quot;</span>: summarize_prompt | llm | parser,</span><br><span class="line"></span><br><span class="line">       <span class="string">&quot;translated&quot;</span>: <span class="keyword">lambda</span> x: x[<span class="string">&quot;translated&quot;</span>]&#125;</span><br><span class="line"></span><br><span class="line">    | title_prompt | llm | parser</span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 运行 ────────────────────────────────────────────────────</span></span><br><span class="line"></span><br><span class="line">article = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Artificial intelligence is transforming how we work and live.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">From automating repetitive tasks to assisting in creative work,</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">AI tools are becoming indispensable in modern workflows...</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">result = chain.invoke(&#123;<span class="string">&quot;article&quot;</span>: article&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AI 正在重塑现代工作流：从自动化到创意辅助</span><br></pre></td></tr></table></figure>
+
+<h3 id="工具调用-Agent（ReAct-模式）"><a href="#工具调用-Agent（ReAct-模式）" class="headerlink" title="工具调用 Agent（ReAct 模式）"></a>工具调用 Agent（ReAct 模式）</h3><p>ReAct 是 AI Agent 的核心模式，让 AI 在思考和行动之间循环，直到完成任务。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain.agents <span class="keyword">import</span> AgentExecutor, create_react_agent</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain_core.tools <span class="keyword">import</span> tool</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain <span class="keyword">import</span> hub</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests, datetime</span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 定义工具 ────────────────────────────────────────────────</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@tool</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_weather</span>(<span class="params">city: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;&quot;&quot;获取指定城市的当前天气信息&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 实际项目中替换为真实天气 API</span></span><br><span class="line"></span><br><span class="line">    mock_data = &#123;</span><br><span class="line"></span><br><span class="line">        <span class="string">&quot;北京&quot;</span>: <span class="string">&quot;晴天，气温 22°C，微风&quot;</span>,</span><br><span class="line"></span><br><span class="line">        <span class="string">&quot;上海&quot;</span>: <span class="string">&quot;多云，气温 26°C，湿度 75%&quot;</span>,</span><br><span class="line"></span><br><span class="line">        <span class="string">&quot;广州&quot;</span>: <span class="string">&quot;小雨，气温 30°C，建议带伞&quot;</span>,</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> mock_data.get(city, <span class="string">f&quot;暂无 <span class="subst">&#123;city&#125;</span> 的天气数据&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@tool</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">search_web</span>(<span class="params">query: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;&quot;&quot;在网络上搜索信息，返回相关内容摘要&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 实际项目中接入 Tavily / Serper API</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;搜索 &#x27;<span class="subst">&#123;query&#125;</span>&#x27; 的结果：这是一个模拟的搜索结果...&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@tool</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">calculate</span>(<span class="params">expression: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;&quot;&quot;计算数学表达式，例如 &#x27;2 + 3 * 4&#x27;&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line"></span><br><span class="line">        result = <span class="built_in">eval</span>(expression, &#123;<span class="string">&quot;__builtins__&quot;</span>: &#123;&#125;&#125;, &#123;&#125;)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">str</span>(result)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;计算错误：<span class="subst">&#123;e&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@tool</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_date</span>() -&gt; <span class="built_in">str</span>:</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;&quot;&quot;获取今天的日期&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> datetime.date.today().strftime(<span class="string">&quot;%Y年%m月%d日&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 创建 Agent ───────────────────────────────────────────────</span></span><br><span class="line"></span><br><span class="line">tools = [get_weather, search_web, calculate, get_date]</span><br><span class="line"></span><br><span class="line">llm   = ChatOpenAI(model=<span class="string">&quot;gpt-4o&quot;</span>, temperature=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 LangChain Hub 的标准 ReAct prompt</span></span><br><span class="line"></span><br><span class="line">prompt = hub.pull(<span class="string">&quot;hwchase17/react&quot;</span>)</span><br><span class="line"></span><br><span class="line">agent = create_react_agent(llm, tools, prompt)</span><br><span class="line"></span><br><span class="line">agent_executor = AgentExecutor(</span><br><span class="line"></span><br><span class="line">    agent=agent,</span><br><span class="line"></span><br><span class="line">    tools=tools,</span><br><span class="line"></span><br><span class="line">    verbose=<span class="literal">True</span>,      <span class="comment"># 打印每步思考过程，方便调试</span></span><br><span class="line"></span><br><span class="line">    max_iterations=<span class="number">8</span>,  <span class="comment"># 防止无限循环</span></span><br><span class="line"></span><br><span class="line">    handle_parsing_errors=<span class="literal">True</span></span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 运行 ────────────────────────────────────────────────────</span></span><br><span class="line"></span><br><span class="line">result = agent_executor.invoke(&#123;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;input&quot;</span>: <span class="string">&quot;今天是几号？北京天气怎么样？如果出门步行 5km 消耗约 300 卡路里，&quot;</span></span><br><span class="line"></span><br><span class="line">             <span class="string">&quot;跑步同样距离消耗大约是步行的 1.6 倍，请计算跑步消耗的卡路里。&quot;</span></span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(result[<span class="string">&quot;output&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Agent 会自动决策：先调用 get_date → get_weather(&quot;北京&quot;) → calculate(&quot;300*1.6&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 最后综合所有信息给出完整回答</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="LangGraph-有状态-Workflow"><a href="#LangGraph-有状态-Workflow" class="headerlink" title="LangGraph 有状态 Workflow"></a>LangGraph 有状态 Workflow</h3><p>LangGraph 用图的方式定义复杂流程，每个节点是一个函数，边定义跳转逻辑。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langgraph.graph <span class="keyword">import</span> StateGraph, END</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> TypedDict, Annotated</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> operator</span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 定义状态结构（在节点间传递的数据）────────────────────────</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ResearchState</span>(<span class="title class_ inherited__">TypedDict</span>):</span><br><span class="line"></span><br><span class="line">    topic: <span class="built_in">str</span>                             <span class="comment"># 研究主题</span></span><br><span class="line"></span><br><span class="line">    research_notes: <span class="built_in">str</span>                    <span class="comment"># 研究笔记</span></span><br><span class="line"></span><br><span class="line">    draft: <span class="built_in">str</span>                             <span class="comment"># 草稿</span></span><br><span class="line"></span><br><span class="line">    review_feedback: <span class="built_in">str</span>                   <span class="comment"># 审阅意见</span></span><br><span class="line"></span><br><span class="line">    final_report: <span class="built_in">str</span>                      <span class="comment"># 最终报告</span></span><br><span class="line"></span><br><span class="line">    revision_count: Annotated[<span class="built_in">int</span>, operator.add]   <span class="comment"># 修改次数（累加）</span></span><br><span class="line"></span><br><span class="line">llm = ChatOpenAI(model=<span class="string">&quot;gpt-4o&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 定义节点函数 ─────────────────────────────────────────────</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">research_node</span>(<span class="params">state: ResearchState</span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;&quot;&quot;节点1：调研阶段&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    response = llm.invoke(</span><br><span class="line"></span><br><span class="line">        <span class="string">f&quot;请对以下主题进行简要调研，列出 5 个关键要点：<span class="subst">&#123;state[<span class="string">&#x27;topic&#x27;</span>]&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;research_notes&quot;</span>: response.content&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write_node</span>(<span class="params">state: ResearchState</span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;&quot;&quot;节点2：撰写草稿&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    prompt = <span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    主题：<span class="subst">&#123;state[<span class="string">&#x27;topic&#x27;</span>]&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    调研笔记：<span class="subst">&#123;state[<span class="string">&#x27;research_notes&#x27;</span>]&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    <span class="subst">&#123;<span class="string">&#x27;上次审阅意见：&#x27;</span> + state.get(<span class="string">&#x27;review_feedback&#x27;</span>, <span class="string">&#x27;&#x27;</span>) <span class="keyword">if</span> state.get(<span class="string">&#x27;review_feedback&#x27;</span>) <span class="keyword">else</span> <span class="string">&#x27;&#x27;</span>&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    请根据以上内容撰写一篇 300 字的分析报告草稿。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    response = llm.invoke(prompt)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;draft&quot;</span>: response.content, <span class="string">&quot;revision_count&quot;</span>: <span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">review_node</span>(<span class="params">state: ResearchState</span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;&quot;&quot;节点3：审阅草稿&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    response = llm.invoke(</span><br><span class="line"></span><br><span class="line">        <span class="string">f&quot;审阅以下报告，如果质量达标回复 &#x27;APPROVED&#x27;，否则给出具体修改意见：\n\n<span class="subst">&#123;state[<span class="string">&#x27;draft&#x27;</span>]&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;review_feedback&quot;</span>: response.content&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">finalize_node</span>(<span class="params">state: ResearchState</span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;&quot;&quot;节点4：最终定稿&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;final_report&quot;</span>: state[<span class="string">&quot;draft&quot;</span>]&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 路由函数：决定审阅后走哪条路 ─────────────────────────────</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">should_revise</span>(<span class="params">state: ResearchState</span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;APPROVED&quot;</span> <span class="keyword">in</span> state[<span class="string">&quot;review_feedback&quot;</span>]:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;finalize&quot;</span>           <span class="comment"># → 最终定稿</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> state[<span class="string">&quot;revision_count&quot;</span>] &gt;= <span class="number">3</span>:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;finalize&quot;</span>           <span class="comment"># → 超过3次修改，强制结束</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;revise&quot;</span>             <span class="comment"># → 返回写作节点修改</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 构建工作流图 ─────────────────────────────────────────────</span></span><br><span class="line"></span><br><span class="line">workflow = StateGraph(ResearchState)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加节点</span></span><br><span class="line"></span><br><span class="line">workflow.add_node(<span class="string">&quot;research&quot;</span>,  research_node)</span><br><span class="line"></span><br><span class="line">workflow.add_node(<span class="string">&quot;write&quot;</span>,     write_node)</span><br><span class="line"></span><br><span class="line">workflow.add_node(<span class="string">&quot;review&quot;</span>,    review_node)</span><br><span class="line"></span><br><span class="line">workflow.add_node(<span class="string">&quot;finalize&quot;</span>,  finalize_node)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置入口</span></span><br><span class="line"></span><br><span class="line">workflow.set_entry_point(<span class="string">&quot;research&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加边（定义流转逻辑）</span></span><br><span class="line"></span><br><span class="line">workflow.add_edge(<span class="string">&quot;research&quot;</span>, <span class="string">&quot;write&quot;</span>)       <span class="comment"># 调研 → 写作</span></span><br><span class="line"></span><br><span class="line">workflow.add_edge(<span class="string">&quot;write&quot;</span>,    <span class="string">&quot;review&quot;</span>)      <span class="comment"># 写作 → 审阅</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 条件边：审阅后根据结果选择路径</span></span><br><span class="line"></span><br><span class="line">workflow.add_conditional_edges(</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;review&quot;</span>,</span><br><span class="line"></span><br><span class="line">    should_revise,</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        <span class="string">&quot;revise&quot;</span>:   <span class="string">&quot;write&quot;</span>,    <span class="comment"># 需要修改 → 回到写作</span></span><br><span class="line"></span><br><span class="line">        <span class="string">&quot;finalize&quot;</span>: <span class="string">&quot;finalize&quot;</span>  <span class="comment"># 通过审核 → 最终定稿</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">workflow.add_edge(<span class="string">&quot;finalize&quot;</span>, END)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编译并运行</span></span><br><span class="line"></span><br><span class="line">app = workflow.<span class="built_in">compile</span>()</span><br><span class="line"></span><br><span class="line">result = app.invoke(&#123;<span class="string">&quot;topic&quot;</span>: <span class="string">&quot;生成式 AI 对软件开发行业的影响&quot;</span>, <span class="string">&quot;revision_count&quot;</span>: <span class="number">0</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(result[<span class="string">&quot;final_report&quot;</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="CrewAI-多-Agent-协作"><a href="#CrewAI-多-Agent-协作" class="headerlink" title="CrewAI 多 Agent 协作"></a>CrewAI 多 Agent 协作</h3><p>CrewAI 通过定义角色和任务，让多个 Agent 像团队一样协作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> crewai <span class="keyword">import</span> Agent, Task, Crew, Process</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"></span><br><span class="line">llm = ChatOpenAI(model=<span class="string">&quot;gpt-4o&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 定义 Agent（角色） ────────────────────────────────────────</span></span><br><span class="line"></span><br><span class="line">researcher = Agent(</span><br><span class="line"></span><br><span class="line">    role=<span class="string">&quot;市场研究员&quot;</span>,</span><br><span class="line"></span><br><span class="line">    goal=<span class="string">&quot;收集并整理关于目标主题的全面、准确的市场信息&quot;</span>,</span><br><span class="line"></span><br><span class="line">    backstory=<span class="string">&quot;你是一位经验丰富的市场分析师，擅长从海量信息中提炼关键洞察&quot;</span>,</span><br><span class="line"></span><br><span class="line">    llm=llm,</span><br><span class="line"></span><br><span class="line">    verbose=<span class="literal">True</span></span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">analyst = Agent(</span><br><span class="line"></span><br><span class="line">    role=<span class="string">&quot;数据分析师&quot;</span>,</span><br><span class="line"></span><br><span class="line">    goal=<span class="string">&quot;基于研究员提供的信息，进行深度分析并得出有价值的结论&quot;</span>,</span><br><span class="line"></span><br><span class="line">    backstory=<span class="string">&quot;你擅长用数据说话，能发现隐藏在信息背后的趋势和机会&quot;</span>,</span><br><span class="line"></span><br><span class="line">    llm=llm,</span><br><span class="line"></span><br><span class="line">    verbose=<span class="literal">True</span></span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">writer = Agent(</span><br><span class="line"></span><br><span class="line">    role=<span class="string">&quot;报告撰写专家&quot;</span>,</span><br><span class="line"></span><br><span class="line">    goal=<span class="string">&quot;将分析结论撰写成清晰、专业、有说服力的报告&quot;</span>,</span><br><span class="line"></span><br><span class="line">    backstory=<span class="string">&quot;你有丰富的商业写作经验，能让复杂的分析变得易于理解&quot;</span>,</span><br><span class="line"></span><br><span class="line">    llm=llm,</span><br><span class="line"></span><br><span class="line">    verbose=<span class="literal">True</span></span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 定义 Task（任务） ────────────────────────────────────────</span></span><br><span class="line"></span><br><span class="line">research_task = Task(</span><br><span class="line"></span><br><span class="line">    description=<span class="string">&quot;调研中国新能源汽车市场的现状，包括主要品牌、市场份额、增长趋势&quot;</span>,</span><br><span class="line"></span><br><span class="line">    expected_output=<span class="string">&quot;一份包含 5 个关键数据点的市场调研报告，含数字和具体事实&quot;</span>,</span><br><span class="line"></span><br><span class="line">    agent=researcher</span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">analysis_task = Task(</span><br><span class="line"></span><br><span class="line">    description=<span class="string">&quot;基于调研报告，分析未来 3 年的机会与风险，给出投资评级建议&quot;</span>,</span><br><span class="line"></span><br><span class="line">    expected_output=<span class="string">&quot;SWOT 分析表格 + 投资评级（强烈推荐/推荐/中性/谨慎）+ 理由&quot;</span>,</span><br><span class="line"></span><br><span class="line">    agent=analyst,</span><br><span class="line"></span><br><span class="line">    context=[research_task]    <span class="comment"># 依赖调研任务的输出</span></span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">writing_task = Task(</span><br><span class="line"></span><br><span class="line">    description=<span class="string">&quot;将调研和分析整合成一份 500 字的专业投资简报，格式清晰&quot;</span>,</span><br><span class="line"></span><br><span class="line">    expected_output=<span class="string">&quot;包含执行摘要、市场现状、机会风险、投资建议四个部分的简报&quot;</span>,</span><br><span class="line"></span><br><span class="line">    agent=writer,</span><br><span class="line"></span><br><span class="line">    context=[research_task, analysis_task]</span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 组建团队并执行 ───────────────────────────────────────────</span></span><br><span class="line"></span><br><span class="line">crew = Crew(</span><br><span class="line"></span><br><span class="line">    agents=[researcher, analyst, writer],</span><br><span class="line"></span><br><span class="line">    tasks=[research_task, analysis_task, writing_task],</span><br><span class="line"></span><br><span class="line">    process=Process.sequential,    <span class="comment"># 顺序执行（也可改为 hierarchical）</span></span><br><span class="line"></span><br><span class="line">    verbose=<span class="literal">True</span></span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">result = crew.kickoff()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Human-in-the-Loop（人工审核节点）"><a href="#Human-in-the-Loop（人工审核节点）" class="headerlink" title="Human-in-the-Loop（人工审核节点）"></a>Human-in-the-Loop（人工审核节点）</h3><p>LangGraph 支持在关键步骤暂停，等待人工确认后再继续执行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langgraph.graph <span class="keyword">import</span> StateGraph, END</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langgraph.checkpoint.memory <span class="keyword">import</span> MemorySaver</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> TypedDict</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">EmailState</span>(<span class="title class_ inherited__">TypedDict</span>):</span><br><span class="line"></span><br><span class="line">    recipient: <span class="built_in">str</span></span><br><span class="line"></span><br><span class="line">    content: <span class="built_in">str</span></span><br><span class="line"></span><br><span class="line">    approved: <span class="built_in">bool</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">draft_email</span>(<span class="params">state: EmailState</span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;&quot;&quot;起草邮件&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    content = <span class="string">f&quot;尊敬的 <span class="subst">&#123;state[<span class="string">&#x27;recipient&#x27;</span>]&#125;</span>，\n\n这是 AI 起草的邮件内容...\n\n此致&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;content&quot;</span>: content&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_email</span>(<span class="params">state: EmailState</span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;&quot;&quot;发送邮件（高风险操作，需要人工审核后才执行）&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;邮件已发送给 <span class="subst">&#123;state[<span class="string">&#x27;recipient&#x27;</span>]&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 路由：根据人工审核结果决定是否发送</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_approval</span>(<span class="params">state: EmailState</span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;send&quot;</span> <span class="keyword">if</span> state.get(<span class="string">&quot;approved&quot;</span>) <span class="keyword">else</span> END</span><br><span class="line"></span><br><span class="line">workflow = StateGraph(EmailState)</span><br><span class="line"></span><br><span class="line">workflow.add_node(<span class="string">&quot;draft&quot;</span>, draft_email)</span><br><span class="line"></span><br><span class="line">workflow.add_node(<span class="string">&quot;send&quot;</span>, send_email)</span><br><span class="line"></span><br><span class="line">workflow.set_entry_point(<span class="string">&quot;draft&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># draft 完成后暂停，等待人工审核（interrupt_after）</span></span><br><span class="line"></span><br><span class="line">workflow.add_conditional_edges(<span class="string">&quot;draft&quot;</span>, check_approval, &#123;<span class="string">&quot;send&quot;</span>: <span class="string">&quot;send&quot;</span>, END: END&#125;)</span><br><span class="line"></span><br><span class="line">workflow.add_edge(<span class="string">&quot;send&quot;</span>, END)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 MemorySaver 支持中断和恢复</span></span><br><span class="line"></span><br><span class="line">memory = MemorySaver()</span><br><span class="line"></span><br><span class="line">app = workflow.<span class="built_in">compile</span>(</span><br><span class="line"></span><br><span class="line">    checkpointer=memory,</span><br><span class="line"></span><br><span class="line">    interrupt_after=[<span class="string">&quot;draft&quot;</span>]      <span class="comment"># 在 draft 节点后暂停</span></span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">config = &#123;<span class="string">&quot;configurable&quot;</span>: &#123;<span class="string">&quot;thread_id&quot;</span>: <span class="string">&quot;email-001&quot;</span>&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一次运行：执行到 draft 后暂停</span></span><br><span class="line"></span><br><span class="line">state = app.invoke(&#123;<span class="string">&quot;recipient&quot;</span>: <span class="string">&quot;客户A&quot;</span>, <span class="string">&quot;approved&quot;</span>: <span class="literal">False</span>&#125;, config)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;草稿已生成，等待审核：&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(state[<span class="string">&quot;content&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 人工审核后，更新状态并继续执行</span></span><br><span class="line"></span><br><span class="line">user_input = <span class="built_in">input</span>(<span class="string">&quot;\n是否批准发送？(y/n): &quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> user_input.lower() == <span class="string">&quot;y&quot;</span>:</span><br><span class="line"></span><br><span class="line">    app.update_state(config, &#123;<span class="string">&quot;approved&quot;</span>: <span class="literal">True</span>&#125;)</span><br><span class="line"></span><br><span class="line">    app.invoke(<span class="literal">None</span>, config)   <span class="comment"># 从断点继续</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;邮件已发送&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;已取消发送&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Prompt-工程：Workflow-中的关键技巧"><a href="#Prompt-工程：Workflow-中的关键技巧" class="headerlink" title="Prompt 工程：Workflow 中的关键技巧"></a>Prompt 工程：Workflow 中的关键技巧</h3><p>在 AI Workflow 中，Prompt 的质量直接影响每个节点的输出质量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 模糊的角色定义</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># system_prompt = &quot;你是一个 AI 助手，帮我分析这份文档&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 清晰的角色定义（推荐）</span></span><br><span class="line"></span><br><span class="line">system_prompt = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">你是一位专业的财务分析师，专注于识别财务报告中的风险信号。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">你的任务：从以下报告中提取所有涉及负债、现金流和盈利能力的关键数据点。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">输出格式：JSON，包含 risk_level（high/medium/low）和 key_findings（列表）。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">注意：只输出 JSON，不要添加任何说明文字。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 传递非结构化文本</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># state[&quot;previous_output&quot;] = &quot;分析结果：这个公司看起来不错，有一些风险...&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 传递结构化数据（推荐）</span></span><br><span class="line"></span><br><span class="line">state[<span class="string">&quot;analysis_result&quot;</span>] = &#123;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;risk_level&quot;</span>: <span class="string">&quot;medium&quot;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;key_findings&quot;</span>: [<span class="string">&quot;负债率 45%，行业均值 38%&quot;</span>, <span class="string">&quot;现金流为正，Q3 环比下降 12%&quot;</span>],</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;recommendation&quot;</span>: <span class="string">&quot;谨慎持有&quot;</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在 prompt 中强制要求 JSON 输出</span></span><br><span class="line"></span><br><span class="line">prompt = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">请分析以下文本的情感倾向。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">严格按照如下 JSON 格式输出，不要添加任何其他内容：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &quot;sentiment&quot;: &quot;positive&quot; | &quot;negative&quot; | &quot;neutral&quot;,</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &quot;confidence&quot;: 0.0-1.0,</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &quot;reason&quot;: &quot;简短说明&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">文本：&#123;text&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="错误处理与重试"><a href="#错误处理与重试" class="headerlink" title="错误处理与重试"></a>错误处理与重试</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tenacity <span class="keyword">import</span> retry, stop_after_attempt, wait_exponential</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line"><span class="meta">@retry(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="meta"></span></span></span><br><span class="line"><span class="params"><span class="meta">    stop=stop_after_attempt(<span class="params"><span class="number">3</span></span>),                         <span class="comment"># 最多重试 3 次</span></span></span></span><br><span class="line"><span class="params"><span class="meta"></span></span></span><br><span class="line"><span class="params"><span class="meta">    wait=wait_exponential(<span class="params">multiplier=<span class="number">1</span>, <span class="built_in">min</span>=<span class="number">2</span>, <span class="built_in">max</span>=<span class="number">10</span></span>)  <span class="comment"># 指数退避等待</span></span></span></span><br><span class="line"><span class="params"><span class="meta"></span></span></span><br><span class="line"><span class="params"><span class="meta"></span>)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">call_llm_with_retry</span>(<span class="params">prompt: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line"></span><br><span class="line">        response = llm.invoke(prompt)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> response.content</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line"></span><br><span class="line">        logging.error(<span class="string">f&quot;LLM 调用失败：<span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">raise</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">safe_parse_json</span>(<span class="params">text: <span class="built_in">str</span></span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;&quot;&quot;安全解析 LLM 输出的 JSON&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">import</span> json, re</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 提取 JSON 部分（LLM 有时会加多余的说明文字）</span></span><br><span class="line"></span><br><span class="line">    json_match = re.search(<span class="string">r&#x27;\&#123;.*\&#125;&#x27;</span>, text, re.DOTALL)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> json_match:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> json.loads(json_match.group())</span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> json.JSONDecodeError:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;解析失败&quot;</span>, <span class="string">&quot;raw&quot;</span>: text&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="成本控制"><a href="#成本控制" class="headerlink" title="成本控制"></a>成本控制</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ─── 根据任务重要性选择模型 ────────────────────────────────</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_llm</span>(<span class="params">task_type: <span class="built_in">str</span></span>):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> task_type == <span class="string">&quot;classification&quot;</span>:   <span class="comment"># 分类任务，轻量模型足够</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ChatOpenAI(model=<span class="string">&quot;gpt-4o-mini&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> task_type == <span class="string">&quot;generation&quot;</span>:     <span class="comment"># 生成任务，用中等模型</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ChatOpenAI(model=<span class="string">&quot;gpt-4o-mini&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> task_type == <span class="string">&quot;reasoning&quot;</span>:      <span class="comment"># 复杂推理，用强模型</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ChatOpenAI(model=<span class="string">&quot;gpt-4o&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 缓存重复请求 ──────────────────────────────────────────</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain.<span class="built_in">globals</span> <span class="keyword">import</span> set_llm_cache</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain_community.cache <span class="keyword">import</span> InMemoryCache</span><br><span class="line"></span><br><span class="line">set_llm_cache(InMemoryCache())   <span class="comment"># 相同输入直接返回缓存，不重复计费</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ─── 文本分块避免超长 ──────────────────────────────────────</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain.text_splitter <span class="keyword">import</span> RecursiveCharacterTextSplitter</span><br><span class="line"></span><br><span class="line">splitter = RecursiveCharacterTextSplitter(</span><br><span class="line"></span><br><span class="line">    chunk_size=<span class="number">2000</span>,       <span class="comment"># 每块 2000 字符</span></span><br><span class="line"></span><br><span class="line">    chunk_overlap=<span class="number">200</span>      <span class="comment"># 重叠 200 字符保证上下文连贯</span></span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">chunks = splitter.split_text(long_document)</span><br></pre></td></tr></table></figure>
+
+<h2 id="典型应用场景"><a href="#典型应用场景" class="headerlink" title="典型应用场景"></a>典型应用场景</h2><p>AI Workflow 已经在多个领域广泛落地，以下是六个最具代表性的场景。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602171649194.png"></p>
+<h2 id="最佳实践与常见陷阱"><a href="#最佳实践与常见陷阱" class="headerlink" title="最佳实践与常见陷阱"></a>最佳实践与常见陷阱</h2><h3 id="常见陷阱与解决方案"><a href="#常见陷阱与解决方案" class="headerlink" title="常见陷阱与解决方案"></a>常见陷阱与解决方案</h3><p>以下是初学者在使用 AI Workflow 时最容易遇到的问题。</p>
+<table>
+<thead>
+<tr>
+<th>陷阱</th>
+<th>现象</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>幻觉级联</td>
+<td>前一步 AI 输出错误，被当成事实传给下一步，错误被放大</td>
+<td>关键节点增加验证步骤；数值类信息用工具获取</td>
+</tr>
+<tr>
+<td>无限循环</td>
+<td>ReAct Agent 反复调用工具，不知道何时停止</td>
+<td>设置 max_iterations；给 LLM 明确的终止条件</td>
+</tr>
+<tr>
+<td>上下文爆炸</td>
+<td>随着步骤增加，传入 LLM 的文本越来越长，超出窗口</td>
+<td>每步只传必要字段；用摘要压缩历史信息</td>
+</tr>
+<tr>
+<td>工具滥用</td>
+<td>Agent 明明可以直接回答，却反复调用工具</td>
+<td>优化工具描述；给 LLM 明确说明何时不需要工具</td>
+</tr>
+<tr>
+<td>JSON 解析失败</td>
+<td>LLM 输出格式不稳定，程序崩溃</td>
+<td>加 safe_parse_json；用 LangChain OutputParser</td>
+</tr>
+<tr>
+<td>费用超支</td>
+<td>未估算 token 用量，月底账单超预期</td>
+<td>先用 gpt-4o-mini 测试；用 LangSmith 监控用量</td>
+</tr>
+<tr>
+<td>并发冲突</td>
+<td>多个 Agent 同时写同一个状态导致数据错乱</td>
+<td>用 LangGraph 内置状态管理；避免共享可变状态</td>
+</tr>
+</tbody></table>
+<h2 id="总结与学习路径"><a href="#总结与学习路径" class="headerlink" title="总结与学习路径"></a>总结与学习路径</h2><h3 id="核心知识点回顾"><a href="#核心知识点回顾" class="headerlink" title="核心知识点回顾"></a>核心知识点回顾</h3><p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602171747825.png"></p>
+<h3 id="推荐学习路径"><a href="#推荐学习路径" class="headerlink" title="推荐学习路径"></a>推荐学习路径</h3><p><strong>第一阶段：理解基础（1 周）</strong></p>
+<ol>
+<li>理解 LLM API 调用，能用 OpenAI SDK 发起请求</li>
+<li>跑通本文 LangChain 顺序链示例</li>
+<li>理解 Prompt Engineering 基本原则</li>
+</ol>
+<p><strong>第二阶段：工具与 Agent（2 周）</strong></p>
+<ol>
+<li>学会用 @tool 装饰器定义工具</li>
+<li>跑通 ReAct Agent 示例，观察 verbose 日志理解循环逻辑</li>
+<li>用 Dify 或 n8n 搭建一个可视化 Workflow 原型</li>
+</ol>
+<p><strong>第三阶段：复杂 Workflow（3 周）</strong></p>
+<ol>
+<li>学习 LangGraph 状态图，实现带条件分支的工作流</li>
+<li>用 CrewAI 实现一个双 Agent 协作任务</li>
+<li>接入真实工具（Tavily 搜索、Python REPL）</li>
+<li>用 LangSmith 观测并调试你的 Workflow</li>
+</ol>
+<p><strong>第四阶段：生产就绪（持续）</strong></p>
+<ol>
+<li>实现错误重试、结构化输出解析</li>
+<li>成本监控与优化（模型分级使用）</li>
+<li>部署到生产，设置监控告警</li>
+</ol>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.langchain.com/oss/python/langchain/overview">LangChain 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.langchain.com/oss/python/langgraph/overview">LangGraph 文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.llamaindex.ai/python/framework/">LlamaIndex 文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.crewai.com/">CrewAI 文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/langgenius/dify">Dify 开源平台</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.n8n.io/">n8n 文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2210.03629">ReAct 论文（Reason + Act 模式的原始论文）</a></li>
+<li><a target="_blank" rel="noopener" href="https://smith.langchain.com/">LangSmith 可观测平台</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic AI Agent 最佳实践</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.runoob.com/ai-agent/ai-workflow.html">菜鸟教程 - AI Workflow（AI 工作流）</a>  </li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    
+    
+    
+
+    <div>
+       
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------<i class="fa fa-paw"></i> That's all！Best wishes for you !!! <i class="fa fa-paw"></i>-------------</div>
+    
+</div>
+
+       
+    </div><div class="post-widgets">
+    <div class="likely">
+        <div class="twitter">Tweet</div>
+        <div class="facebook">Share</div>
+        <div class="linkedin">Link</div>
+        <div class="gplus">Plus</div>
+        <div class="vkontakte">Share</div>
+        <div class="odnoklassniki">Class</div>
+        <div class="telegram">Send</div>
+        <div class="whatsapp">Send</div>
+        <div class="pinterest">Pin</div>
+    </div>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.js"></script><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>凤炎忻
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-AI-Workflow%EF%BC%88AI-%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%89/" title="【AI】粗识 AI Workflow（AI 工作流）">https://fengyanxin.github.io/AI/【AI】粗识-AI-Workflow（AI-工作流）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/fengyanxin">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.zhihu.com/people/peng-he-34-93">
+            <span class="icon">
+              <i class="fab fa-zhihu"></i>
+            </span>
+
+            <span class="label">知乎</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065">
+            <span class="icon">
+              <i class="fa fa-toutiao"></i>
+            </span>
+
+            <span class="label">今日头条</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477">
+            <span class="icon">
+              <i class="fa fa-baidu1"></i>
+            </span>
+
+            <span class="label">百家号</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394">
+            <span class="icon">
+              <i class="fab fa-xiaohongshu1"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e">
+            <span class="icon">
+              <i class="fab fa-liblib1"></i>
+            </span>
+
+            <span class="label">LibLib</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"><i class="fa fa-tag"></i> AI</a>
+              <a href="/tags/Agent/" rel="tag"><i class="fa fa-tag"></i> Agent</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-Prompt-Engineering%EF%BC%88%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%EF%BC%89/" rel="prev" title="【AI】粗识 Prompt Engineering（提示词工程）">
+      <i class="fa fa-chevron-left"></i> 【AI】粗识 Prompt Engineering（提示词工程）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-AI-Workflow%EF%BC%88AI-%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">什么是 AI Workflow（AI 工作流）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E7%9B%B4%E8%A7%82%E7%9A%84%E7%B1%BB%E6%AF%94"><span class="nav-number">1.1.</span> <span class="nav-text">一个直观的类比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E9%97%AE%E7%AD%94%E5%88%B0%E5%81%9A%E4%BA%8B%E7%9A%84%E8%BF%9B%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text">从问答到做事的进化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-AI-Workflow"><span class="nav-number">2.</span> <span class="nav-text">为什么需要 AI Workflow</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E6%AC%A1%E8%B0%83%E7%94%A8%E7%9A%84%E5%B1%80%E9%99%90"><span class="nav-number">2.1.</span> <span class="nav-text">单次调用的局限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Workflow-%E8%A7%A3%E5%86%B3%E7%9A%84%E4%BA%94%E5%A4%A7%E6%A0%B8%E5%BF%83%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.</span> <span class="nav-text">AI Workflow 解决的五大核心问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AI-Workflow-%E7%9A%84%E6%A0%B8%E5%BF%83%E7%BB%84%E6%88%90%E8%A6%81%E7%B4%A0"><span class="nav-number">3.</span> <span class="nav-text">AI Workflow 的核心组成要素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%84%E8%A6%81%E7%B4%A0%E8%AF%A6%E8%A7%A3"><span class="nav-number">3.1.</span> <span class="nav-text">各要素详解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E5%A4%A7%E5%B8%B8%E8%A7%81-Workflow-%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">六大常见 Workflow 模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E4%B8%80%EF%BC%9A%E9%A1%BA%E5%BA%8F%E9%93%BE%EF%BC%88Sequential-Chain%EF%BC%89"><span class="nav-number">4.1.</span> <span class="nav-text">模式一：顺序链（Sequential Chain）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E4%BA%8C%EF%BC%9A%E6%9D%A1%E4%BB%B6%E8%B7%AF%E7%94%B1%EF%BC%88Conditional-Routing%EF%BC%89"><span class="nav-number">4.2.</span> <span class="nav-text">模式二：条件路由（Conditional Routing）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E4%B8%89%EF%BC%9A%E5%B9%B6%E8%A1%8C%E6%89%A7%E8%A1%8C%EF%BC%88Parallel-Execution%EF%BC%89"><span class="nav-number">4.3.</span> <span class="nav-text">模式三：并行执行（Parallel Execution）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E5%9B%9B%EF%BC%9AReAct-%E5%BE%AA%E7%8E%AF%EF%BC%88Reason-Act%EF%BC%89"><span class="nav-number">4.4.</span> <span class="nav-text">模式四：ReAct 循环（Reason + Act）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E4%BA%94%EF%BC%9APlan-amp-Execute%EF%BC%88%E8%A7%84%E5%88%92%E5%90%8E%E6%89%A7%E8%A1%8C%EF%BC%89"><span class="nav-number">4.5.</span> <span class="nav-text">模式五：Plan &amp; Execute（规划后执行）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E5%85%AD%EF%BC%9A%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%E5%8D%8F%E4%BD%9C%EF%BC%88Multi-Agent%EF%BC%89"><span class="nav-number">4.6.</span> <span class="nav-text">模式六：多智能体协作（Multi-Agent）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AI-Workflow-%E7%9A%84%E4%B8%BB%E6%B5%81%E6%A1%86%E6%9E%B6%E4%B8%8E%E5%B7%A5%E5%85%B7%E5%AF%B9%E6%AF%94"><span class="nav-number">5.</span> <span class="nav-text">AI Workflow 的主流框架与工具对比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%86%E6%9E%B6%E9%80%89%E5%9E%8B%E5%86%B3%E7%AD%96%E6%A0%91"><span class="nav-number">5.1.</span> <span class="nav-text">框架选型决策树</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B%EF%BC%9APython-%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="nav-number">6.</span> <span class="nav-text">快速上手：Python 代码示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LangChain-%E9%A1%BA%E5%BA%8F%E9%93%BE"><span class="nav-number">6.1.</span> <span class="nav-text">LangChain 顺序链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8-Agent%EF%BC%88ReAct-%E6%A8%A1%E5%BC%8F%EF%BC%89"><span class="nav-number">6.2.</span> <span class="nav-text">工具调用 Agent（ReAct 模式）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LangGraph-%E6%9C%89%E7%8A%B6%E6%80%81-Workflow"><span class="nav-number">6.3.</span> <span class="nav-text">LangGraph 有状态 Workflow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CrewAI-%E5%A4%9A-Agent-%E5%8D%8F%E4%BD%9C"><span class="nav-number">6.4.</span> <span class="nav-text">CrewAI 多 Agent 协作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Human-in-the-Loop%EF%BC%88%E4%BA%BA%E5%B7%A5%E5%AE%A1%E6%A0%B8%E8%8A%82%E7%82%B9%EF%BC%89"><span class="nav-number">6.5.</span> <span class="nav-text">Human-in-the-Loop（人工审核节点）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prompt-%E5%B7%A5%E7%A8%8B%EF%BC%9AWorkflow-%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE%E6%8A%80%E5%B7%A7"><span class="nav-number">6.6.</span> <span class="nav-text">Prompt 工程：Workflow 中的关键技巧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E4%B8%8E%E9%87%8D%E8%AF%95"><span class="nav-number">6.7.</span> <span class="nav-text">错误处理与重试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%90%E6%9C%AC%E6%8E%A7%E5%88%B6"><span class="nav-number">6.8.</span> <span class="nav-text">成本控制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">7.</span> <span class="nav-text">典型应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E4%B8%8E%E5%B8%B8%E8%A7%81%E9%99%B7%E9%98%B1"><span class="nav-number">8.</span> <span class="nav-text">最佳实践与常见陷阱</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%99%B7%E9%98%B1%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">8.1.</span> <span class="nav-text">常见陷阱与解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8E%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84"><span class="nav-number">9.</span> <span class="nav-text">总结与学习路径</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E7%82%B9%E5%9B%9E%E9%A1%BE"><span class="nav-number">9.1.</span> <span class="nav-text">核心知识点回顾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E8%8D%90%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84"><span class="nav-number">9.2.</span> <span class="nav-text">推荐学习路径</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">10.</span> <span class="nav-text">参考资源</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="凤炎忻"
+      src="/images/flyingPig.jpeg">
+  <p class="site-author-name" itemprop="name">凤炎忻</p>
+  <div class="site-description" itemprop="description">性浮脱，难酬一道，广涉寡精，杂而不博</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengyanxin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengyanxin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ph18317192001@163.com" title="E-Mail → mailto:ph18317192001@163.com" rel="noopener" target="_blank"><i class="fab fa-mail fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065" title="今日头条 → https:&#x2F;&#x2F;profile.zjurl.cn&#x2F;rogue&#x2F;ugc&#x2F;profile&#x2F;?user_id&#x3D;51893718065" rel="noopener" target="_blank"><i class="fab fa-jinritoutiao fa-fw"></i>今日头条</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477" title="百家号 → https:&#x2F;&#x2F;author.baidu.com&#x2F;home?from&#x3D;bjh_article&amp;app_id&#x3D;1665765419554477" rel="noopener" target="_blank"><i class="fab fa-baidu fa-fw"></i>百家号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;642cb9650000000011023394" rel="noopener" target="_blank"><i class="fab fa-xiaohongshu fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e" title="LibLib → https:&#x2F;&#x2F;www.liblib.art&#x2F;userpage&#x2F;c7816525373d4fbca7e45c1940ead98e" rel="noopener" target="_blank"><i class="fab fa-liblib fa-fw"></i>LibLib</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">凤炎忻</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">144k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:45</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,255' opacity='0.95' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script><script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '7EJkVswo79CmfmbwincRPjrA-gzGzoHsz',
+      appKey     : 'v7t6DWozwkcL2qIDeSC5kupC',
+      placeholder: "说点什么吧！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

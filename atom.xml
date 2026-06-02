@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2026-06-01T08:49:53.431Z</updated>
+  <updated>2026-06-02T09:42:37.644Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【AI】粗识 AI Workflow（AI 工作流）</title>
+    <link href="https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-AI-Workflow%EF%BC%88AI-%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%89/"/>
+    <id>https://fengyanxin.github.io/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-AI-Workflow%EF%BC%88AI-%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%89/</id>
+    <published>2026-06-02T08:50:43.000Z</published>
+    <updated>2026-06-02T09:42:37.644Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/image-20260602172112392.png&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;什么是-AI-Workflow（AI-工作流）&quot;&gt;&lt;a href=&quot;#什么是-AI-Workflow（AI-工作流）&quot; class=&quot;headerlink&quot; title=&quot;什么是 AI Workflow（AI 工作流）&quot;&gt;&lt;/a&gt;什么是 AI Workflow（AI 工作流）&lt;/h2&gt;&lt;p&gt;AI Workflow（AI 工作流）是将多个 AI 模型调用、工具使用、数据处理步骤有序组合成一条自动化流水线的系统。&lt;/p&gt;
+&lt;p&gt;单独调用一次 LLM 能回答问题，但现实任务往往需要：&lt;code&gt;查网页 → 提取信息 → 分析 → 写报告 → 发送邮件&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;AI Workflow 就是把这些步骤串起来，让 AI 自动完成完整任务，而不只是回答一句话。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="AI" scheme="https://fengyanxin.github.io/categories/AI/"/>
+    
+    
+    <category term="AI" scheme="https://fengyanxin.github.io/tags/AI/"/>
+    
+    <category term="Agent" scheme="https://fengyanxin.github.io/tags/Agent/"/>
+    
+  </entry>
   
   <entry>
     <title>【AI】粗识 Prompt Engineering（提示词工程）</title>
@@ -469,29 +493,6 @@
     <category term="学习笔记" scheme="https://fengyanxin.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
     <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【OC】原生富文本 NSAttributedString 的使用</title>
-    <link href="https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91%E5%8E%9F%E7%94%9F%E5%AF%8C%E6%96%87%E6%9C%AC-NSAttributedString-%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
-    <id>https://fengyanxin.github.io/iOS/%E3%80%90OC%E3%80%91%E5%8E%9F%E7%94%9F%E5%AF%8C%E6%96%87%E6%9C%AC-NSAttributedString-%E7%9A%84%E4%BD%BF%E7%94%A8/</id>
-    <published>2025-09-04T02:33:36.000Z</published>
-    <updated>2025-09-04T05:25:50.000Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;什么是-NSAttributedString？&quot;&gt;&lt;a href=&quot;#什么是-NSAttributedString？&quot; class=&quot;headerlink&quot; title=&quot;什么是 NSAttributedString？&quot;&gt;&lt;/a&gt;什么是 NSAttributedString？&lt;/h2&gt;&lt;p&gt;&lt;code&gt;NSAttributedString&lt;/code&gt;（属性字符串）是 &lt;code&gt;Foundation&lt;/code&gt; 框架中的一个类，它允许你在一个字符串中为不同的字符范围应用不同的属性（如字体、颜色、间距等）。与普通的 &lt;code&gt;NSString&lt;/code&gt; 只能存储纯文本不同，&lt;code&gt;NSAttributedString&lt;/code&gt; 可以存储富文本信息。&lt;/p&gt;
-&lt;p&gt;但是，&lt;code&gt;NSAttributedString&lt;/code&gt; 是不可变的，一旦创建就不能再修改。&lt;/p&gt;
-&lt;p&gt;如果想要在创建富文本后，修改字符串的内容和属性，可以使用 &lt;code&gt;NSAttributedString&lt;/code&gt; 的可变版本 &lt;code&gt;NSMutableAttributedString&lt;/code&gt;，它给我们提供了丰富的 &lt;code&gt;API&lt;/code&gt; 来进行自定义。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/categories/iOS/"/>
-    
-    
-    <category term="iOS" scheme="https://fengyanxin.github.io/tags/iOS/"/>
-    
-    <category term="OC" scheme="https://fengyanxin.github.io/tags/OC/"/>
     
   </entry>
   
