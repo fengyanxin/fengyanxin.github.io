@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fengyanxin.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="如何设计 BFF 架构系统？首先，请你想一想：如果没有一套灵活、可扩展的系统架构，结果会怎样？ 这方面我深有感触。在我们的 App 没有良好的系统架构之前，每一个微小的改动都需要「大动干戈」。具体来说，由于强耦合性，每次改动我们都需要和各个业务部门商讨详细的技术方案；功能开发完毕后，又要协调各个部门进行功能回归测试。整个过程不仅耗费大量精力和时间，还容易在跨部门、跨团队沟通中产生摩擦。 而一套良">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【iOS 进阶】15 | 跨平台架构：如何设计 BFF 架构系统？">
+<meta property="og:url" content="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/15%EF%BD%9C%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1-BFF-%E6%9E%B6%E6%9E%84%E7%B3%BB%E7%BB%9F%EF%BC%9F/index.html">
+<meta property="og:site_name" content="凤炎忻的个人笔记">
+<meta property="og:description" content="如何设计 BFF 架构系统？首先，请你想一想：如果没有一套灵活、可扩展的系统架构，结果会怎样？ 这方面我深有感触。在我们的 App 没有良好的系统架构之前，每一个微小的改动都需要「大动干戈」。具体来说，由于强耦合性，每次改动我们都需要和各个业务部门商讨详细的技术方案；功能开发完毕后，又要协调各个部门进行功能回归测试。整个过程不仅耗费大量精力和时间，还容易在跨部门、跨团队沟通中产生摩擦。 而一套良">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/BFF.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/downloaded-image.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/01-moments-microservices.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/02-bff-architecture.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/03-bff-benefits.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/04-bff-security-performance.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/05-graphql-app-clip.jpg">
+<meta property="article:published_time" content="2026-06-04T08:11:53.000Z">
+<meta property="article:modified_time" content="2026-06-04T09:11:09.323Z">
+<meta property="article:author" content="凤炎忻">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/BFF.jpg">
+
+<link rel="canonical" href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/15%EF%BD%9C%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1-BFF-%E6%9E%B6%E6%9E%84%E7%B3%BB%E7%BB%9F%EF%BC%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>【iOS 进阶】15 | 跨平台架构：如何设计 BFF 架构系统？ | 凤炎忻的个人笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="凤炎忻的个人笔记" type="application/atom+xml">
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">凤炎忻的个人笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我有一壶酒，足以慰风尘！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section">标签<span class="badge">17</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section">分类<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">归档<span class="badge">61</span></a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section">公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger">搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/15%EF%BD%9C%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1-BFF-%E6%9E%B6%E6%9E%84%E7%B3%BB%E7%BB%9F%EF%BC%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/flyingPig.jpeg">
+      <meta itemprop="name" content="凤炎忻">
+      <meta itemprop="description" content="性浮脱，难酬一道，广涉寡精，杂而不博">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="凤炎忻的个人笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【iOS 进阶】15 | 跨平台架构：如何设计 BFF 架构系统？
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-06-04 16:11:53 / 修改时间：17:11:09" itemprop="dateCreated datePublished" datetime="2026-06-04T16:11:53+08:00">2026-06-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/15%EF%BD%9C%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1-BFF-%E6%9E%B6%E6%9E%84%E7%B3%BB%E7%BB%9F%EF%BC%9F/" class="post-meta-item leancloud_visitors" data-flag-title="【iOS 进阶】15 | 跨平台架构：如何设计 BFF 架构系统？" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/15%EF%BD%9C%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1-BFF-%E6%9E%B6%E6%9E%84%E7%B3%BB%E7%BB%9F%EF%BC%9F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/15%EF%BD%9C%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1-BFF-%E6%9E%B6%E6%9E%84%E7%B3%BB%E7%BB%9F%EF%BC%9F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/BFF.jpg"></p>
+<h1 id="如何设计-BFF-架构系统？"><a href="#如何设计-BFF-架构系统？" class="headerlink" title="如何设计 BFF 架构系统？"></a>如何设计 BFF 架构系统？</h1><p>首先，请你想一想：如果没有一套灵活、可扩展的系统架构，结果会怎样？</p>
+<p>这方面我深有感触。在我们的 App 没有良好的系统架构之前，每一个微小的改动都需要「大动干戈」。具体来说，由于强耦合性，每次改动我们都需要和各个业务部门商讨详细的技术方案；功能开发完毕后，又要协调各个部门进行功能回归测试。整个过程不仅耗费大量精力和时间，还容易在跨部门、跨团队沟通中产生摩擦。</p>
+<p>而<strong>一套良好的系统架构，不仅仅是一款 App 的基石，也是整套代码库的规范</strong>。有了良好的系统架构，业务功能开发者就能有据可依，团队之间的沟通变得顺畅；各个功能团队之间也能并行开发，保证彼此快速迭代，提高效率。</p>
+<span id="more"></span>
+
+<p>因此，我们在推动工程化实践的同时，也需要不断优化系统架构。在 2017 年，我和公司同事就设计与实现了一套基于原生技术的跨平台系统架构，能让所有开发者同时在 iOS 和 Android 平台上工作。</p>
+<p>如今这套架构经过不断改进，依然在使用。我们现在开发的 <strong>Moments App</strong>，所用的跨平台系统架构，正是吸取了当初的经验与教训，使用 <strong>BFF</strong> 和 <strong>MVVM</strong> 重新架构与实现的。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/downloaded-image.jpg"></p>
+<p>本讲主要介绍如何使用 <strong>BFF</strong>（Backend for Frontend，服务于前端的后端）来设计跨平台的系统架构，以提高可重用性，进而提升开发效率。MVVM 的设计与实现，将在后续章节详细介绍。</p>
+<h2 id="为什么使用-BFF？"><a href="#为什么使用-BFF？" class="headerlink" title="为什么使用 BFF？"></a>为什么使用 BFF？</h2><p>Moments App 是一款类朋友圈的 App。随着功能不断完善，目前几乎所有 App 的数据源都由多个微服务所支持。在 Moments App 中，后台微服务包括：</p>
+<ul>
+<li>用于用户管理与鉴权的<strong>用户服务</strong></li>
+<li>用于记录朋友关系的<strong>朋友关系服务</strong></li>
+<li>用于拉黑管理的<strong>黑名单服务</strong></li>
+<li>用于记录每条朋友圈信息的<strong>信息服务</strong></li>
+<li>用于头像管理的<strong>头像服务</strong></li>
+<li>用于点赞管理的<strong>点赞服务</strong>等</li>
+</ul>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/01-moments-microservices.jpg"></p>
+<p>当我们需要呈现朋友圈界面时，App 需要向各个微服务发送请求，然后把返回的信息整理、合并和转换成所需的信息进行呈现。</p>
+<p>这些网络请求的顺序和逻辑非常复杂：</p>
+<ul>
+<li>有些请求需要<strong>串行</strong>处理，例如只有完成了用户服务的请求以后，才能继续其他请求；</li>
+<li>有些请求却可以<strong>并行</strong>发送，比如在得到信息服务的返回结果以后，可以同时向头像服务和点赞服务发送请求。</li>
+</ul>
+<p>接着，在得到了所有结果以后，App 需要整理和合并数据的逻辑也<strong>非常复杂</strong>。如果请求返回结果的顺序不一致，往往会导致程序出错。于是，为了解决这一系列问题，我们引入了 <strong>BFF 服务</strong>。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/02-bff-architecture.jpg"></p>
+<p><strong>BFF</strong> 是一个服务于不同前端的后台服务，所有的前端（比如 iOS、Android 和 Web）都依赖它。BFF 是一个<strong>整合服务</strong>，负责把前端的请求统一分发到各个具体的微服务上，然后把返回数据整合在一起统一返回给前端。</p>
+<p>有了 BFF 以后，App 就不再需要往多个微服务发送请求，也不再需要处理复杂的并发请求，有效降低了复杂度，避免竞态条件等非预期情况发生。</p>
+<p>除此以外，使用 BFF 还有以下好处。</p>
+<h3 id="1-统一依赖，便于版本演进"><a href="#1-统一依赖，便于版本演进" class="headerlink" title="1. 统一依赖，便于版本演进"></a>1. 统一依赖，便于版本演进</h3><p>App 仅需依赖一个 BFF 微服务，就能有效管理 App 对微服务的依赖。当 App 版本发布以后，我们没有办法强迫用户更新设备上的 App。如果我们需要变动某个微服务的地址，原有的 App 将无法访问新的微服务地址；但有了 BFF 以后，可以通过 BFF 统一路由到新的微服务。</p>
+<h3 id="2-统一传输协议，降低客户端成本"><a href="#2-统一传输协议，降低客户端成本" class="headerlink" title="2. 统一传输协议，降低客户端成本"></a>2. 统一传输协议，降低客户端成本</h3><p>不同的微服务可能提供不一样的数据传输方式，例如有的提供 <code>REST API</code>，有的提供 <code>gRPC</code>，而有的提供 <code>GraphQL</code>。在没有 BFF 的情况下，App 端必须实现各个技术栈来访问各个微服务。一旦有了 BFF 以后，App 只需要支持一种传输方式，极大减轻移动端开发和维护成本。</p>
+<h3 id="3-数据在服务端统一处理，避免双端重复"><a href="#3-数据在服务端统一处理，避免双端重复" class="headerlink" title="3. 数据在服务端统一处理，避免双端重复"></a>3. 数据在服务端统一处理，避免双端重复</h3><p>由于 BFF 统一处理所有的数据，iOS 和 Android 两端都可以得到由 BFF 清理并转换好的数据，无须在各端重复开发一样的数据处理代码。这极大减少了工作量，让我们可以把重心放在<strong>提高用户体验</strong>上。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/03-bff-benefits.jpg"></p>
+<h3 id="4-提升安全性与整体性能"><a href="#4-提升安全性与整体性能" class="headerlink" title="4. 提升安全性与整体性能"></a>4. 提升安全性与整体性能</h3><p>App 通过公网连接到后台微服务时，所有微服务都需要对外暴露，可能面临隐私信息暴露等安全问题（例如用户通过 App 获得本不应公开的黑名单信息）。</p>
+<p>引入 BFF 以后，可以为微服务配置安全规则（如 AWS Security Group），仅允许 BFF 访问。例如黑名单管理服务可以设置：除 BFF 以外，不允许任何其他外部系统（包括 App）直接访问，从而有效保证隐私信息与公网的隔离。</p>
+<p>与此同时，BFF 还可以同步访问多个不同的数据源，统一管理数据缓存，有效提升整套系统的性能。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/04-bff-security-performance.jpg"></p>
+<h2 id="BFF-的技术选型——GraphQL"><a href="#BFF-的技术选型——GraphQL" class="headerlink" title="BFF 的技术选型——GraphQL"></a>BFF 的技术选型——GraphQL</h2><p>既然 BFF 那么好用，应该怎样实现一个 BFF 服务呢？经过多个项目的实践总结，<strong>GraphQL</strong> 是目前实现 BFF 架构的较优方案之一。</p>
+<p>和 REST API、gRPC 以及 SOAP 相比，GraphQL 架构有以下几大优点：</p>
+<ul>
+<li>GraphQL 允许客户端按自身需要通过 <strong>Query</strong> 请求不同数据集，而不像 REST API 和 gRPC 那样每次返回全部数据，能有效减轻网络负载。</li>
+<li>GraphQL 能减轻为各客户端开发单独 Endpoint 的工作量。例如开发 <strong>App Clip</strong> 时，App Clip 可以在 Query 中以指定子数据集的方式使用和主 App 相同的 Query，而无须重新开发新 Endpoint。</li>
+<li>GraphQL 服务能根据客户端的 Query 按需请求数据源，避免无必要的数据请求，减轻服务端负载。</li>
+</ul>
+<h3 id="App-Clip-场景示例"><a href="#App-Clip-场景示例" class="headerlink" title="App Clip 场景示例"></a>App Clip 场景示例</h3><p>假设要开发一个显示「某大 V」朋友圈的 App Clip：用户使用 App Clip 时不需要鉴权，不必查看黑名单，就可以直接看到该大 V 的朋友圈信息。访问 GraphQL 的流程会简化（如下图所示）。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/05-graphql-app-clip.jpg"></p>
+<p>和主 App 请求相比，App Clip 不需要显示点赞信息，返回的结果可以精简。而且由于不需要鉴权，也不需要查询朋友关系、黑名单和点赞等信息，BFF 也无须向这些微服务发起请求，从而有效减轻 BFF 服务的负载。</p>
+<p>另外，和 REST API 相比，GraphQL 的数据交换都由 <strong>Schema</strong> 统一管理，能有效减少由于数据类型和可空类型不匹配所导致的问题。GraphQL 还能减轻版本管理的工作量，因为 GraphQL 能支持返回不同数据集，从而无须像 REST API 那样为每个新功能不断更新 Endpoint 的版本号。</p>
+<h2 id="如何使用-GraphQL-实现-BFF"><a href="#如何使用-GraphQL-实现-BFF" class="headerlink" title="如何使用 GraphQL 实现 BFF"></a>如何使用 GraphQL 实现 BFF</h2><p>确定了 GraphQL 之后，需要选择服务框架。为方便演示，课程选择了 <strong>Apollo Server</strong>。</p>
+<p>Apollo Server 是基于 Node.js 的 GraphQL 服务器，目前非常流行。使用它可以很方便地结合 Express 等 Web 服务，还可以部署到 AWS Lambda、Azure Functions 等 Serverless 服务上。在 REA Group 的生产环境中，Apollo Server 已稳定支撑 App 多年运行。</p>
+<h3 id="第一步：定义-Schema"><a href="#第一步：定义-Schema" class="headerlink" title="第一步：定义 Schema"></a>第一步：定义 Schema</h3><p>使用 GraphQL，先要为前后端传递的数据定义 Schema。下面是 <code>Moment</code> 类型的部分 Schema 定义示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">enum MomentType &#123;</span><br><span class="line">  URL</span><br><span class="line">  PHOTOS</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Moment &#123;</span><br><span class="line">  id: ID!</span><br><span class="line">  userDetails: UserDetails!</span><br><span class="line">  type: MomentType!</span><br><span class="line">  title: String          # nullable</span><br><span class="line">  photos: [String!]!   # 数组非空，元素非空，但可为空数组</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type UserDetails &#123;</span><br><span class="line">  id: ID!</span><br><span class="line">  name: String!</span><br><span class="line">  avatar: String!</span><br><span class="line">  backgroundImage: String!</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>类型说明要点：</strong></p>
+<ul>
+<li><code>GraphQL</code> 支持枚举类型，如 <code>MomentType</code>，在传输过程中通过字符串传给前端。</li>
+<li><code>Moment</code> 在 Swift 中可对应 <code>struct</code>，在 Kotlin 中可对应 <code>data class</code>。</li>
+<li>属性后的 <code>!</code> 表示非空。注意数组中的 <code>!</code> 含义：<ul>
+<li><code>photos: [String!]!</code>：数组本身非空，且不能存放 <code>null</code> 元素；</li>
+<li><code>photos: [String!]</code>：数组本身可为 <code>null</code>，但元素不能为 <code>null</code>；</li>
+<li><code>photos: [String]!</code>：数组本身非空，但可存放 <code>null</code> 元素。</li>
+</ul>
+</li>
+</ul>
+<h3 id="第二步：定义-Query-与-Mutation"><a href="#第二步：定义-Query-与-Mutation" class="headerlink" title="第二步：定义 Query 与 Mutation"></a>第二步：定义 Query 与 Mutation</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">type Query &#123;</span><br><span class="line">  getMomentsDetailsByUserID(userID: ID!): MomentsDetails!</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Mutation &#123;</span><br><span class="line">  updateMomentLike(momentID: ID!, userID: ID!, isLiked: Boolean!): MomentsDetails!</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>Query</code> 一般用于查询；</li>
+<li><code>Mutation</code> 是会更新状态的 Query，更新后仍可返回数据。上例中 <code>updateMomentLike</code> 接受 <code>momentID</code>、<code>userID</code>、<code>isLiked</code>，更新后返回 <code>MomentsDetails</code>。</li>
+</ul>
+<h3 id="第三步：实现-Resolver"><a href="#第三步：实现-Resolver" class="headerlink" title="第三步：实现 Resolver"></a>第三步：实现 Resolver</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> resolvers = &#123;</span><br><span class="line">  <span class="title class_">Query</span>: &#123;</span><br><span class="line">    <span class="attr">getMomentsDetailsByUserID</span>: <span class="function">(<span class="params">_, &#123; userID &#125;</span>) =&gt;</span> momentsDetails,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title class_">Mutation</span>: &#123;</span><br><span class="line">    <span class="attr">updateMomentLike</span>: <span class="function">(<span class="params">_, &#123; momentID, userID, isLiked &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">const</span> i <span class="keyword">in</span> momentsDetails.<span class="property">moments</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (momentsDetails.<span class="property">moments</span>[i].<span class="property">id</span> === momentID) &#123;</span><br><span class="line">          <span class="keyword">if</span> (momentsDetails.<span class="property">moments</span>[i].<span class="property">isLiked</span> === isLiked) <span class="keyword">break</span>;</span><br><span class="line">          momentsDetails.<span class="property">moments</span>[i].<span class="property">isLiked</span> = isLiked;</span><br><span class="line">          <span class="keyword">if</span> (isLiked) &#123;</span><br><span class="line">            <span class="keyword">const</span> likedUserDetails = <span class="title function_">getUserDetailsByID</span>(userID);</span><br><span class="line">            momentsDetails.<span class="property">moments</span>[i].<span class="property">likes</span>.<span class="title function_">push</span>(likedUserDetails);</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            momentsDetails.<span class="property">moments</span>[i].<span class="property">likes</span> =</span><br><span class="line">              momentsDetails.<span class="property">moments</span>[i].<span class="property">likes</span>.<span class="title function_">filter</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">id</span> !== userID);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> momentsDetails;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在示例中，<code>getMomentsDetailsByUserID</code> 直接返回 <code>momentsDetails</code>；<code>updateMomentLike</code> 更新点赞状态。Moments App 的 BFF 示例中维护了内存数据库；真实生产环境可访问 MySQL、MongoDB，或通过其他微服务桥接数据库访问。</p>
+<blockquote>
+<p><strong>注意</strong>：并非每个 BFF 都必须通过 Apollo Server 和 Node.js 实现。可根据团队技能选择技术栈，例如 Kotlin 也是不错的选择——Android 开发者熟悉 Kotlin，且 Kotlin 可完美兼容 JVM，可利用 JVM 生态构建稳定的 BFF 方案。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本讲介绍了如何使用 <strong>BFF</strong> 设计跨平台系统架构，以及如何使用 <strong>GraphQL</strong> 实现 BFF。虽然 GraphQL 有众多优点，但并非十全十美——世界上并没有完美的技术。使用 GraphQL 时需要注意：</p>
+<ol>
+<li><strong>Schema 需要前后端共同协商</strong>，特别要注意 <code>nullable</code> 类型的处理；若前端定义有误，很容易引起 App 崩溃。</li>
+<li><strong>GraphQL 通常使用 HTTP POST</strong>，部分 CDN 对 POST 缓存支持不好。若将请求改为 GET，整个 Query 会变成 JSON-encoded 字符串放在 Query String 中发送，此时要特别注意 Query String 长度不要超过 CDN 限制（例如 Akamai 支持最长 URL 约 8892 字节），否则请求会失败。</li>
+</ol>
+<h1 id="学习笔记与扩展"><a href="#学习笔记与扩展" class="headerlink" title="学习笔记与扩展"></a>学习笔记与扩展</h1><h2 id="BFF-模式的起源与定位"><a href="#BFF-模式的起源与定位" class="headerlink" title="BFF 模式的起源与定位"></a>BFF 模式的起源与定位</h2><p>BFF（Backends For Frontends）由 Sam Newman 在 2015 年提出，核心思想是：<strong>为每一种前端体验提供专属的后端适配层</strong>，而不是让所有客户端共用一套「通用 API」。</p>
+<p>在架构中的位置通常为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">客户端（iOS / Android / Web）</span><br><span class="line">    ↓</span><br><span class="line">API 网关（鉴权、限流、路由）</span><br><span class="line">    ↓</span><br><span class="line">BFF 层（聚合、裁剪、编排）</span><br><span class="line">    ↓</span><br><span class="line">微服务集群（用户、订单、内容……）</span><br></pre></td></tr></table></figure>
+
+<p>BFF 解决的不是「后端业务逻辑」，而是<strong>前端与微服务之间的阻抗不匹配</strong>：字段过多、协议不一、调用链过长、多端差异大。</p>
+<h2 id="BFF-与-API-网关的区别"><a href="#BFF-与-API-网关的区别" class="headerlink" title="BFF 与 API 网关的区别"></a>BFF 与 API 网关的区别</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>API 网关</th>
+<th>BFF</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>主要职责</td>
+<td>流量入口、鉴权、限流、路由</td>
+<td>面向 UI 的数据聚合与适配</td>
+</tr>
+<tr>
+<td>是否了解业务</td>
+<td>通常较薄，偏基础设施</td>
+<td>较厚，与产品展示强相关</td>
+</tr>
+<tr>
+<td>维护团队</td>
+<td>平台 / 运维 / 后端</td>
+<td>常见为前端团队或贴近前端的业务后端</td>
+</tr>
+<tr>
+<td>典型能力</td>
+<td>TLS、WAF、熔断</td>
+<td>VO 组装、字段脱敏、并行拉取</td>
+</tr>
+</tbody></table>
+<p>实践中两者常<strong>协同</strong>：网关做横切能力，BFF 做终端定制。</p>
+<h2 id="何时适合-不适合引入-BFF"><a href="#何时适合-不适合引入-BFF" class="headerlink" title="何时适合 / 不适合引入 BFF"></a>何时适合 / 不适合引入 BFF</h2><p><strong>适合：</strong></p>
+<ul>
+<li>移动端需要聚合 3 个以上微服务才能渲染一屏；</li>
+<li>iOS / Android / Web 对同一业务的数据结构差异大；</li>
+<li>需要隐藏内部服务拓扑，统一安全边界；</li>
+<li>希望把「列表 + 详情 + 用户信息」合并为一次网络往返。</li>
+</ul>
+<p><strong>不适合 / 需谨慎：</strong></p>
+<ul>
+<li>团队很小、后端已提供高质量 BFF 式聚合 API；</li>
+<li>BFF 层无人维护，逐渐变成「分布式单体」；</li>
+<li>简单 CRUD，引入 BFF 只会增加延迟与运维成本。</li>
+</ul>
+<h2 id="GraphQL-之外的-BFF-实现方式"><a href="#GraphQL-之外的-BFF-实现方式" class="headerlink" title="GraphQL 之外的 BFF 实现方式"></a>GraphQL 之外的 BFF 实现方式</h2><p>课程以 GraphQL + Apollo Server 为例，业界常见还有：</p>
+<ul>
+<li><strong>REST BFF（Node.js / Kotlin / Go）</strong>：用 <code>Promise.all</code> / <code>async</code> 并行请求多个 REST 微服务，组装 JSON 返回；</li>
+<li><strong>gRPC BFF</strong>：内网高性能，适合 BFF 与微服务之间；</li>
+<li><strong>Serverless BFF</strong>：按业务模块拆分为云函数，冷启动与可观测性需额外设计。</li>
+</ul>
+<p>技术选型原则：<strong>谁维护 BFF，就优先用该团队最熟的语言与框架</strong>，而不是盲目跟风 Node.js。</p>
+<h2 id="BFF-常见反模式（技术债预警）"><a href="#BFF-常见反模式（技术债预警）" class="headerlink" title="BFF 常见反模式（技术债预警）"></a>BFF 常见反模式（技术债预警）</h2><ul>
+<li><strong>BFF 膨胀</strong>：把所有业务逻辑都塞进 BFF，微服务退化为 DAO；</li>
+<li><strong>多端共用一个 BFF 却不做隔离</strong>：Web 改字段导致 App 崩溃；</li>
+<li><strong>缺乏缓存策略</strong>：BFF 每次都穿透到所有下游，放大故障面；</li>
+<li><strong>无契约测试</strong>：Schema / OpenAPI 变更未通知客户端。</li>
+</ul>
+<p>建议：对 BFF 的「妥协逻辑」建立技术债清单，定期重构；按终端或业务线拆分 BFF（如 <code>mobile-bff</code>、<code>web-bff</code>）。</p>
+<h2 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h2><ul>
+<li>Sam Newman — <em>Pattern: Backends For Frontends</em></li>
+<li>Microsoft Azure Architecture Center — <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/azure/architecture/patterns/backends-for-frontends">Backends for Frontends</a></li>
+<li>Apollo GraphQL 官方文档 — Schema、Resolver、DataLoader（解决 N+1 查询）</li>
+<li>课程代码仓库（工程化示例）：<a target="_blank" rel="noopener" href="https://github.com/lagoueduCol/iOS-linyongjian">lagoueduCol/iOS-linyongjian</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    
+    
+    
+
+    <div>
+       
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------<i class="fa fa-paw"></i> That's all！Best wishes for you !!! <i class="fa fa-paw"></i>-------------</div>
+    
+</div>
+
+       
+    </div><div class="post-widgets">
+    <div class="likely">
+        <div class="twitter">Tweet</div>
+        <div class="facebook">Share</div>
+        <div class="linkedin">Link</div>
+        <div class="gplus">Plus</div>
+        <div class="vkontakte">Share</div>
+        <div class="odnoklassniki">Class</div>
+        <div class="telegram">Send</div>
+        <div class="whatsapp">Send</div>
+        <div class="pinterest">Pin</div>
+    </div>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.js"></script><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>凤炎忻
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/15%EF%BD%9C%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1-BFF-%E6%9E%B6%E6%9E%84%E7%B3%BB%E7%BB%9F%EF%BC%9F/" title="【iOS 进阶】15 | 跨平台架构：如何设计 BFF 架构系统？">https://fengyanxin.github.io/学习笔记/15｜跨平台架构：如何设计-BFF-架构系统？/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/fengyanxin">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.zhihu.com/people/peng-he-34-93">
+            <span class="icon">
+              <i class="fab fa-zhihu"></i>
+            </span>
+
+            <span class="label">知乎</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065">
+            <span class="icon">
+              <i class="fa fa-toutiao"></i>
+            </span>
+
+            <span class="label">今日头条</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477">
+            <span class="icon">
+              <i class="fa fa-baidu1"></i>
+            </span>
+
+            <span class="label">百家号</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394">
+            <span class="icon">
+              <i class="fab fa-xiaohongshu1"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e">
+            <span class="icon">
+              <i class="fab fa-liblib1"></i>
+            </span>
+
+            <span class="label">LibLib</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+              <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/AI/%E3%80%90AI%E3%80%91%E7%B2%97%E8%AF%86-AI-Workflow%EF%BC%88AI-%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%89/" rel="prev" title="【AI】粗识 AI Workflow（AI 工作流）">
+      <i class="fa fa-chevron-left"></i> 【AI】粗识 AI Workflow（AI 工作流）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1-BFF-%E6%9E%B6%E6%9E%84%E7%B3%BB%E7%BB%9F%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">如何设计 BFF 架构系统？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8-BFF%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">为什么使用 BFF？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%BB%9F%E4%B8%80%E4%BE%9D%E8%B5%96%EF%BC%8C%E4%BE%BF%E4%BA%8E%E7%89%88%E6%9C%AC%E6%BC%94%E8%BF%9B"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. 统一依赖，便于版本演进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BB%9F%E4%B8%80%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%EF%BC%8C%E9%99%8D%E4%BD%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%88%90%E6%9C%AC"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. 统一传输协议，降低客户端成本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%95%B0%E6%8D%AE%E5%9C%A8%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%BB%9F%E4%B8%80%E5%A4%84%E7%90%86%EF%BC%8C%E9%81%BF%E5%85%8D%E5%8F%8C%E7%AB%AF%E9%87%8D%E5%A4%8D"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 数据在服务端统一处理，避免双端重复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%8F%90%E5%8D%87%E5%AE%89%E5%85%A8%E6%80%A7%E4%B8%8E%E6%95%B4%E4%BD%93%E6%80%A7%E8%83%BD"><span class="nav-number">1.1.4.</span> <span class="nav-text">4. 提升安全性与整体性能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BFF-%E7%9A%84%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E2%80%94%E2%80%94GraphQL"><span class="nav-number">1.2.</span> <span class="nav-text">BFF 的技术选型——GraphQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#App-Clip-%E5%9C%BA%E6%99%AF%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text">App Clip 场景示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-GraphQL-%E5%AE%9E%E7%8E%B0-BFF"><span class="nav-number">1.3.</span> <span class="nav-text">如何使用 GraphQL 实现 BFF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E5%AE%9A%E4%B9%89-Schema"><span class="nav-number">1.3.1.</span> <span class="nav-text">第一步：定义 Schema</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E5%AE%9A%E4%B9%89-Query-%E4%B8%8E-Mutation"><span class="nav-number">1.3.2.</span> <span class="nav-text">第二步：定义 Query 与 Mutation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E5%AE%9E%E7%8E%B0-Resolver"><span class="nav-number">1.3.3.</span> <span class="nav-text">第三步：实现 Resolver</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%89%A9%E5%B1%95"><span class="nav-number">2.</span> <span class="nav-text">学习笔记与扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#BFF-%E6%A8%A1%E5%BC%8F%E7%9A%84%E8%B5%B7%E6%BA%90%E4%B8%8E%E5%AE%9A%E4%BD%8D"><span class="nav-number">2.1.</span> <span class="nav-text">BFF 模式的起源与定位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BFF-%E4%B8%8E-API-%E7%BD%91%E5%85%B3%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.2.</span> <span class="nav-text">BFF 与 API 网关的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%95%E6%97%B6%E9%80%82%E5%90%88-%E4%B8%8D%E9%80%82%E5%90%88%E5%BC%95%E5%85%A5-BFF"><span class="nav-number">2.3.</span> <span class="nav-text">何时适合 &#x2F; 不适合引入 BFF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GraphQL-%E4%B9%8B%E5%A4%96%E7%9A%84-BFF-%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="nav-number">2.4.</span> <span class="nav-text">GraphQL 之外的 BFF 实现方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BFF-%E5%B8%B8%E8%A7%81%E5%8F%8D%E6%A8%A1%E5%BC%8F%EF%BC%88%E6%8A%80%E6%9C%AF%E5%80%BA%E9%A2%84%E8%AD%A6%EF%BC%89"><span class="nav-number">2.5.</span> <span class="nav-text">BFF 常见反模式（技术债预警）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB"><span class="nav-number">2.6.</span> <span class="nav-text">延伸阅读</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="凤炎忻"
+      src="/images/flyingPig.jpeg">
+  <p class="site-author-name" itemprop="name">凤炎忻</p>
+  <div class="site-description" itemprop="description">性浮脱，难酬一道，广涉寡精，杂而不博</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengyanxin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengyanxin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ph18317192001@163.com" title="E-Mail → mailto:ph18317192001@163.com" rel="noopener" target="_blank"><i class="fab fa-mail fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://profile.zjurl.cn/rogue/ugc/profile/?user_id=51893718065" title="今日头条 → https:&#x2F;&#x2F;profile.zjurl.cn&#x2F;rogue&#x2F;ugc&#x2F;profile&#x2F;?user_id&#x3D;51893718065" rel="noopener" target="_blank"><i class="fab fa-jinritoutiao fa-fw"></i>今日头条</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://author.baidu.com/home?from=bjh_article&app_id=1665765419554477" title="百家号 → https:&#x2F;&#x2F;author.baidu.com&#x2F;home?from&#x3D;bjh_article&amp;app_id&#x3D;1665765419554477" rel="noopener" target="_blank"><i class="fab fa-baidu fa-fw"></i>百家号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/642cb9650000000011023394" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;642cb9650000000011023394" rel="noopener" target="_blank"><i class="fab fa-xiaohongshu fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.liblib.art/userpage/c7816525373d4fbca7e45c1940ead98e" title="LibLib → https:&#x2F;&#x2F;www.liblib.art&#x2F;userpage&#x2F;c7816525373d4fbca7e45c1940ead98e" rel="noopener" target="_blank"><i class="fab fa-liblib fa-fw"></i>LibLib</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">凤炎忻</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">148k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:57</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-64097eaa671e32e2" async="async"></script>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,255' opacity='0.95' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '7EJkVswo79CmfmbwincRPjrA-gzGzoHsz',
+      appKey     : 'v7t6DWozwkcL2qIDeSC5kupC',
+      placeholder: "说点什么吧！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
