@@ -6,7 +6,7 @@
   <link href="https://fengyanxin.github.io/atom.xml" rel="self"/>
   
   <link href="https://fengyanxin.github.io/"/>
-  <updated>2026-06-04T09:11:09.323Z</updated>
+  <updated>2026-06-05T01:06:05.823Z</updated>
   <id>https://fengyanxin.github.io/</id>
   
   <author>
@@ -21,10 +21,10 @@
     <link href="https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/15%EF%BD%9C%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1-BFF-%E6%9E%B6%E6%9E%84%E7%B3%BB%E7%BB%9F%EF%BC%9F/"/>
     <id>https://fengyanxin.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/15%EF%BD%9C%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84%EF%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1-BFF-%E6%9E%B6%E6%9E%84%E7%B3%BB%E7%BB%9F%EF%BC%9F/</id>
     <published>2026-06-04T08:11:53.000Z</published>
-    <updated>2026-06-04T09:11:09.323Z</updated>
+    <updated>2026-06-05T01:06:05.823Z</updated>
     
     
-    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/BFF.jpg&quot;&gt;&lt;/p&gt;
+    <summary type="html">&lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/compressed_BFF-2.jpg&quot;&gt;&lt;/p&gt;
 &lt;h1 id=&quot;如何设计-BFF-架构系统？&quot;&gt;&lt;a href=&quot;#如何设计-BFF-架构系统？&quot; class=&quot;headerlink&quot; title=&quot;如何设计 BFF 架构系统？&quot;&gt;&lt;/a&gt;如何设计 BFF 架构系统？&lt;/h1&gt;&lt;p&gt;首先，请你想一想：如果没有一套灵活、可扩展的系统架构，结果会怎样？&lt;/p&gt;
 &lt;p&gt;这方面我深有感触。在我们的 App 没有良好的系统架构之前，每一个微小的改动都需要「大动干戈」。具体来说，由于强耦合性，每次改动我们都需要和各个业务部门商讨详细的技术方案；功能开发完毕后，又要协调各个部门进行功能回归测试。整个过程不仅耗费大量精力和时间，还容易在跨部门、跨团队沟通中产生摩擦。&lt;/p&gt;
 &lt;p&gt;而&lt;strong&gt;一套良好的系统架构，不仅仅是一款 App 的基石，也是整套代码库的规范&lt;/strong&gt;。有了良好的系统架构，业务功能开发者就能有据可依，团队之间的沟通变得顺畅；各个功能团队之间也能并行开发，保证彼此快速迭代，提高效率。&lt;/p&gt;</summary>
