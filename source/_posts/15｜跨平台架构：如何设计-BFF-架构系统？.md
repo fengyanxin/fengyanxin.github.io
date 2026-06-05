@@ -8,7 +8,7 @@ categories:
 - 学习笔记
 ---
 
-![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/BFF.jpg)
+![](https://cdn.jsdelivr.net/gh/fengyanxin/YXBlogPic/iMacImg/compressed_BFF-2.jpg)
 
 # 如何设计 BFF 架构系统？
 
